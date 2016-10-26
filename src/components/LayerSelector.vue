@@ -18,7 +18,9 @@ export default {
       treeData: (function buildTree(treeItem) {
         return {
           name: treeItem.label || 'Layers',
-          children: treeItem.items && treeItem.items.map(subItem => buildTree(subItem))
+          open: !treeItem.label,
+          children: treeItem.items && treeItem.items.map(subItem => buildTree(subItem)),
+          id: treeItem.id || null
         };
       })(config.groups)
     }

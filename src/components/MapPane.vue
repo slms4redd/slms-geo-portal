@@ -3,9 +3,14 @@
 </template>
 
 <script>
-import { config } from '../config'
+import { config } from '../config';
+import bus from '../bus';
 
 let map;
+
+bus.$on('layer-toggled', function (id) {
+  alert('id = ' + id);
+})
 
 export default {
   name: 'mapPane',

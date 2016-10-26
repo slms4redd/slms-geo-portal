@@ -20,14 +20,9 @@ h1 {
 }
 
 #header {
-  background-color: black;
-  /* Opacity */
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=80);
-  -moz-opacity: 0.80;
-  -khtml-opacity: 0.8;
-  opacity: 0.8;
+  @extend %opacity;
 
+  background-color: black;
   color: white;
   position: fixed;
   top: 0;

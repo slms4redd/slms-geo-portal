@@ -28,20 +28,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../assets/global.scss";
+
 #layer-selector {
-  /* Opacity */
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=80);
-  -moz-opacity: 0.80;
-  -khtml-opacity: 0.8;
-  opacity: 0.8;
+  @extend %opacity;
 
   position: absolute;
-  top: 215px;
-  width: 380px;
+  top: 160px;
+  min-width: 50px;
   background-color: black;
   color: white;
   padding: 20px;
+  max-height: 300px;
+  overflow: auto;
+  
+  -webkit-transition: max-width 2s; /* Safari */
+  transition: max-width 2s;
 }
 </style>

@@ -1,1 +1,9 @@
 $banner-height: 92px;
+
+%opacity {
+  -khtml-opacity: 0.8;
+    -moz-opacity: 0.80;
+         opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+      filter: alpha(opacity=80);
+}

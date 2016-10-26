@@ -1,6 +1,6 @@
-# my-project
+# SLMS portal refactoring
 
-> A Vue.js project
+> Refactoring of the SLMS portal using vue.js
 
 ## Build Setup
 

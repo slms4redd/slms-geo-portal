@@ -8,7 +8,6 @@
 </template>
 
 <script>
-// import Hello from './components/Hello'
 import Banner from './components/Banner'
 // import LegendPane from './components/LegendPane'
 import MapPane from './components/MapPane'

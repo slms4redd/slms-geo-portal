@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import { config } from '../config'
-import Item from './Item'
+import { config } from '../config';
+import Item from './Item';
 
 export default {
   name: 'layerSelector',
@@ -14,16 +14,18 @@ export default {
     'item': Item
   },
   data() {
-    return {
-      treeData: (function buildTree(treeItem) {
-        return {
-          name: treeItem.label || 'Layers',
-          open: !treeItem.label,
-          children: treeItem.items && treeItem.items.map(subItem => buildTree(subItem)),
-          id: treeItem.id || null
-        };
-      })(config.groups)
-    }
+    return { treeData: config.groups };
+
+    // return {
+    //   treeData: (function buildTree(treeItem) {
+    //     return {
+    //       id: treeItem.id || null,
+    //       name: treeItem.label || 'Layers',
+    //       open: !treeItem.label,
+    //       children: treeItem.items && treeItem.items.map(subItem => buildTree(subItem))
+    //     };
+    //   })(config.groups)
+    // }
   }
 }
 </script>
@@ -40,10 +42,12 @@ export default {
   background-color: black;
   color: white;
   padding: 20px;
-  max-height: 300px;
+  max-height: 500px;
   overflow: auto;
-  
-  -webkit-transition: max-width 2s; /* Safari */
-  transition: max-width 2s;
+}
+ul {
+  padding-left: 1em;
+  line-height: 1.5em;
+  list-style-type: none;
 }
 </style>

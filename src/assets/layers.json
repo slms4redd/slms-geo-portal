@@ -6,6 +6,10 @@
     "imageFormat": "image/jpeg",
     "visible": true
   }, {
+    "id": "openstreetmap",
+    "type": "OSM",
+    "visible": true
+  }, {
     "id": "forestClassification",
     "label": "FACET Forest Classification",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
@@ -43,10 +47,7 @@
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://osfac.net/facet.html",
-    "sourceLabel": "FACET",
-    "wmsParameters": {
-      "tiled": "true"
-    }	
+    "sourceLabel": "FACET"
   }, {
     "id": "hillshade",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
@@ -75,10 +76,7 @@
     "visible": true,
     "legend": "deforestation.png",
     "sourceLink": "http://osfac.net/facet.html",
-    "sourceLabel": "FACET",
-    "wmsParameters": {
-      "tiled": "true"
-    }
+    "sourceLabel": "FACET"
   }, {
     "id": "trainingData",
     "label": "National Training Data",
@@ -139,10 +137,7 @@
     "visible": true,
     "legend": "intact_forest.png",
     "sourceLink": "http://www.intactforests.org/",
-    "sourceLabel": "www.intactforests.org",
-    "wmsParameters": {
-      "tiled": "true"
-    }
+    "sourceLabel": "www.intactforests.org"
   }, {
     "id": "loggingConcessions",
     "label": "Logging Concessions",
@@ -419,6 +414,11 @@
     "id": "burntArea",
     "infoFile": "data_not_available.html",
     "label": "Burnt area"
+  }, {
+    "id": "openstreetmap",
+    "label": "OpenStreetMap",
+    "layers": ["openstreetmap"],
+    "active": false
   }],
   "contextGroups": 
   {
@@ -427,6 +427,7 @@
         "group": {
           "label": "Base Layers",
           "items": [
+            { "context": "openstreetmap" },
             { "context": "blueMarble" },
             { "context": "FnFMask1990" },
             { "context": "facetForestClassification" },

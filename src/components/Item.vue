@@ -1,11 +1,14 @@
 <template>
   <li>
-    <div :class="{bold: isFolder}" @click="toggle" @dblclick="changeType">
-      {{model.name}}
-      <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+    <div v-if="isGroup" class="bold" @click="toggle">
+      {{isRoot ? 'Layers' : model.label}}
+      [<span class="toggle">{{open ? '-' : '+'}}</span>]
     </div>
-    <ul v-show="open" v-if="isFolder">
-      <item class="item" v-for="model in model.children" :model="model"></item>
+    <div v-else>
+      <label :class="{dimmed: !hasLayers}"><input v-if="hasLayers" type="checkbox" v-model="active"> {{isRoot ? 'Layers' : model.label}}</label>
+    </div>
+    <ul v-show="open" v-if="isGroup">
+      <item class="item" v-for="model in model.items" :model="model"></item>
     </ul>
   </li>
 </template>
@@ -19,23 +22,34 @@ export default {
     model: Object
   },
   data() {
-    return { open: this.model.open }
+    return {
+      open: !this.model.label,
+      active: this.model.active
+    }
   },
   computed: {
-    isFolder() {
-      return this.model.children && this.model.children.length;
+    isContext() {
+      return !this.model.items;
+    },
+    isGroup() {
+      return !this.isContext;
+    },
+    isRoot() {
+      return !this.model.label;
+    },
+    hasLayers() {
+      return !!this.model.layers.length;
     }
   },
   methods: {
     toggle() {
-      if (this.isFolder) {
-        this.open = !this.open;
-      } else {
-        // this.$emit('layerClick', event.target.value);
-        bus.$emit('layer-toggled', this.model.id);
-      }
-    },
-    changeType() { return null; }
+      this.open = !this.open;
+    }
+  },
+  watch: {
+    active() {
+      this.model.layers.forEach(layer => bus.$emit('layer-toggled', layer.id, this.active));
+    }
   }
 }
 </script>
@@ -47,9 +61,16 @@ export default {
 .bold {
   font-weight: bold;
 }
+.dimmed {
+  color: #aaa;
+  font-style: italic;
+}
 ul {
   padding-left: 1em;
   line-height: 1.5em;
-  list-style-type: dot;
+  list-style-type: none;
+}
+.toggle {
+  font-family: "Courier New", Courier, monospace;
 }
 </style>

@@ -1,17 +1,17 @@
 class Layer {
   constructor(layerConfig) {
     this.id = layerConfig.id;
-    this.label = layerConfig.label;
-    this.baseUrl = layerConfig.baseUrl;
-    this.wmsTime = layerConfig.wmsTime;
-    this.wmsName = layerConfig.wmsName;
-    this.imageFormat = layerConfig.imageFormat;
-    this.visible = layerConfig.visible;
-    this.legend = layerConfig.legend;
-    this.queryable = layerConfig.queryable;
-    this.sourceLink = layerConfig.sourceLink;
-    this.sourceLabel = layerConfig.sourceLabel;
-    this.type = "WMS";
+    this.label = layerConfig.label || null;
+    this.baseUrl = layerConfig.baseUrl || null;
+    this.wmsTime = layerConfig.wmsTime || null;
+    this.wmsName = layerConfig.wmsName || null;
+    this.imageFormat = layerConfig.imageFormat || 'image/png8';
+    this.visible = !!layerConfig.visible;
+    this.legend = layerConfig.legend || null;
+    this.queryable = !!layerConfig.queryable;
+    this.sourceLink = layerConfig.sourceLink || null;
+    this.sourceLabel = layerConfig.sourceLabel || null;
+    this.type = layerConfig.type || "WMS";
     this.active = false;
   }
 }
@@ -20,19 +20,19 @@ class Context {
   constructor(contextConfig, layers) {
     this.id = contextConfig.id;
     this.active = !!contextConfig.active;
-    this.infoFile = contextConfig.infoFile;
+    this.infoFile = contextConfig.infoFile || null;
     this.label = contextConfig.label;
     var layers = contextConfig.layers && contextConfig.layers.map(id => _findById(layers, id))
                                                              .filter(layer => !!layer); // remove nulls
     this.layers = layers || []; 
-    this.inlineLegendUrl = contextConfig.inlineLegendUrl;
+    this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
   }
 }
 
 class Group {
   constructor(groupConfig, contexts) {
     this.label = groupConfig.label;
-    this.infoFile = groupConfig.infoFile;
+    this.infoFile = groupConfig.infoFile || null;
     this.items = groupConfig.items && groupConfig.items.map(item => {
       if (item.context) {
         return _findById(contexts, item.context);

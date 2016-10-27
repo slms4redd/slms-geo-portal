@@ -42,7 +42,7 @@ export default {
   background-color: black;
   color: white;
   padding: 20px;
-  max-height: 500px;
+  /*max-height: 500px;*/
   overflow: auto;
 }
 ul {

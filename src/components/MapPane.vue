@@ -7,19 +7,21 @@ import { config } from '../config';
 import bus from '../bus';
 
 let map;
+const attributions = [];
 
 const addOlLayer = function(layer) {
-  let attributions = [];
-  if (layer.sourceLink) {
-    attributions.push(new ol.Attribution({ html: `<a href="${layer.sourceLink}">${layer.sourceLabel || layer.sourceLink}</a>` }));
-  }
-
   let source;
   switch(layer.type) {
     case 'OSM':
       source = new ol.source.OSM();
       break;
     default:
+      const olAttributions = [];
+      if (layer.sourceLink) {
+        let source = attributions[layer.sourceLabel] || new ol.Attribution({ html: `<a href="${layer.sourceLink}">${layer.sourceLabel || layer.sourceLink}</a>` });
+        attributions[layer.sourceLabel] = source;
+        olAttributions.push(source);
+      }
       source = new ol.source.TileWMS(({
         url: layer.baseUrl,
         params: {
@@ -29,15 +31,15 @@ const addOlLayer = function(layer) {
           'FORMAT': layer.imageFormat,
           'WIDTH': 256,
           'HEIGHT': 256,
-          'CRS': 'EPSG:900913'
+          'CRS': 'EPSG:3857'
         },
         serverType: 'geoserver',
-        attributions: attributions
+        attributions: olAttributions
       }));
   }
 
   if (source) {
-    var olLayer = new ol.layer.Tile({
+    const olLayer = new ol.layer.Tile({
       // extent: [2033814, 6414547, 2037302, 6420952],
       // preload: Infinity,
       visible: layer.active,
@@ -51,11 +53,11 @@ const addOlLayer = function(layer) {
 
 export default {
   name: 'mapPane',
-  data() {
-    return { olLayers: {} }
-  },
   mounted() {
     map = new ol.Map({
+      controls: ol.control.defaults({
+        attributionOptions: ({ collapsible: false })
+      }),
       target: 'map',
       view: new ol.View({
         center: ol.proj.fromLonLat([37.41, 8.82]),
@@ -63,14 +65,15 @@ export default {
       })
     });
 
-    config.layers.forEach(layerDefinition => {
+    config.layers.forEach(layerConfig => {
       try {
-        let olLayer = addOlLayer(layerDefinition);
+        const olLayer = addOlLayer(layerConfig);
 
         if (olLayer) {
-          bus.$on('layer-toggled', function (id, visible) {
-            if (id === layerDefinition.id) {
-              olLayer.setVisible(visible && layerDefinition.visible);
+          bus.$on('context-toggled', function (context, visible) {
+            const layerIds = context.layers.map(layer => layer.id);
+            if (layerIds.includes(layerConfig.id)) {
+              olLayer.setVisible(visible && layerConfig.visible);
             }
           })
         }

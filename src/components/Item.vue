@@ -59,8 +59,9 @@ export default {
     }
   },
   watch: {
-    active(value) {
-      this.model.layers.forEach(layer => bus.$emit('layer-toggled', layer.id, this.active));
+    active() {
+      bus.$emit('context-toggled', this.model, this.active);
+      // this.model.layers.forEach(layer => bus.$emit('layer-toggled', layer.id, this.active));
     }
   }
 }

@@ -18,10 +18,8 @@ export default {
 h1 {
   font-weight: normal;
 }
-
 #header {
   @extend %opacity;
-
   background-color: black;
   color: white;
   position: fixed;
@@ -32,7 +30,6 @@ h1 {
   padding: 0;
   margin: 0;
 }
-
 #header #header-content {
   margin: 10px;
 }

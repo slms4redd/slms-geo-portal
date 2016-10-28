@@ -22,9 +22,10 @@ class Context {
     this.active = !!contextConfig.active;
     this.infoFile = contextConfig.infoFile || null;
     this.label = contextConfig.label;
-    var layers = contextConfig.layers && contextConfig.layers.map(id => _findById(layers, id))
-                                                             .filter(layer => !!layer); // remove nulls
-    this.layers = layers || []; 
+    const tLayers = contextConfig.layers && contextConfig.layers.map(id => _findById(layers, id))
+                                                             // Silently remove nulls (unmatched layers)
+                                                             .filter(layer => !!layer);
+    this.layers = tLayers || []; 
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
     this.hasLegends = this.layers.some(layer => layer.legend);
   }
@@ -34,15 +35,15 @@ class Group {
   constructor(groupConfig, contexts) {
     this.label = groupConfig.label;
     this.infoFile = groupConfig.infoFile || null;
-    this.items = groupConfig.items && groupConfig.items.map(item => {
+    const tItems = groupConfig.items && groupConfig.items.map(item => {
       if (item.context) {
-        return _findById(contexts, item.context);
-      } else if (item.group) {
-        return new Group(item.group, contexts);
-      } else {
-        return null;
+        // Create a dummy ocntext if not found
+        return _findById(contexts, item.context) || new Context({ id: item.context, label: item.context });
       }
+      return item.group && new Group(item.group, contexts);
     });
+    // Silently remove undefined values from array
+    this.items = tItems.filter(x => x)
   }
 }
 
@@ -57,12 +58,8 @@ class Config {
     }));
     this.groups = new Group(json.contextGroups, this.contexts);
   }
-
-  layer(id) {
-    return _findById(this.layers, id)
-  }
 }
 
-let config = new Config(require("./assets/layers.json"));
+const config = new Config(require("./assets/layers.json"));
 
 export { config, Layer, Context, Group };

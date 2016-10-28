@@ -15,17 +15,6 @@ export default {
   },
   data() {
     return { treeData: config.groups };
-
-    // return {
-    //   treeData: (function buildTree(treeItem) {
-    //     return {
-    //       id: treeItem.id || null,
-    //       name: treeItem.label || 'Layers',
-    //       open: !treeItem.label,
-    //       children: treeItem.items && treeItem.items.map(subItem => buildTree(subItem))
-    //     };
-    //   })(config.groups)
-    // }
   }
 }
 </script>
@@ -36,14 +25,17 @@ export default {
 #layer-selector {
   @extend %opacity;
 
+  font-size: 14px;
   position: absolute;
-  top: 160px;
+  top: 148px;
+  left: 8px;
   min-width: 50px;
   background-color: black;
   color: white;
-  padding: 20px;
+  padding: 10px;
   /*max-height: 500px;*/
   overflow: auto;
+  border-radius: 5px;
 }
 ul {
   padding-left: 1em;

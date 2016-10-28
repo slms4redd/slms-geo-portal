@@ -92,7 +92,6 @@
     "wmsName": "unredd:redd_plus_projects",
     "imageFormat": "image/png8",
     "visible": true,
-    "legend": "redd_plus_projects.png",
     "sourceLink": "http://www.observatoire-comifac.net/",
     "sourceLabel": "OFAC"
   }, {
@@ -109,7 +108,6 @@
     "wmsName": "unredd:redd_plus_initiatives",
     "imageFormat": "image/png8",
     "visible": true,
-    "legend": "redd_plus_initiatives.png",
     "sourceLink": "http://www.observatoire-comifac.net/",
     "sourceLabel": "OFAC"
   }, {
@@ -145,7 +143,6 @@
     "wmsName": "unredd:logging_concessions",
     "imageFormat": "image/png8",
     "visible": true,
-    "legend": "logging_concessions.png",
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -162,7 +159,6 @@
     "wmsName": "unredd:protected_areas",
     "imageFormat": "image/png8",
     "visible": true,
-    "legend": "protected_areas.png",
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -296,50 +292,50 @@
     "infoFile": "redd_plus_projects_def.html",
     "label": "REDD+ Projects",
     "layers": ["reddPlusProjects", "reddPlusProjects_simp"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:redd_plus_projects&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:redd_plus_projects&TRANSPARENT=true"
   }, {
     "id": "reddPlusInitiatives",
     "infoFile": "redd_plus_initiatives_def.html",
     "label": "REDD+ Initiatives",
     "layers": ["reddPlusInitiatives", "reddPlusInitiatives_simp"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:redd_plus_initiatives&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:redd_plus_initiatives&TRANSPARENT=true"
   }, {
     "id": "hydrography",
     "infoFile": "hydrography_def.html",
     "label": "Hydrography",
     "layers": ["hydrography"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:hydrography&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:hydrography&TRANSPARENT=true"
   }, {
     "id": "loggingConcessions",
     "infoFile": "logging_concessions_def.html",
     "label": "Logging Concessions",
     "layers": ["loggingConcessions", "loggingConcessions_simp"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:logging_concessions&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:logging_concessions&TRANSPARENT=true"
   }, {
     "id": "protectedAreas",
     "infoFile": "protected_areas_def.html",
     "label": "Protected Areas",
     "layers": ["protectedAreas", "protectedAreas_simp"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:protected_areas&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:protected_areas&TRANSPARENT=true"
   }, {
     "id": "provinces",
     "infoFile": "provinces_def.html",
     "label": "Provinces",
     "layers": ["provinces", "provinces_simp"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:provinces&TRANSPARENT=true&RULE=border"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:provinces&TRANSPARENT=true&RULE=border"
   }, {
     "id": "administrativeUnits",
     "infoFile": "administrative_boundaries_def.html",
     "label": "Administrative Units",
     "layers": ["administrativeUnits", "administrativeUnits_simp"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:admin_units&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:admin_units&TRANSPARENT=true"
   }, {
     "id": "countryBoundaries",
     "active": true,
     "infoFile": "country_boundaries_def.html",
     "label": "Country Boundaries",
     "layers": ["countryBoundaries"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:boundaries&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:boundaries&TRANSPARENT=true"
   }, {
     "id": "roads",
     "infoFile": "roads_def.html",
@@ -384,7 +380,7 @@
     "id": "plots",
     "label": "Plots",
     "layers": ["plots"],
-    "inlineLegendUrl": "/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:plots&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:plots&TRANSPARENT=true"
   }, {
     "id": "degradation",
     "infoFile": "data_not_available.html",

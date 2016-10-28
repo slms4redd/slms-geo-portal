@@ -17,11 +17,7 @@ const addOlLayer = function(layer) {
   let source;
   switch(layer.type) {
     case 'OSM':
-      if (ol.source.OSM) {
-        source = new ol.source.OSM();
-      } else {
-        throw new Error('ol.source.OSM is not in the OpenLayers custm build');
-      }
+      source = new ol.source.OSM();
       break;
     default:
       source = new ol.source.TileWMS(({

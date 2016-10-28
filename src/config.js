@@ -26,6 +26,7 @@ class Context {
                                                              .filter(layer => !!layer); // remove nulls
     this.layers = layers || []; 
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
+    this.hasLegends = this.layers.some(layer => layer.legend);
   }
 }
 

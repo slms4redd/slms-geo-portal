@@ -1,11 +1,17 @@
 <template>
   <li>
-    <div v-if="isGroup" class="bold" @click="toggle">
+    <div v-if="isGroup" class="bold" @click="toggleGroup">
       {{isRoot ? 'Layers' : model.label}}
       [<span class="toggle">{{open ? '-' : '+'}}</span>]
     </div>
     <div v-else>
-      <label :class="{dimmed: !hasLayers}"><input v-if="hasLayers" type="checkbox" v-model="active"> {{isRoot ? 'Layers' : model.label}}</label>
+      <input v-if="hasLayers" type="checkbox" v-model="active">
+      <img v-show="model.hasLegends && !active" class="inline-legend" src="../assets/legend-off.png">
+      <img v-show="model.hasLegends && active" v-on:click="showLegend" class="inline-legend" src="../assets/legend-on.png">
+      <label v-on:click="toggleLayer" :class="{dimmed: !hasLayers}">
+        <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
+        {{isRoot ? 'Layers' : model.label}}
+      </label>
     </div>
     <ul v-show="open" v-if="isGroup">
       <item class="item" v-for="model in model.items" :model="model"></item>
@@ -42,12 +48,18 @@ export default {
     }
   },
   methods: {
-    toggle() {
+    toggleGroup() {
       this.open = !this.open;
+    },
+    toggleLayer() {
+      this.active = !this.active;
+    },
+    showLegend() {
+      console.log('Not implemented yet');
     }
   },
   watch: {
-    active() {
+    active(value) {
       this.model.layers.forEach(layer => bus.$emit('layer-toggled', layer.id, this.active));
     }
   }
@@ -56,7 +68,7 @@ export default {
 
 <style scoped>
 .item {
-  cursor: pointer;
+  cursor: default;
 }
 .bold {
   font-weight: bold;
@@ -72,5 +84,10 @@ ul {
 }
 .toggle {
   font-family: "Courier New", Courier, monospace;
+}
+.inline-legend {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
 }
 </style>

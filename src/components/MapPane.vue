@@ -5,50 +5,55 @@
 <script>
 import { config } from '../config';
 import bus from '../bus';
+import OlLayerFactory from '../olLayerFactory';
 
 let map;
-const attributions = [];
+// const attributions = [];
 
 const addOlLayer = function(layer) {
-  let source;
-  switch(layer.type) {
-    case 'OSM':
-      source = new ol.source.OSM();
-      break;
-    default:
-      const olAttributions = [];
-      if (layer.sourceLink) {
-        let source = attributions[layer.sourceLabel] || new ol.Attribution({ html: `<a href="${layer.sourceLink}">${layer.sourceLabel || layer.sourceLink}</a>` });
-        attributions[layer.sourceLabel] = source;
-        olAttributions.push(source);
-      }
-      source = new ol.source.TileWMS(({
-        url: layer.baseUrl,
-        params: {
-          'LAYERS': layer.wmsName,
-          'TILED': true,
-          'VERSION': '1.3.0',
-          'FORMAT': layer.imageFormat,
-          'WIDTH': 256,
-          'HEIGHT': 256,
-          'CRS': 'EPSG:3857'
-        },
-        serverType: 'geoserver',
-        attributions: olAttributions
-      }));
-  }
+  const l = OlLayerFactory.createOlLayer(layer);
+  if (l) map.addLayer(l);
+  return l;
 
-  if (source) {
-    const olLayer = new ol.layer.Tile({
-      // extent: [2033814, 6414547, 2037302, 6420952],
-      // preload: Infinity,
-      visible: layer.active,
-      source: source
-    });
-    map.addLayer(olLayer);
+  // let source;
+  // switch(layer.type) {
+  //   case 'OSM':
+  //     source = new ol.source.OSM();
+  //     break;
+  //   default:
+  //     const olAttributions = [];
+  //     if (layer.sourceLink) {
+  //       let source = attributions[layer.sourceLabel] || new ol.Attribution({ html: `<a href="${layer.sourceLink}">${layer.sourceLabel || layer.sourceLink}</a>` });
+  //       attributions[layer.sourceLabel] = source;
+  //       olAttributions.push(source);
+  //     }
+  //     source = new ol.source.TileWMS(({
+  //       url: layer.baseUrl,
+  //       params: {
+  //         'LAYERS': layer.wmsName,
+  //         'TILED': true,
+  //         'VERSION': '1.3.0',
+  //         'FORMAT': layer.imageFormat,
+  //         'WIDTH': 256,
+  //         'HEIGHT': 256,
+  //         'CRS': 'EPSG:3857'
+  //       },
+  //       serverType: 'geoserver',
+  //       attributions: olAttributions
+  //     }));
+  // }
+
+  // if (source) {
+  //   const olLayer = new ol.layer.Tile({
+  //     // extent: [2033814, 6414547, 2037302, 6420952],
+  //     // preload: Infinity,
+  //     visible: layer.active,
+  //     source: source
+  //   });
+  //   map.addLayer(olLayer);
     
-    return olLayer;
-  }
+  //   return olLayer;
+  // }
 }
 
 export default {

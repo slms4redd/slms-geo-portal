@@ -3,15 +3,17 @@
     <div v-if="isGroup" class="bold" @click="toggleGroup">
       {{isRoot ? 'Layers' : model.label}}
       [<span class="toggle">{{open ? '-' : '+'}}</span>]
+      <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo">i</span>
     </div>
     <div v-else>
-      <input v-if="hasLayers" type="checkbox" v-model="active">
+      <input v-bind:id="_uid" v-if="hasLayers" type="checkbox" v-model="active">
       <img v-show="model.hasLegends && !active" class="inline-legend" src="../assets/legend-off.png">
       <img v-show="model.hasLegends && active" v-on:click="showLegend" class="inline-legend" src="../assets/legend-on.png">
-      <label v-on:click="toggleLayer" :class="{dimmed: !hasLayers}">
+      <label v-bind:for="_uid" :class="{dimmed: !hasLayers}">
         <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
         {{isRoot ? 'Layers' : model.label}}
       </label>
+      <span class="info-link" v-if="model.infoFile" v-on:click="showInfo">i</span>
     </div>
     <ul v-show="open" v-if="isGroup">
       <item class="item" v-for="model in model.items" :model="model"></item>
@@ -51,17 +53,16 @@ export default {
     toggleGroup() {
       this.open = !this.open;
     },
-    toggleLayer() {
-      this.active = !this.active;
-    },
     showLegend() {
       console.log('Not implemented yet');
+    },
+    showInfo() {
+      alert(this.model.infoFile);
     }
   },
   watch: {
     active() {
       bus.$emit('context-toggled', this.model, this.active);
-      // this.model.layers.forEach(layer => bus.$emit('layer-toggled', layer.id, this.active));
     }
   }
 }
@@ -90,5 +91,11 @@ ul {
   width: 20px;
   height: 20px;
   vertical-align: middle;
+}
+.info-link {
+  font-style: italic;
+  font-weight: bold;
+  font-family: Georgia, Times, "Times New Roman", serif;
+  color: #ffa500;
 }
 </style>

@@ -60,6 +60,6 @@ class Config {
   }
 }
 
-const config = new Config(require("./assets/layers.json"));
+// const config = new Config(require("./assets/layers.json"));
 
-export { config, Layer, Context, Group };
+export { Layer, Context, Group };

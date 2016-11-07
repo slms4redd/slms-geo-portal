@@ -23,6 +23,9 @@ export default {
     MapPane,
     LayerSelector,
     MapInfo
+  },
+  created () {
+    this.$store.dispatch('getAllLayers')
   }
 }
 </script>

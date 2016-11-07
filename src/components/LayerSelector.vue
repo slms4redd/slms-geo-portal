@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import { config } from '../config';
 import Item from './Item';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'layerSelector',
@@ -14,7 +14,15 @@ export default {
     'item': Item
   },
   data() {
-    return { treeData: config.groups };
+    return { treeData: {} };
+  },
+  computed: mapGetters([
+    'layersTree'
+  ]),
+  watch: {
+    layersTree: function(layersTree) {
+      this.treeData = layersTree.groups
+    }
   }
 }
 </script>

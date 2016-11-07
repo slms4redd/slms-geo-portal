@@ -1,8 +1,8 @@
 <template>
-  <div>Ecchice!</div>
+  <div>Here I am</div>
 </template>
 
-<script>
+<!--script>
   import bus from '../bus';
 
   bus.$on('map-mounted', map => {
@@ -20,10 +20,10 @@
       }
     });
   });
-</script>
+</script-->
 
-<style scoped>
-</style>
+<!--style scoped>
+</style-->
 
 <!--
 http://demo.opengeo.org/geoserver/wms

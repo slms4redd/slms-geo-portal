@@ -6,50 +6,56 @@
 import { config } from '../config';
 import bus from '../bus';
 import OlLayerFactory from '../olLayerFactory';
+import { mapGetters } from 'vuex'
 
-let map;
-// const attributions = [];
+const map = new ol.Map({
+  controls: ol.control.defaults({
+    attributionOptions: ({ collapsible: false })
+  }),
+  view: new ol.View({
+    center: ol.proj.fromLonLat([37.41, 8.82]),
+    zoom: 4
+  })
+});
 
 const addOlLayer = function(layer) {
   const l = OlLayerFactory.createOlLayer(layer);
-  if (l) map.addLayer(l);
+  if (l) {
+    map.addLayer(l);
+  }
   return l;
 }
 
 export default {
   name: 'mapPane',
   mounted() {
-    map = new ol.Map({
-      controls: ol.control.defaults({
-        attributionOptions: ({ collapsible: false })
-      }),
-      target: 'map',
-      view: new ol.View({
-        center: ol.proj.fromLonLat([37.41, 8.82]),
-        zoom: 4
-      })
-    });
+    map.setTarget('map');
+  },
 
-    config.layers.forEach(layerConfig => {
-      try {
-        const olLayer = addOlLayer(layerConfig);
-
-        if (olLayer) {
-          bus.$on('context-toggled', (context, visible) => {
-            const layerIds = context.layers.map(layer => layer.id);
-            if (layerIds.includes(layerConfig.id)) {
-              olLayer.setVisible(visible && layerConfig.visible);
-            }
-          })
+  watch: {
+    layersTree: function(layers) {
+      this.layersTree.layers.forEach(layerConfig => {
+        try {
+          const olLayer = addOlLayer(layerConfig);
+          if (olLayer) {
+            bus.$on('context-toggled', (context, visible) => {
+              const layerIds = context.layers.map(layer => layer.id);
+              if (layerIds.includes(layerConfig.id)) {
+                olLayer.setVisible(visible && layerConfig.visible);
+              }
+            });
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
-      }
-    });
+      });
+      // bus.$emit('map-mounted', map);
+    }
+  },
 
-    // Prefer bus to to promises to avoid using polyfill
-    bus.$emit('map-mounted', map);
-  }
+  computed: mapGetters([
+    'layersTree'
+  ])
 }
 </script>
 

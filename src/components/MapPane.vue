@@ -14,46 +14,6 @@ const addOlLayer = function(layer) {
   const l = OlLayerFactory.createOlLayer(layer);
   if (l) map.addLayer(l);
   return l;
-
-  // let source;
-  // switch(layer.type) {
-  //   case 'OSM':
-  //     source = new ol.source.OSM();
-  //     break;
-  //   default:
-  //     const olAttributions = [];
-  //     if (layer.sourceLink) {
-  //       let source = attributions[layer.sourceLabel] || new ol.Attribution({ html: `<a href="${layer.sourceLink}">${layer.sourceLabel || layer.sourceLink}</a>` });
-  //       attributions[layer.sourceLabel] = source;
-  //       olAttributions.push(source);
-  //     }
-  //     source = new ol.source.TileWMS(({
-  //       url: layer.baseUrl,
-  //       params: {
-  //         'LAYERS': layer.wmsName,
-  //         'TILED': true,
-  //         'VERSION': '1.3.0',
-  //         'FORMAT': layer.imageFormat,
-  //         'WIDTH': 256,
-  //         'HEIGHT': 256,
-  //         'CRS': 'EPSG:3857'
-  //       },
-  //       serverType: 'geoserver',
-  //       attributions: olAttributions
-  //     }));
-  // }
-
-  // if (source) {
-  //   const olLayer = new ol.layer.Tile({
-  //     // extent: [2033814, 6414547, 2037302, 6420952],
-  //     // preload: Infinity,
-  //     visible: layer.active,
-  //     source: source
-  //   });
-  //   map.addLayer(olLayer);
-    
-  //   return olLayer;
-  // }
 }
 
 export default {
@@ -75,7 +35,7 @@ export default {
         const olLayer = addOlLayer(layerConfig);
 
         if (olLayer) {
-          bus.$on('context-toggled', function (context, visible) {
+          bus.$on('context-toggled', (context, visible) => {
             const layerIds = context.layers.map(layer => layer.id);
             if (layerIds.includes(layerConfig.id)) {
               olLayer.setVisible(visible && layerConfig.visible);
@@ -85,7 +45,10 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    })
+    });
+
+    // Prefer bus to to promises to avoid using polyfill
+    bus.$emit('map-mounted', map);
   }
 }
 </script>

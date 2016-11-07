@@ -93,9 +93,25 @@ ul {
   vertical-align: middle;
 }
 .info-link {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+
+  background-color: transparent;
+  color: #ffa500;
+  text-align: center;
+
   font-style: italic;
   font-weight: bold;
   font-family: Georgia, Times, "Times New Roman", serif;
-  color: #ffa500;
+}
+
+.info-link:hover {
+  background-color: #ffa500;
+  color: black;
 }
 </style>

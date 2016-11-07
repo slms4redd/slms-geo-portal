@@ -4,6 +4,7 @@
     <mapPane></mapPane>
     <banner></banner>
     <layerSelector></layerSelector>
+    <mapInfo></mapInfo>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import Banner from './components/Banner'
 // import LegendPane from './components/LegendPane'
 import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
+import MapInfo from './components/MapInfo'
 
 export default {
   name: 'app',
@@ -19,7 +21,8 @@ export default {
     Banner,
     // LegendPane,
     MapPane,
-    LayerSelector
+    LayerSelector,
+    MapInfo
   }
 }
 </script>

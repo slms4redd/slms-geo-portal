@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import bus from '../bus';
-
 export default {
   name: 'item',
   props: {
@@ -62,7 +60,9 @@ export default {
   },
   watch: {
     active() {
-      bus.$emit('context-toggled', this.model, this.active);
+      // bus.$emit('context-toggled', this.model, this.active);
+      this.$store.commit('toggle_context', { context: this.model, active: this.active }); // DEBUG
+      // this.$store.dispatch('toggleContext', this.active); // DEBUG
     }
   }
 }
@@ -109,7 +109,6 @@ ul {
   font-weight: bold;
   font-family: Georgia, Times, "Times New Roman", serif;
 }
-
 .info-link:hover {
   background-color: #ffa500;
   color: black;

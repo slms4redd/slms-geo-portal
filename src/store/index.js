@@ -7,7 +7,9 @@ Vue.use(Vuex)
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
-  layersTree: {}
+  layers: [],
+  contexts: [],
+  groups: {}
 }
 
 // mutations are operations that actually mutates the state.
@@ -16,8 +18,17 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
-  receive_layers(state, { layersTree }) {
-    state.layersTree = layersTree;
+  receive_layers(state, { layersConf }) {
+    state.layers = layersConf.layers;
+    state.contexts = layersConf.contexts;
+    state.groups = layersConf.groups;
+  },
+  toggle_context(state, { context, active }) {
+    // // Deep clone the context
+    // const newContext = JSON.parse(JSON.stringify(contexts));
+    if (context) {
+      context.active = active;
+    }
   }
   // increment (state) {
   //   state.count++
@@ -31,8 +42,8 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getAllLayers: ({ commit }) => {
-    layersJson.getLayers(layersTree => {
-      commit('receive_layers', { layersTree });
+    layersJson.getLayers(layersConf => {
+      commit('receive_layers', { layersConf });
     });
   }
   // increment: ({ commit }) => commit('increment'),
@@ -54,7 +65,9 @@ const actions = {
 
 // getters are functions
 const getters = {
-  layersTree: state => state.layersTree
+  layers: state => state.layers,
+  contexts: state => state.contexts,
+  groups: state => state.groups
   // evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
 }
 

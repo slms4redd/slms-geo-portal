@@ -1,6 +1,6 @@
 <template>
   <ul id="layer-selector">
-    <item class="item" :model="treeData"></tree>
+    <item v-if="treeData" class="item" :model="treeData"></tree>
   </ul>
 </template>
 
@@ -14,14 +14,14 @@ export default {
     'item': Item
   },
   data() {
-    return { treeData: {} };
+    return { treeData: null };
   },
   computed: mapGetters([
-    'layersTree'
+    'groups'
   ]),
   watch: {
-    layersTree: function(layersTree) {
-      this.treeData = layersTree.groups
+    groups: function(groups) {
+      this.treeData = groups
     }
   }
 }

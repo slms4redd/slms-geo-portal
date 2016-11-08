@@ -4,7 +4,6 @@
 
 <script>
 import { config } from '../config';
-import bus from '../bus';
 import OlLayerFactory from '../olLayerFactory';
 import { mapGetters } from 'vuex'
 
@@ -18,13 +17,7 @@ const map = new ol.Map({
   })
 });
 
-const addOlLayer = function(layer) {
-  const l = OlLayerFactory.createOlLayer(layer);
-  if (l) {
-    map.addLayer(l);
-  }
-  return l;
-}
+const olLayersMap = {}
 
 export default {
   name: 'mapPane',
@@ -33,28 +26,41 @@ export default {
   },
 
   watch: {
-    layersTree: function(layers) {
-      this.layersTree.layers.forEach(layerConfig => {
-        try {
-          const olLayer = addOlLayer(layerConfig);
-          if (olLayer) {
-            bus.$on('context-toggled', (context, visible) => {
-              const layerIds = context.layers.map(layer => layer.id);
-              if (layerIds.includes(layerConfig.id)) {
-                olLayer.setVisible(visible && layerConfig.visible);
-              }
-            });
+    layers: {
+      handler: function(layers) {
+        layers.forEach(layerConfig => {
+          try {
+            const l = OlLayerFactory.createOlLayer(layerConfig);
+            if (l) {
+              olLayersMap[layerConfig.id] = l;
+              map.addLayer(l);
+            }
+          } catch (e) {
+            console.log(e);
           }
-        } catch (e) {
-          console.log(e);
-        }
-      });
-      // bus.$emit('map-mounted', map);
-    }
+        });
+        this.$watch('contexts', function(contexts) {
+          // loop through all context and layers to set ol layer visibility
+          contexts.forEach(context => {
+            context.layers.forEach(layer => {
+              olLayersMap[layer.id].setVisible(context.active && layer.visible)
+            });
+          });
+        }, 
+        { deep: true });
+      }
+    },
+    // contexts: {
+    //   handler: function(context) {
+    //     alert ('aaa')
+    //   },
+    //   deep: true
+    // }
   },
 
   computed: mapGetters([
-    'layersTree'
+    'layers',
+    'contexts'
   ])
 }
 </script>

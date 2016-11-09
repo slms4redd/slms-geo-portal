@@ -9,7 +9,8 @@ Vue.use(Vuex)
 const state = {
   layers: [],
   contexts: [],
-  groups: {}
+  groups: {},
+  layerInfo: null // a modal with the file content is shown when not null
 }
 
 // mutations are operations that actually mutates the state.
@@ -23,19 +24,15 @@ const mutations = {
     state.contexts = layersConf.contexts;
     state.groups = layersConf.groups;
   },
-  toggle_context(state, { context, active }) {
-    // // Deep clone the context
-    // const newContext = JSON.parse(JSON.stringify(contexts));
+  toggle_context(state, { contextId, active }) {
+    const context = state.contexts.find(c => c.id === contextId);
     if (context) {
-      context.active = active;
+      context.active = !!active;
     }
+  },
+  show_layer_info(state, { fileName, label }) {
+    state.layerInfo = { fileName: fileName, label: label };
   }
-  // increment (state) {
-  //   state.count++
-  // },
-  // decrement (state) {
-  //   state.count--
-  // }
 }
 
 // actions are functions that causes side effects and can involve
@@ -45,14 +42,13 @@ const actions = {
     layersJson.getLayers(layersConf => {
       commit('receive_layers', { layersConf });
     });
+  },
+  showLayerInfo({ commit, state }, { fileName, label }) {
+    commit('show_layer_info', { fileName: fileName, label: label });
+  },
+  hideLayerInfo({ commit, state }) {
+    commit('show_layer_info', { fileName: null, label: null });
   }
-  // increment: ({ commit }) => commit('increment'),
-  // decrement: ({ commit }) => commit('decrement'),
-  // incrementIfOdd ({ commit, state }) {
-  //   if ((state.count + 1) % 2 === 0) {
-  //     commit('increment')
-  //   }
-  // },
   // incrementAsync ({ commit }) {
   //   return new Promise((resolve, reject) => {
   //     setTimeout(() => {
@@ -67,7 +63,8 @@ const actions = {
 const getters = {
   layers: state => state.layers,
   contexts: state => state.contexts,
-  groups: state => state.groups
+  groups: state => state.groups,
+  layerInfo: state => state.layerInfo
   // evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
 }
 
@@ -79,27 +76,3 @@ export default new Vuex.Store({
   actions,
   mutations
 })
-
-
-// import Vue from 'vue'
-// import Vuex from 'vuex'
-// import * as actions from './actions'
-// import * as getters from './getters'
-// import cart from './modules/cart'
-// import products from './modules/products'
-// import createLogger from '../../../src/plugins/logger'
-
-// Vue.use(Vuex)
-
-// const debug = process.env.NODE_ENV !== 'production'
-
-// export default new Vuex.Store({
-//   actions,
-//   getters,
-//   modules: {
-//     cart,
-//     products
-//   },
-//   strict: debug,
-//   plugins: debug ? [createLogger()] : []
-// })

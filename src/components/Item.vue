@@ -55,14 +55,12 @@ export default {
       console.log('Not implemented yet');
     },
     showInfo() {
-      alert(this.model.infoFile);
+      this.$store.dispatch('showLayerInfo',  { label: this.model.label, fileName: this.model.infoFile });
     }
   },
   watch: {
     active() {
-      // bus.$emit('context-toggled', this.model, this.active);
-      this.$store.commit('toggle_context', { context: this.model, active: this.active }); // DEBUG
-      // this.$store.dispatch('toggleContext', this.active); // DEBUG
+      this.$store.commit('toggle_context', { contextId: this.model.id, active: this.active });
     }
   }
 }

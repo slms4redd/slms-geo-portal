@@ -5,6 +5,7 @@
     <banner></banner>
     <layerSelector></layerSelector>
     <mapInfo></mapInfo>
+    <contextInfoModal></contextInfoModal>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import Banner from './components/Banner'
 import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
 import MapInfo from './components/MapInfo'
+import ContextInfoModal from './components/ContextInfoModal'
 
 export default {
   name: 'app',
@@ -22,10 +24,11 @@ export default {
     // LegendPane,
     MapPane,
     LayerSelector,
-    MapInfo
+    MapInfo,
+    ContextInfoModal
   },
   created () {
-    this.$store.dispatch('getAllLayers')
+    this.$store.dispatch('getAllLayers');
   }
 }
 </script>

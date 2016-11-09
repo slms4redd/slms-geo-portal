@@ -1,6 +1,6 @@
 <template>
-  <ul id="layer-selector">
-    <item v-if="treeData" class="item" :model="treeData"></tree>
+  <ul v-if="treeData" id="layer-selector">
+    <item class="item" :model="treeData"></tree>
   </ul>
 </template>
 

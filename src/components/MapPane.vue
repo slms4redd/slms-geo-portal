@@ -49,13 +49,7 @@ export default {
         }, 
         { deep: true });
       }
-    },
-    // contexts: {
-    //   handler: function(context) {
-    //     alert ('aaa')
-    //   },
-    //   deep: true
-    // }
+    }
   },
 
   computed: mapGetters([

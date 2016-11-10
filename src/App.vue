@@ -11,21 +11,21 @@
 
 <script>
 import Banner from './components/Banner'
-// import LegendPane from './components/LegendPane'
 import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
 import MapInfo from './components/MapInfo'
 import ContextInfoModal from './components/ContextInfoModal'
+// import LegendPane from './components/LegendPane'
 
 export default {
   name: 'app',
   components: {
     Banner,
-    // LegendPane,
     MapPane,
     LayerSelector,
     MapInfo,
     ContextInfoModal
+    // LegendPane
   },
   created () {
     this.$store.dispatch('getAllLayers');

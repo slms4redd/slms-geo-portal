@@ -8,6 +8,18 @@ $banner-height: 92px;
       filter: alpha(opacity=80);
 }
 
+button {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 2px;
+    /*text-align: center;*/
+    /*text-decoration: none;*/
+    /*display: inline-block;*/
+    /*font-size: 16px;*/
+}
+
 // .slms-control {
 //   position: absolute;
 //   padding: 2px;

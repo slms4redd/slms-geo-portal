@@ -39,15 +39,13 @@ export default {
             console.log(e);
           }
         });
-        this.$watch('contexts', function(contexts) {
-          // loop through all context and layers to set ol layer visibility
-          contexts.forEach(context => {
-            context.layers.forEach(layer => {
-              olLayersMap[layer.id].setVisible(context.active && layer.visible)
-            });
-          });
-        }, 
-        { deep: true });
+        this.$watch('contexts', contexts =>
+          // loop through all context and layers to set OL layer visibility
+          contexts.forEach(context =>
+            context.layers.forEach(layer => olLayersMap[layer.id].setVisible(context.active && layer.visible))
+          ),
+          { deep: true }
+        );
       }
     }
   },

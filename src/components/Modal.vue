@@ -5,9 +5,7 @@
         <div class="modal-container">
 
           <div v-if="$slots.header" class="modal-header">
-            <slot name="header">
-              Default header
-            </slot>
+            <slot name="header"></slot>
           </div>
 
           <div class="modal-body">
@@ -18,9 +16,8 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              &nbsp;
               <button class="modal-default-button" @click="$emit('close')">
-                OK
+                Close
               </button>
             </slot>
           </div>
@@ -29,9 +26,6 @@
     </div>
   </transition>
 </template>
-
-<script>
-</script>
 
 <style scoped>
 .modal-mask {
@@ -52,6 +46,7 @@
 }
 
 .modal-container {
+  font-size: 16px;
   width: 400px;
   margin: 0px auto;
   padding: 20px 30px;
@@ -95,5 +90,10 @@
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.modal-container {
+  /* Float fix */
+  overflow: hidden;
 }
 </style>

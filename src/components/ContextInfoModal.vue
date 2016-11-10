@@ -8,6 +8,7 @@
 <script>
 import Modal from './Modal'
 import { mapGetters } from 'vuex'
+import httpRequest from '../httpRequest'
 
 export default {
   data() {
@@ -23,24 +24,17 @@ export default {
       if (!val.fileName) {
         this.showModal = false;
       } else {
-        const xmlhttp = new XMLHttpRequest(),
-              url = `/static/${val.fileName}`,
-              that = this;
-        
         this.label = val.label;
-        xmlhttp.onreadystatechange = function() {
-          if (this.readyState === 4) {
-            if (this.status === 200) {
-              that.content = this.responseText;
-            } else {
-              that.content = 'Error retrieving info';
-            }
-            that.showModal = true;
-          }
-        };
-        
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send()
+
+        const showContent = content => {
+          this.content = content;
+          this.showModal = true;
+        }
+        httpRequest(`/static/${val.fileName}`, (responseText) => {
+          showContent(responseText);
+        }, (error) => {
+          showContent('Cannot get layer info');
+        });
       }
     }
   },

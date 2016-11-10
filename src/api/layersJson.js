@@ -1,4 +1,5 @@
 import { Layer, Context, Group } from '../config.js'
+import httpRequest from '../httpRequest'
 
 class _Config {
   constructor(json) {
@@ -13,26 +14,14 @@ class _Config {
 
 export default {
   getLayers(cb) {
-    const xmlhttp = new XMLHttpRequest(),
-          url = "../static/layers.json";
-
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        const jsonResponse = JSON.parse(this.responseText);
-        cb(new _Config(jsonResponse));
+    httpRequest('../static/layers.json', (responseText) => {
+      try {
+        cb(new _Config(JSON.parse(responseText)));
+      } catch(e) {
+        alert(e);
       }
-    };
-    
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-  },
-
-  // buyProducts (products, cb, errorCb) {
-  //   setTimeout(() => {
-  //     // simulate random checkout failure.
-  //     (Math.random() > 0.5 || navigator.userAgent.indexOf('PhantomJS') > -1)
-  //       ? cb()
-  //       : errorCb()
-  //   }, 100)
-  // }
+    }, (error) => {
+      alert(error);
+    });
+  }
 }

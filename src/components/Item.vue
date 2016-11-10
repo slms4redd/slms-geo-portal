@@ -1,7 +1,7 @@
 <template>
   <li>
     <div v-if="isGroup" class="bold" @click="toggleGroup">
-      {{isRoot ? 'Layers' : model.label}}
+      {{isRoot ? $t("layerSelector.layers") : model.label}}
       [<span class="toggle">{{open ? '-' : '+'}}</span>]
       <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo">i</span>
     </div>
@@ -11,7 +11,7 @@
       <img v-show="model.hasLegends && active" v-on:click="showLegend" class="inline-legend" src="../assets/legend-on.png">
       <label v-bind:for="_uid" :class="{dimmed: !hasLayers}">
         <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
-        {{isRoot ? 'Layers' : model.label}}
+        {{isRoot ? $t("layerSelector.layers") : model.label}}
       </label>
       <span class="info-link" v-if="model.infoFile" v-on:click="showInfo">i</span>
     </div>
@@ -106,9 +106,14 @@ ul {
   font-style: italic;
   font-weight: bold;
   font-family: Georgia, Times, "Times New Roman", serif;
+  transition: all 100ms linear;
 }
 .info-link:hover {
   background-color: #ffa500;
   color: black;
+  -webkit-transition-property: none;
+  -moz-transition-property: none;
+  -o-transition-property: none;
+  transition-property: none
 }
 </style>

@@ -1,16 +1,10 @@
 <template>
   <div id="header">
     <div id="header-content">
-      <h1>SLMS sample portal</h1>
+      <h1>{{$t("banner.title")}}</h1>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'banner'
-}
-</script>
 
 <style lang="scss" scoped>
 @import "../assets/global.scss";

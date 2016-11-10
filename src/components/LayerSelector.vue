@@ -21,7 +21,7 @@ export default {
   ]),
   watch: {
     groups: function(groups) {
-      this.treeData = groups
+      this.treeData = groups;
     }
   }
 }

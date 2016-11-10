@@ -11,9 +11,12 @@ class OlLayerFactory {
       default:
         const olAttributions = [];
         if (layerConfig.sourceLink) {
-          let source = attributions[layerConfig.sourceLabel] || new ol.Attribution({ html: `<a href="${layerConfig.sourceLink}">${layerConfig.sourceLabel || layerConfig.sourceLink}</a>` });
-          attributions[layerConfig.sourceLabel] = source;
-          olAttributions.push(source);
+          let attribution = attributions[layerConfig.sourceLabel];
+          if (!attribution) {
+            attribution = new ol.Attribution({ html: `<a href="${layerConfig.sourceLink}">${layerConfig.sourceLabel || layerConfig.sourceLink}</a>` });
+          }
+          attributions[layerConfig.sourceLabel] = attribution;
+          olAttributions.push(attribution);
         }
         source = new ol.source.TileWMS(({
           url: layerConfig.baseUrl,
@@ -31,12 +34,10 @@ class OlLayerFactory {
         }));
     }
     if (source) {
-      const olLayer = new ol.layer.Tile({
+      return new ol.layer.Tile({
         visible: layerConfig.active,
         source: source
       });
-      
-      return olLayer;
     }
   }
 }

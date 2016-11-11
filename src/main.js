@@ -28,7 +28,7 @@ const mergeJSON = function(source, destination) {
 Vue.use(VueI18n)
 
 // var self = this;
-let lang = 'en';
+let lang = 'fr';
 Vue.locale(lang, function() {
   // self.loading = true
   return function(resolve, reject) {
@@ -49,12 +49,12 @@ Vue.locale(lang, function() {
   }
 }, function () {
   Vue.config.lang = lang;
-});
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  store,
-  template: '<App/>',
-  components: { App }
-})
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    store,
+    template: '<App/>',
+    components: { App }
+  });
+});

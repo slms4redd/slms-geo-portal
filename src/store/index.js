@@ -64,8 +64,15 @@ const getters = {
   layers: state => state.layers,
   contexts: state => state.contexts,
   groups: state => state.groups,
-  layerInfo: state => state.layerInfo
-  // evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
+  layerInfo: state => state.layerInfo,
+  activeContexts: state => state.contexts.filter(context => context.active),
+  activeLayerIds: state => {
+    const activeLayers = [];
+    state.contexts.filter(context => context.active)
+                  .forEach(context => context.layers.forEach(layer => activeLayers.push(layer.id)));
+    // Delete duplicates, in case a layer belongs to two contexts
+    return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+  }
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

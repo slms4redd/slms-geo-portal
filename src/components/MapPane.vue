@@ -17,7 +17,7 @@ const map = new ol.Map({
   })
 });
 
-const olLayersMap = {}
+const olLayers = {}
 
 export default {
   name: 'mapPane',
@@ -32,27 +32,24 @@ export default {
           try {
             const l = OlLayerFactory.createOlLayer(layerConfig);
             if (l) {
-              olLayersMap[layerConfig.id] = l;
+              olLayers[layerConfig.id] = l;
               map.addLayer(l);
             }
           } catch (e) {
             console.log(e);
           }
         });
-        this.$watch('contexts', contexts =>
-          // loop through all context and layers to set OL layer visibility
-          contexts.forEach(context =>
-            context.layers.forEach(layer => olLayersMap[layer.id].setVisible(context.active && layer.visible))
-          ),
-          { deep: true }
-        );
+        this.$watch('activeLayerIds', layerIds =>
+          this.layers.forEach(layer =>
+            olLayers[layer.id].setVisible(layer.visible && layerIds.find(layerId => layerId === layer.id))));
       }
     }
   },
 
   computed: mapGetters([
     'layers',
-    'contexts'
+    'contexts',
+    'activeLayerIds'
   ])
 }
 </script>

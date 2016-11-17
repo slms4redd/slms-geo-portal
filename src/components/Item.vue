@@ -70,6 +70,8 @@ export default {
   watch: {
     active() {
       this.$store.commit('toggle_context', { contextId: this.model.id, active: this.active });
+      // Turn off legend when hiding the context
+      this.showLegend = !this.active && false;
     }
   }
 }

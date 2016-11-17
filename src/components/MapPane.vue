@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { config } from '../config';
 import OlLayerFactory from '../olLayerFactory';
 import { mapGetters } from 'vuex'
 
@@ -26,30 +25,30 @@ export default {
   },
 
   watch: {
-    layers: {
-      handler: function(layers) {
-        layers.forEach(layerConfig => {
-          try {
-            const l = OlLayerFactory.createOlLayer(layerConfig);
-            if (l) {
-              olLayers[layerConfig.id] = l;
-              map.addLayer(l);
-            }
-          } catch (e) {
-            console.log(e);
+    layers(layers) {
+      layers.forEach(layerConfig => {
+        try {
+          const olLayer = OlLayerFactory.createOlLayer(layerConfig);
+          if (olLayer) {
+            olLayers[layerConfig.id] = olLayer;
+            map.addLayer(olLayer);
           }
-        });
-        this.$watch('activeLayerIds', layerIds =>
-          this.layers.forEach(layer =>
-            olLayers[layer.id].setVisible(layer.visible && layerIds.find(layerId => layerId === layer.id))));
-      }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+      this.$watch('activeLayers', layers => {
+        const layerIds = layers.map(layer => layer.id);
+        this.layers.forEach(layer =>
+          olLayers[layer.id].setVisible(layer.visible && layerIds.find(layerId => layerId === layer.id)))
+      });
     }
   },
 
   computed: mapGetters([
     'layers',
     'contexts',
-    'activeLayerIds'
+    'activeLayers'
   ])
 }
 </script>

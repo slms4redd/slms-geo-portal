@@ -11,6 +11,7 @@ const state = {
   contexts: [],
   groups: {},
   layerInfo: null // a modal with the file content is shown when not null
+  // time: null
 }
 
 // mutations are operations that actually mutates the state.
@@ -38,10 +39,8 @@ const mutations = {
 // actions are functions that causes side effects and can involve
 // asynchronous operations.
 const actions = {
-  getAllLayers: ({ commit }) => {
-    layersJson.getLayers(layersConf => {
-      commit('receive_layers', { layersConf });
-    });
+  getAllLayers({ commit }) {
+    layersJson.getLayers(layersConf => commit('receive_layers', { layersConf }))
   },
   showLayerInfo({ commit, state }, { fileName, label }) {
     commit('show_layer_info', { fileName: fileName, label: label });
@@ -49,14 +48,6 @@ const actions = {
   hideLayerInfo({ commit, state }) {
     commit('show_layer_info', { fileName: null, label: null });
   }
-  // incrementAsync ({ commit }) {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       commit('increment')
-  //       resolve()
-  //     }, 1000)
-  //   })
-  // }
 }
 
 // getters are functions
@@ -64,20 +55,23 @@ const getters = {
   layers: state => state.layers,
   contexts: state => state.contexts,
   groups: state => state.groups,
-  layerInfo: state => state.layerInfo,
-  activeContexts: state => state.contexts.filter(context => context.active),
-  activeLayerIds: state => {
+  // activeContexts: state => state.contexts.filter(context => context.active),
+  activeLayers: state => {
     const activeLayers = [];
     state.contexts.filter(context => context.active)
-                  .forEach(context => context.layers.forEach(layer => activeLayers.push(layer.id)));
-    // Delete duplicates, in case a layer belongs to two contexts
+                  .forEach(context => context.layers.forEach(layer => activeLayers.push(layer)));
+    // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
-  }
+  },
+  layerInfo: state => state.layerInfo
+  // times: (state, getters) => getters.activeLayers.reduce((allTimes, layer) => allTimes.concat(layer.times), [])
+  //                                                .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos) // remove duplicates
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,
 // and getters.
 export default new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   state,
   getters,
   actions,

@@ -1,11 +1,10 @@
 <template>
   <div id="app">
-    <!--legendPane></legendPane-->
     <mapPane></mapPane>
     <banner></banner>
     <layerSelector></layerSelector>
-    <mapInfo></mapInfo>
     <contextInfoModal></contextInfoModal>
+    <!--<timeChooser></timeChooser>-->
   </div>
 </template>
 
@@ -13,9 +12,8 @@
 import Banner from './components/Banner'
 import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
-import MapInfo from './components/MapInfo'
 import ContextInfoModal from './components/ContextInfoModal'
-// import LegendPane from './components/LegendPane'
+// import TimeChooser from './components/TimeChooser'
 
 export default {
   name: 'app',
@@ -23,9 +21,8 @@ export default {
     Banner,
     MapPane,
     LayerSelector,
-    MapInfo,
-    ContextInfoModal
-    // LegendPane
+    ContextInfoModal,
+    // TimeChooser
   },
   created () {
     this.$store.dispatch('getAllLayers');

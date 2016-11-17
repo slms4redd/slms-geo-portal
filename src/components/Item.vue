@@ -8,12 +8,15 @@
     <div v-else>
       <input v-bind:id="_uid" v-if="hasLayers" type="checkbox" v-model="active">
       <img v-show="model.hasLegends && !active" class="inline-legend" src="../assets/legend-off.png">
-      <img v-show="model.hasLegends && active" v-on:click="showLegend" class="inline-legend" src="../assets/legend-on.png">
+      <img v-show="model.hasLegends && active" v-on:click="toggleLegend" class="inline-legend" src="../assets/legend-on.png">
       <label v-bind:for="_uid" :class="{dimmed: !hasLayers}">
         <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
         {{isRoot ? $t("layerSelector.layers") : model.label}}
       </label>
       <span class="info-link" v-if="model.infoFile" v-on:click="showInfo">i</span>
+      <template v-if="model.hasLegends && active && showLegend">
+        <ContextLegend :model="model"></ContextLegend>
+      </template>
     </div>
     <ul v-show="open" v-if="isGroup">
       <item class="item" v-for="model in model.items" :model="model"></item>
@@ -22,15 +25,21 @@
 </template>
 
 <script>
+import ContextLegend from './ContextLegend';
+
 export default {
   name: 'item',
+  components: {
+    ContextLegend
+  },
   props: {
     model: Object
   },
   data() {
     return {
       open: !this.model.label,
-      active: this.model.active
+      active: this.model.active,
+      showLegend: false
     }
   },
   computed: {
@@ -51,8 +60,8 @@ export default {
     toggleGroup() {
       this.open = !this.open;
     },
-    showLegend() {
-      console.log('Not implemented yet');
+    toggleLegend() {
+      this.showLegend = !this.showLegend;
     },
     showInfo() {
       this.$store.dispatch('showLayerInfo',  { label: this.model.label, fileName: this.model.infoFile });

@@ -35,7 +35,7 @@ export default {
 
   font-size: 14px;
   position: absolute;
-  top: 148px;
+  top: $banner-height + 56px;
   left: 8px;
   min-width: 50px;
   background-color: black;

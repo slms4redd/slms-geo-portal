@@ -322,6 +322,7 @@
     "infoFile": "provinces_def.html",
     "label": "Provinces",
     "layers": ["provinces", "provinces_simp"],
+    "active": true,
     "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:provinces&TRANSPARENT=true&RULE=border"
   }, {
     "id": "administrativeUnits",

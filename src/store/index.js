@@ -10,6 +10,7 @@ const state = {
   layers: [],
   contexts: [],
   groups: {},
+  layersInited: false,
   layerInfo: null // a modal with the file content is shown when not null
   // time: null
 }
@@ -33,6 +34,9 @@ const mutations = {
   },
   show_layer_info(state, { fileName, label }) {
     state.layerInfo = { fileName: fileName, label: label };
+  },
+  layers_inited(state) {
+    state.layersInited = true;
   }
 }
 
@@ -55,6 +59,7 @@ const getters = {
   layers: state => state.layers,
   contexts: state => state.contexts,
   groups: state => state.groups,
+  layersInited: state => state.layersInited,
   // activeContexts: state => state.contexts.filter(context => context.active),
   activeLayers: state => {
     const activeLayers = [];
@@ -63,7 +68,8 @@ const getters = {
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   },
-  layerInfo: state => state.layerInfo
+  layerInfo: state => state.layerInfo,
+  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.queryable)
   // times: (state, getters) => getters.activeLayers.reduce((allTimes, layer) => allTimes.concat(layer.times), [])
   //                                                .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos) // remove duplicates
 }

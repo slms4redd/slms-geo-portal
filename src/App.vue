@@ -4,6 +4,7 @@
     <banner></banner>
     <layerSelector></layerSelector>
     <contextInfoModal></contextInfoModal>
+    <mapInfo></mapInfo>
     <!--<timeChooser></timeChooser>-->
   </div>
 </template>
@@ -13,6 +14,7 @@ import Banner from './components/Banner'
 import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
 import ContextInfoModal from './components/ContextInfoModal'
+import MapInfo from './components/MapInfo'
 // import TimeChooser from './components/TimeChooser'
 
 export default {
@@ -22,6 +24,7 @@ export default {
     MapPane,
     LayerSelector,
     ContextInfoModal,
+    MapInfo
     // TimeChooser
   },
   created () {

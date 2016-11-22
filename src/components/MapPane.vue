@@ -5,16 +5,7 @@
 <script>
 import OlLayerFactory from '../olLayerFactory';
 import { mapGetters } from 'vuex'
-
-const map = new ol.Map({
-  controls: ol.control.defaults({
-    attributionOptions: ({ collapsible: false })
-  }),
-  view: new ol.View({
-    center: ol.proj.fromLonLat([37.41, 8.82]),
-    zoom: 4
-  })
-});
+import map from '../map';
 
 const olLayers = {}
 
@@ -42,6 +33,8 @@ export default {
         this.layers.forEach(layer =>
           olLayers[layer.id].setVisible(layer.visible && layerIds.find(layerId => layerId === layer.id)))
       });
+
+      this.$store.commit('layers_inited');
     }
   },
 

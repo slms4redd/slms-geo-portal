@@ -45,7 +45,13 @@ Seems that the **node** binary is called **node.js** on Debian distros. This is 
 [Check out this page](http://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu) for a workaround if you are experiencing an issue apparently related to this.
 
 ### Win10's Linux subsystems
-Some issue have been reported trying to run the dev server on on Win10 Linux Subsystem so use a VM if you are working on windows. More info will be reported here.
+As reported [here](https://cjibo.com/2016/10/11/bash-on-windows-is-beta/) there are some problems running node.js on win10 
+bash shell.
+
+As suggested workaround run `npm run dev` or `npm run build` from the windows terminal.
+
+For example if you are logged-in on winows with the user **slmsuser** and the git repo is cloned in `/home/slmsuser/work/code/portal-vue` you can reach that location in the Ubuntu filesystem from windows at the path `C:\Users\slmsuser\AppData\Local\lxss\home\slmsuser\work\code\portal-vue` and run from there **npm**
+
 
 
 

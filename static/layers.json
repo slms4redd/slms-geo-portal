@@ -2,7 +2,7 @@
   "layers": [{
     "id": "blueMarble",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:blue_marble",
+    "wmsName": "blue_marble",
     "imageFormat": "image/jpeg",
     "visible": true
   }, {
@@ -13,7 +13,7 @@
     "id": "forestClassification",
     "label": "FACET Forest Classification",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:facet_forest_classification",
+    "wmsName": "facet_forest_classification",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "facet_forest_classification.png",
@@ -23,7 +23,7 @@
     "id": "FnFMask1990",
     "label": "DRC 1990 Forest non Forest Mask",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:RDC_FNF_1990_V008C",
+    "wmsName": "RDC_FNF_1990_V008C",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "RDC_FnF.png",
@@ -33,7 +33,7 @@
     "id": "uclForestClassification",
     "label": "UCL Forest Classification",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:ucl_forest_classification",
+    "wmsName": "ucl_forest_classification",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "ucl_2010.png",
@@ -43,7 +43,7 @@
     "id": "landsat",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsTime":  "2000,2005",
-    "wmsName": "unredd:landsat",
+    "wmsName": "landsat",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://osfac.net/facet.html",
@@ -51,7 +51,7 @@
   }, {
     "id": "hillshade",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:color_hillshade",
+    "wmsName": "color_hillshade",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://srtm.csi.cgiar.org/",
@@ -60,7 +60,7 @@
     "id": "fire",
     "label": "Fire",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:fires_2011",
+    "wmsName": "fires_2011",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "fire.png",
@@ -70,7 +70,7 @@
     "id": "deforestation",
     "label": "Deforestation (Gross forest cover loss)",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:deforestation",
+    "wmsName": "deforestation",
     "wmsTime":  "",
     "imageFormat": "image/png8",
     "visible": true,
@@ -81,7 +81,7 @@
     "id": "trainingData",
     "label": "National Training Data",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:nov_2011_workshop",
+    "wmsName": "nov_2011_workshop",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "nov_workshop_data.png"
@@ -89,7 +89,7 @@
     "id": "reddPlusProjects",
     "label": "REDD+ Projects",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:redd_plus_projects",
+    "wmsName": "redd_plus_projects",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.observatoire-comifac.net/",
@@ -97,7 +97,7 @@
   }, {
     "id": "reddPlusProjects_simp",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:redd_plus_projects_simp",
+    "wmsName": "redd_plus_projects_simp",
     "imageFormat": "image/png8",
     "visible": false,
     "queryable": true
@@ -105,7 +105,7 @@
     "id": "reddPlusInitiatives",
     "label": "REDD+ Initiatives",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:redd_plus_initiatives",
+    "wmsName": "redd_plus_initiatives",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.observatoire-comifac.net/",
@@ -113,14 +113,14 @@
   }, {
     "id": "reddPlusInitiatives_simp",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:redd_plus_initiatives_simp",
+    "wmsName": "redd_plus_initiatives_simp",
     "imageFormat": "image/png8",
     "visible": false,
     "queryable": true
   }, {
     "id": "hydrography",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:hydrography",
+    "wmsName": "hydrography",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -130,7 +130,7 @@
     "label": "Intact Forest",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsTime": "2000,2005,2010",
-    "wmsName": "unredd:intact_forest",
+    "wmsName": "intact_forest",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "intact_forest.png",
@@ -140,7 +140,7 @@
     "id": "loggingConcessions",
     "label": "Logging Concessions",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:logging_concessions",
+    "wmsName": "logging_concessions",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -148,7 +148,7 @@
   }, {
     "id": "loggingConcessions_simp",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:logging_concessions_simp",
+    "wmsName": "logging_concessions_simp",
     "imageFormat": "image/png8",
     "visible": false,
     "queryable": true
@@ -156,7 +156,7 @@
     "id": "protectedAreas",
     "label": "Protected Areas",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:protected_areas",
+    "wmsName": "protected_areas",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -164,14 +164,14 @@
   }, {
     "id": "protectedAreas_simp",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:protected_areas_simp",
+    "wmsName": "protected_areas_simp",
     "imageFormat": "image/png8",
     "visible": false,
     "queryable": true
   }, {
     "id": "countryBoundaries",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:boundaries",
+    "wmsName": "boundaries",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -179,7 +179,7 @@
   }, {
     "id": "administrativeUnits",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:admin_units",
+    "wmsName": "admin_units",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -187,14 +187,14 @@
   }, {
     "id": "administrativeUnits_simp",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:admin_units_simp",
+    "wmsName": "admin_units_simp",
     "imageFormat": "image/png8",
     "visible": false,
     "queryable": true
   }, {
     "id": "provinces",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:provinces",
+    "wmsName": "provinces",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -202,14 +202,21 @@
   }, {
     "id": "provinces_simp",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:provinces_simp",
+    "wmsName": "provinces_simp",
     "imageFormat": "image/png8",
     "visible": false,
-    "queryable": true
+    "queryable": true,
+    "queryLabel": "PROVINCE",
+    "statistics": [{
+      "type": "iframe",
+      "label": "Deforestation chart",
+      "labelAttribute": "PROVINCE",
+      "url": "http://localhost:8080/charts/en/admin1/admin1_${OBJECTID}.html?name=${PROVINCE}"
+    }]
   }, {
     "id": "roads",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:roads",
+    "wmsName": "roads",
     "imageFormat": "image/png8",
     "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -218,7 +225,7 @@
     "id": "settlements",
     "label": "Settlements",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:settlements",
+    "wmsName": "settlements",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "settlements.png",
@@ -228,7 +235,7 @@
     "id": "ecoregions",
     "label": "Ecoregions",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:ecoregions",
+    "wmsName": "ecoregions",
     "imageFormat": "image/png8",
     "visible": true,
     "legend": "ecoregions.png",
@@ -238,7 +245,7 @@
     "id": "plots",
     "label": "Plots",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
-    "wmsName": "unredd:plots",
+    "wmsName": "plots",
     "imageFormat": "image/png8",
     "visible": true,
     "queryable": true,
@@ -292,51 +299,51 @@
     "infoFile": "redd_plus_projects_def.html",
     "label": "REDD+ Projects",
     "layers": ["reddPlusProjects", "reddPlusProjects_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:redd_plus_projects&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=redd_plus_projects&TRANSPARENT=true"
   }, {
     "id": "reddPlusInitiatives",
     "infoFile": "redd_plus_initiatives_def.html",
     "label": "REDD+ Initiatives",
     "layers": ["reddPlusInitiatives", "reddPlusInitiatives_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:redd_plus_initiatives&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=redd_plus_initiatives&TRANSPARENT=true"
   }, {
     "id": "hydrography",
     "infoFile": "hydrography_def.html",
     "label": "Hydrography",
     "layers": ["hydrography"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:hydrography&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=hydrography&TRANSPARENT=true"
   }, {
     "id": "loggingConcessions",
     "infoFile": "logging_concessions_def.html",
     "label": "Logging Concessions",
     "layers": ["loggingConcessions", "loggingConcessions_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:logging_concessions&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=logging_concessions&TRANSPARENT=true"
   }, {
     "id": "protectedAreas",
     "infoFile": "protected_areas_def.html",
     "label": "Protected Areas",
     "layers": ["protectedAreas", "protectedAreas_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:protected_areas&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=protected_areas&TRANSPARENT=true"
   }, {
     "id": "provinces",
     "infoFile": "provinces_def.html",
     "label": "Provinces",
     "layers": ["provinces", "provinces_simp"],
-    "active": true,
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:provinces&TRANSPARENT=true&RULE=border"
+    "active": false,
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=provinces&TRANSPARENT=true&RULE=border"
   }, {
     "id": "administrativeUnits",
     "infoFile": "administrative_boundaries_def.html",
     "label": "Administrative Units",
     "layers": ["administrativeUnits", "administrativeUnits_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:admin_units&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=admin_units&TRANSPARENT=true"
   }, {
     "id": "countryBoundaries",
     "active": true,
     "infoFile": "country_boundaries_def.html",
     "label": "Country Boundaries",
     "layers": ["countryBoundaries"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:boundaries&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=boundaries&TRANSPARENT=true"
   }, {
     "id": "roads",
     "infoFile": "roads_def.html",
@@ -381,7 +388,7 @@
     "id": "plots",
     "label": "Plots",
     "layers": ["plots"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:plots&TRANSPARENT=true"
+    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=plots&TRANSPARENT=true"
   }, {
     "id": "degradation",
     "infoFile": "data_not_available.html",

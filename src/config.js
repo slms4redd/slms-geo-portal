@@ -48,6 +48,12 @@ class Layer {
       humanReadableTime: time,
       date: ISO8601ToDate(time)
     }));
+    this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => ({
+      type: s.type, // Only "iframe" is used for now
+      label: s.label || "Statistics",
+      url: s.url,
+      labelAttribute: s.labelAttribute
+    }));
   }
 }
 

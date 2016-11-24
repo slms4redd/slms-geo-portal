@@ -43,17 +43,20 @@
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
+  text-align: center;
 }
 
 .modal-container {
   font-size: 16px;
-  width: 400px;
+  width: auto;
+  display: inline-block;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
+  text-align: left;
 }
 
 .modal-header h3 {

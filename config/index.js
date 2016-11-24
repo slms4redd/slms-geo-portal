@@ -21,7 +21,10 @@ module.exports = {
     port: 8080,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: { '/gs': { target: 'http://rdc-snsf.org/diss_geoserver/wms', changeOrigin: true } },
+    proxyTable: {
+      '/gs': { target: 'http://rdc-snsf.org/diss_geoserver/wms', changeOrigin: true },
+      '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true }
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

@@ -35,7 +35,7 @@ class Layer {
     this.baseUrl = layerConfig.baseUrl || null;
     this.wmsName = layerConfig.wmsName || null;
     this.imageFormat = layerConfig.imageFormat || 'image/png8';
-    this.visible = !!layerConfig.visible;
+    this.visible = layerConfig.visible !== false;
     this.legend = layerConfig.legend || null;
     this.queryable = !!layerConfig.queryable;
     this.sourceLink = layerConfig.sourceLink || null;

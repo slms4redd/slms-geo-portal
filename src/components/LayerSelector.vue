@@ -14,7 +14,9 @@ export default {
     'item': Item
   },
   data() {
-    return { treeData: null };
+    return {
+      treeData: null
+    };
   },
   computed: mapGetters([
     'groups'

@@ -8,12 +8,23 @@ class OlLayerFactory {
       case 'OSM':
         source = new ol.source.OSM();
         break;
+      case 'bing-aerial':
+        source = new ol.source.BingMaps({
+          key: require("./assets/config.json").bingMapsKey,
+          imagerySet: 'Aerial'
+          // use maxZoom 19 to see stretched tiles instead of the BingMaps
+          // "no photos at this zoom level" tiles
+          // maxZoom: 19
+        });
+        break;
       default:
         const olAttributions = [];
         if (layerConfig.sourceLink) {
           let attribution = attributions[layerConfig.sourceLabel];
           if (!attribution) {
-            attribution = new ol.Attribution({ html: `<a href="${layerConfig.sourceLink}">${layerConfig.sourceLabel || layerConfig.sourceLink}</a>` });
+            attribution = new ol.Attribution({
+              html: `<a href="${layerConfig.sourceLink}">${layerConfig.sourceLabel || layerConfig.sourceLink}</a>`
+            });
           }
           attributions[layerConfig.sourceLabel] = attribution;
           olAttributions.push(attribution);

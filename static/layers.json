@@ -3,19 +3,19 @@
     "id": "blueMarble",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "blue_marble",
-    "imageFormat": "image/jpeg",
-    "visible": true
+    "imageFormat": "image/jpeg"
   }, {
     "id": "openstreetmap",
-    "type": "OSM",
-    "visible": true
+    "type": "OSM"
+  }, {
+    "id": "bingAerial",
+    "type": "bing-aerial"
   }, {
     "id": "forestClassification",
     "label": "FACET Forest Classification",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "facet_forest_classification",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "facet_forest_classification.png",
     "sourceLink": "http://osfac.net/facet.html",
     "sourceLabel": "FACET"
@@ -25,7 +25,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "RDC_FNF_1990_V008C",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "RDC_FnF.png",
     "sourceLink": "http://rdc-snsf.org",
     "sourceLabel": "DIAF DRC"
@@ -35,7 +34,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "ucl_forest_classification",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "ucl_2010.png",
     "sourceLink": "http://sites.uclouvain.be/enge/map_server/UCL_RDC_classification.color.tif",
     "sourceLabel": "UCL"
@@ -45,7 +43,6 @@
     "wmsTime":  "2000,2005",
     "wmsName": "landsat",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://osfac.net/facet.html",
     "sourceLabel": "FACET"
   }, {
@@ -53,7 +50,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "color_hillshade",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://srtm.csi.cgiar.org/",
     "sourceLabel": "CGIAR"
   }, {
@@ -62,7 +58,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "fires_2011",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "fire.png",
     "sourceLink": "https://lpdaac.usgs.gov/products/modis_products_table/myd14a2",
     "sourceLabel": "Thermal Anomalies and Fire"
@@ -73,7 +68,6 @@
     "wmsName": "deforestation",
     "wmsTime":  "",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "deforestation.png",
     "sourceLink": "http://osfac.net/facet.html",
     "sourceLabel": "FACET"
@@ -83,7 +77,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "nov_2011_workshop",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "nov_workshop_data.png"
   }, {
     "id": "reddPlusProjects",
@@ -91,7 +84,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "redd_plus_projects",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.observatoire-comifac.net/",
     "sourceLabel": "OFAC"
   }, {
@@ -107,7 +99,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "redd_plus_initiatives",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.observatoire-comifac.net/",
     "sourceLabel": "OFAC"
   }, {
@@ -122,7 +113,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "hydrography",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -132,7 +122,6 @@
     "wmsTime": "2000,2005,2010",
     "wmsName": "intact_forest",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "intact_forest.png",
     "sourceLink": "http://www.intactforests.org/",
     "sourceLabel": "www.intactforests.org"
@@ -142,7 +131,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "logging_concessions",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -158,7 +146,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "protected_areas",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -173,7 +160,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "boundaries",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -181,7 +167,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "admin_units",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -196,7 +181,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "provinces",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -206,7 +190,6 @@
     "imageFormat": "image/png8",
     "visible": false,
     "queryable": true,
-    "queryLabel": "PROVINCE",
     "statistics": [{
       "type": "iframe",
       "label": "Deforestation chart",
@@ -218,7 +201,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "roads",
     "imageFormat": "image/png8",
-    "visible": true,
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
   }, {
@@ -227,7 +209,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "settlements",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "settlements.png",
     "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
     "sourceLabel": "WRI"
@@ -237,7 +218,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "ecoregions",
     "imageFormat": "image/png8",
-    "visible": true,
     "legend": "ecoregions.png",
     "sourceLink": "http://www.worldwildlife.org/science/ecoregions/item1267.html)",
     "sourceLabel": "WWF"
@@ -247,13 +227,11 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "plots",
     "imageFormat": "image/png8",
-    "visible": true,
     "queryable": true,
     "queryDialogType": "custom"
   }],
   "contexts": [{
     "id": "blueMarble",
-    "active": true,
     "infoFile": "bluemarble_def.html",
     "label": "Blue Marble",
     "layers": ["blueMarble"]
@@ -329,7 +307,6 @@
     "infoFile": "provinces_def.html",
     "label": "Provinces",
     "layers": ["provinces", "provinces_simp"],
-    "active": false,
     "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=provinces&TRANSPARENT=true&RULE=border"
   }, {
     "id": "administrativeUnits",
@@ -421,8 +398,12 @@
   }, {
     "id": "openstreetmap",
     "label": "OpenStreetMap",
-    "layers": ["openstreetmap"],
-    "active": false
+    "layers": ["openstreetmap"]
+  }, {
+    "id": "bingAerial",
+    "label": "Bing Aerial",
+    "layers": ["bingAerial"],
+    "active": true
   }],
   "contextGroups": 
   {
@@ -431,6 +412,7 @@
         "group": {
           "label": "Base Layers",
           "items": [
+            { "context": "bingAerial" },
             { "context": "openstreetmap" },
             { "context": "blueMarble" },
             { "context": "FnFMask1990" },

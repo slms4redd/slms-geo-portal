@@ -79,12 +79,14 @@ export default {
     },
     layersInited() {
       // TODO get the url from some config file
-      // const baseURL = map.getLayers().getArray()[0].getSource().getUrls()[0];
       const parser = new ol.format.WMSGetFeatureInfo(),
             srcProjection = new ol.proj.Projection({ code: "EPSG:4326" }),
-            dstProjection = new ol.proj.Projection({ code: "EPSG:3857" }),
-            baseURL = 'http://localhost:8080/gs';
-      
+            dstProjection = new ol.proj.Projection({ code: "EPSG:3857" });
+      let baseURL = map.getLayers().getArray()[0].getSource().getUrls()[0];
+      if (process.env.NODE_ENV === 'development') {
+        baseURL = 'http://localhost:8080/gs';
+      }
+
       map.on('singleclick', event => {
         if (this.queryableLayers.length) {
           // Build the GetFeatureInfo request

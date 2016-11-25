@@ -91,8 +91,7 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "redd_plus_projects_simp",
     "imageFormat": "image/png8",
-    "visible": false,
-    "queryable": true
+    "visible": false
   }, {
     "id": "reddPlusInitiatives",
     "label": "REDD+ Initiatives",
@@ -106,8 +105,7 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "redd_plus_initiatives_simp",
     "imageFormat": "image/png8",
-    "visible": false,
-    "queryable": true
+    "visible": false
   }, {
     "id": "hydrography",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
@@ -139,7 +137,17 @@
     "wmsName": "logging_concessions_simp",
     "imageFormat": "image/png8",
     "visible": false,
-    "queryable": true
+    "statistics": [{
+      "type": "attributes",
+      "labelAttribute": "SOCIETE",
+      "attributes": [{
+        "label": "Company",
+        "attribute": "SOCIETE"
+      }, {
+        "label": "Area",
+        "attribute": "SUPERFICIE"
+      }]
+    }]
   }, {
     "id": "protectedAreas",
     "label": "Protected Areas",
@@ -154,7 +162,9 @@
     "wmsName": "protected_areas_simp",
     "imageFormat": "image/png8",
     "visible": false,
-    "queryable": true
+    "statistics": [{
+      "type": "attributes"
+    }]
   }, {
     "id": "countryBoundaries",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
@@ -174,8 +184,7 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "admin_units_simp",
     "imageFormat": "image/png8",
-    "visible": false,
-    "queryable": true
+    "visible": false
   }, {
     "id": "provinces",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
@@ -189,10 +198,8 @@
     "wmsName": "provinces_simp",
     "imageFormat": "image/png8",
     "visible": false,
-    "queryable": true,
     "statistics": [{
       "type": "iframe",
-      "label": "Deforestation chart",
       "labelAttribute": "PROVINCE",
       "url": "http://localhost:8080/charts/en/admin1/admin1_${OBJECTID}.html?name=${PROVINCE}"
     }]
@@ -227,7 +234,6 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "plots",
     "imageFormat": "image/png8",
-    "queryable": true,
     "queryDialogType": "custom"
   }],
   "contexts": [{

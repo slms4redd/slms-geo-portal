@@ -1,14 +1,23 @@
 <template>
   <span>
     <modal v-if="statisticsUrl" @close="hideStatistics()">
-      <!--<h1 slot="header">Header</h1>-->
-      <!--<div slot="body" v-html="content"></div>-->
       <iframe width="840" height="600" slot="body" v-bind:src="statisticsUrl"></iframe>
+    </modal>
+    <modal v-if="popupAttributes" @close="hideStatistics()">
+      <h1 slot="header">Attributes</h1>
+      <div slot="body">
+        <table>
+          <tr v-for="attr in popupAttributes">
+            <th>{{attr.label}}</th>
+            <td>{{attr.value}}</td>
+          </tr>
+        </table>
+      </div>
     </modal>
     <div id="popup" class="ol-popup">
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <ul id="popup-content">
-        <h1>Get region data</h1>
+        <p class="caption">Select an item from the list below to get more data</p>
         <li v-for="(layer, i) in selectedFeaturesLayers" @click="showStatistics(layer, features[i])">{{selectedFeaturesLabels[i]}}</li>
       </ul>
     </div>
@@ -40,7 +49,8 @@ export default {
       selectedFeaturesLayers: [],
       selectedFeaturesLabels: [],
       showStatisticsModal: false,
-      statisticsUrl: null
+      statisticsUrl: null,
+      popupAttributes: null
     }
   },
   components: {
@@ -78,13 +88,16 @@ export default {
       }
     },
     layersInited() {
-      // TODO get the url from some config file
       const parser = new ol.format.WMSGetFeatureInfo(),
             srcProjection = new ol.proj.Projection({ code: "EPSG:4326" }),
             dstProjection = new ol.proj.Projection({ code: "EPSG:3857" });
-      let baseURL = map.getLayers().getArray()[0].getSource().getUrls()[0];
+
+      // TODO get the baseURL from some config file
+      let baseURL;
       if (process.env.NODE_ENV === 'development') {
         baseURL = 'http://localhost:8080/gs';
+      } else {
+        baseURL = map.getLayers().getArray()[0].getSource().getUrls()[0];
       }
 
       map.on('singleclick', event => {
@@ -129,7 +142,7 @@ export default {
               // Look for the related feature labels
               // Statistics is an array as more than one statistics per layer will be allowed in the very far future
               this.selectedFeaturesLabels = this.features.map((feature, i) =>
-                feature.getProperties()[this.selectedFeaturesLayers[i].statistics[0].labelAttribute]);
+                feature.getProperties()[this.selectedFeaturesLayers[i].statistics[0].labelAttribute] || feature.getId());
               this.tooltipCoords = event.coordinate;
             } else {
               this.tooltipCoords = undefined;
@@ -144,17 +157,43 @@ export default {
   },
   methods: {
     showStatistics(layer, feature) {
-      const url = layer.statistics[0].url,
-            regex = /\$\{(\w+)\}/g,
-            result = [];
+      switch (layer.statistics[0].type) {
+        case "iframe":
+          const url = layer.statistics[0].url,
+                regex = /\$\{(\w+)\}/g,
+                result = [];
+          this.statisticsUrl = url.replace(regex, (match, p) => {
+            const attributeName = match.substring(2, match.length - 1);
+            return feature.getProperties()[attributeName];
+          });
+          break;
+        case "attributes":
+          const attributes = layer.statistics[0].attributes;
+          if (attributes) {
+            this.popupAttributes = attributes.map(a => ({
+              label: a.label,
+              value: feature.getProperties()[a.attribute] || 'n/a'
+            }))
+          } else {
+            const t = [],
+                  properties = feature.getProperties();
 
-      this.statisticsUrl = url.replace(regex, (match, p) => {
-        const attributeName = match.substring(2, match.length - 1);
-        return feature.getProperties()[attributeName];
-      });
+            for (let p in properties) {
+              if (properties.hasOwnProperty(p) && p !== 'the_geom') {
+                t.push({ label: p, value: properties[p]})
+              }
+            }
+            this.popupAttributes = t;
+          }
+          break;
+        default:
+          break;
+      }
+
     },
     hideStatistics() {
       this.statisticsUrl = null;
+      this.popupAttributes = null;
     }
   },
   computed: mapGetters([
@@ -208,6 +247,7 @@ export default {
     content: "✖";
   }
 </style>
+
 <style scoped>
   #popup-content {
     padding: 0;
@@ -220,5 +260,14 @@ export default {
   }
   h1 {
     font-size: 16px;
+  }
+  th, td {
+    font-size:14px;
+  }
+  th { 
+    padding-right: 9px;
+  }
+  .caption {
+    font-size: 12px;
   }
 </style>

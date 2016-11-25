@@ -37,7 +37,6 @@ class Layer {
     this.imageFormat = layerConfig.imageFormat || 'image/png8';
     this.visible = layerConfig.visible !== false;
     this.legend = layerConfig.legend || null;
-    this.queryable = !!layerConfig.queryable;
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;
     this.type = layerConfig.type || "WMS";
@@ -48,12 +47,27 @@ class Layer {
       humanReadableTime: time,
       date: ISO8601ToDate(time)
     }));
-    this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => ({
-      type: s.type, // Only "iframe" is used for now
-      label: s.label || "Statistics",
-      url: s.url,
-      labelAttribute: s.labelAttribute
-    }));
+    this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
+      const ret = {
+        type: s.type,
+        labelAttribute: s.labelAttribute,
+      }
+      switch (s.type) {
+        case "iframe":
+          ret.url = s.url;
+          break;
+        case "attributes":
+          ret.attributes = s.attributes && s.attributes.map(a => ({
+            attribute: a.attribute,
+            label: a.label || a.attribute
+          }))
+          break;
+        default:
+          throw `Unsupported statistics type: ${s.type}`;
+      }
+      
+      return ret;
+    });
   }
 }
 

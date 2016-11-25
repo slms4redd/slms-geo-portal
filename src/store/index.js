@@ -69,7 +69,7 @@ const getters = {
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   },
   layerInfo: state => state.layerInfo,
-  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.queryable)
+  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics)
   // times: (state, getters) => getters.activeLayers.reduce((allTimes, layer) => allTimes.concat(layer.times), [])
   //                                                .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos) // remove duplicates
 }

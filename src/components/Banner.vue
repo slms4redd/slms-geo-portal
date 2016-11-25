@@ -27,4 +27,9 @@ h1 {
 #header #header-content {
   margin: 10px;
 }
+h1 {
+  font-weight: bold;
+  text-align: center;
+  padding-top: 8px;
+}
 </style>

@@ -139,7 +139,7 @@
     "visible": false,
     "statistics": [{
       "type": "attributes",
-      "labelAttribute": "SOCIETE",
+      "popupLabel": "Logging concession: $(SOCIETE)",
       "attributes": [{
         "label": "Company",
         "attribute": "SOCIETE"
@@ -200,8 +200,8 @@
     "visible": false,
     "statistics": [{
       "type": "iframe",
-      "labelAttribute": "PROVINCE",
-      "url": "http://localhost:8080/charts/en/admin1/admin1_${OBJECTID}.html?name=${PROVINCE}"
+      "popupLabel": "Province: $(PROVINCE)",
+      "url": "http://localhost:8080/charts/en/admin1/admin1_$(OBJECTID).html?name=$(PROVINCE)"
     }]
   }, {
     "id": "roads",

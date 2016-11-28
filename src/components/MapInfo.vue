@@ -31,11 +31,19 @@ import httpRequest from '../httpRequest'
 import Modal from './Modal'
 
 // Add a vector layer to show the highlighted features
-let highlightOverlay = new ol.layer.Vector({
+const highlightOverlay = new ol.layer.Vector({
   // style: (customize your highlight style here),
   source: new ol.source.Vector(),
   map: map
 });
+
+const processTemplate = function(template, feature) {
+  const regex = /\$\((\w+)\)/g;
+  return template.replace(regex, (match, p) => {
+    const attributeName = match.substring(2, match.length - 1);
+    return feature.getProperties()[attributeName];
+  });
+}
 
 let container,
     content,
@@ -80,8 +88,6 @@ export default {
   watch: {
     tooltipCoords() {
       if (this.tooltipCoords) {
-        let hdms = ol.coordinate.toStringHDMS(ol.proj.transform(this.tooltipCoords, 'EPSG:3857', 'EPSG:4326'));
-        // content.innerHTML = '<p>You are here:</p><code>' + hdms + '</code>';
         overlay.setPosition(this.tooltipCoords);
       } else {
         overlay.setPosition(undefined);
@@ -141,8 +147,15 @@ export default {
 
               // Look for the related feature labels
               // Statistics is an array as more than one statistics per layer will be allowed in the very far future
-              this.selectedFeaturesLabels = this.features.map((feature, i) =>
-                feature.getProperties()[this.selectedFeaturesLayers[i].statistics[0].labelAttribute] || feature.getId());
+              this.selectedFeaturesLabels = this.features.map((feature, i) => {
+                const template = this.selectedFeaturesLayers[i].statistics[0].popupLabel;
+                console.log(template);
+                if (template) {
+                  return processTemplate(template, feature);
+                } else {
+                  return feature.getId();
+                }
+              });
               this.tooltipCoords = event.coordinate;
             } else {
               this.tooltipCoords = undefined;
@@ -159,13 +172,8 @@ export default {
     showStatistics(layer, feature) {
       switch (layer.statistics[0].type) {
         case "iframe":
-          const url = layer.statistics[0].url,
-                regex = /\$\{(\w+)\}/g,
-                result = [];
-          this.statisticsUrl = url.replace(regex, (match, p) => {
-            const attributeName = match.substring(2, match.length - 1);
-            return feature.getProperties()[attributeName];
-          });
+          const url = layer.statistics[0].url;
+          this.statisticsUrl = processTemplate(url, feature);
           break;
         case "attributes":
           const attributes = layer.statistics[0].attributes;

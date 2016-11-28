@@ -50,7 +50,7 @@ class Layer {
     this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
       const ret = {
         type: s.type,
-        labelAttribute: s.labelAttribute,
+        popupLabel: s.popupLabel,
       }
       switch (s.type) {
         case "iframe":

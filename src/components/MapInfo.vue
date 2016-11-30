@@ -101,7 +101,7 @@ export default {
       // TODO get the baseURL from some config file
       let baseURL;
       if (process.env.NODE_ENV === 'development') {
-        baseURL = 'http://localhost:8080/gs';
+        baseURL = 'http://localhost:8080/gs/wms';
       } else {
         baseURL = map.getLayers().getArray()[0].getSource().getUrls()[0];
       }

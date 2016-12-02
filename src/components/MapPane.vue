@@ -28,13 +28,10 @@ export default {
           console.log(e);
         }
       });
-      this.$watch('activeLayers', layers => {
-        const layerIds = layers.map(layer => layer.id);
-        this.layers.forEach(layer =>
-          olLayers[layer.id].setVisible(layer.visible && layerIds.find(layerId => layerId === layer.id)))
-      });
-
-      this.$store.commit('layers_inited');
+    },
+    activeLayers(activeLayers) {
+      this.layers.forEach(l =>
+        olLayers[l.id].setVisible(l.visible && activeLayers.find(a => a.id === l.id)));
     }
   },
 

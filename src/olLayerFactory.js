@@ -46,7 +46,7 @@ class OlLayerFactory {
     }
     if (source) {
       return new ol.layer.Tile({
-        visible: layerConfig.active,
+        visible: false, // will be set by the activeLayers watch in MapPane
         source: source
       });
     }

@@ -53,7 +53,6 @@ let container,
 export default {
   data() {
     return {
-      tooltipCoords: false,
       selectedFeaturesLayers: [],
       selectedFeaturesLabels: [],
       showStatisticsModal: false,
@@ -86,28 +85,24 @@ export default {
     map.addOverlay(overlay);
   },
   watch: {
-    tooltipCoords() {
-      if (this.tooltipCoords) {
-        overlay.setPosition(this.tooltipCoords);
-      } else {
-        overlay.setPosition(undefined);
-      }
-    },
-    layersInited() {
+    layers() {
       const parser = new ol.format.WMSGetFeatureInfo(),
             srcProjection = new ol.proj.Projection({ code: "EPSG:4326" }),
             dstProjection = new ol.proj.Projection({ code: "EPSG:3857" });
 
-      // TODO get the baseURL from some config file
       let baseURL;
       if (process.env.NODE_ENV === 'development') {
-        baseURL = 'http://localhost:8080/gs/wms';
+        baseURL = '/gs/wms';
       } else {
+        // TODO get the baseURL from some config file
         baseURL = map.getLayers().getArray()[0].getSource().getUrls()[0];
       }
 
       map.on('singleclick', event => {
-        if (this.queryableLayers.length) {
+        if (!this.queryableLayers.length) {
+          highlightOverlay.getSource().clear();
+          overlay.setPosition(undefined);
+        } else {
           // Build the GetFeatureInfo request
           const mapSize = map.getSize(),
                 [width, height] = mapSize,
@@ -117,11 +112,10 @@ export default {
                 url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1`
                        + `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5`
                        + `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fvnd.ogc.gml&HEIGHT=${height}&WIDTH=${width}`
-                       + `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`
+                       + `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
 
           httpRequest(url, (responseText) => {
             this.features = parser.readFeatures(responseText);
-
             // Reproject the features from lat-lon to Google projection
             this.features.forEach(feature => {
               // ol3 bug workaround - see http://webmappingtutorial.blogspot.it/2015/08/swapping-coordinate-order-in-ol-3.html
@@ -149,18 +143,16 @@ export default {
               // Statistics is an array as more than one statistics per layer will be allowed in the very far future
               this.selectedFeaturesLabels = this.features.map((feature, i) => {
                 const template = this.selectedFeaturesLayers[i].statistics[0].popupLabel;
-                console.log(template);
                 if (template) {
                   return processTemplate(template, feature);
                 } else {
                   return feature.getId();
                 }
               });
-              this.tooltipCoords = event.coordinate;
+               overlay.setPosition(event.coordinate);
             } else {
-              this.tooltipCoords = undefined;
+              overlay.setPosition(undefined);
             }
-
           }, (error) => {
             alert(error);
           });
@@ -171,7 +163,7 @@ export default {
   methods: {
     showStatistics(layer, feature) {
       switch (layer.statistics[0].type) {
-        case "iframe":
+        case "url":
           const url = layer.statistics[0].url;
           this.statisticsUrl = processTemplate(url, feature);
           break;
@@ -185,10 +177,9 @@ export default {
           } else {
             const t = [],
                   properties = feature.getProperties();
-
             for (let p in properties) {
               if (properties.hasOwnProperty(p) && p !== 'the_geom') {
-                t.push({ label: p, value: properties[p]})
+                t.push({ label: p, value: properties[p]});
               }
             }
             this.popupAttributes = t;
@@ -205,7 +196,6 @@ export default {
     }
   },
   computed: mapGetters([
-    'layersInited',
     'layers',
     'queryableLayers'
   ])

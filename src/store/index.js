@@ -10,7 +10,6 @@ const state = {
   layers: [],
   contexts: [],
   groups: {},
-  layersInited: false,
   layerInfo: null // a modal with the file content is shown when not null
   // time: null
 }
@@ -34,9 +33,6 @@ const mutations = {
   },
   show_layer_info(state, { fileName, label }) {
     state.layerInfo = { fileName: fileName, label: label };
-  },
-  layers_inited(state) {
-    state.layersInited = true;
   }
 }
 
@@ -59,7 +55,6 @@ const getters = {
   layers: state => state.layers,
   contexts: state => state.contexts,
   groups: state => state.groups,
-  layersInited: state => state.layersInited,
   // activeContexts: state => state.contexts.filter(context => context.active),
   activeLayers: state => {
     const activeLayers = [];

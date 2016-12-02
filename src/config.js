@@ -54,6 +54,7 @@ class Layer {
       }
       switch (s.type) {
         case "iframe":
+        case "url":
           ret.url = s.url;
           break;
         case "attributes":

@@ -7,25 +7,23 @@ import httpRequest from './httpRequest'
 // From http://stackoverflow.com/a/979995
 const QueryString = function() {
   const query_string = {},
-        query = window.location.search.substring(1),
-        vars = query.split("&");
+        pairs = window.location.search.substring(1).split("&").map(v => v.split('='));
 
-  vars.forEach(v => {
-    const pair = v.split("=");
-    if (!query_string[pair[0]]) {
+  pairs.forEach(([k, v]) => {
+    if (!query_string[k]) {
       // First entry with this name
-      query_string[pair[0]] = decodeURIComponent(pair[1]);
-    } else if (typeof query_string[pair[0]] === "string") {
+      query_string[k] = decodeURIComponent(v);
+    } else if (typeof query_string[k] === "string") {
       // Second entry with this name
-      const arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
-      query_string[pair[0]] = arr;
+      query_string[k] = [query_string[k], decodeURIComponent(v)];
     } else {
       // Third or later entry with this name
-      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+      query_string[k].push(decodeURIComponent(v));
     }
-  })
+  });
   return query_string;
 }();
+
 
 const lang = QueryString.lang || 'en';
 

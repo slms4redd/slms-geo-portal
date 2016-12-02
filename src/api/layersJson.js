@@ -13,8 +13,10 @@ class _Config {
 }
 
 export default {
-  getLayers(cb) {
-    httpRequest('../static/layers.json', (responseText) => {
+  getLayers(lang, cb) {
+    // To keep the compatibility with the old portal, layers.json can be localized
+    const url = '../static/layers.json' + (lang ? `?lang=${lang}` : '');
+    httpRequest(url, (responseText) => {
       try {
         cb(new _Config(JSON.parse(responseText)));
       } catch(e) {

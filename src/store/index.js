@@ -40,7 +40,7 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getAllLayers({ commit }) {
-    layersJson.getLayers(layersConf => commit('receive_layers', { layersConf }))
+    layersJson.getLayers(Vue.config.lang, layersConf => commit('receive_layers', { layersConf }))
   },
   showLayerInfo({ commit, state }, { fileName, label }) {
     commit('show_layer_info', { fileName: fileName, label: label });

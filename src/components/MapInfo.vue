@@ -29,6 +29,7 @@ import { mapGetters } from 'vuex'
 import map from '../map'
 import httpRequest from '../httpRequest'
 import Modal from './Modal'
+import { config } from 'vue'
 
 // Add a vector layer to show the highlighted features
 const highlightOverlay = new ol.layer.Vector({
@@ -43,6 +44,10 @@ const processTemplate = function(template, feature) {
     const attributeName = match.substring(2, match.length - 1);
     return feature.getProperties()[attributeName];
   });
+}
+
+const processUrlTemplate = function(urlTemplate, feature) {
+  return processTemplate(urlTemplate.replace('$(_lang)', config.lang), feature);
 }
 
 let container,
@@ -165,7 +170,7 @@ export default {
       switch (layer.statistics[0].type) {
         case "url":
           const url = layer.statistics[0].url;
-          this.statisticsUrl = processTemplate(url, feature);
+          this.statisticsUrl = processUrlTemplate(url, feature);
           break;
         case "attributes":
           const attributes = layer.statistics[0].attributes;

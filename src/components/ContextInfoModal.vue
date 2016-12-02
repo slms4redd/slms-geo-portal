@@ -9,6 +9,7 @@
 import Modal from './Modal'
 import { mapGetters } from 'vuex'
 import httpRequest from '../httpRequest'
+import { config } from 'vue';
 
 export default {
   data() {
@@ -30,7 +31,7 @@ export default {
           this.content = content;
           this.showModal = true;
         }
-        httpRequest(`/static/${val.fileName}`, (responseText) => {
+        httpRequest(`/static/loc/${config.lang}/html/${val.fileName}`, (responseText) => {
           showContent(responseText);
         }, (error) => {
           showContent('Cannot get layer info');

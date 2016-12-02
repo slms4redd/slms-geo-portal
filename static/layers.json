@@ -201,7 +201,7 @@
     "statistics": [{
       "type": "url",
       "popupLabel": "Province: $(PROVINCE)",
-      "url": "http://localhost:8080/charts/en/admin1/admin1_$(OBJECTID).html?name=$(PROVINCE)"
+      "url": "http://localhost:8080/charts/$(_lang)/admin1/admin1_$(OBJECTID).html?name=$(PROVINCE)"
     }]
   }, {
     "id": "roads",

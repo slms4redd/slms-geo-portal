@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div v-for="layer in model.layers">
-      <!--img v-bind:src="'/static/loc/' + lang + '/images/' + layer.legend"></img-->
-      <img v-if="layer.legendStyle" v-bind:src="'/static/loc/' + lang + '/images/' + layer.legend"></img>
-      <img v-else-if="layer.legend" v-bind:src="'/static/loc/' + lang + '/images/' + layer.legend"></img> <!-- TODO -->
+    <div v-for="legendUrl in legendUrls">
+      <img v-bind:src="legendUrl"></img>
     </div>
   </div>
 </template>
@@ -17,13 +15,21 @@ export default {
   },
   data() {
     return {
-      lang: config.lang
+      legendUrls: this.model.layers.map(layer => {
+        if (layer.wmsLegendStyle) {
+          const wmsLegendStyle = layer.wmsLegendStyle.replace('$(_lang)', config.lang);
+          return `${layer.baseUrl}?LEGEND_OPTIONS=forceRule:True;fontColor:ffffff&LAYER=${layer.wmsName}&STYLE=${wmsLegendStyle}`
+                 + '&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&TRANSPARENT=true';
+        } else {
+          return `/static/loc/${config.lang}/images/${layer.legend}`
+        }
+      })
     }
   },
   methods: {
     toggle() {
       this.show = !this.show;
-    },
+    }
   }
 }
 </script>

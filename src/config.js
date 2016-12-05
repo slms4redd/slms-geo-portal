@@ -36,8 +36,8 @@ class Layer {
     this.wmsName = layerConfig.wmsName || null;
     this.imageFormat = layerConfig.imageFormat || 'image/png8';
     this.visible = layerConfig.visible !== false;
-    this.legendStyle = layerConfig.legendStyle || null;
-    this.legend = !this.legendStyle && layerConfig.legend || null;
+    this.wmsLegendStyle = layerConfig.wmsLegendStyle || null;
+    this.legend = !this.wmsLegendStyle && layerConfig.legend || null;
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;
     this.type = layerConfig.type || "WMS";
@@ -83,7 +83,7 @@ class Context {
                                                                 .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
     this.layers = tLayers || []; 
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
-    this.hasLegends = this.layers.some(layer => layer.legend || layer.legendStyle);
+    this.hasLegends = this.layers.some(layer => layer.legend || layer.wmsLegendStyle);
   }
 }
 

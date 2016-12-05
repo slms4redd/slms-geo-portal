@@ -34,7 +34,7 @@
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "ucl_forest_classification",
     "imageFormat": "image/png8",
-    "legendStyle": "UCL_forest_classification_$(_lang)",
+    "wmsLegendStyle": "UCL_forest_classification_$(_lang)",
     "legend": "ucl_2010.png",
     "sourceLink": "http://sites.uclouvain.be/enge/map_server/UCL_RDC_classification.color.tif",
     "sourceLabel": "UCL"

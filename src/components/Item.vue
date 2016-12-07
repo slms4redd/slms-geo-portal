@@ -3,17 +3,22 @@
     <div v-if="isGroup" class="bold" @click="toggleGroup">
       {{isRoot ? $t("layerSelector.layers") : model.label}}
       [<span class="toggle">{{open ? '-' : '+'}}</span>]
-      <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo">i</span>
+      <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo"><icon name="glyphicon-info-sign"></icon></span>
     </div>
     <div v-else>
       <input v-bind:id="_uid" v-if="hasLayers" type="checkbox" v-model="active">
-      <img v-show="model.hasLegends && !active" class="inline-legend" src="../assets/legend-off.png">
-      <img v-show="model.hasLegends && active" v-on:click="toggleLegend" class="inline-legend" src="../assets/legend-on.png">
+      <!--img v-show="model.hasLegends && !active" v-on:click="toggleLegend" class="inline-legend" src="../assets/legend-off.png"-->
+      <!--img v-show="model.hasLegends && active" v-on:click="toggleLegend" class="inline-legend" src="../assets/legend-on.png"-->
+      <!--icon name="octicon-list-unordered"></icon-->
+      <span v-on:click="toggleLegend"><icon class="legend-link" v-bind:class="{ active }" v-show="model.hasLegends" name="glyphicon-list"></icon></span>
+
       <label v-bind:for="_uid" :class="{dimmed: !hasLayers}">
         <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
         {{isRoot ? $t("layerSelector.layers") : model.label}}
       </label>
-      <span class="info-link" v-if="model.infoFile" v-on:click="showInfo">i</span>
+      <span class="info-link" v-if="model.infoFile" v-on:click="showInfo"><icon name="glyphicon-info-sign"></icon></span>
+      <span class="times-button" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}"><icon class="icon" v-if="hasTimes" name="glyphicon-time"> {{selectedTime.humanReadable}}</span>
+      <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="model.times" :selectedTime="selectedTime"></TimeSelect>
       <template v-if="model.hasLegends && active && showLegend">
         <ContextLegend :model="model"></ContextLegend>
       </template>
@@ -25,12 +30,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ContextLegend from './ContextLegend';
+import TimeSelect from './TimeSelect';
 
 export default {
   name: 'item',
   components: {
-    ContextLegend
+    ContextLegend,
+    TimeSelect,
+    "icon": require("vue-icons")
   },
   props: {
     model: Object
@@ -39,7 +48,8 @@ export default {
     return {
       open: !this.model.label,
       active: this.model.active,
-      showLegend: false
+      showLegend: false,
+      showTimeMenu: false
     }
   },
   computed: {
@@ -54,17 +64,35 @@ export default {
     },
     hasLayers() {
       return !!this.model.layers.length;
-    }
+    },
+    hasTimes() {
+      return !!this.model.times.length
+    },
+    selectedTime() {
+      return this.contextsTimes[this.model.id]
+    },
+    ...mapGetters([
+      'contextsTimes'
+    ])
   },
   methods: {
     toggleGroup() {
       this.open = !this.open;
     },
     toggleLegend() {
-      this.showLegend = !this.showLegend;
+      if (this.active) {
+        this.showLegend = !this.showLegend;
+      }
     },
     showInfo() {
       this.$store.dispatch('showLayerInfo',  { label: this.model.label, fileName: this.model.infoFile });
+    },
+    toggleTimeMenu() {
+      console.log(this.showTimeMenu)
+      this.showTimeMenu = !this.showTimeMenu;
+    },
+    setTime(time) {
+      this.$store.commit('set_context_time', { contextId: this.model.id, time: time })
     }
   },
   watch: {
@@ -101,30 +129,22 @@ ul {
   height: 20px;
   vertical-align: middle;
 }
-.info-link {
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  line-height: 16px;
-
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-
-  background-color: transparent;
+.info-link:hover, .times-button:hover, .times-button.active {
   color: #ffa500;
-  text-align: center;
-
-  font-style: italic;
-  font-weight: bold;
-  font-family: Georgia, Times, "Times New Roman", serif;
-  transition: all 100ms linear;
 }
-.info-link:hover {
-  background-color: #ffa500;
-  color: black;
-  -webkit-transition-property: none;
-  -moz-transition-property: none;
-  -o-transition-property: none;
-  transition-property: none
+.legend-link {
+  color: #888;
+}
+.legend-link.active {
+  color: #fff;
+}
+.legend-link.active:hover {
+  color: #ffa500;
+}
+</style>
+<style>
+.info-link svg, .legend-link svg, .times-button svg {
+  position: relative;
+  top: 5px;
 }
 </style>

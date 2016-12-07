@@ -18,17 +18,12 @@ export default {
       legendUrls: this.model.layers.map(layer => {
         if (layer.wmsLegendStyle) {
           const wmsLegendStyle = layer.wmsLegendStyle.replace('$(_lang)', config.lang);
-          return `${layer.baseUrl}?LEGEND_OPTIONS=forceRule:True;fontColor:ffffff&LAYER=${layer.wmsName}&STYLE=${wmsLegendStyle}`
-                 + '&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&TRANSPARENT=true';
+          return `${layer.baseUrl}?LEGEND_OPTIONS=forceRule:True;fontColor:ffffff;fontAntiAliasing:true
+&LAYER=${layer.wmsName}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`;
         } else {
           return `/static/loc/${config.lang}/images/${layer.legend}`
         }
       })
-    }
-  },
-  methods: {
-    toggle() {
-      this.show = !this.show;
     }
   }
 }

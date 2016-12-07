@@ -45,7 +45,7 @@ class Layer {
 
     const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
     this.times = tTimes.map(time => ({
-      humanReadableTime: time,
+      humanReadable: time,
       date: ISO8601ToDate(time)
     }));
     this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
@@ -84,6 +84,15 @@ class Context {
     this.layers = tLayers || []; 
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
     this.hasLegends = this.layers.some(layer => layer.legend || layer.wmsLegendStyle);
+
+    this.times = this.layers.reduce((contextTimes, l) => contextTimes.concat(l.times), [])
+                            // Remove duplicates
+                            .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos)
+                            .sort((t1, t2) => {
+                              if (t1.date.getTime() === t2.date.getTime()) return 0;
+                              else if (t1.date.getTime() < t2.date.getTime()) return -1
+                              return 1
+                            });
   }
 }
 

@@ -10,8 +10,8 @@ const state = {
   layers: [],
   contexts: [],
   groups: {},
-  layerInfo: null // a modal with the file content is shown when not null
-  // time: null
+  layerInfo: null, // a modal with the file content is shown when not null
+  contextsTimes: {}
 }
 
 // mutations are operations that actually mutates the state.
@@ -24,6 +24,14 @@ const mutations = {
     state.layers = layersConf.layers;
     state.contexts = layersConf.contexts;
     state.groups = layersConf.groups;
+
+    const contextsTimes = {};
+    state.contexts.forEach(c => {
+      if (c.times) {
+        contextsTimes[c.id] = c.times[c.times.length - 1];
+      }
+    });
+    state.contextsTimes = contextsTimes
   },
   toggle_context(state, { contextId, active }) {
     const context = state.contexts.find(c => c.id === contextId);
@@ -33,6 +41,17 @@ const mutations = {
   },
   show_layer_info(state, { fileName, label }) {
     state.layerInfo = { fileName: fileName, label: label };
+  },
+  set_context_time(state, { contextId, time}) {
+    const newContextsTimes = {};
+    // Make a shallow copy of the contextsTimes object
+    for (let t in state.contextsTimes) {
+      if (state.contextsTimes.hasOwnProperty(t)) {
+        newContextsTimes[t] = state.contextsTimes[t];
+      }
+    }
+    newContextsTimes[contextId] = time;
+    state.contextsTimes = newContextsTimes;
   }
 }
 
@@ -64,9 +83,10 @@ const getters = {
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   },
   layerInfo: state => state.layerInfo,
-  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics)
+  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
   // times: (state, getters) => getters.activeLayers.reduce((allTimes, layer) => allTimes.concat(layer.times), [])
   //                                                .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos) // remove duplicates
+  contextsTimes: state => state.contextsTimes
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

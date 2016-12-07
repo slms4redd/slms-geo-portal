@@ -32,13 +32,24 @@ export default {
     activeLayers(activeLayers) {
       this.layers.forEach(l =>
         olLayers[l.id].setVisible(l.visible && activeLayers.find(a => a.id === l.id)));
+    },
+    contextsTimes(contextsTimes) {
+      for (let contextId in contextsTimes) {
+        if (contextsTimes.hasOwnProperty(contextId) && contextsTimes[contextId]) {
+          const context = this.contexts.find(c => c.id === contextId);
+          context.layers.forEach(l => {
+            olLayers[l.id].getSource().updateParams({'TIME': contextsTimes[contextId].date.toISOString()});
+          });
+        }
+      }
     }
   },
 
   computed: mapGetters([
     'layers',
     'contexts',
-    'activeLayers'
+    'activeLayers',
+    'contextsTimes'
   ])
 }
 </script>

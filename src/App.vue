@@ -5,7 +5,6 @@
     <layerSelector></layerSelector>
     <contextInfoModal></contextInfoModal>
     <mapInfo></mapInfo>
-    <!--<timeChooser></timeChooser>-->
   </div>
 </template>
 
@@ -15,7 +14,6 @@ import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
 import ContextInfoModal from './components/ContextInfoModal'
 import MapInfo from './components/MapInfo'
-// import TimeChooser from './components/TimeChooser'
 
 export default {
   name: 'app',
@@ -25,7 +23,6 @@ export default {
     LayerSelector,
     ContextInfoModal,
     MapInfo
-    // TimeChooser
   },
   created () {
     this.$store.dispatch('getAllLayers');

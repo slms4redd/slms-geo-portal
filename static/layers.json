@@ -67,7 +67,6 @@
     "label": "Deforestation (Gross forest cover loss)",
     "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
     "wmsName": "deforestation",
-    "wmsTime":  "",
     "imageFormat": "image/png8",
     "legend": "deforestation.png",
     "sourceLink": "http://osfac.net/facet.html",

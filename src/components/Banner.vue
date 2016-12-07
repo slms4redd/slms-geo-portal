@@ -36,8 +36,8 @@ h1 {
   font-weight: normal;
 }
 #header {
-  @extend %opacity;
-  background-color: black;
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   position: fixed;
   top: 0;

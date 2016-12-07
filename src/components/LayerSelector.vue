@@ -33,14 +33,13 @@ export default {
 @import "../assets/global.scss";
 
 #layer-selector {
-  @extend %opacity;
-
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.7);
   font-size: 14px;
   position: absolute;
   top: $banner-height + 56px;
   left: 8px;
   min-width: 50px;
-  background-color: black;
   color: white;
   padding: 10px;
   /*max-height: 500px;*/

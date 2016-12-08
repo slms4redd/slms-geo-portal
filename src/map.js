@@ -1,4 +1,4 @@
-const config = require("./assets/config.json");
+import config from './assets/config.json';
 
 export default new ol.Map({
   controls: ol.control.defaults({

@@ -1,3 +1,5 @@
+import { defaultGeoServerURLs } from './assets/config.json';
+
 const ISO8601ToDate = function(dateString) {
   const regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
                  "(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\\.([0-9]+))?)?" +
@@ -30,46 +32,48 @@ const ISO8601ToDate = function(dateString) {
 
 class Layer {
   constructor(layerConfig) {
+    this.type = layerConfig.type || "WMS";
     this.id = layerConfig.id;
     this.label = layerConfig.label || null;
-    this.baseUrl = layerConfig.baseUrl || null;
-    this.wmsName = layerConfig.wmsName || null;
-    this.imageFormat = layerConfig.imageFormat || 'image/png8';
+    if (this.type === "WMS") {
+      this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null); 
+      this.wmsName = layerConfig.wmsName || null;
+      this.imageFormat = layerConfig.imageFormat || 'image/png8';
+      this.wmsLegendStyle = layerConfig.wmsLegendStyle || null;
+
+      const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
+      this.times = tTimes.map(time => ({
+        humanReadable: time,
+        date: ISO8601ToDate(time)
+      }));
+      this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
+        const ret = {
+          type: s.type,
+          popupLabel: s.popupLabel,
+        }
+        switch (s.type) {
+          case "iframe":
+          case "url":
+            ret.url = s.url;
+            break;
+          case "attributes":
+            ret.attributes = s.attributes && s.attributes.map(a => ({
+              attribute: a.attribute,
+              label: a.label || a.attribute
+            }))
+            break;
+          default:
+            throw `Unsupported statistics type: ${s.type}`;
+        }
+        
+        return ret;
+      });
+    }
     this.visible = layerConfig.visible !== false;
-    this.wmsLegendStyle = layerConfig.wmsLegendStyle || null;
     this.legend = !this.wmsLegendStyle && layerConfig.legend || null;
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;
-    this.type = layerConfig.type || "WMS";
     this.active = false;
-
-    const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
-    this.times = tTimes.map(time => ({
-      humanReadable: time,
-      date: ISO8601ToDate(time)
-    }));
-    this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
-      const ret = {
-        type: s.type,
-        popupLabel: s.popupLabel,
-      }
-      switch (s.type) {
-        case "iframe":
-        case "url":
-          ret.url = s.url;
-          break;
-        case "attributes":
-          ret.attributes = s.attributes && s.attributes.map(a => ({
-            attribute: a.attribute,
-            label: a.label || a.attribute
-          }))
-          break;
-        default:
-          throw `Unsupported statistics type: ${s.type}`;
-      }
-      
-      return ret;
-    });
   }
 }
 
@@ -85,14 +89,11 @@ class Context {
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
     this.hasLegends = this.layers.some(layer => layer.legend || layer.wmsLegendStyle);
 
-    this.times = this.layers.reduce((contextTimes, l) => contextTimes.concat(l.times), [])
+    this.times = this.layers.filter(l => l.type === "WMS" && l.times.length)
+                            .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
                             // Remove duplicates
                             .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos)
-                            .sort((t1, t2) => {
-                              if (t1.date.getTime() === t2.date.getTime()) return 0;
-                              else if (t1.date.getTime() < t2.date.getTime()) return -1
-                              return 1
-                            });
+                            .sort((t1, t2) => t1.date - t2.date);
   }
 }
 

@@ -32,7 +32,7 @@ class OlLayerFactory {
           olAttributions.push(attribution);
         }
         source = new ol.source.TileWMS(({
-          url: layerConfig.baseUrl,
+          urls: layerConfig.urls,
           params: {
             'LAYERS': layerConfig.wmsName,
             'TILED': true,

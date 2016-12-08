@@ -4,7 +4,7 @@
     <banner></banner>
     <layerSelector></layerSelector>
     <contextInfoModal></contextInfoModal>
-    <mapInfo></mapInfo>
+    <featureInfo></featureInfo>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ import Banner from './components/Banner'
 import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
 import ContextInfoModal from './components/ContextInfoModal'
-import MapInfo from './components/MapInfo'
+import FeatureInfo from './components/FeatureInfo'
 
 export default {
   name: 'app',
@@ -22,7 +22,7 @@ export default {
     MapPane,
     LayerSelector,
     ContextInfoModal,
-    MapInfo
+    FeatureInfo
   },
   created () {
     this.$store.dispatch('getAllLayers');

@@ -30,6 +30,7 @@ import map from '../map'
 import httpRequest from '../httpRequest'
 import Modal from './Modal'
 import { config } from 'vue'
+import { defaultGeoServerURLs } from '../assets/config.json'
 
 // Add a vector layer to show the highlighted features
 const highlightOverlay = new ol.layer.Vector({
@@ -97,8 +98,7 @@ export default {
       if (process.env.NODE_ENV === 'development') {
         baseURL = '/gs/wms';
       } else {
-        // TODO get the baseURL from some config file
-        baseURL = map.getLayers().getArray()[0].getSource().getUrls()[0];
+        baseURL = defaultGeoServerURLs[0];
       }
 
       map.on('singleclick', event => {
@@ -171,7 +171,7 @@ export default {
             const t = [],
                   properties = feature.getProperties();
             for (let p in properties) {
-              if (properties.hasOwnProperty(p) && p !== 'the_geom') {
+              if (properties.hasOwnProperty(p) && p !== 'geometry') {
                 t.push({ label: p, value: properties[p]});
               }
             }

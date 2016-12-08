@@ -38,7 +38,7 @@ Vue.locale(lang, function() {
       try {
         resolve(JSON.parse(responseText));
       } catch(error) {
-        alert(`Error loading language file for ${lang}:\n${error}`);
+        alert(`Error loading app:\n${error}`);
         reject();
       } 
     }, (httpError) => {

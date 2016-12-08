@@ -1,0 +1,53 @@
+{
+  "exports": [
+    "ol.Attribution",
+    "ol.Map",
+    "ol.View",
+    "ol.layer.Tile",
+    "ol.layer.Vector",
+    "ol.source.OSM",
+    "ol.source.TileWMS",
+    "ol.source.BingMaps",
+    "ol.source.Vector",
+    "ol.control.defaults",
+    "ol.proj.fromLonLat",
+    "ol.Overlay",
+    "ol.format.GeoJSON",
+    "ol.Map#setTarget",
+    "ol.Map#addLayer",
+    "ol.Map#addOverlay",
+    "ol.Map#on",
+    "ol.Map#getSize",
+    "ol.Map#getLayers",
+    "ol.Map#getView",
+    "ol.layer.Layer#setVisible",
+    "ol.layer.Layer#getSource",
+    "ol.source.TileWMS#updateParams",
+    "ol.View#calculateExtent",
+    "ol.format.GeoJSON#readFeatures",
+    "ol.source.Vector#addFeatures",
+    "ol.Feature#getId",
+    "ol.Feature#getProperties",
+    "ol.Overlay#setPosition"
+  ],
+  "compile": {
+    "externs": [
+      "externs/bingmaps.js",
+      "externs/closure-compiler.js",
+      "externs/geojson.js",
+      "externs/oli.js",
+      "externs/olx.js"
+    ],
+    "define": [
+      "ol.DEBUG=false",
+      "ol.ENABLE_WEBGL=false",
+      "ol.ENABLE_PROJ4JS=false",
+      "ol.ENABLE_IMAGE=false"
+    ],
+    "extra_annotation_name": [
+      "api", "observable"
+    ],
+    "compilation_level": "ADVANCED",
+    "manage_closure_dependencies": true
+  }
+}

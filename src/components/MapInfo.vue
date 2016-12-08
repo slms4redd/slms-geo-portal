@@ -91,11 +91,9 @@ export default {
   },
   watch: {
     layers() {
-      const parser = new ol.format.WMSGetFeatureInfo(),
-            srcProjection = new ol.proj.Projection({ code: "EPSG:4326" }),
-            dstProjection = new ol.proj.Projection({ code: "EPSG:3857" });
-
+      const parser = new ol.format.GeoJSON();
       let baseURL;
+      
       if (process.env.NODE_ENV === 'development') {
         baseURL = '/gs/wms';
       } else {
@@ -116,37 +114,25 @@ export default {
                 layersStr = this.queryableLayers.map(layer => layer.wmsName).join(','),
                 url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1`
                        + `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5`
-                       + `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fvnd.ogc.gml&HEIGHT=${height}&WIDTH=${width}`
+                       + `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}`
                        + `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
 
           httpRequest(url, (responseText) => {
-            this.features = parser.readFeatures(responseText);
-            // Reproject the features from lat-lon to Google projection
-            this.features.forEach(feature => {
-              // ol3 bug workaround - see http://webmappingtutorial.blogspot.it/2015/08/swapping-coordinate-order-in-ol-3.html
-              feature.getGeometry().applyTransform((coords, _, stride) => {
-                for (let i = 0; i < coords.length; i += stride) {
-                  const y = coords[i];
-                  coords[i] = coords[i + 1];
-                  coords[i + 1] = y;
-                }
-              });
-              feature.getGeometry().transform(srcProjection, dstProjection);
-            });
+            const features = parser.readFeatures(responseText, { featureProjection: "EPSG:3857" });
 
             highlightOverlay.getSource().clear();
-            if (this.features.length) {
+            if (features.length) {
               // Highlight the features on the map
-              highlightOverlay.getSource().addFeatures(this.features);
+              highlightOverlay.getSource().addFeatures(features);
 
               // Look for the related layer config object (f.getId is of the form "provinces_simp.1")
-              this.selectedFeaturesLayers = this.features.map(f =>
+              this.selectedFeaturesLayers = features.map(f =>
                 this.layers.find(l =>
                   l.wmsName === f.getId().substring(0, f.getId().lastIndexOf('.'))));
 
               // Look for the related feature labels
               // Statistics is an array as more than one statistics per layer will be allowed in the very far future
-              this.selectedFeaturesLabels = this.features.map((feature, i) => {
+              this.selectedFeaturesLabels = features.map((feature, i) => {
                 const template = this.selectedFeaturesLayers[i].statistics[0].popupLabel;
                 if (template) {
                   return processTemplate(template, feature);
@@ -154,7 +140,9 @@ export default {
                   return feature.getId();
                 }
               });
-               overlay.setPosition(event.coordinate);
+
+              this.features = features;
+              overlay.setPosition(event.coordinate);
             } else {
               overlay.setPosition(undefined);
             }

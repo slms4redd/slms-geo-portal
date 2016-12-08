@@ -3,21 +3,17 @@
     <div v-if="isGroup" class="bold" @click="toggleGroup">
       {{isRoot ? $t("layerSelector.layers") : model.label}}
       [<span class="toggle">{{open ? '-' : '+'}}</span>]
-      <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo"><icon name="glyphicon-info-sign"></icon></span>
+      <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
     </div>
     <div v-else>
       <input v-bind:id="_uid" v-if="hasLayers" type="checkbox" v-model="active">
-      <!--img v-show="model.hasLegends && !active" v-on:click="toggleLegend" class="inline-legend" src="../assets/legend-off.png"-->
-      <!--img v-show="model.hasLegends && active" v-on:click="toggleLegend" class="inline-legend" src="../assets/legend-on.png"-->
-      <!--icon name="octicon-list-unordered"></icon-->
-      <span v-on:click="toggleLegend"><icon class="legend-link" v-bind:class="{ active }" v-show="model.hasLegends" name="glyphicon-list"></icon></span>
-
+      <span v-on:click="toggleLegend"><icon class="legend-link" v-bind:class="{active}" v-show="model.hasLegends" name="octicon-list-unordered"></icon></span>
       <label v-bind:for="_uid" :class="{dimmed: !hasLayers}">
         <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
         {{isRoot ? $t("layerSelector.layers") : model.label}}
       </label>
-      <span class="info-link" v-if="model.infoFile" v-on:click="showInfo"><icon name="glyphicon-info-sign"></icon></span>
-      <span class="times-button" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}"><icon class="icon" v-if="hasTimes" name="glyphicon-time"> {{selectedTime.humanReadable}}</span>
+      <span class="info-link" v-if="model.infoFile" v-on:click="showInfo"><icon name="octicon-info"></icon></span>
+      <span class="times-button" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}"><icon class="icon" v-if="hasTimes" name="octicon-clock"> {{selectedTime.humanReadable}}</span>
       <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="model.times" :selectedTime="selectedTime"></TimeSelect>
       <template v-if="model.hasLegends && active && showLegend">
         <ContextLegend :model="model"></ContextLegend>
@@ -39,7 +35,7 @@ export default {
   components: {
     ContextLegend,
     TimeSelect,
-    "icon": require("vue-icons")
+    "icon": require("vue-icons/icon")
   },
   props: {
     model: Object
@@ -105,7 +101,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../assets/global.scss";
+
 .item {
   cursor: default;
 }
@@ -129,8 +127,8 @@ ul {
   height: 20px;
   vertical-align: middle;
 }
-.info-link:hover, .times-button:hover, .times-button.active {
-  color: #ffa500;
+.info-link:hover, .times-button:hover {
+  color: $highlight-color;
 }
 .legend-link {
   color: #888;
@@ -139,12 +137,12 @@ ul {
   color: #fff;
 }
 .legend-link.active:hover {
-  color: #ffa500;
+  color: $highlight-color;
 }
 </style>
 <style>
 .info-link svg, .legend-link svg, .times-button svg {
   position: relative;
-  top: 5px;
+  top: 3px;
 }
 </style>

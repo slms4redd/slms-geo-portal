@@ -87,7 +87,7 @@ module.exports = {
     ]
   },
   callbackLoader:
-    require("vue-icons/icon-loader")(["glyphicon-time", "glyphicon-info-sign", "glyphicon-list"]),
+    require("vue-icons/icon-loader")(["octicon-clock", "octicon-info", "octicon-list-unordered"]),
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },

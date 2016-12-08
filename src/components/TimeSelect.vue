@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
-    <div class="dropdown-content">
-      <template v-for="time in times"><span @click="set(time)" v-bind:class="{ selected: time === selectedTime }">{{time.humanReadable}}</span><br></template>
+    <ul class="dropdown-content">
+      <li v-for="time in times"><span @click="set(time)" v-bind:class="{ selected: time === selectedTime }">{{time.humanReadable}}</span><br></li>
     </ul>
   </div>
 </template>
@@ -22,15 +22,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../assets/global.scss";
 
 .dropdown-content {
     right: 0;
     top: 0;
     color: #fff;
-    padding-left: 3px;
+    padding-left: 16px;
+    line-height: 18px;
+    list-style-type: none;
 }
 .selected {
-  font-weight: bold;
+  color: $highlight-color;
+}
+.selected:before {
+  content:"• ";
 }
 </style>

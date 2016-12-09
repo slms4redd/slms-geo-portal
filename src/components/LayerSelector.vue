@@ -45,6 +45,7 @@ export default {
   /*max-height: 500px;*/
   overflow: auto;
   border-radius: 5px;
+  backdrop-filter: blur(5px);
 }
 ul {
   padding-left: 1em;

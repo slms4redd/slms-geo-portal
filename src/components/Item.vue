@@ -1,17 +1,17 @@
 <template>
   <li>
-    <div v-if="isGroup" class="bold" @click="toggleGroup">
-      {{isRoot ? $t("layerSelector.layers") : model.label}}
-      [<span class="toggle">{{open ? '-' : '+'}}</span>]
+    <div v-if="isGroup" class="group" @click="toggleGroup">
+      <span class="line group-label">
+        <icon class="open-button" v-bind:name="open ? 'octicon-diff-removed' : 'octicon-diff-added'"></icon>
+        {{isRoot ? $t("layerSelector.layers") : model.label}}
+      </span>
       <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
     </div>
     <div v-else>
-      <input v-bind:id="_uid" v-if="hasLayers" type="checkbox" v-model="active">
+      <span v-on:click="toggleActive"><icon class="activate-button" v-bind:class="{highlighted, active}" name="octicon-check" v-if="hasLayers"></icon></span>
       <span v-on:click="toggleLegend"><icon class="legend-link" v-bind:class="{active}" v-show="model.hasLegends" name="octicon-list-unordered"></icon></span>
-      <label v-bind:for="_uid" :class="{dimmed: !hasLayers}">
-        <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
-        {{isRoot ? $t("layerSelector.layers") : model.label}}
-      </label>
+      <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
+      <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{model.label}}</span>
       <span class="info-link" v-if="model.infoFile" v-on:click="showInfo"><icon name="octicon-info"></icon></span>
       <span class="times-button" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}"><icon class="icon" v-if="hasTimes" name="octicon-clock"> {{selectedTime.humanReadable}}</span>
       <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="model.times" :selectedTime="selectedTime"></TimeSelect>
@@ -45,7 +45,8 @@ export default {
       open: !this.model.label,
       active: this.model.active,
       showLegend: false,
-      showTimeMenu: false
+      showTimeMenu: false,
+      highlighted: false
     }
   },
   computed: {
@@ -72,8 +73,14 @@ export default {
     ])
   },
   methods: {
+    highlightContext(highlight) {
+      this.highlighted = highlight;
+    },
     toggleGroup() {
       this.open = !this.open;
+    },
+    toggleActive() {
+      this.active = !this.active;
     },
     toggleLegend() {
       if (this.active) {
@@ -84,7 +91,6 @@ export default {
       this.$store.dispatch('showLayerInfo',  { label: this.model.label, fileName: this.model.infoFile });
     },
     toggleTimeMenu() {
-      console.log(this.showTimeMenu)
       this.showTimeMenu = !this.showTimeMenu;
     },
     setTime(time) {
@@ -104,10 +110,13 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/global.scss";
 
+.line {
+  white-space: nowrap;  
+}
 .item {
   cursor: default;
 }
-.bold {
+.group {
   font-weight: bold;
 }
 .dimmed {
@@ -131,12 +140,32 @@ ul {
   color: $highlight-color;
 }
 .legend-link {
-  color: #888;
+  color: #666;
 }
 .legend-link.active {
   color: #fff;
 }
 .legend-link.active:hover {
+  color: $highlight-color;
+}
+.open-button {
+  position: relative;
+  top: 3px;
+  color: #fff;
+}
+.group-label:hover .open-button {
+  color: $highlight-color;
+}
+.activate-button {
+  color: #666;
+}
+.activate-button.active {
+  color: #fff;
+}
+.activate-button.highlighted {
+  color: $highlight-color;
+}
+.activate-button:hover {
   color: $highlight-color;
 }
 </style>

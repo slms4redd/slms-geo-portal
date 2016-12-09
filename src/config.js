@@ -73,7 +73,7 @@ class Layer {
     this.legend = !this.wmsLegendStyle && layerConfig.legend || null;
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;
-    this.active = false;
+    // this.active = false;
   }
 }
 

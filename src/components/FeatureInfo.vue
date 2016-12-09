@@ -134,11 +134,7 @@ export default {
               // Statistics is an array as more than one statistics per layer will be allowed in the very far future
               this.selectedFeaturesLabels = features.map((feature, i) => {
                 const template = this.selectedFeaturesLayers[i].statistics[0].popupLabel;
-                if (template) {
-                  return processTemplate(template, feature);
-                } else {
-                  return feature.getId();
-                }
+                return template ? processTemplate(template, feature) : feature.getId();
               });
 
               this.features = features;

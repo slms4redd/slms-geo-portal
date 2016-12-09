@@ -5,9 +5,9 @@ class _Config {
   constructor(json) {
     this.layers = json.layers.map(layerConf => new Layer(layerConf));
     this.contexts = json.contexts.map(contextConf => new Context(contextConf, this.layers));
-    this.contexts.forEach(context => context.layers.forEach(layer => {
-      layer.active = context.active;
-    }));
+    // this.contexts.forEach(context => 
+    //   context.layers.forEach(layer =>
+    //     layer.active = context.active));
     this.groups = new Group(json.contextGroups, this.contexts);
   }
 }

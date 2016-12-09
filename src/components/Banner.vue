@@ -46,6 +46,7 @@ h1 {
   height: $banner-height;
   padding: 0;
   margin: 0;
+  backdrop-filter: blur(5px);
 }
 #header #title {
   margin: 10px;

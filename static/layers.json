@@ -1,388 +1,464 @@
 {
-  "layers": [{
-    "id": "blueMarble",
-    "wmsName": "blue_marble",
-    "imageFormat": "image/jpeg"
-  }, {
-    "id": "openstreetmap",
-    "type": "OSM"
-  }, {
-    "id": "bingAerial",
-    "type": "bing-aerial"
-  }, {
-    "id": "forestClassification",
-    "label": "FACET Forest Classification",
-    "wmsName": "facet_forest_classification",
-    "imageFormat": "image/png8",
-    "legend": "facet_forest_classification.png",
-    "sourceLink": "http://osfac.net/facet.html",
-    "sourceLabel": "FACET"
-  }, {
-    "id": "FnFMask1990",
-    "label": "DRC 1990 Forest non Forest Mask",
-    "wmsName": "RDC_FNF_1990_V008C",
-    "imageFormat": "image/png8",
-    "legend": "RDC_FnF.png",
-    "sourceLink": "http://rdc-snsf.org",
-    "sourceLabel": "DIAF DRC"
-  }, {
-    "id": "uclForestClassification",
-    "label": "UCL Forest Classification",
-    "wmsName": "ucl_forest_classification",
-    "imageFormat": "image/png8",
-    "wmsLegendStyle": "UCL_forest_classification_$(_lang)",
-    "legend": "ucl_2010.png",
-    "sourceLink": "http://sites.uclouvain.be/enge/map_server/UCL_RDC_classification.color.tif",
-    "sourceLabel": "UCL"
-  }, {
-    "id": "landsat",
-    "wmsTime":  "2000,2005",
-    "wmsName": "landsat",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://osfac.net/facet.html",
-    "sourceLabel": "FACET"
-  }, {
-    "id": "hillshade",
-    "wmsName": "color_hillshade",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://srtm.csi.cgiar.org/",
-    "sourceLabel": "CGIAR"
-  }, {
-    "id": "fire",
-    "label": "Fire",
-    "wmsName": "fires_2011",
-    "imageFormat": "image/png8",
-    "legend": "fire.png",
-    "sourceLink": "https://lpdaac.usgs.gov/products/modis_products_table/myd14a2",
-    "sourceLabel": "Thermal Anomalies and Fire"
-  }, {
-    "id": "deforestation",
-    "label": "Deforestation (Gross forest cover loss)",
-    "wmsName": "deforestation",
-    "imageFormat": "image/png8",
-    "legend": "deforestation.png",
-    "sourceLink": "http://osfac.net/facet.html",
-    "sourceLabel": "FACET"
-  }, {
-    "id": "trainingData",
-    "label": "National Training Data",
-    "wmsName": "nov_2011_workshop",
-    "imageFormat": "image/png8",
-    "legend": "nov_workshop_data.png"
-  }, {
-    "id": "reddPlusProjects",
-    "label": "REDD+ Projects",
-    "wmsName": "redd_plus_projects",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.observatoire-comifac.net/",
-    "sourceLabel": "OFAC"
-  }, {
-    "id": "reddPlusProjects_simp",
-    "wmsName": "redd_plus_projects_simp",
-    "imageFormat": "image/png8",
-    "visible": false
-  }, {
-    "id": "reddPlusInitiatives",
-    "label": "REDD+ Initiatives",
-    "wmsName": "redd_plus_initiatives",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.observatoire-comifac.net/",
-    "sourceLabel": "OFAC"
-  }, {
-    "id": "reddPlusInitiatives_simp",
-    "wmsName": "redd_plus_initiatives_simp",
-    "imageFormat": "image/png8",
-    "visible": false
-  }, {
-    "id": "hydrography",
-    "wmsName": "hydrography",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "intactForest",
-    "label": "Intact Forest",
-    "wmsTime": "2000,2005,2010",
-    "wmsName": "intact_forest",
-    "imageFormat": "image/png8",
-    "legend": "intact_forest.png",
-    "sourceLink": "http://www.intactforests.org/",
-    "sourceLabel": "www.intactforests.org"
-  }, {
-    "id": "loggingConcessions",
-    "label": "Logging Concessions",
-    "wmsName": "logging_concessions",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "loggingConcessions_simp",
-    "wmsName": "logging_concessions_simp",
-    "imageFormat": "image/png8",
-    "visible": false,
-    "statistics": [{
-      "type": "attributes",
-      "popupLabel": "Logging concession: $(SOCIETE)",
-      "attributes": [{
-        "label": "Company",
-        "attribute": "SOCIETE"
-      }, {
-        "label": "Area",
-        "attribute": "SUPERFICIE"
-      }]
-    }]
-  }, {
-    "id": "protectedAreas",
-    "label": "Protected Areas",
-    "wmsName": "protected_areas",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "protectedAreas_simp",
-    "wmsName": "protected_areas_simp",
-    "imageFormat": "image/png8",
-    "visible": false,
-    "statistics": [{
-      "type": "attributes"
-    }]
-  }, {
-    "id": "countryBoundaries",
-    "wmsName": "boundaries",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "administrativeUnits",
-    "wmsName": "admin_units",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "administrativeUnits_simp",
-    "wmsName": "admin_units_simp",
-    "imageFormat": "image/png8",
-    "visible": false
-  }, {
-    "id": "provinces",
-    "wmsName": "provinces",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "provinces_simp",
-    "wmsName": "provinces_simp",
-    "imageFormat": "image/png8",
-    "visible": false,
-    "statistics": [{
-      "type": "url",
-      "popupLabel": "Province: $(PROVINCE)",
-      "url": "http://localhost:8080/charts/$(_lang)/admin1/admin1_$(OBJECTID).html?name=$(PROVINCE)"
-    }]
-  }, {
-    "id": "roads",
-    "wmsName": "roads",
-    "imageFormat": "image/png8",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "settlements",
-    "label": "Settlements",
-    "wmsName": "settlements",
-    "imageFormat": "image/png8",
-    "legend": "settlements.png",
-    "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-    "sourceLabel": "WRI"
-  }, {
-    "id": "ecoregions",
-    "label": "Ecoregions",
-    "wmsName": "ecoregions",
-    "imageFormat": "image/png8",
-    "legend": "ecoregions.png",
-    "sourceLink": "http://www.worldwildlife.org/science/ecoregions/item1267.html)",
-    "sourceLabel": "WWF"
-  }, {
-    "id": "plots",
-    "label": "Plots",
-    "wmsName": "plots",
-    "imageFormat": "image/png8",
-    "queryDialogType": "custom"
-  }],
-  "contexts": [{
-    "id": "blueMarble",
-    "infoFile": "bluemarble_def.html",
-    "label": "Blue Marble",
-    "layers": ["blueMarble"]
-  }, {
-    "id": "facetForestClassification",
-    "infoFile": "forest_classification_def.html",
-    "label": "FACET Forest Classification",
-    "layers": ["forestClassification"],
-    "downloadLink": "/portal/static/data/gis/facet_forest_classification.tif.zip"
-  }, {
-    "id": "FnFMask1990",
-    "infoFile": "/RDC_FnF.html",
-    "label": "DRC 1990 Forest non Forest Mask",
-    "layers": ["FnFMask1990"]
-  }, {
-    "id": "uclForestClassification",
-    "infoFile": "ucl_2010_forest_classification_def.html",
-    "label": "UCL Forest Classification",
-    "layers": ["uclForestClassification"],
-    "downloadLink": "/portal/static/data/gis/ucl_forest_classification.tif.zip"
-  }, {
-    "id": "landsat",
-    "infoFile": "landsat_def.html",
-    "label": "Landsat",
-    "layers": ["landsat"]
-  }, {
-    "id": "hillshade",
-    "infoFile": "hillshade_def.html",
-    "label": "Hillshade",
-    "layers": ["hillshade"]
-  }, {
-    "id": "deforestation",
-    "infoFile": "deforestation_def.html",
-    "label": "Deforestation (Gross forest cover loss)",
-    "layers": ["deforestation"]
-  }, {
-    "id": "trainingData",
-    "infoFile": "training_data_def.html",
-    "label": "National Training Data",
-    "layers": ["trainingData"]
-  }, {
-    "id": "reddPlusProjects",
-    "infoFile": "redd_plus_projects_def.html",
-    "label": "REDD+ Projects",
-    "layers": ["reddPlusProjects", "reddPlusProjects_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=redd_plus_projects&TRANSPARENT=true"
-  }, {
-    "id": "reddPlusInitiatives",
-    "infoFile": "redd_plus_initiatives_def.html",
-    "label": "REDD+ Initiatives",
-    "layers": ["reddPlusInitiatives", "reddPlusInitiatives_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=redd_plus_initiatives&TRANSPARENT=true"
-  }, {
-    "id": "hydrography",
-    "infoFile": "hydrography_def.html",
-    "label": "Hydrography",
-    "layers": ["hydrography"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=hydrography&TRANSPARENT=true"
-  }, {
-    "id": "loggingConcessions",
-    "infoFile": "logging_concessions_def.html",
-    "label": "Logging Concessions",
-    "layers": ["loggingConcessions", "loggingConcessions_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=logging_concessions&TRANSPARENT=true"
-  }, {
-    "id": "protectedAreas",
-    "infoFile": "protected_areas_def.html",
-    "label": "Protected Areas",
-    "layers": ["protectedAreas", "protectedAreas_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=protected_areas&TRANSPARENT=true"
-  }, {
-    "id": "provinces",
-    "infoFile": "provinces_def.html",
-    "label": "Provinces",
-    "layers": ["provinces", "provinces_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=provinces&TRANSPARENT=true&RULE=border"
-  }, {
-    "id": "administrativeUnits",
-    "infoFile": "administrative_boundaries_def.html",
-    "label": "Administrative Units",
-    "layers": ["administrativeUnits", "administrativeUnits_simp"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=admin_units&TRANSPARENT=true"
-  }, {
-    "id": "countryBoundaries",
-    "active": true,
-    "infoFile": "country_boundaries_def.html",
-    "label": "Country Boundaries",
-    "layers": ["countryBoundaries"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=boundaries&TRANSPARENT=true"
-  }, {
-    "id": "roads",
-    "infoFile": "roads_def.html",
-    "label": "Roads",
-    "layers": ["roads"]
-  }, {
-    "id": "settlements",
-    "infoFile": "settlements_def.html",
-    "label": "Settlements",
-    "layers": ["settlements"]
-  }, {
-    "id": "intactForest",
-    "infoFile": "intact_forest_def.html",
-    "label": "Intact Forest",
-    "layers": ["intactForest"]
-  }, {
-    "id": "ecoregions",
-    "infoFile": "ecoregions_def.html",
-    "label": "Ecoregions",
-    "layers": ["ecoregions"]
-  }, {
-    "id": "reddPlusActivitiesDeforestation",
-    "infoFile": "data_not_available.html",
-    "label": "Deforestation (Gross forest cover loss)"
-  }, {
-    "id": "reddPlusActivitiesDegradation",
-    "infoFile": "data_not_available.html",
-    "label": "Degradation"
-  }, {
-    "id": "reddPlusActivitiesEnhancement",
-    "infoFile": "data_not_available.html",
-    "label": "Enhancement"
-  }, {
-    "id": "reddPlusActivitiesConservation",
-    "infoFile": "data_not_available.html",
-    "label": "Conservation"
-  }, {
-    "id": "reddPlusActivitiesSustainableForestManagement",
-    "infoFile": "data_not_available.html",
-    "label": "Sustainable Forest Management"
-  }, {
-    "id": "plots",
-    "label": "Plots",
-    "layers": ["plots"],
-    "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=plots&TRANSPARENT=true"
-  }, {
-    "id": "degradation",
-    "infoFile": "data_not_available.html",
-    "label": "Degradation"
-  }, {
-    "id": "regrowth",
-    "infoFile": "data_not_available.html",
-    "label": "regrowth"
-  }, {
-    "id": "conservation",
-    "infoFile": "data_not_available.html",
-    "label": "Conservation"
-  }, {
-    "id": "afforestation",
-    "infoFile": "afforestation_def.html",
-    "label": "Afforestation"
-  }, {
-    "id": "reforestation",
-    "infoFile": "reforestation_def.html",
-    "label": "Reforestation"
-  }, {
-    "id": "activeFire",
-    "infoFile": "fire_def.html",
-    "label": "Fire 2011",
-    "layers": ["fire"]
-  }, {
-    "id": "burntArea",
-    "infoFile": "data_not_available.html",
-    "label": "Burnt area"
-  }, {
-    "id": "openstreetmap",
-    "label": "OpenStreetMap",
-    "layers": ["openstreetmap"]
-  }, {
-    "id": "bingAerial",
-    "label": "Bing Aerial",
-    "layers": ["bingAerial"],
-    "active": true
-  }],
+  "$schema": "../layersJsonSchema.json",
+  "layers": [
+    {
+      "id": "blueMarble",
+      "wmsName": "blue_marble",
+      "imageFormat": "image/jpeg"
+    },
+    {
+      "id": "openstreetmap",
+      "type": "OSM"
+    },
+    {
+      "id": "bingAerial",
+      "type": "bing-aerial"
+    },
+    {
+      "id": "forestClassification",
+      "label": "FACET Forest Classification",
+      "wmsName": "facet_forest_classification",
+      "imageFormat": "image/png8",
+      "legend": "facet_forest_classification.png",
+      "sourceLink": "http://osfac.net/facet.html",
+      "sourceLabel": "FACET"
+    },
+    {
+      "id": "FnFMask1990",
+      "label": "DRC 1990 Forest non Forest Mask",
+      "wmsName": "RDC_FNF_1990_V008C",
+      "imageFormat": "image/png8",
+      "legend": "RDC_FnF.png",
+      "sourceLink": "http://rdc-snsf.org",
+      "sourceLabel": "DIAF DRC"
+    },
+    {
+      "id": "uclForestClassification",
+      "label": "UCL Forest Classification",
+      "wmsName": "ucl_forest_classification",
+      "imageFormat": "image/png8",
+      "wmsLegendStyle": "UCL_forest_classification_$(_lang)",
+      "legend": "ucl_2010.png",
+      "sourceLink": "http://sites.uclouvain.be/enge/map_server/UCL_RDC_classification.color.tif",
+      "sourceLabel": "UCL"
+    },
+    {
+      "id": "landsat",
+      "wmsTime":  "2000,2005",
+      "wmsName": "landsat",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://osfac.net/facet.html",
+      "sourceLabel": "FACET"
+    },
+    {
+      "id": "hillshade",
+      "wmsName": "color_hillshade",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://srtm.csi.cgiar.org/",
+      "sourceLabel": "CGIAR"
+    },
+    {
+      "id": "fire",
+      "label": "Fire",
+      "wmsName": "fires_2011",
+      "imageFormat": "image/png8",
+      "legend": "fire.png",
+      "sourceLink": "https://lpdaac.usgs.gov/products/modis_products_table/myd14a2",
+      "sourceLabel": "Thermal Anomalies and Fire"
+    },
+    {
+      "id": "deforestation",
+      "label": "Deforestation (Gross forest cover loss)",
+      "wmsName": "deforestation",
+      "imageFormat": "image/png8",
+      "legend": "deforestation.png",
+      "sourceLink": "http://osfac.net/facet.html",
+      "sourceLabel": "FACET"
+    },
+    {
+      "id": "trainingData",
+      "label": "National Training Data",
+      "wmsName": "nov_2011_workshop",
+      "imageFormat": "image/png8",
+      "legend": "nov_workshop_data.png"
+    },
+    {
+      "id": "reddPlusProjects",
+      "label": "REDD+ Projects",
+      "wmsName": "redd_plus_projects",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.observatoire-comifac.net/",
+      "sourceLabel": "OFAC"
+    },
+    {
+      "id": "reddPlusProjects_simp",
+      "wmsName": "redd_plus_projects_simp",
+      "imageFormat": "image/png8",
+      "visible": false
+    },
+    {
+      "id": "reddPlusInitiatives",
+      "label": "REDD+ Initiatives",
+      "wmsName": "redd_plus_initiatives",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.observatoire-comifac.net/",
+      "sourceLabel": "OFAC"
+    },
+    {
+      "id": "reddPlusInitiatives_simp",
+      "wmsName": "redd_plus_initiatives_simp",
+      "imageFormat": "image/png8",
+      "visible": false
+    },
+    {
+      "id": "hydrography",
+      "wmsName": "hydrography",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "intactForest",
+      "label": "Intact Forest",
+      "wmsTime": "2000,2005,2010",
+      "wmsName": "intact_forest",
+      "imageFormat": "image/png8",
+      "legend": "intact_forest.png",
+      "sourceLink": "http://www.intactforests.org/",
+      "sourceLabel": "www.intactforests.org"
+    },
+    {
+      "id": "loggingConcessions",
+      "label": "Logging Concessions",
+      "wmsName": "logging_concessions",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "loggingConcessions_simp",
+      "wmsName": "logging_concessions_simp",
+      "imageFormat": "image/png8",
+      "visible": false,
+      "statistics": [
+        {
+          "type": "attributes",
+          "popupLabel": "Logging concession: $(SOCIETE)",
+          "attributes": [
+            {
+              "label": "Company",
+              "attribute": "SOCIETE"
+            },
+            {
+              "label": "Area",
+              "attribute": "SUPERFICIE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "protectedAreas",
+      "label": "Protected Areas",
+      "wmsName": "protected_areas",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "protectedAreas_simp",
+      "wmsName": "protected_areas_simp",
+      "imageFormat": "image/png8",
+      "visible": false,
+      "statistics": [
+        {
+          "type": "attributes"
+        }
+      ]
+    },
+    {
+      "id": "countryBoundaries",
+      "wmsName": "boundaries",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "administrativeUnits",
+      "wmsName": "admin_units",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "administrativeUnits_simp",
+      "wmsName": "admin_units_simp",
+      "imageFormat": "image/png8",
+      "visible": false
+    },
+    {
+      "id": "provinces",
+      "wmsName": "provinces",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "provinces_simp",
+      "wmsName": "provinces_simp",
+      "imageFormat": "image/png8",
+      "visible": false,
+      "statistics": [
+        {
+          "type": "url",
+          "popupLabel": "Province: $(PROVINCE)",
+          "url": "http://localhost:8080/charts/$(_lang)/admin1/admin1_$(OBJECTID).html?name=$(PROVINCE)"
+        }
+      ]
+    },
+    {
+      "id": "roads",
+      "wmsName": "roads",
+      "imageFormat": "image/png8",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "settlements",
+      "label": "Settlements",
+      "wmsName": "settlements",
+      "imageFormat": "image/png8",
+      "legend": "settlements.png",
+      "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
+      "sourceLabel": "WRI"
+    },
+    {
+      "id": "ecoregions",
+      "label": "Ecoregions",
+      "wmsName": "ecoregions",
+      "imageFormat": "image/png8",
+      "legend": "ecoregions.png",
+      "sourceLink": "http://www.worldwildlife.org/science/ecoregions/item1267.html",
+      "sourceLabel": "WWF"
+    },
+    {
+      "id": "plots",
+      "label": "Plots",
+      "wmsName": "plots",
+      "imageFormat": "image/png8"
+    }
+  ],
+  "contexts": [
+    {
+      "id": "blueMarble",
+      "infoFile": "bluemarble_def.html",
+      "label": "Blue Marble",
+      "layers": [ "blueMarble" ]
+    },
+    {
+      "id": "facetForestClassification",
+      "infoFile": "forest_classification_def.html",
+      "label": "FACET Forest Classification",
+      "layers": [ "forestClassification" ],
+      "downloadUrl": "/portal/static/data/gis/facet_forest_classification.tif.zip"
+    },
+    {
+      "id": "FnFMask1990",
+      "infoFile": "/RDC_FnF.html",
+      "label": "DRC 1990 Forest non Forest Mask",
+      "layers": [ "FnFMask1990" ]
+    },
+    {
+      "id": "uclForestClassification",
+      "infoFile": "ucl_2010_forest_classification_def.html",
+      "label": "UCL Forest Classification",
+      "layers": [ "uclForestClassification" ],
+      "downloadUrl": "/portal/static/data/gis/ucl_forest_classification.tif.zip"
+    },
+    {
+      "id": "landsat",
+      "infoFile": "landsat_def.html",
+      "label": "Landsat",
+      "layers": [ "landsat" ]
+    },
+    {
+      "id": "hillshade",
+      "infoFile": "hillshade_def.html",
+      "label": "Hillshade",
+      "layers": [ "hillshade" ]
+    },
+    {
+      "id": "deforestation",
+      "infoFile": "deforestation_def.html",
+      "label": "Deforestation (Gross forest cover loss)",
+      "layers": [ "deforestation" ]
+    },
+    {
+      "id": "trainingData",
+      "infoFile": "training_data_def.html",
+      "label": "National Training Data",
+      "layers": [ "trainingData" ]
+    },
+    {
+      "id": "reddPlusProjects",
+      "infoFile": "redd_plus_projects_def.html",
+      "label": "REDD+ Projects",
+      "layers": [ "reddPlusProjects", "reddPlusProjects_simp" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=redd_plus_projects&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "reddPlusInitiatives",
+      "infoFile": "redd_plus_initiatives_def.html",
+      "label": "REDD+ Initiatives",
+      "layers": [ "reddPlusInitiatives", "reddPlusInitiatives_simp" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=redd_plus_initiatives&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "hydrography",
+      "infoFile": "hydrography_def.html",
+      "label": "Hydrography",
+      "layers": [ "hydrography" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=hydrography&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "loggingConcessions",
+      "infoFile": "logging_concessions_def.html",
+      "label": "Logging Concessions",
+      "layers": [ "loggingConcessions", "loggingConcessions_simp" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=logging_concessions&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "protectedAreas",
+      "infoFile": "protected_areas_def.html",
+      "label": "Protected Areas",
+      "layers": [ "protectedAreas", "protectedAreas_simp" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=protected_areas&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "provinces",
+      "infoFile": "provinces_def.html",
+      "label": "Provinces",
+      "layers": [ "provinces", "provinces_simp" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=provinces&TRANSPARENT=true&RULE=border&legend_options=dpi:180"
+    },
+    {
+      "id": "administrativeUnits",
+      "infoFile": "administrative_boundaries_def.html",
+      "label": "Administrative Units",
+      "layers": [ "administrativeUnits", "administrativeUnits_simp" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=admin_units&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "countryBoundaries",
+      "active": true,
+      "infoFile": "country_boundaries_def.html",
+      "label": "Country Boundaries",
+      "layers": [ "countryBoundaries" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=boundaries&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "roads",
+      "infoFile": "roads_def.html",
+      "label": "Roads",
+      "layers": [ "roads" ]
+    },
+    {
+      "id": "settlements",
+      "infoFile": "settlements_def.html",
+      "label": "Settlements",
+      "layers": [ "settlements" ]
+    },
+    {
+      "id": "intactForest",
+      "infoFile": "intact_forest_def.html",
+      "label": "Intact Forest",
+      "layers": [ "intactForest" ]
+    },
+    {
+      "id": "ecoregions",
+      "infoFile": "ecoregions_def.html",
+      "label": "Ecoregions",
+      "layers": [ "ecoregions" ]
+    },
+    {
+      "id": "reddPlusActivitiesDeforestation",
+      "infoFile": "data_not_available.html",
+      "label": "Deforestation (Gross forest cover loss)"
+    },
+    {
+      "id": "reddPlusActivitiesDegradation",
+      "infoFile": "data_not_available.html",
+      "label": "Degradation"
+    },
+    {
+      "id": "reddPlusActivitiesEnhancement",
+      "infoFile": "data_not_available.html",
+      "label": "Enhancement"
+    },
+    {
+      "id": "reddPlusActivitiesConservation",
+      "infoFile": "data_not_available.html",
+      "label": "Conservation"
+    },
+    {
+      "id": "reddPlusActivitiesSustainableForestManagement",
+      "infoFile": "data_not_available.html",
+      "label": "Sustainable Forest Management"
+    },
+    {
+      "id": "plots",
+      "label": "Plots",
+      "layers": [ "plots" ],
+      "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=plots&TRANSPARENT=true&legend_options=dpi:180"
+    },
+    {
+      "id": "degradation",
+      "infoFile": "data_not_available.html",
+      "label": "Degradation"
+    },
+    {
+      "id": "regrowth",
+      "infoFile": "data_not_available.html",
+      "label": "regrowth"
+    },
+    {
+      "id": "conservation",
+      "infoFile": "data_not_available.html",
+      "label": "Conservation"
+    },
+    {
+      "id": "afforestation",
+      "infoFile": "afforestation_def.html",
+      "label": "Afforestation"
+    },
+    {
+      "id": "reforestation",
+      "infoFile": "reforestation_def.html",
+      "label": "Reforestation"
+    },
+    {
+      "id": "activeFire",
+      "infoFile": "fire_def.html",
+      "label": "Fire 2011",
+      "layers": [ "fire" ]
+    },
+    {
+      "id": "burntArea",
+      "infoFile": "data_not_available.html",
+      "label": "Burnt area"
+    },
+    {
+      "id": "openstreetmap",
+      "label": "OpenStreetMap",
+      "layers": [ "openstreetmap" ]
+    },
+    {
+      "id": "bingAerial",
+      "label": "Bing Aerial",
+      "layers": [ "bingAerial" ],
+      "active": true
+    }
+  ],
   "contextGroups": 
   {
     "items": [
@@ -400,7 +476,8 @@
             { "context": "hillshade" }
           ]
         }
-      }, {
+      },
+      {
         "group": {
           "label": "Administrative Areas",
           "items": [
@@ -409,7 +486,8 @@
             { "context": "administrativeUnits" }
           ]
         }
-      }, {
+      },
+      {
         "group": {
           "label": "REDD+ Initiatives",
           "infoFile" : "redd_plus_activities_def.html",
@@ -421,7 +499,8 @@
             { "context": "reddPlusActivitiesSustainableForestManagement" }
           ]
         }
-      }, {
+      },
+      {
         "group": {
           "label": "REDD+ Registry",
           "items": [
@@ -429,7 +508,8 @@
             { "context": "reddPlusInitiatives" }
           ]
         }
-      }, {
+      },
+      {
         "group": {
           "label": "Forest area and forest area change",
           "infoFile": "forest_area_and_forest_area_changes_def.html",
@@ -443,7 +523,8 @@
                   { "context": "conservation" }
                 ]
               }
-            }, {
+            },
+            {
               "group": {
                 "label": "Forest land converted to non-forest land",
                 "items": [
@@ -452,7 +533,8 @@
                   { "context": "intactForest" }
                 ]
               }
-            }, {
+            },
+            {
               "group": {
                 "label": "Non-forest land converted to forest land",
                 "items": [
@@ -460,7 +542,8 @@
                   { "context": "reforestation" }
                 ]
               }
-            }, {
+            },
+            {
               "group": {
                 "label": "Biomass fire",
                 "items": [
@@ -471,7 +554,8 @@
             }
           ]
         }
-      }, {
+      },
+      {
         "group": {
           "label": "Other",
           "items": [

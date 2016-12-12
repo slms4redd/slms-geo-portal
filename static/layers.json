@@ -381,7 +381,7 @@
     "id": "bingAerial",
     "label": "Bing Aerial",
     "layers": ["bingAerial"],
-    "active": true
+    "active": false
   }],
   "contextGroups": 
   {

@@ -86,7 +86,11 @@
           "type": "string"
         },
         "legend": {
-          "type": "string"
+          "type": "object",
+          "oneOf": [
+            { "$ref": "#/definitions/wmsLegend" },
+            { "$ref": "#/definitions/urlLegend" }
+          ]
         },
         "sourceLink": {
           "type": "string"
@@ -214,6 +218,26 @@
         "popupLabel": {
           "type": "string"
         },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["type", "url"]
+    },
+    "wmsLegend": {
+      "properties": {
+        "type": { "enum": ["wms"] },
+        "style": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["type", "style"]
+    },
+    "urlLegend": {
+      "properties": {
+        "type": { "enum": ["url"] },
         "url": {
           "type": "string"
         }

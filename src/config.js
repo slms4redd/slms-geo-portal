@@ -29,7 +29,6 @@ const ISO8601ToDate = function(dateString) {
   throw "Invalid date";
 };
 
-
 class Layer {
   constructor(layerConfig) {
     this.type = layerConfig.type || "WMS";
@@ -38,8 +37,8 @@ class Layer {
     if (this.type === "WMS") {
       this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null); 
       this.wmsName = layerConfig.wmsName || null;
-      this.imageFormat = layerConfig.imageFormat || 'image/png8';
-      this.wmsLegendStyle = layerConfig.wmsLegendStyle || null;
+      this.imageFormat = layerConfig.imageFormat || 'image/png8';      
+      this.legend = layerConfig.legend || null; // TODO check structure
 
       const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
       this.times = tTimes.map(time => ({
@@ -70,10 +69,8 @@ class Layer {
       });
     }
     this.visible = layerConfig.visible !== false;
-    this.legend = !this.wmsLegendStyle && layerConfig.legend || null;
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;
-    // this.active = false;
   }
 }
 
@@ -108,8 +105,8 @@ class Group {
       }
       return item.group && new Group(item.group, contexts);
     });
-    // Silently remove undefined values from the array
-    this.items = tItems.filter(x => x)
+    // Silently remove undefined values (unmatched contexts) from the array
+    this.items = tItems.filter(x => x);
   }
 }
 

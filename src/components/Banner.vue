@@ -4,7 +4,10 @@
       <h1>{{$t("banner.title")}}</h1>
     </div>
     <ul id="languageLinks">
-      <li v-for="language in languages"><a :href="'?lang=' + language.id">{{language.label}}</a></li>
+      <li v-for="language in languages">
+        <span v-if="language.id === selectedLanguage" :href="'?lang=' + language.id">{{language.label}}</span>
+        <a v-else :href="'?lang=' + language.id">{{language.label}}</a>
+      </li>
       <!-- <li v-for="language in languages" @click="setLanguage(language.id)">{{language.label}}</li> -->
     </ul>
   </div>
@@ -17,7 +20,8 @@ import { config } from 'vue'
 export default {
   data() {
     return {
-      languages: languages
+      languages: languages,
+      selectedLanguage: config.lang
     }
   },
   methods: {
@@ -26,7 +30,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -38,7 +41,7 @@ h1 {
 #header {
   background: rgb(0, 0, 0);
   background: rgba(0, 0, 0, 0.5);
-  color: white;
+  color: #eaeaea;
   position: fixed;
   top: 0;
   left: 0;
@@ -46,6 +49,7 @@ h1 {
   height: $banner-height;
   padding: 0;
   margin: 0;
+  white-space: nowrap;
   backdrop-filter: blur(5px);
 }
 #header #title {
@@ -68,7 +72,15 @@ ul#languageLinks li {
   margin-left: 10px;
 }
 ul#languageLinks li a {
-  color: white;
+  color: #aaa;
   text-decoration: none;
+}
+ul#languageLinks li span {
+  color: #ececec;
+  cursor: default;
+  text-decoration: none;
+}
+ul#languageLinks li a:hover {
+  color: $highlight-color;
 }
 </style>

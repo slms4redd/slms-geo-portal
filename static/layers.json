@@ -19,7 +19,7 @@
       "label": "FACET Forest Classification",
       "wmsName": "facet_forest_classification",
       "imageFormat": "image/png8",
-      "legend": "facet_forest_classification.png",
+      "legend": { "type": "url", "url": "facet_forest_classification.png" },
       "sourceLink": "http://osfac.net/facet.html",
       "sourceLabel": "FACET"
     },
@@ -28,7 +28,7 @@
       "label": "DRC 1990 Forest non Forest Mask",
       "wmsName": "RDC_FNF_1990_V008C",
       "imageFormat": "image/png8",
-      "legend": "RDC_FnF.png",
+      "legend": { "type": "url", "url": "RDC_FnF.png" },
       "sourceLink": "http://rdc-snsf.org",
       "sourceLabel": "DIAF DRC"
     },
@@ -37,8 +37,7 @@
       "label": "UCL Forest Classification",
       "wmsName": "ucl_forest_classification",
       "imageFormat": "image/png8",
-      "wmsLegendStyle": "UCL_forest_classification_$(_lang)",
-      "legend": "ucl_2010.png",
+      "legend": { "type": "wms", "style": "UCL_forest_classification_$(_lang)" },
       "sourceLink": "http://sites.uclouvain.be/enge/map_server/UCL_RDC_classification.color.tif",
       "sourceLabel": "UCL"
     },
@@ -62,7 +61,7 @@
       "label": "Fire",
       "wmsName": "fires_2011",
       "imageFormat": "image/png8",
-      "legend": "fire.png",
+      "legend": { "type": "url", "url": "fire.png" },
       "sourceLink": "https://lpdaac.usgs.gov/products/modis_products_table/myd14a2",
       "sourceLabel": "Thermal Anomalies and Fire"
     },
@@ -71,7 +70,7 @@
       "label": "Deforestation (Gross forest cover loss)",
       "wmsName": "deforestation",
       "imageFormat": "image/png8",
-      "legend": "deforestation.png",
+      "legend": { "type": "url", "url": "deforestation.png" },
       "sourceLink": "http://osfac.net/facet.html",
       "sourceLabel": "FACET"
     },
@@ -80,7 +79,7 @@
       "label": "National Training Data",
       "wmsName": "nov_2011_workshop",
       "imageFormat": "image/png8",
-      "legend": "nov_workshop_data.png"
+      "legend": { "type": "url", "url": "nov_workshop_data.png" }
     },
     {
       "id": "reddPlusProjects",
@@ -123,7 +122,7 @@
       "wmsTime": "2000,2005,2010",
       "wmsName": "intact_forest",
       "imageFormat": "image/png8",
-      "legend": "intact_forest.png",
+      "legend": { "type": "url", "url": "intact_forest.png" },
       "sourceLink": "http://www.intactforests.org/",
       "sourceLabel": "www.intactforests.org"
     },
@@ -228,7 +227,7 @@
       "label": "Settlements",
       "wmsName": "settlements",
       "imageFormat": "image/png8",
-      "legend": "settlements.png",
+      "legend": { "type": "url", "url": "settlements.png" },
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
     },
@@ -237,7 +236,7 @@
       "label": "Ecoregions",
       "wmsName": "ecoregions",
       "imageFormat": "image/png8",
-      "legend": "ecoregions.png",
+      "legend": { "type": "url", "url": "ecoregions.png" },
       "sourceLink": "http://www.worldwildlife.org/science/ecoregions/item1267.html",
       "sourceLabel": "WWF"
     },

@@ -79,7 +79,7 @@
         "baseUrl": {
           "type": "string"
         },
-        "wmsName": {
+        "name": {
           "type": "string"
         },
         "imageFormat": {
@@ -156,7 +156,7 @@
           { "$ref": "#/definitions/group" },
           { "$ref": "#/definitions/context" }
         ]
-      } 
+      }
     },
     "context": {
       "type": "object",

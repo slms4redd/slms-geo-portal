@@ -35,9 +35,9 @@ class Layer {
     this.id = layerConfig.id;
     this.label = layerConfig.label || null;
     if (this.type === "WMS") {
-      this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null); 
-      this.wmsName = layerConfig.wmsName || null;
-      this.imageFormat = layerConfig.imageFormat || 'image/png8';      
+      this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null);
+      this.wmsName = layerConfig.wmsName || layerConfig.name || null;
+      this.imageFormat = layerConfig.imageFormat || 'image/png8';
       this.legend = layerConfig.legend || null; // TODO check structure
 
       const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
@@ -51,7 +51,7 @@ class Layer {
           popupLabel: s.popupLabel,
         }
         switch (s.type) {
-          case "iframe":
+          case "iframe": // TODO backward compatibility - delete it
           case "url":
             ret.url = s.url;
             break;
@@ -82,7 +82,7 @@ class Context {
     this.label = contextConfig.label;
     const tLayers = contextConfig.layers && contextConfig.layers.map(id => _findById(layers, id))
                                                                 .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
-    this.layers = tLayers || []; 
+    this.layers = tLayers || [];
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
     this.hasLegends = this.layers.some(layer => layer.legend || layer.wmsLegendStyle);
 

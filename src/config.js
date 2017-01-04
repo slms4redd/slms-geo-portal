@@ -34,9 +34,10 @@ class Layer {
     this.type = layerConfig.type || "WMS";
     this.id = layerConfig.id;
     this.label = layerConfig.label || null;
+
     if (this.type === "WMS") {
       this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null); 
-      this.wmsName = layerConfig.wmsName || null;
+      this.wmsName = layerConfig.wmsName || layerConfig.name || null;
       this.imageFormat = layerConfig.imageFormat || 'image/png8';      
       this.legend = layerConfig.legend || null; // TODO check structure
 
@@ -68,6 +69,40 @@ class Layer {
         return ret;
       });
     }
+
+    if (this.type === "vector-tiles") {
+      this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null); 
+      this.name = layerConfig.name || null;
+
+      const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
+      this.times = tTimes.map(time => ({
+        humanReadable: time,
+        date: ISO8601ToDate(time)
+      }));
+      this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
+        const ret = {
+          type: s.type,
+          popupLabel: s.popupLabel,
+        }
+        switch (s.type) {
+          case "iframe":
+          case "url":
+            ret.url = s.url;
+            break;
+          case "attributes":
+            ret.attributes = s.attributes && s.attributes.map(a => ({
+              attribute: a.attribute,
+              label: a.label || a.attribute
+            }))
+            break;
+          default:
+            throw `Unsupported statistics type: ${s.type}`;
+        }
+        
+        return ret;
+      });
+    }
+
     this.visible = layerConfig.visible !== false;
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;

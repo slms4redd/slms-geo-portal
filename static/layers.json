@@ -184,6 +184,11 @@
     },
     {
       "id": "administrativeUnits",
+      "type": "vector-tiles",
+      "name": "cite:admin_units"
+    },
+    {
+      "id": "administrativeUnits_",
       "wmsName": "admin_units",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",

@@ -23,11 +23,16 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/gs': {
-        target: 'ttp://rdc-snsf.org/diss_geoserver/',
+        target: 'http://rdc-snsf.org/diss_geoserver/',
         changeOrigin: true,
         pathRewrite: { '^/gs': '' }
       },
-      '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true }
+      '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true },
+      '/local-gs': {
+        target: 'http://localhost:8081/geoserver/',
+        changeOrigin: true,
+        pathRewrite: { '^/local-gs': '' }
+      }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

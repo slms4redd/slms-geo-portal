@@ -94,7 +94,7 @@ export default {
     layers() {
       const parser = new ol.format.GeoJSON();
       let baseURL;
-      
+
       if (process.env.NODE_ENV === 'development') {
         baseURL = '/gs/wms';
       } else {
@@ -111,7 +111,7 @@ export default {
                 [width, height] = mapSize,
                 [evtx, evty] = event.pixel,
                 extent = map.getView().calculateExtent(mapSize),
-                layersStr = this.queryableLayers.map(layer => layer.wmsName).join(','),
+                layersStr = this.queryableLayers.map(layer => layer.name).join(','),
                 url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1`
                        + `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5`
                        + `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}`
@@ -128,7 +128,7 @@ export default {
               // Look for the related layer config object (f.getId is of the form "provinces_simp.1")
               this.selectedFeaturesLayers = features.map(f =>
                 this.layers.find(l =>
-                  l.wmsName === f.getId().substring(0, f.getId().lastIndexOf('.'))));
+                  l.name === f.getId().substring(0, f.getId().lastIndexOf('.'))));
 
               // Look for the related feature labels
               // Statistics is an array as more than one statistics per layer will be allowed in the very far future
@@ -251,7 +251,7 @@ export default {
   th, td {
     font-size:14px;
   }
-  th { 
+  th {
     padding-right: 9px;
   }
   .caption {

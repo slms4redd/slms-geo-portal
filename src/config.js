@@ -9,7 +9,7 @@ const ISO8601ToDate = function(dateString) {
     const date = new Date(+d[1], 0, 1);
     let offset = 0,
         time;
-  
+
     if (d[3])  { date.setMonth(+d[3] - 1); }
     if (d[5])  { date.setDate(+d[5]); }
     if (d[7])  { date.setHours(+d[7]); }
@@ -20,7 +20,7 @@ const ISO8601ToDate = function(dateString) {
       offset = (+d[16] * 60) + +d[17];
       offset *= ((d[15] === '-') ? 1 : -1);
     }
-  
+
     offset -= date.getTimezoneOffset();
     time = +date + offset * 60 * 1000;
 
@@ -36,7 +36,7 @@ class Layer {
     this.label = layerConfig.label || null;
     if (this.type === "WMS") {
       this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null);
-      this.wmsName = layerConfig.wmsName || layerConfig.name || null;
+      this.name = layerConfig.wmsName || layerConfig.name || null;
       this.imageFormat = layerConfig.imageFormat || 'image/png8';
       this.legend = layerConfig.legend || null; // TODO check structure
 
@@ -64,7 +64,7 @@ class Layer {
           default:
             throw `Unsupported statistics type: ${s.type}`;
         }
-        
+
         return ret;
       });
     }

@@ -70,9 +70,10 @@ class Layer {
       });
     }
 
-    if (this.type === "vector-tiles") {
+    if (this.type === "vectorTiles") {
       this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null);
       this.name = layerConfig.name || null;
+      this.style = layerConfig.style;
 
       const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
       this.times = tTimes.map(time => ({
@@ -119,7 +120,7 @@ class Context {
                                                                 .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
     this.layers = tLayers || [];
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
-    this.hasLegends = this.layers.some(layer => layer.legend || layer.wmsLegendStyle);
+    this.hasLegends = this.layers.some(layer => layer.legend);
 
     this.times = this.layers.filter(l => l.type === "WMS" && l.times.length)
                             .reduce((contextTimes, l) => contextTimes.concat(l.times), [])

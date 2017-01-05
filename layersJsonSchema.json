@@ -10,6 +10,7 @@
       "items": {
         "oneOf": [
           { "$ref": "#/definitions/wms" },
+          { "$ref": "#/definitions/vectorTiles" },
           { "$ref": "#/definitions/bingAerial" },
           { "$ref": "#/definitions/osm" }
         ]
@@ -98,14 +99,73 @@
         "sourceLabel": {
           "type": "string"
         },
-        "wmsLegendStyle": {
-          "type": "string"
-        },
         "wmsTime": {
           "type": "string"
         },
         "visible": {
           "type": "boolean"
+        },
+        "statistics": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/definitions/attributesStatistics" },
+              { "$ref": "#/definitions/urlStatistics" }
+            ]
+          }
+        }
+      },
+      "required": ["id", "name"],
+      "additionalProperties": false
+    },
+    "vectorTiles": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["vectorTiles"] },
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "baseUrl": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "sourceLink": {
+          "type": "string"
+        },
+        "sourceLabel": {
+          "type": "string"
+        },
+        "style": {
+          "type": "object",
+          "properties": {
+            "stroke": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "fill": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         },
         "statistics": {
           "type": "array",

@@ -184,8 +184,19 @@
     },
     {
       "id": "administrativeUnits",
-      "type": "vector-tiles",
-      "name": "cite:admin_units"
+      "type": "vectorTiles",
+      "name": "cite:admin_units",
+      "style": {
+        "stroke": {
+          "color": "#0ff00f",
+          "width": 1
+        }
+      },
+      "statistics": [
+        {
+          "type": "attributes"
+        }
+      ]
     },
     {
       "id": "administrativeUnits_",

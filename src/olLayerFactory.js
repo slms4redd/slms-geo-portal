@@ -36,7 +36,7 @@ class OlLayerFactory {
           source = new ol.source.TileWMS(({
             urls: layerConfig.urls,
             params: {
-              'LAYERS': layerConfig.wmsName,
+              'LAYERS': layerConfig.name,
               'TILED': true,
               'VERSION': '1.3.0',
               'FORMAT': layerConfig.imageFormat,

@@ -3,7 +3,7 @@
   "layers": [
     {
       "id": "blueMarble",
-      "wmsName": "blue_marble",
+      "name": "blue_marble",
       "imageFormat": "image/jpeg"
     },
     {
@@ -17,7 +17,7 @@
     {
       "id": "forestClassification",
       "label": "FACET Forest Classification",
-      "wmsName": "facet_forest_classification",
+      "name": "facet_forest_classification",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "facet_forest_classification.png" },
       "sourceLink": "http://osfac.net/facet.html",
@@ -26,7 +26,7 @@
     {
       "id": "FnFMask1990",
       "label": "DRC 1990 Forest non Forest Mask",
-      "wmsName": "RDC_FNF_1990_V008C",
+      "name": "RDC_FNF_1990_V008C",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "RDC_FnF.png" },
       "sourceLink": "http://rdc-snsf.org",
@@ -35,7 +35,7 @@
     {
       "id": "uclForestClassification",
       "label": "UCL Forest Classification",
-      "wmsName": "ucl_forest_classification",
+      "name": "ucl_forest_classification",
       "imageFormat": "image/png8",
       "legend": { "type": "wms", "style": "UCL_forest_classification_$(_lang)" },
       "sourceLink": "http://sites.uclouvain.be/enge/map_server/UCL_RDC_classification.color.tif",
@@ -44,14 +44,14 @@
     {
       "id": "landsat",
       "wmsTime":  "2000,2005",
-      "wmsName": "landsat",
+      "name": "landsat",
       "imageFormat": "image/png8",
       "sourceLink": "http://osfac.net/facet.html",
       "sourceLabel": "FACET"
     },
     {
       "id": "hillshade",
-      "wmsName": "color_hillshade",
+      "name": "color_hillshade",
       "imageFormat": "image/png8",
       "sourceLink": "http://srtm.csi.cgiar.org/",
       "sourceLabel": "CGIAR"
@@ -59,7 +59,7 @@
     {
       "id": "fire",
       "label": "Fire",
-      "wmsName": "fires_2011",
+      "name": "fires_2011",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "fire.png" },
       "sourceLink": "https://lpdaac.usgs.gov/products/modis_products_table/myd14a2",
@@ -68,7 +68,7 @@
     {
       "id": "deforestation",
       "label": "Deforestation (Gross forest cover loss)",
-      "wmsName": "deforestation",
+      "name": "deforestation",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "deforestation.png" },
       "sourceLink": "http://osfac.net/facet.html",
@@ -77,41 +77,41 @@
     {
       "id": "trainingData",
       "label": "National Training Data",
-      "wmsName": "nov_2011_workshop",
+      "name": "nov_2011_workshop",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "nov_workshop_data.png" }
     },
     {
       "id": "reddPlusProjects",
       "label": "REDD+ Projects",
-      "wmsName": "redd_plus_projects",
+      "name": "redd_plus_projects",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.observatoire-comifac.net/",
       "sourceLabel": "OFAC"
     },
     {
       "id": "reddPlusProjects_simp",
-      "wmsName": "redd_plus_projects_simp",
+      "name": "redd_plus_projects_simp",
       "imageFormat": "image/png8",
       "visible": false
     },
     {
       "id": "reddPlusInitiatives",
       "label": "REDD+ Initiatives",
-      "wmsName": "redd_plus_initiatives",
+      "name": "redd_plus_initiatives",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.observatoire-comifac.net/",
       "sourceLabel": "OFAC"
     },
     {
       "id": "reddPlusInitiatives_simp",
-      "wmsName": "redd_plus_initiatives_simp",
+      "name": "redd_plus_initiatives_simp",
       "imageFormat": "image/png8",
       "visible": false
     },
     {
       "id": "hydrography",
-      "wmsName": "hydrography",
+      "name": "hydrography",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
@@ -120,7 +120,7 @@
       "id": "intactForest",
       "label": "Intact Forest",
       "wmsTime": "2000,2005,2010",
-      "wmsName": "intact_forest",
+      "name": "intact_forest",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "intact_forest.png" },
       "sourceLink": "http://www.intactforests.org/",
@@ -129,14 +129,14 @@
     {
       "id": "loggingConcessions",
       "label": "Logging Concessions",
-      "wmsName": "logging_concessions",
+      "name": "logging_concessions",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
     },
     {
       "id": "loggingConcessions_simp",
-      "wmsName": "logging_concessions_simp",
+      "name": "logging_concessions_simp",
       "imageFormat": "image/png8",
       "visible": false,
       "statistics": [
@@ -159,14 +159,14 @@
     {
       "id": "protectedAreas",
       "label": "Protected Areas",
-      "wmsName": "protected_areas",
+      "name": "protected_areas",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
     },
     {
       "id": "protectedAreas_simp",
-      "wmsName": "protected_areas_simp",
+      "name": "protected_areas_simp",
       "imageFormat": "image/png8",
       "visible": false,
       "statistics": [
@@ -177,7 +177,7 @@
     },
     {
       "id": "countryBoundaries",
-      "wmsName": "boundaries",
+      "name": "boundaries",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
@@ -189,27 +189,27 @@
     },
     {
       "id": "administrativeUnits_",
-      "wmsName": "admin_units",
+      "name": "admin_units",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
     },
     {
       "id": "administrativeUnits_simp",
-      "wmsName": "admin_units_simp",
+      "name": "admin_units_simp",
       "imageFormat": "image/png8",
       "visible": false
     },
     {
       "id": "provinces",
-      "wmsName": "provinces",
+      "name": "provinces",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
     },
     {
       "id": "provinces_simp",
-      "wmsName": "provinces_simp",
+      "name": "provinces_simp",
       "imageFormat": "image/png8",
       "visible": false,
       "statistics": [
@@ -222,7 +222,7 @@
     },
     {
       "id": "roads",
-      "wmsName": "roads",
+      "name": "roads",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
       "sourceLabel": "WRI"
@@ -230,7 +230,7 @@
     {
       "id": "settlements",
       "label": "Settlements",
-      "wmsName": "settlements",
+      "name": "settlements",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "settlements.png" },
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -239,7 +239,7 @@
     {
       "id": "ecoregions",
       "label": "Ecoregions",
-      "wmsName": "ecoregions",
+      "name": "ecoregions",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "ecoregions.png" },
       "sourceLink": "http://www.worldwildlife.org/science/ecoregions/item1267.html",
@@ -248,7 +248,7 @@
     {
       "id": "plots",
       "label": "Plots",
-      "wmsName": "plots",
+      "name": "plots",
       "imageFormat": "image/png8"
     }
   ],
@@ -463,7 +463,7 @@
       "active": true
     }
   ],
-  "contextGroups": 
+  "contextGroups":
   {
     "items": [
       {

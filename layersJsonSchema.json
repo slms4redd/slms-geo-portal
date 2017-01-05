@@ -79,7 +79,7 @@
         "baseUrl": {
           "type": "string"
         },
-        "wmsName": {
+        "name": {
           "type": "string"
         },
         "imageFormat": {
@@ -117,7 +117,7 @@
           }
         }
       },
-      "required": ["id", "wmsName"],
+      "required": ["id", "name"],
       "additionalProperties": false
     },
     "bingAerial": {
@@ -156,7 +156,7 @@
           { "$ref": "#/definitions/group" },
           { "$ref": "#/definitions/context" }
         ]
-      } 
+      }
     },
     "context": {
       "type": "object",

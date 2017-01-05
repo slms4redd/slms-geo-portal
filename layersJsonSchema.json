@@ -98,9 +98,6 @@
         "sourceLabel": {
           "type": "string"
         },
-        "wmsLegendStyle": {
-          "type": "string"
-        },
         "wmsTime": {
           "type": "string"
         },

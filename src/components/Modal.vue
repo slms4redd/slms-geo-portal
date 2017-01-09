@@ -1,19 +1,16 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-
+      <div class="modal-wrapper" @click="$emit('close')">
+        <div class="modal-container" @click.stop>
           <div v-if="$slots.header" class="modal-header">
             <slot name="header"></slot>
           </div>
-
           <div class="modal-body">
             <slot name="body">
               default body
             </slot>
           </div>
-
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-default-button" @click="$emit('close')">
@@ -26,6 +23,22 @@
     </div>
   </transition>
 </template>
+
+<script>
+export default {
+  created: function () {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  methods: {
+    handleKeyUp(e) {
+      if (e.keyCode === 27) {
+        this.$emit('close');
+      }
+    }
+  }
+}
+
+</script>
 
 <style scoped>
 .modal-mask {
@@ -47,16 +60,20 @@
 }
 
 .modal-container {
-  font-size: 16px;
+  font-size: 14px;
   width: auto;
   display: inline-block;
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 15px 20px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
   text-align: left;
+  min-width: 250px;
+  max-width: 60%;
+  max-height: 50%;
+  overflow: auto;
 }
 
 .modal-header h3 {
@@ -95,8 +112,8 @@
   transform: scale(1.1);
 }
 
-.modal-container {
-  /* Float fix */
+/*.modal-container {
+  / * Float fix * /
   overflow: hidden;
-}
+}*/
 </style>

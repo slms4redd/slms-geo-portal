@@ -64,8 +64,13 @@ export default {
 @import "../assets/global.scss";
 
 .ol-zoom {
-  top: $banner-height + 5px;
+  top: $banner-height + 8px;
+  right:.5em;
+  left: initial;
 }
+/*.ol-control button.ol-zoom-in, .ol-control button {
+  outline: none;
+}*/
 .ol-dragzoom {
   border-color: #999;
   border-width: 2px;

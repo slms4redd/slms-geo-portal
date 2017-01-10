@@ -1,8 +1,8 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-wrapper" @click="$emit('close')">
-        <div class="modal-container" @click.stop>
+      <div class="modal-wrapper" @mousedown="$emit('close')">
+        <div class="modal-container" @mousedown.stop>
           <div v-if="$slots.header" class="modal-header">
             <slot name="header"></slot>
           </div>
@@ -11,11 +11,12 @@
               default body
             </slot>
           </div>
+          <hr>
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-default-button" @click="$emit('close')">
+              <a href="#" class="modal-default-button" @click.prevent="$emit('close')">
                 Close
-              </button>
+              </a>
             </slot>
           </div>
         </div>
@@ -27,17 +28,17 @@
 <script>
 export default {
   created: function () {
-    window.addEventListener('keyup', this.handleKeyUp);
+    window.addEventListener('keydown', this.handleKeyDown);
   },
   methods: {
-    handleKeyUp(e) {
-      if (e.keyCode === 27) {
+    handleKeyDown(e) {
+      // enter || esc
+      if (e.keyCode === 13 || e.keyCode === 27) {
         this.$emit('close');
       }
     }
   }
 }
-
 </script>
 
 <style scoped>
@@ -48,9 +49,9 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .33);
   display: table;
-  transition: opacity .3s ease;
+  transition: opacity .2s ease;
 }
 
 .modal-wrapper {
@@ -64,15 +65,15 @@ export default {
   width: auto;
   display: inline-block;
   margin: 0px auto;
-  padding: 15px 20px;
+  padding: 13px 20px 6px 20px;
   background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   transition: all .3s ease;
   text-align: left;
   min-width: 250px;
-  max-width: 60%;
-  max-height: 50%;
+  max-width: 80%;
+  max-height: 80%;
   overflow: auto;
 }
 
@@ -87,6 +88,12 @@ export default {
 
 .modal-default-button {
   float: right;
+  color: #006ae8;
+  padding: 6px 6px;
+  font-size: 15px;
+  text-decoration: none;
+  margin-top: 5px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 /*
@@ -110,6 +117,13 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+hr {
+  margin:0 -20px;
+  border: 0;
+  height: 1px;
+  background: #ddd;
 }
 
 /*.modal-container {

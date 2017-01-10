@@ -34,10 +34,10 @@ export default {
 
 #layer-selector {
   background: rgb(0, 0, 0);
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.66);
   font-size: 14px;
   position: absolute;
-  top: $banner-height + 56px;
+  top: $banner-height + 8px;
   left: 8px;
   min-width: 50px;
   color: white;
@@ -46,6 +46,7 @@ export default {
   overflow: auto;
   border-radius: 5px;
   backdrop-filter: blur(5px);
+  margin: 0;
 }
 ul {
   padding-left: 1em;

@@ -20,15 +20,24 @@ class OlLayerFactory {
         });
         break;
       default:
-        const olAttributions = [];
-        if (layerConfig.sourceLink) {
-          let attribution = attributions[layerConfig.sourceLabel];
+        const olAttributions = [],
+              sourceLabel = layerConfig.sourceLabel,
+              sourceLink = layerConfig.sourceLink;
+
+        if (sourceLabel || sourceLink) {
+          let attribution = attributions[sourceLabel || sourceLink];
           if (!attribution) {
-            attribution = new ol.Attribution({
-              html: `<a href="${layerConfig.sourceLink}">${layerConfig.sourceLabel || layerConfig.sourceLink}</a>`
-            });
+            if (sourceLink) {
+              attribution = new ol.Attribution({
+                html: `<a target="_blank" href="${layerConfig.sourceLink}">${sourceLabel || sourceLink}</a>`
+              });
+            } else {
+              attribution = new ol.Attribution({
+                html: sourceLabel
+              });
+            }
           }
-          attributions[layerConfig.sourceLabel] = attribution;
+          attributions[sourceLabel || sourceLink] = attribution;
           olAttributions.push(attribution);
         }
         source = new ol.source.TileWMS(({

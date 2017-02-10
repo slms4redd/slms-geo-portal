@@ -18,7 +18,7 @@
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <ul id="popup-content">
         <p class="caption">Select an item from the list below to get more data</p>
-        <li v-for="(layer, i) in selectedFeaturesLayers" @click="showStatistics(layer, features[i])">{{selectedFeaturesLabels[i]}}</li>
+        <li v-for="(stat, i) in statisticsConfs" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
       </ul>
     </div>
   </span>
@@ -59,8 +59,11 @@ let container,
 export default {
   data() {
     return {
-      selectedFeaturesLayers: [],
-      selectedFeaturesLabels: [],
+      // selectedFeaturesLayers: [],
+      // selectedFeaturesLabels: [],
+      statisticsLabels: [],
+      statisticsConfs: [],
+      statisticsFeatures: [],
       showStatisticsModal: false,
       statisticsUrl: null,
       popupAttributes: null
@@ -78,8 +81,13 @@ export default {
       overlay.setPosition(undefined);
       closer.blur();
       highlightOverlay.getSource().clear();
+
+      this.statisticsConfs = [];
+      this.statisticsLabels = [];
+      this.statisticsFeatures = [];
+
       return false;
-    };
+    }.bind(this);
 
     overlay = new ol.Overlay({
       element: container,
@@ -125,19 +133,22 @@ export default {
               // Highlight the features on the map
               highlightOverlay.getSource().addFeatures(features);
 
-              // Look for the related layer config object (f.getId is of the form "provinces_simp.1")
-              this.selectedFeaturesLayers = features.map(f =>
+              // Look for the related layer config objects (f.getId is of the form "provinces_simp.1")
+              const selectedFeaturesLayers = features.map(f =>
                 this.layers.find(l =>
                   l.name === f.getId().substring(0, f.getId().lastIndexOf('.'))));
 
-              // Look for the related feature labels
-              // Statistics is an array as more than one statistics per layer will be allowed in the very far future
-              this.selectedFeaturesLabels = features.map((feature, i) => {
-                const template = this.selectedFeaturesLayers[i].statistics[0].popupLabel;
-                return template ? processTemplate(template, feature) : feature.getId();
+              features.forEach((feature, i) => {
+                const statistics = selectedFeaturesLayers[i].statistics;
+                statistics.forEach(stat => {
+                  this.statisticsConfs.push(stat);
+                  const template = stat.popupLabel;
+                  this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
+                  this.statisticsFeatures.push(feature);
+                })
               });
 
-              this.features = features;
+              // this.features = features;
               overlay.setPosition(event.coordinate);
             } else {
               overlay.setPosition(undefined);
@@ -150,14 +161,14 @@ export default {
     }
   },
   methods: {
-    showStatistics(layer, feature) {
-      switch (layer.statistics[0].type) {
+    showStatistics(statsConf, feature) {
+      switch (statsConf.type) {
         case "url":
-          const url = layer.statistics[0].url;
+          const url = statsConf.url;
           this.statisticsUrl = processUrlTemplate(url, feature);
           break;
         case "attributes":
-          const attributes = layer.statistics[0].attributes;
+          const attributes = statsConf.attributes;
           if (attributes) {
             this.popupAttributes = attributes.map(a => ({
               label: a.label,

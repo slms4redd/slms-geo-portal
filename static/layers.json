@@ -210,8 +210,12 @@
       "statistics": [
         {
           "type": "url",
-          "popupLabel": "Province: $(PROVINCE)",
+          "popupLabel": "$(PROVINCE) forest statistics",
           "url": "http://localhost:8080/charts/$(_lang)/admin1/admin1_$(OBJECTID).html?name=$(PROVINCE)"
+        },
+        {
+          "type": "attributes",
+          "popupLabel": "$(PROVINCE) attributes"
         }
       ]
     },
@@ -338,6 +342,7 @@
       "infoFile": "provinces_def.html",
       "label": "Provinces",
       "layers": [ "provinces", "provinces_simp" ],
+      "active": true,
       "inlineLegendUrl": "http://rdc-snsf.org/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=provinces&TRANSPARENT=true&RULE=border&legend_options=dpi:180"
     },
     {
@@ -458,7 +463,7 @@
       "active": true
     }
   ],
-  "contextGroups": 
+  "contextGroups":
   {
     "items": [
       {

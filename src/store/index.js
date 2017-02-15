@@ -11,7 +11,9 @@ const state = {
   contexts: [],
   groups: {},
   layerInfo: null, // a modal with the file content is shown when not null
-  contextsTimes: {}
+  contextsTimes: {},
+  geoJsonOverlay: null,
+  enableFeedback: false
 }
 
 // mutations are operations that actually mutates the state.
@@ -42,7 +44,7 @@ const mutations = {
   show_layer_info(state, { fileName, label }) {
     state.layerInfo = { fileName: fileName, label: label };
   },
-  set_context_time(state, { contextId, time}) {
+  set_context_time(state, { contextId, time }) {
     const newContextsTimes = {};
     // Make a shallow copy of the contextsTimes object
     for (let t in state.contextsTimes) {
@@ -52,7 +54,13 @@ const mutations = {
     }
     newContextsTimes[contextId] = time;
     state.contextsTimes = newContextsTimes;
-  }
+  },
+  overlay_geojson(state, { geoJson }) {
+    state.geoJsonOverlay = geoJson;
+  },
+  enable_feedback(state, { enable }) {
+    state.enableFeedback = enable;
+  },
 }
 
 // actions are functions that causes side effects and can involve
@@ -86,7 +94,9 @@ const getters = {
   queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
   // times: (state, getters) => getters.activeLayers.reduce((allTimes, layer) => allTimes.concat(layer.times), [])
   //                                                .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos) // remove duplicates
-  contextsTimes: state => state.contextsTimes
+  contextsTimes: state => state.contextsTimes,
+  geoJsonOverlay: state => state.geoJsonOverlay,
+  enableFeedback: state => state.enableFeedback
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

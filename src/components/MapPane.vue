@@ -41,14 +41,29 @@ export default {
             olLayers[l.id].getSource().updateParams({'TIME': contextsTimes[contextId].date.toISOString()}));
         }
       }
-    }
+    },
+    geoJsonOverlay(geojsonObject) {
+      // TODO
+      var vectorSource = new ol.source.Vector({
+        features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+      });
+
+      var vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+      });
+
+      // Make sure it stays on top
+      vectorLayer.setZIndex(1000);
+      map.addLayer(vectorLayer);
+    } 
   },
 
   computed: mapGetters([
     'layers',
     'contexts',
     'activeLayers',
-    'contextsTimes'
+    'contextsTimes',
+    'geoJsonOverlay'
   ])
 }
 </script>

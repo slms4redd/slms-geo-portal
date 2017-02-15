@@ -2,15 +2,25 @@ $banner-height: 92px;
 $highlight-color: #ffa500;
 
 button {
-    background-color: cadetblue;
-    border: none;
-    color: white;
-    padding: 6px 16px;
-    border-radius: 2px;
-    /*text-align: center;*/
-    /*text-decoration: none;*/
-    /*display: inline-block;*/
-    /*font-size: 16px;*/
+  background-color: cadetblue;
+  border: none;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 2px;
+  /*text-align: center;*/
+  /*text-decoration: none;*/
+  /*display: inline-block;*/
+  font-size: 16px;
+}
+
+button.small {
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 13px;
+}
+
+button:disabled {
+  background: rgba(211, 211, 211, 0.5);
 }
 
 // .slms-control {

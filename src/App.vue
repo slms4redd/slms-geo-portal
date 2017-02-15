@@ -5,6 +5,7 @@
     <layerSelector></layerSelector>
     <contextInfoModal></contextInfoModal>
     <featureInfo></featureInfo>
+    <feedback></feedback>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import MapPane from './components/MapPane'
 import LayerSelector from './components/LayerSelector'
 import ContextInfoModal from './components/ContextInfoModal'
 import FeatureInfo from './components/FeatureInfo'
+import Feedback from './components/Feedback'
 
 export default {
   name: 'app',
@@ -22,9 +24,10 @@ export default {
     MapPane,
     LayerSelector,
     ContextInfoModal,
-    FeatureInfo
+    FeatureInfo,
+    Feedback
   },
-  created () {
+  created() {
     this.$store.dispatch('getAllLayers');
   }
 }

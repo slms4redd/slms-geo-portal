@@ -82,12 +82,8 @@ export default {
       closer.blur();
       highlightOverlay.getSource().clear();
 
-      this.statisticsConfs = [];
-      this.statisticsLabels = [];
-      this.statisticsFeatures = [];
-
       return false;
-    }.bind(this);
+    };
 
     overlay = new ol.Overlay({
       element: container,
@@ -110,10 +106,16 @@ export default {
       }
 
       map.on('singleclick', event => {
+        if (this.enableFeedback) return;
+        
         if (!this.queryableLayers.length) {
           highlightOverlay.getSource().clear();
           overlay.setPosition(undefined);
         } else {
+          this.statisticsConfs = [];
+          this.statisticsLabels = [];
+          this.statisticsFeatures = [];
+
           // Build the GetFeatureInfo request
           const mapSize = map.getSize(),
                 [width, height] = mapSize,
@@ -197,7 +199,8 @@ export default {
   },
   computed: mapGetters([
     'layers',
-    'queryableLayers'
+    'queryableLayers',
+    'enableFeedback'
   ])
 }
 </script>

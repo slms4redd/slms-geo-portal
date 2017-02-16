@@ -59,8 +59,10 @@ export default {
   bottom: 100px;
   color: white;
   text-shadow: black 0 0 2px;
+  min-width: 180px;
   max-width: 50%;
   display: inline-block;
+  border-radius: 5px;
 }
 #clearButton {
   margin-top: 10px;

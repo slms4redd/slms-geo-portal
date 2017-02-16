@@ -47,9 +47,12 @@ export default {
         map.removeInteraction(drawInteraction);
         this.clear();
         map.removeLayer(drawLayer);
+        this.draw = null;
       }
     },
     draw() {
+      if (!this.draw) return;
+
       if (drawInteraction) {
         map.removeInteraction(drawInteraction);
       }

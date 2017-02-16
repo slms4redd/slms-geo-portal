@@ -40,7 +40,7 @@ Vue.locale(lang, function() {
       } catch(error) {
         alert(`Error loading app:\n${error}`);
         reject();
-      } 
+      }
     }, (httpError) => {
       alert(`Error loading language file for ${lang}:\n${httpError}`);
       reject();
@@ -54,10 +54,10 @@ Vue.locale(lang, function() {
     template: '<App/>',
     components: { App }
   });
-  
+
   // If a geojson is provided as a http get parameter, overlay it to the map
   if (QueryString.geojson_overlay) {
-    store.commit('overlay_geojson', { geoJson: QueryString.geojson_overlay });
+    store.commit('overlay_geojson', { geoJson: JSON.parse(QueryString.geojson_overlay) });
   }
 });
 

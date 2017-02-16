@@ -100,7 +100,7 @@ ul#feedback {
   margin: 0;
 }
 ul#feedback li a {
-  color: #fff;
+  color: #ececec;
   text-decoration: none;
 }
 ul#feedback li a:hover {

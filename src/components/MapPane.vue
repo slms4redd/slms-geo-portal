@@ -14,7 +14,6 @@ export default {
   mounted() {
     map.setTarget('map');
   },
-
   watch: {
     layers(layers) {
       layers.forEach(layerConfig => {
@@ -42,28 +41,31 @@ export default {
         }
       }
     },
-    geoJsonOverlay(geojsonObject) {
-      // TODO
-      var vectorSource = new ol.source.Vector({
-        features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-      });
+    // geoJsonOverlay(geojsonObject) {
+    //   // TODO
+    //   let vectorSource = new ol.source.Vector({
+    //     features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+    //   });
 
-      var vectorLayer = new ol.layer.Vector({
-        source: vectorSource
-      });
+    //   var vectorLayer = new ol.layer.Vector({
+    //     source: vectorSource
+    //   });
 
-      // Make sure it stays on top
-      vectorLayer.setZIndex(1000);
-      map.addLayer(vectorLayer);
-    } 
+    //   // Make sure it stays on top
+    //   vectorLayer.setZIndex(1000);
+    //   map.addLayer(vectorLayer);
+
+    //   var extent = vectorSource.getExtent();
+    //   map.getView().fit(extent, map.getSize());
+    // }
   },
 
   computed: mapGetters([
     'layers',
     'contexts',
     'activeLayers',
-    'contextsTimes',
-    'geoJsonOverlay'
+    'contextsTimes'
+    // 'geoJsonOverlay'
   ])
 }
 </script>

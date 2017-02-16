@@ -6,6 +6,7 @@
     <contextInfoModal></contextInfoModal>
     <featureInfo></featureInfo>
     <feedback></feedback>
+    <geoJsonOverlay></geoJsonOverlay>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import LayerSelector from './components/LayerSelector'
 import ContextInfoModal from './components/ContextInfoModal'
 import FeatureInfo from './components/FeatureInfo'
 import Feedback from './components/Feedback'
+import GeoJsonOverlay from './components/GeoJsonOverlay'
 
 export default {
   name: 'app',
@@ -25,7 +27,8 @@ export default {
     LayerSelector,
     ContextInfoModal,
     FeatureInfo,
-    Feedback
+    Feedback,
+    GeoJsonOverlay
   },
   created() {
     this.$store.dispatch('getAllLayers');

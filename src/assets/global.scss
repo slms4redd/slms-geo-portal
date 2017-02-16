@@ -21,8 +21,12 @@ button.small {
 
 button:disabled {
   background: rgba(211, 211, 211, 0.5);
+  color:  rgba(0, 0, 0, 0.7);
 }
 
+.danger {
+  background-color: #f00;
+}
 // .slms-control {
 //   position: absolute;
 //   padding: 2px;

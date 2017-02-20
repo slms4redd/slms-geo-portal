@@ -1,24 +1,35 @@
 <template>
   <div id="feedback" v-if="enableFeedback">
-    <div id="tools">
-      Draw:
-      <button class="small" v-bind:class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
-      <button class="small" v-bind:class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
+    <form>
+      <div id="feedback-category">
+        <select v-model="selectedCategory">
+          <option value="" disabled>Please select a category</option>
+          <option v-for="cat in categories">
+            <option>{{cat}}</option>
+          </option>
+        </select>
+      </div>
+      <div id="tools">
+        Draw:
+        <button type="button" class="small" v-bind:class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
+        <button type="button" class="small" v-bind:class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
+      </div>
+      <div id="message">
+        <textarea v-model="message" id="message-text" rows="6" placeholder="Write your message"></textarea>
+      </div>
+      <div id="buttons">
+        <button type="button" class="small" @click="disableFeedback">Cancel</button>
+        <button type="button" class="small" @click="clear" v-bind:disabled="drew === false">Clear</button>
+        <button type="button" class="small danger" @click="sendFeedback" v-bind:disabled="disableSend">Send</button>
+      </div>
     </div>
-    <div id="message">
-      <textarea v-model="message" id="message-text" rows="6" placeholder="Write your message"></textarea>
-    </div>
-    <div id="buttons">
-      <button class="small" @click="disableFeedback">Cancel</button>
-      <button class="small" @click="clear" v-bind:disabled="disableSend == true">Clear</button>
-      <button class="small danger" @click="sendFeedback" v-bind:disabled="this.disableSend">Send</button>
-    </div>
-  </div>
+  </form>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import map from '../map'
+import config from '../assets/config.json';
 
 let drawLayer = null,
     drawInteraction = null;
@@ -28,7 +39,9 @@ export default {
     return {
       drawSource: null,
       message: '',
-      draw: null
+      draw: null,
+      categories: config.feedbackCategories,
+      selectedCategory: ''
     }
   },
   watch: {
@@ -44,6 +57,7 @@ export default {
         this.draw = 'Polygon';
       } else {
         this.message = '';
+        this.selectedCategory = '';
         map.removeInteraction(drawInteraction);
         this.clear();
         map.removeLayer(drawLayer);
@@ -85,10 +99,11 @@ export default {
         }
       }
 
-      xhr.open("POST", 'http://localhost:3000/feedback', true);
+      xhr.open("POST", config.feedbackUrl, true);
       xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-      jsonGeom.message = document.getElementById("message-text").value;
+      jsonGeom.category = this.selectedCategory;
+      jsonGeom.message = this.message;
       xhr.send(JSON.stringify(jsonGeom));
     },
     disableFeedback() {
@@ -99,11 +114,11 @@ export default {
     }
   },
   computed: {
+    drew: function() {
+      return !!(this.drawSource && this.drawSource.getFeatures().length);
+    },
     disableSend: function() {
-      const drew = this.drawSource && this.drawSource.getFeatures().length,
-            wrote = this.message !== '';
-
-      return !(drew && wrote);
+      return !(this.drew && this.message !== '' && this.selectedCategory !== '');
     },
     ...mapGetters([
       'enableFeedback'
@@ -136,5 +151,8 @@ export default {
   }
   #tools button:not(.active) {
     background-color: rgba(255, 255, 255, 0.7);
+  }
+  #feedback-category {
+    margin-bottom: 10px;
   }
 </style>

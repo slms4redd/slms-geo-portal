@@ -1,29 +1,27 @@
 <template>
   <div id="feedback" v-if="enableFeedback">
-    <form>
-      <div id="feedback-category">
-        <select v-model="selectedCategory">
-          <option value="" disabled>Please select a category</option>
-          <option v-for="cat in categories">
-            <option>{{cat}}</option>
-          </option>
-        </select>
-      </div>
-      <div id="tools">
-        Draw:
-        <button type="button" class="small" v-bind:class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
-        <button type="button" class="small" v-bind:class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
-      </div>
-      <div id="message">
-        <textarea v-model="message" id="message-text" rows="6" placeholder="Write your message"></textarea>
-      </div>
-      <div id="buttons">
-        <button type="button" class="small" @click="disableFeedback">Cancel</button>
-        <button type="button" class="small" @click="clear" v-bind:disabled="drew === false">Clear</button>
-        <button type="button" class="small danger" @click="sendFeedback" v-bind:disabled="disableSend">Send</button>
-      </div>
+    <div id="feedback-category">
+      <select v-model="selectedCategory">
+        <option value="" disabled>Please select a category</option>
+        <option v-for="cat in categories">
+          <option>{{cat}}</option>
+        </option>
+      </select>
     </div>
-  </form>
+    <div id="tools">
+      Draw:
+      <button type="button" class="small" v-bind:class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
+      <button type="button" class="small" v-bind:class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
+    </div>
+    <div id="message">
+      <textarea v-model="message" id="message-text" rows="6" placeholder="Write your message"></textarea>
+    </div>
+    <div id="buttons">
+      <button type="button" class="small" @click="disableFeedback">Cancel</button>
+      <button type="button" class="small" @click="clear" v-bind:disabled="drew === false">Clear</button>
+      <button type="button" class="small danger" @click="sendFeedback" v-bind:disabled="disableSend">Send</button>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -22,7 +22,7 @@ export default {
             return `${layer.urls[0]}?LEGEND_OPTIONS=forceRule:True;fontColor:ffffff;fontAntiAliasing:true;
   &LAYER=${layer.name}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`;
           }
-          return `/static/loc/${config.lang}/images/${layer.legend.url}`
+          return `/static/loc/configuration/${config.lang}/images/${layer.legend.url}`
         }
         return null;
       }).filter(url => url)

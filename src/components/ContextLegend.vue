@@ -11,11 +11,11 @@ import { config } from 'vue'
 
 export default {
   props: {
-    model: Object,
+    conf: Object,
   },
   data() {
     return {
-      legendUrls: this.model.layers.map(layer => {
+      legendUrls: this.conf.layers.map(layer => {
         if (layer.legend) {
           if (layer.legend.type === 'wms') {
             const wmsLegendStyle = layer.legend.style.replace('$(_lang)', config.lang);

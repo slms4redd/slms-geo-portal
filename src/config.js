@@ -101,7 +101,9 @@ class Group {
     const tItems = groupConfig.items && groupConfig.items.map(item => {
       if (item.context) {
         // Create a dummy context if not found
-        return _findById(contexts, item.context) || new Context({ id: item.context, label: item.context });
+        const context = _findById(contexts, item.context) || new Context({ id: item.context, label: item.context });
+        context.group = this;
+        return context;
       }
       return item.group && new Group(item.group, contexts);
     });

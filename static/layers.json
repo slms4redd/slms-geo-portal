@@ -469,6 +469,7 @@
       {
         "group": {
           "label": "Base Layers",
+          "exclusive": true,
           "items": [
             { "context": "bingAerial" },
             { "context": "openstreetmap" },

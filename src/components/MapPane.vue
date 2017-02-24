@@ -40,24 +40,7 @@ export default {
             olLayers[l.id].getSource().updateParams({'TIME': contextsTimes[contextId].date.toISOString()}));
         }
       }
-    },
-    // geoJsonOverlay(geojsonObject) {
-    //   // TODO
-    //   let vectorSource = new ol.source.Vector({
-    //     features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-    //   });
-
-    //   var vectorLayer = new ol.layer.Vector({
-    //     source: vectorSource
-    //   });
-
-    //   // Make sure it stays on top
-    //   vectorLayer.setZIndex(1000);
-    //   map.addLayer(vectorLayer);
-
-    //   var extent = vectorSource.getExtent();
-    //   map.getView().fit(extent, map.getSize());
-    // }
+    }
   },
 
   computed: {

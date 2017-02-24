@@ -3,24 +3,24 @@
     <div v-if="isGroup" class="group" @click="toggleGroup">
       <span class="line group-label">
         <icon class="open-button" v-bind:name="open ? 'octicon-diff-removed' : 'octicon-diff-added'"></icon>
-        {{isRoot ? $t("layerSelector.layers") : model.label}}
+        {{isRoot ? $t("layerSelector.layers") : conf.label}}
       </span>
-      <span class="info-link" v-if="model.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
+      <span class="info-link" v-if="conf.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
     </div>
     <div v-else>
       <span v-on:click="toggleActive"><icon class="activate-button" v-bind:class="{highlighted, active}" name="octicon-check" v-if="hasLayers"></icon></span>
-      <span v-on:click="toggleLegend"><icon class="legend-link" v-bind:class="{active}" v-show="model.hasLegends" name="octicon-list-unordered"></icon></span>
-      <img v-if="model.inlineLegendUrl" class="inline-legend" v-bind:src="model.inlineLegendUrl">
-      <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{model.label}}</span>
-      <span class="info-link" v-if="model.infoFile" v-on:click="showInfo"><icon name="octicon-info"></icon></span>
+      <span v-on:click="toggleLegend"><icon class="legend-link" v-bind:class="{active}" v-show="conf.hasLegends" name="octicon-list-unordered"></icon></span>
+      <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
+      <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
+      <span class="info-link" v-if="conf.infoFile" v-on:click="showInfo"><icon name="octicon-info"></icon></span>
       <span class="times-button" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}"><icon class="icon" v-if="hasTimes" name="octicon-clock"> {{selectedTime.humanReadable}}</span>
-      <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="model.times" :selectedTime="selectedTime"></TimeSelect>
-      <template v-if="model.hasLegends && active && showLegend">
-        <ContextLegend :model="model"></ContextLegend>
+      <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></TimeSelect>
+      <template v-if="conf.hasLegends && active && showLegend">
+        <ContextLegend :conf=conf></ContextLegend>
       </template>
     </div>
     <ul v-show="open" v-if="isGroup">
-      <item class="item" v-for="model in model.items" :model="model"></item>
+      <item class="item" v-for="conf in conf.items" :conf="conf"></item>
     </ul>
   </li>
 </template>
@@ -38,12 +38,12 @@ export default {
     "icon": require("vue-icons/icon")
   },
   props: {
-    model: Object
+    conf: Object
   },
   data() {
     return {
-      open: !this.model.label,
-      active: this.model.active,
+      open: !this.conf.label,
+      // active: this.conf.active,
       showLegend: false,
       showTimeMenu: false,
       highlighted: false
@@ -51,25 +51,29 @@ export default {
   },
   computed: {
     isContext() {
-      return !this.model.items;
+      return !this.conf.items;
     },
     isGroup() {
       return !this.isContext;
     },
     isRoot() {
-      return !this.model.label;
+      return !this.conf.label;
     },
     hasLayers() {
-      return !!this.model.layers.length;
+      return !!this.conf.layers.length;
     },
     hasTimes() {
-      return !!this.model.times.length
+      return !!this.conf.times.length
     },
     selectedTime() {
-      return this.contextsTimes[this.model.id]
+      return this.contextsTimes[this.conf.id]
+    },
+    active() {
+      return this.activeContextsIds.indexOf(this.conf.id) !== -1
     },
     ...mapState([
-      'contextsTimes'
+      'contextsTimes',
+      'activeContextsIds'
     ])
   },
   methods: {
@@ -79,8 +83,13 @@ export default {
     toggleGroup() {
       this.open = !this.open;
     },
+    // toggleActive() {
+    //   this.active = !this.active;
+    // },
     toggleActive() {
-      this.active = !this.active;
+      this.$store.commit('toggle_context', { contextId: this.conf.id });
+      // Turn off legend when hiding the context
+      this.showLegend = !this.active && false;
     },
     toggleLegend() {
       if (this.active) {
@@ -88,22 +97,15 @@ export default {
       }
     },
     showInfo() {
-      this.$store.dispatch('showLayerInfo',  { label: this.model.label, fileName: this.model.infoFile });
+      this.$store.dispatch('showLayerInfo',  { label: this.conf.label, fileName: this.conf.infoFile });
     },
     toggleTimeMenu() {
       this.showTimeMenu = !this.showTimeMenu;
     },
     setTime(time) {
-      this.$store.commit('set_context_time', { contextId: this.model.id, time: time })
+      this.$store.commit('set_context_time', { contextId: this.conf.id, time: time })
     }
   },
-  watch: {
-    active() {
-      this.$store.commit('toggle_context', { contextId: this.model.id, active: this.active });
-      // Turn off legend when hiding the context
-      this.showLegend = !this.active && false;
-    }
-  }
 }
 </script>
 

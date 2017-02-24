@@ -173,6 +173,7 @@
           "properties": {
             "label": { "type": "string" },
             "infoFile": { "type": "string" },
+            "exclusive": { "type": "boolean" },
             "items": { "$ref": "#/definitions/items" }
           },
           "required": ["label"],

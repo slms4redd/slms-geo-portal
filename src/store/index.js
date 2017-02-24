@@ -13,7 +13,8 @@ const state = {
   layerInfo: null, // a modal with the file content is shown when not null
   contextsTimes: {},
   geoJsonOverlay: null,
-  enableFeedback: false
+  enableFeedback: false,
+  activeContextsIds: []
 }
 
 // mutations are operations that actually mutates the state.
@@ -28,17 +29,30 @@ const mutations = {
     state.groups = layersConf.groups;
 
     const contextsTimes = {};
+    const activeContextsIds = [];
     state.contexts.forEach(c => {
       if (c.times) {
         contextsTimes[c.id] = c.times[c.times.length - 1];
       }
+      if (c.active) {
+        activeContextsIds.push(c.id);
+      }
     });
     state.contextsTimes = contextsTimes
+    state.activeContextsIds = activeContextsIds;
   },
-  toggle_context(state, { contextId, active }) {
+  toggle_context(state, { contextId }) {
     const context = state.contexts.find(c => c.id === contextId);
     if (context) {
-      context.active = !!active;
+      var activeContextsIds = state.activeContextsIds.slice(0), // Clone
+          idx = activeContextsIds.indexOf(contextId);
+
+      if (idx === -1) {
+        activeContextsIds.push(contextId);
+      } else {
+        activeContextsIds.splice(idx, 1);
+      }
+      state.activeContextsIds = activeContextsIds;
     }
   },
   show_layer_info(state, { fileName, label }) {
@@ -81,7 +95,7 @@ const actions = {
 const getters = {
   activeLayers: state => {
     const activeLayers = [];
-    state.contexts.filter(context => context.active)
+    state.contexts.filter(context => state.activeContextsIds.indexOf(context.id) !== -1)
                   .forEach(context => context.layers.forEach(layer => activeLayers.push(layer)));
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);

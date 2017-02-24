@@ -34,7 +34,7 @@ Vue.use(VueI18n);
 Vue.locale(lang, function() {
   // self.loading = true;
   return function(resolve, reject) {
-    httpRequest(`../static/locale/${lang}.json`, (responseText) => {
+    httpRequest(`../static/configuration/locale/${lang}.json`, (responseText) => {
       try {
         resolve(JSON.parse(responseText));
       } catch(error) {

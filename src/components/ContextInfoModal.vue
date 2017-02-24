@@ -31,7 +31,7 @@ export default {
           this.content = content;
           this.showModal = true;
         }
-        httpRequest(`/static/loc/${config.lang}/html/${val.fileName}`, (responseText) => {
+        httpRequest(`/static/configuration/loc/${config.lang}/html/${val.fileName}`, (responseText) => {
           showContent(responseText);
         }, (error) => {
           showContent('Cannot get layer info');

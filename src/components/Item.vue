@@ -16,7 +16,7 @@
       <span class="times-button" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}"><icon class="icon" v-if="hasTimes" name="octicon-clock"> {{selectedTime.humanReadable}}</span>
       <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></TimeSelect>
       <template v-if="conf.hasLegends && active && showLegend">
-        <ContextLegend :conf=conf></ContextLegend>
+        <ContextLegend :conf="conf"></ContextLegend>
       </template>
     </div>
     <ul v-show="open" v-if="isGroup">
@@ -76,6 +76,11 @@ export default {
       'activeContextsIds'
     ])
   },
+  watch: {
+    active() {
+      this.showLegend = !this.active && false;
+    }
+  },
   methods: {
     highlightContext(highlight) {
       this.highlighted = highlight;
@@ -83,13 +88,16 @@ export default {
     toggleGroup() {
       this.open = !this.open;
     },
-    // toggleActive() {
-    //   this.active = !this.active;
-    // },
     toggleActive() {
       this.$store.commit('toggle_context', { contextId: this.conf.id });
-      // Turn off legend when hiding the context
-      this.showLegend = !this.active && false;
+      if (this.conf.group.exclusive) {
+        this.conf.group.items.forEach(item => {
+          if (item.id != this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
+            // it's not this context and it's active
+            this.$store.commit('toggle_context', { contextId: item.id });
+          }
+        });
+      }
     },
     toggleLegend() {
       if (this.active) {

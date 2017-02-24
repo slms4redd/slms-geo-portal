@@ -98,6 +98,7 @@ class Group {
   constructor(groupConfig, contexts) {
     this.label = groupConfig.label;
     this.infoFile = groupConfig.infoFile || null;
+    this.exclusive = !!groupConfig.exclusive;
     const tItems = groupConfig.items && groupConfig.items.map(item => {
       if (item.context) {
         // Create a dummy context if not found

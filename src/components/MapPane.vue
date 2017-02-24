@@ -4,7 +4,7 @@
 
 <script>
 import OlLayerFactory from '../olLayerFactory';
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import map from '../map';
 
 const olLayers = {}
@@ -60,13 +60,16 @@ export default {
     // }
   },
 
-  computed: mapGetters([
-    'layers',
-    'contexts',
-    'activeLayers',
-    'contextsTimes'
-    // 'geoJsonOverlay'
-  ])
+  computed: {
+    ...mapState([
+      'layers',
+      'contexts',
+      'contextsTimes'
+    ]),
+    ...mapGetters([
+      'activeLayers'
+    ])
+  }
 }
 </script>
 

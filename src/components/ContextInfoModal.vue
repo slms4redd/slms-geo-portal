@@ -7,7 +7,7 @@
 
 <script>
 import Modal from './Modal'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import httpRequest from '../httpRequest'
 import { config } from 'vue';
 
@@ -39,7 +39,7 @@ export default {
       }
     }
   },
-  computed: mapGetters([
+  computed: mapState([
     'layerInfo'
   ])
 }
@@ -47,6 +47,6 @@ export default {
 
 <style scoped>
 h1 {
-  font-size: 16px;  
+  font-size: 16px;
 }
 </style>

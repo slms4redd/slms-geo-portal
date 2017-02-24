@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
 
@@ -68,7 +68,7 @@ export default {
     selectedTime() {
       return this.contextsTimes[this.model.id]
     },
-    ...mapGetters([
+    ...mapState([
       'contextsTimes'
     ])
   },
@@ -111,7 +111,7 @@ export default {
 @import "../assets/global.scss";
 
 .line {
-  white-space: nowrap;  
+  white-space: nowrap;
 }
 .item {
   cursor: default;

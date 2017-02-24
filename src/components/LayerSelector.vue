@@ -6,7 +6,7 @@
 
 <script>
 import Item from './Item';
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'layerSelector',
@@ -18,7 +18,7 @@ export default {
       treeData: null
     };
   },
-  computed: mapGetters([
+  computed: mapState([
     'groups'
   ]),
   watch: {

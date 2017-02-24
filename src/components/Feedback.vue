@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import map from '../map'
 import config from '../assets/config.json';
 
@@ -118,7 +118,7 @@ export default {
     disableSend: function() {
       return !(this.drew && this.message !== '' && this.selectedCategory !== '');
     },
-    ...mapGetters([
+    ...mapState([
       'enableFeedback'
     ])
   }

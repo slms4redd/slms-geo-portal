@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import map from '../map'
 import httpRequest from '../httpRequest'
 import Modal from './Modal'
@@ -107,7 +107,7 @@ export default {
 
       map.on('singleclick', event => {
         if (this.enableFeedback) return;
-        
+
         if (!this.queryableLayers.length) {
           highlightOverlay.getSource().clear();
           overlay.setPosition(undefined);
@@ -197,11 +197,15 @@ export default {
       this.popupAttributes = null;
     }
   },
-  computed: mapGetters([
-    'layers',
-    'queryableLayers',
-    'enableFeedback'
-  ])
+  computed: {
+    ...mapState([
+      'enableFeedback',
+      'layers'
+    ]),
+    ...mapGetters([
+      'queryableLayers'
+    ])
+  }
 }
 </script>
 

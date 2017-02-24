@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import map from '../map'
 
 let vectorLayer;
@@ -41,7 +41,7 @@ export default {
       }
     }
   },
-  computed: mapGetters([
+  computed: mapState([
     'geoJsonOverlay'
   ])
 }

@@ -79,10 +79,6 @@ const actions = {
 
 // getters are functions
 const getters = {
-  layers: state => state.layers,
-  contexts: state => state.contexts,
-  groups: state => state.groups,
-  // activeContexts: state => state.contexts.filter(context => context.active),
   activeLayers: state => {
     const activeLayers = [];
     state.contexts.filter(context => context.active)
@@ -90,13 +86,7 @@ const getters = {
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   },
-  layerInfo: state => state.layerInfo,
   queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
-  // times: (state, getters) => getters.activeLayers.reduce((allTimes, layer) => allTimes.concat(layer.times), [])
-  //                                                .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos) // remove duplicates
-  contextsTimes: state => state.contextsTimes,
-  geoJsonOverlay: state => state.geoJsonOverlay,
-  enableFeedback: state => state.enableFeedback
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

@@ -22,6 +22,9 @@ export default {
   watch: {
     geoJsonOverlay(geojsonObject) {
       if (geojsonObject) {
+        // Delete any other previous overlay
+        map.removeLayer(vectorLayer);
+
         let vectorSource = new ol.source.Vector({
           features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
         });

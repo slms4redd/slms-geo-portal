@@ -10,23 +10,32 @@
       </li>
       <!-- <li v-for="language in languages" @click="setLanguage(language.id)">{{language.label}}</li> -->
     </ul>
-    <ul id="feedback" class="buttons">
+    <ul id="tools" class="buttons">
       <li>
-        <a href="#" @click.stop=enableFeedback>Feedback</a>
+        <a href="#" @click.stop="enableFeedback">Feedback</a>
+      </li>
+      <li>
+        <a href="#" @click="enableUpload">Upload GeoJSON</a>
       </li>
     </ul>
+    <fileDrop :show=showUpload v-on:disable="disableUpload"></fileDrop>
   </div>
 </template>
 
 <script>
 import { languages } from '../assets/config.json'
 import { config } from 'vue'
+import FileDrop from './FileDrop'
 
 export default {
+  components: {
+    'fileDrop': FileDrop
+  },
   data() {
     return {
       languages: languages,
-      selectedLanguage: config.lang
+      selectedLanguage: config.lang,
+      showUpload: false
     }
   },
   methods: {
@@ -36,6 +45,13 @@ export default {
     enableFeedback(e) {
       e.preventDefault();
       this.$store.commit('enable_feedback', { enable: true })
+    },
+    enableUpload(e) {
+      e.preventDefault();
+      this.showUpload = true;
+    },
+    disableUpload() {
+      this.showUpload = false;
     }
   }
 }
@@ -93,17 +109,17 @@ ul.buttons li span {
 ul.buttons li a:hover {
   color: $highlight-color;
 }
-ul#feedback {
+ul#tools {
   position: absolute;
   right: 12px;
   bottom: 8px;
   margin: 0;
 }
-ul#feedback li a {
+ul#tools li a {
   color: #ececec;
   text-decoration: none;
 }
-ul#feedback li a:hover {
+ul#tools li a:hover {
   color: $highlight-color;
 }
 </style>

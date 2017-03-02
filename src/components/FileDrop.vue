@@ -99,7 +99,7 @@ export default {
   color: #999;
 }
 #dropTarget.dragover {
-  border-color: #006ae8;
+  border-color: #319FD3;
 }
 #dropText {
   display: inline-block;

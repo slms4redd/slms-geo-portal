@@ -79,4 +79,14 @@ export default {
   border-width: 2px;
   border-style: dashed;
 }
+.ol-mouse-position {
+  position: absolute;
+  color: #f3f3f3;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: #000 0px 0px 2px, #000 0px 0px 2px, #000 0px 0px 2px;
+  top: auto;
+  bottom: 26px;
+  font-size: 13px;
+  font-weight: bold;
+}
 </style>

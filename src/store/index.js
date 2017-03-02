@@ -12,7 +12,8 @@ const state = {
   groups: {},
   layerInfo: null, // a modal with the file content is shown when not null
   contextsTimes: {},
-  geoJsonOverlay: null,
+  // geoJsonOverlay: null,
+  kmlOverlay: null,
   enableFeedback: false,
   activeContextsIds: []
 }
@@ -69,8 +70,11 @@ const mutations = {
     newContextsTimes[contextId] = time;
     state.contextsTimes = newContextsTimes;
   },
-  overlay_geojson(state, { geoJson }) {
-    state.geoJsonOverlay = geoJson;
+  // overlay_geojson(state, { geoJson }) {
+  //   state.geoJsonOverlay = geoJson;
+  // },
+  overlay_kml(state, { kml }) {
+    state.kmlOverlay = kml;
   },
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable;

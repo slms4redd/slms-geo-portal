@@ -15,7 +15,7 @@
         <a href="#" @click.stop="enableFeedback">Feedback</a>
       </li>
       <li>
-        <a href="#" @click="enableUpload">Upload GeoJSON</a>
+        <a href="#" @click="enableUpload">Upload KML</a>
       </li>
     </ul>
     <fileDrop :show=showUpload v-on:disable="disableUpload"></fileDrop>
@@ -64,8 +64,8 @@ h1 {
   font-weight: normal;
 }
 #header {
-  background: rgb(0, 0, 0);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(0, 0, 0) url(../../static/configuration/logos.png) no-repeat 0 0 10px 10px;
+  background: rgba(0, 0, 0, 0.5) url(../../static/configuration/logos.png) no-repeat 10px 10px;
   color: #eaeaea;
   position: fixed;
   top: 0;

@@ -1,7 +1,7 @@
 <template>
   <modal v-if=show @close="hideUploadPopup()">
     <div slot="body">
-      <div id="dropTarget"><span id="dropText">Drop<br>your GeoJSON<br/>file here</span></div>
+      <div id="dropTarget"><span id="dropText">Drop<br>your KML<br/>file here</span></div>
     </div>
   </modal>
 </template>
@@ -52,18 +52,19 @@ export default {
 
         const handleFiles = files => {
           const file = files[0]; // only the first file is shown - TODO show error
-          if (file.type !== 'application/json') {
-            alert('Not a json file');
-            return;
-          }
+          // TODO check file type
+          // if (file.type !== 'application/xml') {
+          //   alert('Not a KML file');
+          //   return;
+          // }
 
           var reader = new FileReader();
           reader.onload = e => {
             try {
-              const parsed = JSON.parse(e.target.result);
-              this.$store.commit('overlay_geojson', { geoJson: parsed });
+              // const parsed = JSON.parse(e.target.result);
+              this.$store.commit('overlay_kml', { kml: e.target.result });
             } catch (err) {
-              alert('Error reading the GeoJson file:\n' + err);
+              alert('Error reading the KML file:\n' + err);
             }
             this.hideUploadPopup();
           }

@@ -56,9 +56,9 @@ Vue.locale(lang, function() {
   });
 
   // If a geojson is provided as a http get parameter, overlay it to the map
-  if (QueryString.geojson_overlay) {
-    store.commit('overlay_geojson', { geoJson: JSON.parse(QueryString.geojson_overlay) });
-  }
+  // if (QueryString.geojson_overlay) {
+  //   store.commit('overlay_geojson', { geoJson: JSON.parse(QueryString.geojson_overlay) });
+  // }
 });
 
 // Object.keys(locales).forEach(function (lang) {

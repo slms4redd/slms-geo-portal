@@ -81,8 +81,8 @@ export default {
     },
     sendFeedback() {
       const allFeatures = drawLayer.getSource().getFeatures(),
-            format = new ol.format.GeoJSON(),
-            jsonGeom = format.writeFeaturesObject(allFeatures),
+            format = new ol.format.KML(),
+            kml = format.writeFeatures(allFeatures, { featureProjection: 'EPSG:3857' }),
             xhr = new XMLHttpRequest(),
             _this = this;
 
@@ -97,12 +97,12 @@ export default {
         }
       }
 
-      xhr.open("POST", config.feedbackUrl, true);
-      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      var params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`;
 
-      jsonGeom.category = this.selectedCategory;
-      jsonGeom.message = this.message;
-      xhr.send(JSON.stringify(jsonGeom));
+      xhr.open("POST", config.feedbackUrl, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      xhr.send(params);
     },
     disableFeedback() {
       this.$store.commit('enable_feedback', { enable: false })

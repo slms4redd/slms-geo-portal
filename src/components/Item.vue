@@ -1,11 +1,12 @@
 <template>
-  <li>
-    <div v-if="isGroup" class="group" @click="toggleGroup">
+  <li class="unselectable">
+    <div :class="{dimmed: !nContexts}" v-if="isGroup" class="group" @click="toggleGroup">
       <span class="line group-label">
         <icon class="open-button" v-bind:name="open ? 'octicon-diff-removed' : 'octicon-diff-added'"></icon>
         {{isRoot ? $t("layerSelector.layers") : conf.label}}
       </span>
       <span class="info-link" v-if="conf.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
+      <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
     </div>
     <div v-else>
       <span v-on:click="toggleActive"><icon class="activate-button" v-bind:class="{highlighted, active}" name="octicon-check" v-if="hasLayers"></icon></span>
@@ -71,6 +72,23 @@ export default {
     active() {
       return this.activeContextsIds.indexOf(this.conf.id) !== -1
     },
+    nContexts() {
+      return (function count(conf) {
+        if (conf.items) {
+          return conf.items.reduce((n, item) => n + count(item), 0)
+        }
+        return conf.layers.length ? 1 : 0;
+      })(this.conf);
+    },
+    nActive() {
+      const activeContextsIds = this.activeContextsIds;
+      return (function count(conf) {
+        if (conf.items) {
+          return conf.items.reduce((n, item) => n + count(item), 0)
+        }
+        return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0;
+      })(this.conf);
+    },
     ...mapState([
       'contextsTimes',
       'activeContextsIds'
@@ -89,14 +107,16 @@ export default {
       this.open = !this.open;
     },
     toggleActive() {
-      this.$store.commit('toggle_context', { contextId: this.conf.id });
-      if (this.conf.group.exclusive) {
-        this.conf.group.items.forEach(item => {
-          if (item.id != this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
-            // it's not this context and it's active
-            this.$store.commit('toggle_context', { contextId: item.id });
-          }
-        });
+      if (this.conf.layers.length) {
+        this.$store.commit('toggle_context', { contextId: this.conf.id });
+        if (this.conf.group.exclusive) {
+          this.conf.group.items.forEach(item => {
+            if (item.id != this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
+              // it's not this context and it's active
+              this.$store.commit('toggle_context', { contextId: item.id });
+            }
+          });
+        }
       }
     },
     toggleLegend() {
@@ -176,6 +196,9 @@ ul {
   color: $highlight-color;
 }
 .activate-button:hover {
+  color: $highlight-color;
+}
+.counter {
   color: $highlight-color;
 }
 </style>

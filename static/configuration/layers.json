@@ -354,7 +354,7 @@
     },
     {
       "id": "countryBoundaries",
-      "active": true,
+      "active": false,
       "infoFile": "country_boundaries_def.html",
       "label": "Country Boundaries",
       "layers": [ "countryBoundaries" ],
@@ -485,6 +485,7 @@
       {
         "group": {
           "label": "Administrative Areas",
+          "exclusive": true,
           "items": [
             { "context": "countryBoundaries" },
             { "context": "provinces" },

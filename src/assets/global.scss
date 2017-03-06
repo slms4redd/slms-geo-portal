@@ -27,6 +27,12 @@ button:disabled {
 .danger {
   background-color: #f00;
 }
+.unselectable {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
 // .slms-control {
 //   position: absolute;
 //   padding: 2px;

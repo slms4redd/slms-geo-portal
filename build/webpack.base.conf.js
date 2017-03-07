@@ -87,7 +87,7 @@ module.exports = {
     ]
   },
   callbackLoader:
-    require("vue-icons/icon-loader")(["octicon-clock", "octicon-info", "octicon-list-unordered", "octicon-diff-added", "octicon-diff-removed", "octicon-check"]),
+    require("vue-icons/icon-loader")(["octicon-clock", "octicon-info", "octicon-list-unordered", "octicon-diff-added", "octicon-diff-removed", "octicon-check", "octicon-graph"]),
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },

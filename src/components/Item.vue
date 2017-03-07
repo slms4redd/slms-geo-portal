@@ -5,16 +5,27 @@
         <icon class="open-button" v-bind:name="open ? 'octicon-diff-removed' : 'octicon-diff-added'"></icon>
         {{isRoot ? $t("layerSelector.layers") : conf.label}}
       </span>
-      <span class="info-link" v-if="conf.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
+      <span class="info-link icon" v-if="conf.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
     </div>
     <div v-else>
-      <span v-on:click="toggleActive"><icon class="activate-button" v-bind:class="{highlighted, active}" name="octicon-check" v-if="hasLayers"></icon></span>
-      <span v-on:click="toggleLegend"><icon class="legend-link" v-bind:class="{active}" v-show="conf.hasLegends" name="octicon-list-unordered"></icon></span>
+      <span v-on:click="toggleActive" class="icon">
+        <icon class="activate-button" v-bind:class="{highlighted, active}" name="octicon-check" v-if="hasLayers"></icon>
+      </span>
+      <span v-on:click="toggleLegend"  class="icon">
+        <icon class="legend-link" v-bind:class="{active}" v-show="conf.hasLegends" name="octicon-list-unordered"></icon>
+      </span>
       <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
       <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
-      <span class="info-link" v-if="conf.infoFile" v-on:click="showInfo"><icon name="octicon-info"></icon></span>
-      <span class="times-button" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}"><icon class="icon" v-if="hasTimes" name="octicon-clock"> {{selectedTime.humanReadable}}</span>
+      <span class="info-link icon" v-if="conf.infoFile" v-on:click="showInfo">
+        <icon name="octicon-info"></icon>
+      </span>
+      <span class="times-button icon" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}">
+        <icon v-if="hasTimes" name="octicon-clock"> {{selectedTime.humanReadable}}
+      </span>
+      <span title="Statistics available" v-if="hasStatistics" class="icon statistics">
+        <icon name="octicon-graph">
+      </span>
       <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></TimeSelect>
       <template v-if="conf.hasLegends && active && showLegend">
         <ContextLegend :conf="conf"></ContextLegend>
@@ -65,6 +76,9 @@ export default {
     },
     hasTimes() {
       return !!this.conf.times.length
+    },
+    hasStatistics() {
+      return this.conf.layers && this.conf.layers.some(l => l.statistics);
     },
     selectedTime() {
       return this.contextsTimes[this.conf.id]
@@ -203,7 +217,12 @@ ul {
 }
 </style>
 <style>
-.info-link svg, .legend-link svg, .times-button svg {
+.icon.statistics svg {
+  position: relative;
+  top: 3px;
+  color: #999;
+}
+.icon svg {
   position: relative;
   top: 3px;
 }

@@ -247,6 +247,7 @@ export default {
     position: absolute;
     top: 2px;
     right: 8px;
+    color: #006ae8;
   }
   .ol-popup-closer:after {
     content: "✖";

@@ -2,6 +2,7 @@ var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
+var webpack = require('webpack');
 
 var env = process.env.NODE_ENV
 // check env & config/index.js to decide weither to enable CSS Sourcemaps for the
@@ -12,7 +13,7 @@ var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: ['./src/main.js', './src/polyfills.js']
   },
   output: {
     path: config.build.assetsRoot,
@@ -88,6 +89,11 @@ module.exports = {
   },
   callbackLoader:
     require("vue-icons/icon-loader")(["octicon-clock", "octicon-info", "octicon-list-unordered", "octicon-diff-added", "octicon-diff-removed", "octicon-check", "octicon-graph"]),
+  plugins: [
+    new webpack.ProvidePlugin({
+      'Promise': 'es6-promise',
+    })
+  ],
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },

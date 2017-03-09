@@ -78,7 +78,7 @@ const mutations = {
   },
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable;
-  },
+  }
 }
 
 // actions are functions that causes side effects and can involve
@@ -104,7 +104,7 @@ const getters = {
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   },
-  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
+  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics)
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

@@ -24,7 +24,7 @@
 
 <script>
 import { languages } from '../assets/config.json'
-import { config } from 'vue'
+import Vue from 'vue'
 import FileDrop from './FileDrop'
 
 export default {
@@ -34,13 +34,13 @@ export default {
   data() {
     return {
       languages: languages,
-      selectedLanguage: config.lang,
+      selectedLanguage: Vue.config.lang,
       showUpload: false
     }
   },
   methods: {
     setLanguage(id) {
-      config.lang = id;
+      Vue.config.lang = id;
     },
     enableFeedback(e) {
       e.preventDefault();

@@ -25,11 +25,13 @@
 </template>
 
 <script>
+/* global ol */
+
 import { mapGetters, mapState } from 'vuex'
 import map from '../map'
 import httpRequest from '../httpRequest'
 import Modal from './Modal'
-import { config } from 'vue'
+import Vue from 'vue'
 import { defaultGeoServerURLs } from '../assets/config.json'
 
 // Add a vector layer to show the highlighted features
@@ -48,11 +50,10 @@ const processTemplate = function(template, feature) {
 }
 
 const processUrlTemplate = function(urlTemplate, feature) {
-  return processTemplate(urlTemplate.replace('$(_lang)', config.lang), feature);
+  return processTemplate(urlTemplate.replace('$(_lang)', Vue.config.lang), feature);
 }
 
 let container,
-    content,
     closer,
     overlay;
 
@@ -74,7 +75,7 @@ export default {
   },
   mounted() {
     container = document.getElementById('popup');
-    content = document.getElementById('popup-content');
+    // content = document.getElementById('popup-content');
     closer = document.getElementById('popup-closer');
 
     closer.onclick = function() {
@@ -122,13 +123,13 @@ export default {
                 [evtx, evty] = event.pixel,
                 extent = map.getView().calculateExtent(mapSize),
                 layersStr = this.queryableLayers.map(layer => layer.name).join(','),
-                url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1`
-                       + `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5`
-                       + `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}`
-                       + `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
+                url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1` +
+                       `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
+                       `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
+                       `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
 
           httpRequest(url, (responseText) => {
-            const features = parser.readFeatures(responseText, { featureProjection: "EPSG:3857" });
+            const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' });
 
             highlightOverlay.getSource().clear();
             if (features.length) {
@@ -165,11 +166,11 @@ export default {
   methods: {
     showStatistics(statsConf, feature) {
       switch (statsConf.type) {
-        case "url":
+        case 'url':
           const url = statsConf.url;
           this.statisticsUrl = processUrlTemplate(url, feature);
           break;
-        case "attributes":
+        case 'attributes':
           const attributes = statsConf.attributes;
           if (attributes) {
             this.popupAttributes = attributes.map(a => ({
@@ -181,7 +182,7 @@ export default {
                   properties = feature.getProperties();
             for (let p in properties) {
               if (properties.hasOwnProperty(p) && p !== 'geometry') {
-                t.push({ label: p, value: properties[p]});
+                t.push({ label: p, value: properties[p] });
               }
             }
             this.popupAttributes = t;
@@ -190,7 +191,6 @@ export default {
         default:
           break;
       }
-
     },
     hideStatistics() {
       this.statisticsUrl = null;

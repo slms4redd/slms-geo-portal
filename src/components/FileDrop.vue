@@ -21,67 +21,66 @@ export default {
   },
   watch: {
     show(show) {
+      let counter = 0;
+
+      const dragenter = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        counter++;
+        document.getElementById('dropTarget').classList.add('dragover');
+      }
+
+      const dragleave = function(e) {
+        counter--;
+        if (counter === 0) {
+          document.getElementById('dropTarget').classList.remove('dragover');
+        }
+      }
+
+      const dragover = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+
+      const handleFiles = files => {
+        const file = files[0]; // only the first file is shown - TODO show error
+        // TODO check file type
+        // if (file.type !== 'application/xml') {
+        //   alert('Not a KML file');
+        //   return;
+        // }
+
+        var reader = new FileReader();
+        reader.onload = e => {
+          try {
+            this.$store.commit('overlay_kml', { kml: e.target.result });
+          } catch (err) {
+            alert('Error reading the KML file:\n' + err);
+          }
+          this.hideUploadPopup();
+        }
+        reader.readAsText(file);
+      }
+
+      const drop = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var dt = e.dataTransfer;
+        var files = dt.files;
+
+        handleFiles(files);
+
+        counter = 0;
+      }
       if (show) {
-        let counter = 0;
-        this.$nextTick(function () {
-          const dropTarget = document.getElementById("dropTarget");
-          dropTarget.addEventListener("dragenter", dragenter, false);
-          dropTarget.addEventListener("dragleave", dragleave, false);
-          dropTarget.addEventListener("dragover", dragover, false);
-          dropTarget.addEventListener("drop", drop, false);
+        this.$nextTick(function() {
+          const dropTarget = document.getElementById('dropTarget');
+          dropTarget.addEventListener('dragenter', dragenter, false);
+          dropTarget.addEventListener('dragleave', dragleave, false);
+          dropTarget.addEventListener('dragover', dragover, false);
+          dropTarget.addEventListener('drop', drop, false);
         });
-
-        const dragenter = function(e) {
-          e.stopPropagation();
-          e.preventDefault();
-          counter++;
-          document.getElementById('dropTarget').classList.add('dragover');
-        }
-
-        function dragleave(e) {
-          counter--;
-          if (counter === 0) {
-            document.getElementById('dropTarget').classList.remove('dragover');
-          }
-        }
-
-        const dragover = function(e) {
-          e.stopPropagation();
-          e.preventDefault();
-        }
-
-        const handleFiles = files => {
-          const file = files[0]; // only the first file is shown - TODO show error
-          // TODO check file type
-          // if (file.type !== 'application/xml') {
-          //   alert('Not a KML file');
-          //   return;
-          // }
-
-          var reader = new FileReader();
-          reader.onload = e => {
-            try {
-              // const parsed = JSON.parse(e.target.result);
-              this.$store.commit('overlay_kml', { kml: e.target.result });
-            } catch (err) {
-              alert('Error reading the KML file:\n' + err);
-            }
-            this.hideUploadPopup();
-          }
-          reader.readAsText(file);
-        }
-
-        const drop = function(e) {
-          e.stopPropagation();
-          e.preventDefault();
-
-          var dt = e.dataTransfer;
-          var files = dt.files;
-
-          handleFiles(files);
-
-          counter = 0;
-        }
       }
     }
   }

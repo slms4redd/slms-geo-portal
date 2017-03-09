@@ -11,6 +11,6 @@ export default function(url, successCalback, errorCalback) {
     }
   };
 
-  xmlhttp.open("GET", url, true);
+  xmlhttp.open('GET', url, true);
   xmlhttp.send();
 }

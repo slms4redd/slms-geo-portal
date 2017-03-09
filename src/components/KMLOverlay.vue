@@ -8,6 +8,8 @@
 </template>
 
 <script>
+/* global ol */
+
 import { mapState } from 'vuex'
 import map from '../map'
 
@@ -26,7 +28,7 @@ export default {
         // Delete any other previous overlay
 
         const vectorSource = new ol.source.Vector({
-          features: (new ol.format.KML({  extractStyles: false })).readFeatures(kml, { featureProjection: 'EPSG:3857' })
+          features: (new ol.format.KML({ extractStyles: false })).readFeatures(kml, { featureProjection: 'EPSG:3857' })
         });
 
         const defaultStyle = {

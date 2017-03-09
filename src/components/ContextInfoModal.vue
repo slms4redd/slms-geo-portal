@@ -9,7 +9,7 @@
 import Modal from './Modal'
 import { mapState } from 'vuex'
 import httpRequest from '../httpRequest'
-import { config } from 'vue';
+import Vue from 'vue';
 
 export default {
   data() {
@@ -31,10 +31,13 @@ export default {
           this.content = content;
           this.showModal = true;
         }
-        httpRequest(`/static/configuration/loc/${config.lang}/html/${val.fileName}`, (responseText) => {
+        httpRequest(`/static/configuration/loc/${Vue.config.lang}/html/${val.fileName}`, (responseText) => {
           showContent(responseText);
-        }, (error) => {
-          showContent('Cannot get layer info');
+        }, error => {
+          // jslint handle-callback-err workaround
+          if (error) {
+            showContent('Cannot get layer info');
+          }
         });
       }
     }

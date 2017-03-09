@@ -1,30 +1,32 @@
 <template>
   <li class="unselectable">
     <div :class="{dimmed: !nContexts}" v-if="isGroup" class="group" @click="toggleGroup">
-      <span class="line group-label">
-        <icon class="open-button" v-bind:name="open ? 'octicon-diff-removed' : 'octicon-diff-added'"></icon>
+      <span class="line group-label icon">
+        <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
         {{isRoot ? $t("layerSelector.layers") : conf.label}}
       </span>
-      <span class="info-link icon" v-if="conf.infoFile" v-on:click.stop="showInfo"><icon name="octicon-info"></icon></span>
+      <span class="info-link icon" v-if="conf.infoFile" v-on:click.stop="showInfo">
+        <icon name="info-circle"></icon>
+      </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
     </div>
     <div v-else>
       <span v-on:click="toggleActive" class="icon">
-        <icon class="activate-button" v-bind:class="{highlighted, active}" name="octicon-check" v-if="hasLayers"></icon>
+        <icon class="activate-button" v-bind:class="{highlighted, active}" name="check" v-if="hasLayers"></icon>
       </span>
       <span v-on:click="toggleLegend"  class="icon">
-        <icon class="legend-link" v-bind:class="{active}" v-show="conf.hasLegends" name="octicon-list-unordered"></icon>
+        <icon class="legend-link" v-bind:class="{active}" v-show="conf.hasLegends" name="th-list"></icon>
       </span>
       <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
       <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
       <span class="info-link icon" v-if="conf.infoFile" v-on:click="showInfo">
-        <icon name="octicon-info"></icon>
+        <icon name="info-circle"></icon>
       </span>
       <span class="times-button icon" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}">
-        <icon v-if="hasTimes" name="octicon-clock"> {{selectedTime.humanReadable}}
+        <icon name="info-circle"></icon> {{selectedTime.humanReadable}}
       </span>
       <span title="Statistics available" v-if="hasStatistics" class="icon statistics">
-        <icon name="octicon-graph">
+        <icon name="bar-chart"></icon>
       </span>
       <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></TimeSelect>
       <template v-if="conf.hasLegends && active && showLegend">
@@ -41,13 +43,22 @@
 import { mapState } from 'vuex'
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
+import Icon from 'vue-awesome/components/Icon.vue'
+import 'vue-awesome/icons/plus-square-o'
+import 'vue-awesome/icons/minus-square-o'
+import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/th-list'
+import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/clock-o'
+import 'vue-awesome/icons/bar-chart'
 
 export default {
   name: 'item',
   components: {
     ContextLegend,
     TimeSelect,
-    "icon": require("vue-icons/icon")
+    Icon
+    // "icon": require("vue-icons/icon")
   },
   props: {
     conf: Object
@@ -125,7 +136,7 @@ export default {
         this.$store.commit('toggle_context', { contextId: this.conf.id });
         if (this.conf.group.exclusive) {
           this.conf.group.items.forEach(item => {
-            if (item.id != this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
+            if (item.id !== this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
               // it's not this context and it's active
               this.$store.commit('toggle_context', { contextId: item.id });
             }
@@ -139,7 +150,7 @@ export default {
       }
     },
     showInfo() {
-      this.$store.dispatch('showLayerInfo',  { label: this.conf.label, fileName: this.conf.infoFile });
+      this.$store.dispatch('showLayerInfo', { label: this.conf.label, fileName: this.conf.infoFile });
     },
     toggleTimeMenu() {
       this.showTimeMenu = !this.showTimeMenu;
@@ -147,7 +158,7 @@ export default {
     setTime(time) {
       this.$store.commit('set_context_time', { contextId: this.conf.id, time: time })
     }
-  },
+  }
 }
 </script>
 
@@ -178,7 +189,8 @@ ul {
 .inline-legend {
   width: 20px;
   height: 20px;
-  vertical-align: middle;
+  position: relative;
+  top: 5px;
 }
 .info-link:hover, .times-button:hover {
   color: $highlight-color;
@@ -193,8 +205,6 @@ ul {
   color: $highlight-color;
 }
 .open-button {
-  position: relative;
-  top: 3px;
   color: #fff;
 }
 .group-label:hover .open-button {
@@ -215,15 +225,15 @@ ul {
 .counter {
   color: $highlight-color;
 }
-</style>
-<style>
-.icon.statistics svg {
-  position: relative;
-  top: 3px;
-  color: #999;
+
+.icon svg.activate-button {
+  top: 2px;
 }
 .icon svg {
   position: relative;
   top: 3px;
+}
+.icon.statistics svg {
+  color: #999;
 }
 </style>

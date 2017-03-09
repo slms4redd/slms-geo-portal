@@ -25,6 +25,8 @@
 </template>
 
 <script>
+/* global ol */
+
 import { mapState } from 'vuex'
 import map from '../map'
 import config from '../assets/config.json';
@@ -99,8 +101,8 @@ export default {
 
       var params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`;
 
-      xhr.open("POST", config.feedbackUrl, true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.open('POST', config.feedbackUrl, true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
       xhr.send(params);
     },

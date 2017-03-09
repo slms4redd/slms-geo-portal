@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import { config } from 'vue'
-
 export default {
   props: {
     times: Array,

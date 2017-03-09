@@ -14,8 +14,14 @@ npm run dev
 # build for production with minification
 npm run build
 
+# build for production and view the bundle analyzer report
+npm run build --report
+
 # run unit tests
 npm run unit
+
+# run e2e tests
+npm run e2e
 
 # run all tests
 npm test
@@ -45,7 +51,7 @@ Seems that the **node** binary is called **node.js** on Debian distros. This is 
 [Check out this page](http://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu) for a workaround if you are experiencing an issue apparently related to this.
 
 ### Win10's Linux subsystems
-As reported [here](https://cjibo.com/2016/10/11/bash-on-windows-is-beta/) there are some problems running node.js on win10 
+As reported [here](https://cjibo.com/2016/10/11/bash-on-windows-is-beta/) there are some problems running node.js on win10
 bash shell.
 
 As suggested workaround run `npm run dev` or `npm run build` from the windows terminal.

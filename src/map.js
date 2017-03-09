@@ -1,3 +1,5 @@
+/* global ol */
+
 import config from './assets/config.json';
 
 const mousePositionControl = new ol.control.MousePosition({

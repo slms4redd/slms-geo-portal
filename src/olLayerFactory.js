@@ -1,3 +1,5 @@
+/* global ol */
+
 import { bingMapsKey } from './assets/config.json';
 
 const attributions = [];
@@ -6,7 +8,7 @@ class OlLayerFactory {
   static createOlLayer(layerConfig) {
     let source;
 
-    switch(layerConfig.type) {
+    switch (layerConfig.type) {
       case 'OSM':
         source = new ol.source.OSM();
         break;

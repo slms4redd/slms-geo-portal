@@ -5,24 +5,24 @@ import VueI18n from 'vue-i18n'
 import httpRequest from './httpRequest'
 
 // From http://stackoverflow.com/a/979995
-const QueryString = function() {
-  const query_string = {},
-        pairs = window.location.search.substring(1).split("&").map(v => v.split('='));
+const QueryString = (function() {
+  const queryString = {},
+        pairs = window.location.search.substring(1).split('&').map(v => v.split('='));
 
   pairs.forEach(([k, v]) => {
-    if (!query_string[k]) {
+    if (!queryString[k]) {
       // First entry with this name
-      query_string[k] = decodeURIComponent(v);
-    } else if (typeof query_string[k] === "string") {
+      queryString[k] = decodeURIComponent(v);
+    } else if (typeof queryString[k] === 'string') {
       // Second entry with this name
-      query_string[k] = [query_string[k], decodeURIComponent(v)];
+      queryString[k] = [queryString[k], decodeURIComponent(v)];
     } else {
       // Third or later entry with this name
-      query_string[k].push(decodeURIComponent(v));
+      queryString[k].push(decodeURIComponent(v));
     }
   });
-  return query_string;
-}();
+  return queryString;
+})();
 
 
 const lang = QueryString.lang || 'en';
@@ -37,7 +37,7 @@ Vue.locale(lang, function() {
     httpRequest(`../static/configuration/locale/${lang}.json`, (responseText) => {
       try {
         resolve(JSON.parse(responseText));
-      } catch(error) {
+      } catch (error) {
         alert(`Error loading app:\n${error}`);
         reject();
       }
@@ -46,7 +46,7 @@ Vue.locale(lang, function() {
       reject();
     });
   }
-}, function () {
+}, function() {
   Vue.config.lang = lang;
   new Vue({
     el: '#app',

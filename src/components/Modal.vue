@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  created: function () {
+  created: function() {
     window.addEventListener('keydown', this.handleKeyDown);
   },
   methods: {

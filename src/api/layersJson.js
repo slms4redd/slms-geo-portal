@@ -1,5 +1,5 @@
-import { Layer, Context, Group } from '../config.js'
-import httpRequest from '../httpRequest'
+import { Layer, Context, Group } from '../config.js';
+import httpRequest from '../httpRequest';
 
 class _Config {
   constructor(json) {
@@ -26,4 +26,4 @@ export default {
       alert(error);
     });
   }
-}
+};

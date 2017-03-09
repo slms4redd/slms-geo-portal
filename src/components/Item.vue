@@ -40,17 +40,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
-import Icon from 'vue-awesome/components/Icon.vue'
-import 'vue-awesome/icons/plus-square-o'
-import 'vue-awesome/icons/minus-square-o'
-import 'vue-awesome/icons/check'
-import 'vue-awesome/icons/th-list'
-import 'vue-awesome/icons/info-circle'
-import 'vue-awesome/icons/clock-o'
-import 'vue-awesome/icons/bar-chart'
+import Icon from 'vue-awesome/components/Icon.vue';
+import 'vue-awesome/icons/plus-square-o';
+import 'vue-awesome/icons/minus-square-o';
+import 'vue-awesome/icons/check';
+import 'vue-awesome/icons/th-list';
+import 'vue-awesome/icons/info-circle';
+import 'vue-awesome/icons/clock-o';
+import 'vue-awesome/icons/bar-chart';
 
 export default {
   name: 'item',
@@ -70,7 +70,7 @@ export default {
       showLegend: false,
       showTimeMenu: false,
       highlighted: false
-    }
+    };
   },
   computed: {
     isContext() {
@@ -86,21 +86,21 @@ export default {
       return !!this.conf.layers.length;
     },
     hasTimes() {
-      return !!this.conf.times.length
+      return !!this.conf.times.length;
     },
     hasStatistics() {
       return this.conf.layers && this.conf.layers.some(l => l.statistics);
     },
     selectedTime() {
-      return this.contextsTimes[this.conf.id]
+      return this.contextsTimes[this.conf.id];
     },
     active() {
-      return this.activeContextsIds.indexOf(this.conf.id) !== -1
+      return this.activeContextsIds.indexOf(this.conf.id) !== -1;
     },
     nContexts() {
       return (function count(conf) {
         if (conf.items) {
-          return conf.items.reduce((n, item) => n + count(item), 0)
+          return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return conf.layers.length ? 1 : 0;
       })(this.conf);
@@ -109,7 +109,7 @@ export default {
       const activeContextsIds = this.activeContextsIds;
       return (function count(conf) {
         if (conf.items) {
-          return conf.items.reduce((n, item) => n + count(item), 0)
+          return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0;
       })(this.conf);
@@ -156,10 +156,10 @@ export default {
       this.showTimeMenu = !this.showTimeMenu;
     },
     setTime(time) {
-      this.$store.commit('set_context_time', { contextId: this.conf.id, time: time })
+      this.$store.commit('set_context_time', { contextId: this.conf.id, time: time });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

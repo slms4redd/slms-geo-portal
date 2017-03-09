@@ -10,12 +10,12 @@ const ISO8601ToDate = function(dateString) {
     let offset = 0,
         time;
 
-    if (d[3]) { date.setMonth(+d[3] - 1); }
-    if (d[5]) { date.setDate(+d[5]); }
-    if (d[7]) { date.setHours(+d[7]); }
-    if (d[8]) { date.setMinutes(+d[8]); }
-    if (d[10]) { date.setSeconds(+d[10]); }
-    if (d[12]) { date.setMilliseconds(Number('0.' + d[12]) * 1000); }
+    if (d[3]) { date.setMonth(+d[3] - 1) }
+    if (d[5]) { date.setDate(+d[5]) }
+    if (d[7]) { date.setHours(+d[7]) }
+    if (d[8]) { date.setMinutes(+d[8]) }
+    if (d[10]) { date.setSeconds(+d[10]) }
+    if (d[12]) { date.setMilliseconds(Number('0.' + d[12]) * 1000) }
     if (d[14]) {
       offset = (+d[16] * 60) + +d[17];
       offset *= ((d[15] === '-') ? 1 : -1);
@@ -49,7 +49,7 @@ class Layer {
         const ret = {
           type: s.type,
           popupLabel: s.popupLabel
-        }
+        };
         switch (s.type) {
           case 'iframe': // TODO backward compatibility - delete it
           case 'url':
@@ -59,7 +59,7 @@ class Layer {
             ret.attributes = s.attributes && s.attributes.map(a => ({
               attribute: a.attribute,
               label: a.label || a.attribute
-            }))
+            }));
             break;
           default:
             throw new Error(`Unsupported statistics type: ${s.type}`);

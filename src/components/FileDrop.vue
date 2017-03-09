@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Modal from './Modal'
+import Modal from './Modal';
 
 export default {
   components: {
@@ -28,19 +28,19 @@ export default {
         e.preventDefault();
         counter++;
         document.getElementById('dropTarget').classList.add('dragover');
-      }
+      };
 
       const dragleave = function(e) {
         counter--;
         if (counter === 0) {
           document.getElementById('dropTarget').classList.remove('dragover');
         }
-      }
+      };
 
       const dragover = function(e) {
         e.stopPropagation();
         e.preventDefault();
-      }
+      };
 
       const handleFiles = files => {
         const file = files[0]; // only the first file is shown - TODO show error
@@ -58,9 +58,9 @@ export default {
             alert('Error reading the KML file:\n' + err);
           }
           this.hideUploadPopup();
-        }
+        };
         reader.readAsText(file);
-      }
+      };
 
       const drop = function(e) {
         e.stopPropagation();
@@ -72,7 +72,7 @@ export default {
         handleFiles(files);
 
         counter = 0;
-      }
+      };
       if (show) {
         this.$nextTick(function() {
           const dropTarget = document.getElementById('dropTarget');
@@ -84,7 +84,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style>

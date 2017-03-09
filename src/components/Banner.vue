@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import { languages } from '../assets/config.json'
-import Vue from 'vue'
-import FileDrop from './FileDrop'
+import { languages } from '../assets/config.json';
+import Vue from 'vue';
+import FileDrop from './FileDrop';
 
 export default {
   components: {
@@ -36,7 +36,7 @@ export default {
       languages: languages,
       selectedLanguage: Vue.config.lang,
       showUpload: false
-    }
+    };
   },
   methods: {
     setLanguage(id) {
@@ -44,7 +44,7 @@ export default {
     },
     enableFeedback(e) {
       e.preventDefault();
-      this.$store.commit('enable_feedback', { enable: true })
+      this.$store.commit('enable_feedback', { enable: true });
     },
     enableUpload(e) {
       e.preventDefault();
@@ -54,7 +54,7 @@ export default {
       this.showUpload = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

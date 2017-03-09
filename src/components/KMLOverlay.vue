@@ -10,8 +10,8 @@
 <script>
 /* global ol */
 
-import { mapState } from 'vuex'
-import map from '../map'
+import { mapState } from 'vuex';
+import map from '../map';
 
 let vectorLayer;
 
@@ -107,7 +107,6 @@ export default {
         //   })
         // });
 
-
         vectorLayer = new ol.layer.Vector({
           source: vectorSource,
           style: styleFunction
@@ -117,7 +116,7 @@ export default {
         vectorLayer.setZIndex(1000);
         map.addLayer(vectorLayer);
 
-        var extent = vectorSource.getExtent();
+        let extent = vectorSource.getExtent();
         map.getView().fit(extent, map.getSize());
       } else {
         map.removeLayer(vectorLayer);
@@ -127,7 +126,7 @@ export default {
   computed: mapState([
     'kmlOverlay'
   ])
-}
+};
 </script>
 
 <style scoped>

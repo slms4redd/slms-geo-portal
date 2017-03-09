@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import layersJson from '../api/layersJson'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import layersJson from '../api/layersJson';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 // root state object.
 // each Vuex instance is just a single state tree.
@@ -16,7 +16,7 @@ const state = {
   kmlOverlay: null,
   enableFeedback: false,
   activeContextsIds: []
-}
+};
 
 // mutations are operations that actually mutates the state.
 // each mutation handler gets the entire state tree as the
@@ -39,7 +39,7 @@ const mutations = {
         activeContextsIds.push(c.id);
       }
     });
-    state.contextsTimes = contextsTimes
+    state.contextsTimes = contextsTimes;
     state.activeContextsIds = activeContextsIds;
   },
   toggle_context(state, { contextId }) {
@@ -79,13 +79,13 @@ const mutations = {
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable;
   }
-}
+};
 
 // actions are functions that causes side effects and can involve
 // asynchronous operations.
 const actions = {
   getAllLayers({ commit }) {
-    layersJson.getLayers(Vue.config.lang, layersConf => commit('receive_layers', { layersConf }))
+    layersJson.getLayers(Vue.config.lang, layersConf => commit('receive_layers', { layersConf }));
   },
   showLayerInfo({ commit, state }, { fileName, label }) {
     commit('show_layer_info', { fileName: fileName, label: label });
@@ -93,7 +93,7 @@ const actions = {
   hideLayerInfo({ commit, state }) {
     commit('show_layer_info', { fileName: null, label: null });
   }
-}
+};
 
 // getters are functions
 const getters = {
@@ -105,7 +105,7 @@ const getters = {
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   },
   queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics)
-}
+};
 
 // A Vuex instance is created by combining the state, mutations, actions,
 // and getters.
@@ -115,4 +115,4 @@ export default new Vuex.Store({
   getters,
   actions,
   mutations
-})
+});

@@ -1,8 +1,10 @@
-import App from './App'
-import store from './store'
-import Vue from 'vue'
-import VueI18n from 'vue-i18n'
-import httpRequest from './httpRequest'
+/* eslint no-new: 0 */
+
+import App from './App';
+import store from './store';
+import Vue from 'vue';
+import VueI18n from 'vue-i18n';
+import httpRequest from './httpRequest';
 
 // From http://stackoverflow.com/a/979995
 const QueryString = (function() {
@@ -30,7 +32,6 @@ const lang = QueryString.lang || 'en';
 // install plugin
 Vue.use(VueI18n);
 
-// var self = this;
 Vue.locale(lang, function() {
   // self.loading = true;
   return function(resolve, reject) {
@@ -45,7 +46,7 @@ Vue.locale(lang, function() {
       alert(`Error loading language file for ${lang}:\n${httpError}`);
       reject();
     });
-  }
+  };
 }, function() {
   Vue.config.lang = lang;
   new Vue({

@@ -17,7 +17,7 @@ export default {
       this.$emit('setTime', time);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

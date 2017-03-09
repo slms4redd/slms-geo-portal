@@ -27,8 +27,8 @@
 <script>
 /* global ol */
 
-import { mapState } from 'vuex'
-import map from '../map'
+import { mapState } from 'vuex';
+import map from '../map';
 import config from '../assets/config.json';
 
 let drawLayer = null,
@@ -42,7 +42,7 @@ export default {
       draw: null,
       categories: config.feedbackCategories,
       selectedCategory: ''
-    }
+    };
   },
   watch: {
     enableFeedback(enable) {
@@ -97,7 +97,7 @@ export default {
           }
           _this.disableFeedback();
         }
-      }
+      };
 
       var params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`;
 
@@ -107,7 +107,7 @@ export default {
       xhr.send(params);
     },
     disableFeedback() {
-      this.$store.commit('enable_feedback', { enable: false })
+      this.$store.commit('enable_feedback', { enable: false });
     },
     clear() {
       drawLayer.getSource().clear();
@@ -124,7 +124,7 @@ export default {
       'enableFeedback'
     ])
   }
-}
+};
 </script>
 
 <style scoped>

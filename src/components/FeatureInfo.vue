@@ -27,12 +27,12 @@
 <script>
 /* global ol */
 
-import { mapGetters, mapState } from 'vuex'
-import map from '../map'
-import httpRequest from '../httpRequest'
-import Modal from './Modal'
-import Vue from 'vue'
-import { defaultGeoServerURLs } from '../assets/config.json'
+import { mapGetters, mapState } from 'vuex';
+import map from '../map';
+import httpRequest from '../httpRequest';
+import Modal from './Modal';
+import Vue from 'vue';
+import { defaultGeoServerURLs } from '../assets/config.json';
 
 // Add a vector layer to show the highlighted features
 const highlightOverlay = new ol.layer.Vector({
@@ -47,11 +47,11 @@ const processTemplate = function(template, feature) {
     const attributeName = match.substring(2, match.length - 1);
     return feature.getProperties()[attributeName];
   });
-}
+};
 
 const processUrlTemplate = function(urlTemplate, feature) {
   return processTemplate(urlTemplate.replace('$(_lang)', Vue.config.lang), feature);
-}
+};
 
 let container,
     closer,
@@ -68,7 +68,7 @@ export default {
       showStatisticsModal: false,
       statisticsUrl: null,
       popupAttributes: null
-    }
+    };
   },
   components: {
     'modal': Modal
@@ -148,7 +148,7 @@ export default {
                   const template = stat.popupLabel;
                   this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
                   this.statisticsFeatures.push(feature);
-                })
+                });
               });
 
               // this.features = features;
@@ -176,7 +176,7 @@ export default {
             this.popupAttributes = attributes.map(a => ({
               label: a.label,
               value: feature.getProperties()[a.attribute] || 'n/a'
-            }))
+            }));
           } else {
             const t = [],
                   properties = feature.getProperties();
@@ -206,7 +206,7 @@ export default {
       'queryableLayers'
     ])
   }
-}
+};
 </script>
 
 <style>

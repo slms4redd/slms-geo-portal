@@ -97,16 +97,6 @@ export default {
           }
         };
 
-        // const style = new ol.style.Style({
-        //   fill: new ol.style.Fill({
-        //     color: 'rgba(255, 255, 255, 0.4)'
-        //   }),
-        //   stroke: new ol.style.Stroke({
-        //     color: '#319FD3',
-        //     width: 1
-        //   })
-        // });
-
         vectorLayer = new ol.layer.Vector({
           source: vectorSource,
           style: styleFunction

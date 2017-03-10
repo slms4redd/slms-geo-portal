@@ -1,7 +1,10 @@
 <template>
   <div class="dropdown">
     <ul class="dropdown-content">
-      <li v-for="time in times"><span @click="set(time)" v-bind:class="{ selected: time === selectedTime }">{{time.humanReadable}}</span><br></li>
+      <li v-for="time in times">
+        <span @click="set(time)" v-bind:class="{ selected: time === selectedTime }">{{time.humanReadable}}</span>
+        <br>
+      </li>
     </ul>
   </div>
 </template>

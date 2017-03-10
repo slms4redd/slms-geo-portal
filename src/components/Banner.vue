@@ -8,7 +8,6 @@
         <span v-if="language.id === selectedLanguage" :href="'?lang=' + language.id">{{language.label}}</span>
         <a v-else :href="'?lang=' + language.id">{{language.label}}</a>
       </li>
-      <!-- <li v-for="language in languages" @click="setLanguage(language.id)">{{language.label}}</li> -->
     </ul>
     <ul id="tools" class="buttons">
       <li>

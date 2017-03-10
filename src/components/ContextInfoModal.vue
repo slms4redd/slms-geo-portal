@@ -31,14 +31,9 @@ export default {
           this.content = content;
           this.showModal = true;
         };
-        httpRequest(`/static/configuration/loc/${Vue.config.lang}/html/${val.fileName}`, (responseText) => {
-          showContent(responseText);
-        }, error => {
-          // jslint handle-callback-err workaround
-          if (error) {
-            showContent('Cannot get layer info');
-          }
-        });
+        httpRequest('GET', `/static/configuration/loc/${Vue.config.lang}/html/${val.fileName}`)
+          .then(responseText => showContent(responseText))
+          .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`));
       }
     }
   },

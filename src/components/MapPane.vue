@@ -69,6 +69,7 @@ export default {
 .ol-zoom {
   top: $banner-height + 8px;
   right:.5em;
+  left: auto;
   left: initial;
 }
 /*.ol-control button.ol-zoom-in, .ol-control button {

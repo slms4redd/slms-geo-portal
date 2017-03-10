@@ -34,17 +34,19 @@ Vue.use(VueI18n);
 Vue.locale(lang, function() {
   // self.loading = true;
   return function(resolve, reject) {
-    httpRequest(`../static/configuration/locale/${lang}.json`, (responseText) => {
-      try {
-        resolve(JSON.parse(responseText));
-      } catch (error) {
-        alert(`Error loading app:\n${error}`);
+    httpRequest('GET', `../static/configuration/locale/${lang}.json`)
+      .then(responseText => {
+        try {
+          resolve(JSON.parse(responseText));
+        } catch (error) {
+          alert(`Error loading app:\n${error}`);
+          reject();
+        }
+      })
+      .catch(error => {
+        alert(`Error loading language file for ${lang}:\n${error.statusText}`);
         reject();
-      }
-    }, (httpError) => {
-      alert(`Error loading language file for ${lang}:\n${httpError}`);
-      reject();
-    });
+      });
   };
 }, function() {
   Vue.config.lang = lang;

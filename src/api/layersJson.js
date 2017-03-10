@@ -16,14 +16,9 @@ export default {
   getLayers(lang, cb) {
     // To keep the compatibility with the old portal, layers.json can be localized
     const url = '../static/configuration/layers.json' + (lang ? `?lang=${lang}` : '');
-    httpRequest(url, (responseText) => {
-      try {
-        cb(new _Config(JSON.parse(responseText)));
-      } catch (e) {
-        alert(e);
-      }
-    }, (error) => {
-      alert(error);
-    });
+
+    httpRequest('GET', url)
+    .then(responseText => cb(new _Config(JSON.parse(responseText))))
+    .catch(error => alert(error.statusText));
   }
 };

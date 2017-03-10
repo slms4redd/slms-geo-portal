@@ -128,37 +128,37 @@ export default {
                        `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
                        `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
 
-          httpRequest(url, (responseText) => {
-            const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' });
+          httpRequest('GET', url)
+            .then(responseText => {
+              const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' });
 
-            highlightOverlay.getSource().clear();
-            if (features.length) {
-              // Highlight the features on the map
-              highlightOverlay.getSource().addFeatures(features);
+              highlightOverlay.getSource().clear();
+              if (features.length) {
+                // Highlight the features on the map
+                highlightOverlay.getSource().addFeatures(features);
 
-              // Look for the related layer config objects (f.getId is of the form "provinces_simp.1")
-              const selectedFeaturesLayers = features.map(f =>
-                this.layers.find(l =>
-                  l.name === f.getId().substring(0, f.getId().lastIndexOf('.'))));
+                // Look for the related layer config objects (f.getId is of the form "provinces_simp.1")
+                const selectedFeaturesLayers = features.map(f =>
+                  this.layers.find(l =>
+                    l.name === f.getId().substring(0, f.getId().lastIndexOf('.'))));
 
-              features.forEach((feature, i) => {
-                const statistics = selectedFeaturesLayers[i].statistics;
-                statistics.forEach(stat => {
-                  this.statisticsConfs.push(stat);
-                  const template = stat.popupLabel;
-                  this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
-                  this.statisticsFeatures.push(feature);
+                features.forEach((feature, i) => {
+                  const statistics = selectedFeaturesLayers[i].statistics;
+                  statistics.forEach(stat => {
+                    this.statisticsConfs.push(stat);
+                    const template = stat.popupLabel;
+                    this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
+                    this.statisticsFeatures.push(feature);
+                  });
                 });
-              });
 
-              // this.features = features;
-              overlay.setPosition(event.coordinate);
-            } else {
-              overlay.setPosition(undefined);
-            }
-          }, (error) => {
-            alert(error);
-          });
+                // this.features = features;
+                overlay.setPosition(event.coordinate);
+              } else {
+                overlay.setPosition(undefined);
+              }
+            })
+            .catch(error => alert(error.statusText));
         }
       });
     }

@@ -23,7 +23,7 @@
         <icon name="info-circle"></icon>
       </span>
       <span class="times-button icon" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}">
-        <icon name="info-circle"></icon> {{selectedTime.humanReadable}}
+        <icon name="clock-o"></icon> {{selectedTime.humanReadable}}
       </span>
       <span title="Statistics available" v-if="hasStatistics" class="icon statistics">
         <icon name="bar-chart"></icon>
@@ -58,7 +58,6 @@ export default {
     ContextLegend,
     TimeSelect,
     Icon
-    // "icon": require("vue-icons/icon")
   },
   props: {
     conf: Object

@@ -6,16 +6,16 @@
 </template>
 
 <script>
-import Modal from './Modal'
-import { mapState } from 'vuex'
-import httpRequest from '../httpRequest'
+import Modal from './Modal';
+import { mapState } from 'vuex';
+import httpRequest from '../httpRequest';
 import Vue from 'vue';
 
 export default {
   data() {
     return {
       showModal: false
-    }
+    };
   },
   components: {
     'modal': Modal
@@ -30,7 +30,7 @@ export default {
         const showContent = content => {
           this.content = content;
           this.showModal = true;
-        }
+        };
         httpRequest(`/static/configuration/loc/${Vue.config.lang}/html/${val.fileName}`, (responseText) => {
           showContent(responseText);
         }, error => {
@@ -45,7 +45,7 @@ export default {
   computed: mapState([
     'layerInfo'
   ])
-}
+};
 </script>
 
 <style scoped>

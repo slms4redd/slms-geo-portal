@@ -7,22 +7,19 @@ const ISO8601ToDate = function(dateString) {
         d = dateString.match(new RegExp(regexp));
   if (d) {
     const date = new Date(+d[1], 0, 1);
-    let offset = 0,
-        time;
-
-    if (d[3]) { date.setMonth(+d[3] - 1) }
-    if (d[5]) { date.setDate(+d[5]) }
-    if (d[7]) { date.setHours(+d[7]) }
-    if (d[8]) { date.setMinutes(+d[8]) }
-    if (d[10]) { date.setSeconds(+d[10]) }
-    if (d[12]) { date.setMilliseconds(Number('0.' + d[12]) * 1000) }
+    let offset = 0;
+    if (d[3]) date.setMonth(+d[3] - 1);
+    if (d[5]) date.setDate(+d[5]);
+    if (d[7]) date.setHours(+d[7]);
+    if (d[8]) date.setMinutes(+d[8]);
+    if (d[10]) date.setSeconds(+d[10]);
+    if (d[12]) date.setMilliseconds(Number('0.' + d[12]) * 1000);
     if (d[14]) {
       offset = (+d[16] * 60) + +d[17];
       offset *= ((d[15] === '-') ? 1 : -1);
     }
-
     offset -= date.getTimezoneOffset();
-    time = +date + offset * 60 * 1000;
+    const time = +date + offset * 60 * 1000;
 
     return new Date(time);
   }

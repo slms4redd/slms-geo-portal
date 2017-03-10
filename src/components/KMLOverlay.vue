@@ -116,7 +116,7 @@ export default {
         vectorLayer.setZIndex(1000);
         map.addLayer(vectorLayer);
 
-        let extent = vectorSource.getExtent();
+        const extent = vectorSource.getExtent();
         map.getView().fit(extent, map.getSize());
       } else {
         map.removeLayer(vectorLayer);

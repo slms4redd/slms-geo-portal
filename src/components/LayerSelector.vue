@@ -6,7 +6,7 @@
 
 <script>
 import Item from './Item';
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'layerSelector',
@@ -26,7 +26,7 @@ export default {
       this.treeData = groups;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

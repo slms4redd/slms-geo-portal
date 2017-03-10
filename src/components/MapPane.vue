@@ -4,10 +4,10 @@
 
 <script>
 import OlLayerFactory from '../olLayerFactory';
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex';
 import map from '../map';
 
-const olLayers = {}
+const olLayers = {};
 
 export default {
   name: 'mapPane',
@@ -33,11 +33,11 @@ export default {
         olLayers[l.id].setVisible(l.visible && activeLayers.find(a => a.id === l.id)));
     },
     contextsTimes(contextsTimes) {
-      for (let contextId in contextsTimes) {
+      for (const contextId in contextsTimes) {
         if (contextsTimes.hasOwnProperty(contextId) && contextsTimes[contextId]) {
           const context = this.contexts.find(c => c.id === contextId);
           context.layers.forEach(l =>
-            olLayers[l.id].getSource().updateParams({'TIME': contextsTimes[contextId].date.toISOString()}));
+            olLayers[l.id].getSource().updateParams({ 'TIME': contextsTimes[contextId].date.toISOString() }));
         }
       }
     }
@@ -53,7 +53,7 @@ export default {
       'activeLayers'
     ])
   }
-}
+};
 </script>
 
 <style scoped>

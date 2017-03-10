@@ -45,8 +45,8 @@ const mutations = {
   toggle_context(state, { contextId }) {
     const context = state.contexts.find(c => c.id === contextId);
     if (context) {
-      var activeContextsIds = state.activeContextsIds.slice(0), // Clone
-          idx = activeContextsIds.indexOf(contextId);
+      const activeContextsIds = state.activeContextsIds.slice(0), // Clone
+            idx = activeContextsIds.indexOf(contextId);
 
       if (idx === -1) {
         activeContextsIds.push(contextId);
@@ -62,7 +62,7 @@ const mutations = {
   set_context_time(state, { contextId, time }) {
     const newContextsTimes = {};
     // Make a shallow copy of the contextsTimes object
-    for (let t in state.contextsTimes) {
+    for (const t in state.contextsTimes) {
       if (state.contextsTimes.hasOwnProperty(t)) {
         newContextsTimes[t] = state.contextsTimes[t];
       }

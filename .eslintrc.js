@@ -24,12 +24,14 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
 
-    'space-before-function-paren': [1, { 'anonymous': 'never', 'named': 'never' }],
-    'one-var': 0,
-    'semi': [2, 'always', { 'omitLastInOneLineBlock': true }],
-    'no-multiple-empty-lines': 0,
     'indent': [2, 2, { 'SwitchCase': 1, 'VariableDeclarator': { 'var': 2, 'let': 2, 'const': 3 } }],
+    'no-extra-semi': 2,
+    'object-curly-spacing': [2, 'always', { objectsInObjects: true }],
+    'max-statements-per-line': ['error', { 'max': 1 }],
     'no-var': 2,
-    "no-extra-semi": 2
+    'one-var': 0,
+    'prefer-const': 2,
+    'semi': [2, 'always', { 'omitLastInOneLineBlock': true }],
+    'space-before-function-paren': [2, { 'anonymous': 'never', 'named': 'never' }]
   }
 }

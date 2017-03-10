@@ -50,7 +50,7 @@ export default {
         //   return;
         // }
 
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = e => {
           try {
             this.$store.commit('overlay_kml', { kml: e.target.result });
@@ -66,8 +66,8 @@ export default {
         e.stopPropagation();
         e.preventDefault();
 
-        var dt = e.dataTransfer;
-        var files = dt.files;
+        const dt = e.dataTransfer,
+              files = dt.files;
 
         handleFiles(files);
 

@@ -26,7 +26,6 @@ const QueryString = (function() {
   return queryString;
 })();
 
-
 const lang = QueryString.lang || 'en';
 
 // install plugin

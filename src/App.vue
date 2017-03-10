@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import Banner from './components/Banner'
-import MapPane from './components/MapPane'
-import LayerSelector from './components/LayerSelector'
-import ContextInfoModal from './components/ContextInfoModal'
-import FeatureInfo from './components/FeatureInfo'
-import Feedback from './components/Feedback'
-import KMLOverlay from './components/KMLOverlay'
+import Banner from './components/Banner';
+import MapPane from './components/MapPane';
+import LayerSelector from './components/LayerSelector';
+import ContextInfoModal from './components/ContextInfoModal';
+import FeatureInfo from './components/FeatureInfo';
+import Feedback from './components/Feedback';
+import KMLOverlay from './components/KMLOverlay';
 
 export default {
   name: 'app',
@@ -33,7 +33,7 @@ export default {
   created() {
     this.$store.dispatch('getAllLayers');
   }
-}
+};
 </script>
 
 <style>

@@ -180,7 +180,7 @@ export default {
           } else {
             const t = [],
                   properties = feature.getProperties();
-            for (let p in properties) {
+            for (const p in properties) {
               if (properties.hasOwnProperty(p) && p !== 'geometry') {
                 t.push({ label: p, value: properties[p] });
               }

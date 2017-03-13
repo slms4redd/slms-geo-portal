@@ -11,8 +11,15 @@
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
     </div>
     <div v-else>
-      <span v-on:click="toggleActive" class="icon">
-        <icon class="activate-button" v-bind:class="{highlighted, active}" name="check" v-if="hasLayers"></icon>
+      <span v-on:click="toggleActive" class="icon" v-if="hasLayers">
+        <template v-if="conf.group.exclusive">
+          <icon v-if="active" class="activate-button" v-bind:class="{highlighted, active}" name="dot-circle-o"></icon>
+          <icon v-else class="activate-button" v-bind:class="{highlighted, active}" name="circle"></icon>
+        </template>
+        <template v-else>
+          <icon v-if="active" class="activate-button" v-bind:class="{highlighted, active}" name="check-square"></icon>
+          <icon v-else class="activate-button" v-bind:class="{highlighted, active}" name="square"></icon>
+        </template>
       </span>
       <span v-on:click="toggleLegend"  class="icon">
         <icon class="legend-link" v-bind:class="{active}" v-show="conf.hasLegends" name="th-list"></icon>
@@ -34,7 +41,7 @@
       </template>
     </div>
     <ul v-show="open" v-if="isGroup">
-      <item class="item" v-for="conf in conf.items" :conf="conf"></item>
+      <item class="item" v-for="conf in conf.items" :key="conf.id" :conf="conf"></item>
     </ul>
   </li>
 </template>
@@ -46,11 +53,14 @@ import TimeSelect from './TimeSelect';
 import Icon from 'vue-awesome/components/Icon.vue';
 import 'vue-awesome/icons/plus-square-o';
 import 'vue-awesome/icons/minus-square-o';
-import 'vue-awesome/icons/check';
 import 'vue-awesome/icons/th-list';
 import 'vue-awesome/icons/info-circle';
 import 'vue-awesome/icons/clock-o';
 import 'vue-awesome/icons/bar-chart';
+import 'vue-awesome/icons/square';
+import 'vue-awesome/icons/check-square';
+import 'vue-awesome/icons/circle';
+import 'vue-awesome/icons/dot-circle-o';
 
 export default {
   name: 'item',
@@ -189,7 +199,7 @@ ul {
   width: 20px;
   height: 20px;
   position: relative;
-  top: 5px;
+  top: 4px;
 }
 .info-link:hover, .times-button:hover {
   color: $highlight-color;

@@ -1,7 +1,7 @@
 <template>
   <modal v-if=show @close="hideUploadPopup()">
     <div slot="body">
-      <div id="dropTarget"><span id="dropText">Drop<br>your KML<br/>file here</span></div>
+      <div id="dropTarget"><span id="dropText" v-html="$t('fileDrop.dropKml')"></span></div>
     </div>
   </modal>
 </template>

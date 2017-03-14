@@ -2,7 +2,7 @@
   <div v-if="kmlOverlay" id="outer">
     <div id="message">
       <!-- <div><b>Message:</b> {{kmlOverlay.message}}</div> -->
-      <button @click="clearFeedback" class="small" id="clearButton">Clear</button>
+      <button @click="clearFeedback" class="small" id="clearButton">{{$t("kmlOverlay.clear")}}</button>
     </div>
   </div>
 </template>

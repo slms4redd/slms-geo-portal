@@ -1,6 +1,24 @@
 {
   "banner": {
-    "title": "SLMS Sample Portal"
+    "title": "SLMS Sample Portal",
+    "feedback": "Feedback",
+    "uploadKml": "Upload KML"
+  },
+  "featureInfo": {
+    "attributes": "Attributes",
+    "moreData": "Select an item from the list below to get more data"
+  },
+  "feedback": {
+    "selectCategory": "Veuillez sélectionner une catégorie"
+  },
+  "fileDrop": {
+    "dropKml": "Drop<br>your KML<br>file here"
+  },
+  "item": {
+    "statisticsAvailable": "Statistics available"
+  },
+  "kmlOverlay": {
+    "clear": "Clear"
   },
   "layerSelector": {
     "layers": "Layers"

@@ -32,7 +32,7 @@
       <span class="times-button icon" v-if="hasTimes" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}">
         <icon name="clock-o"></icon> {{selectedTime.humanReadable}}
       </span>
-      <span title="Statistics available" v-if="hasStatistics" class="icon statistics">
+      <span v-bind:title="$t('item.statisticsAvailable')" v-if="hasStatistics" class="icon statistics">
         <icon name="bar-chart"></icon>
       </span>
       <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></TimeSelect>

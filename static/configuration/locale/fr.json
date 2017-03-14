@@ -1,6 +1,24 @@
 {
   "banner": {
-    "title": "Portail d'exemple SLMS"
+    "title": "Portail d'exemple SLMS",
+    "feedback": "Feedback",
+    "uploadKml": "Télécharger KML"
+  },
+  "featureInfo": {
+    "attributes": "Attributs",
+    "moreData": "Sélectionnez un élément dans la liste ci-dessous pour obtenir plus de données"
+  },
+  "feedback": {
+    "selectCategory": "Please select a category"
+  },
+  "fileDrop": {
+    "dropKml": "Déposez<br>votre fichier<br>KML ici"
+  },
+  "item": {
+    "statisticsAvailable": "Statistiques disponibles"
+  },
+  "kmlOverlay": {
+    "clear": "Supprimer"
   },
   "layerSelector": {
     "layers": "Couches"

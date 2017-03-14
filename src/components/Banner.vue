@@ -11,10 +11,10 @@
     </ul>
     <ul id="tools" class="buttons">
       <li>
-        <a href="#" @click.stop="enableFeedback">Feedback</a>
+        <a href="#" @click.stop="enableFeedback">{{$t("banner.feedback")}}</a>
       </li>
       <li>
-        <a href="#" @click="enableUpload">Upload KML</a>
+        <a href="#" @click="enableUpload">{{$t("banner.uploadKml")}}</a>
       </li>
     </ul>
     <fileDrop :show=showUpload v-on:disable="disableUpload"></fileDrop>

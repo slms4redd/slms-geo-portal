@@ -4,7 +4,7 @@
       <iframe width="840" height="600" slot="body" v-bind:src="statisticsUrl"></iframe>
     </modal>
     <modal v-if="popupAttributes" @close="hideStatistics()">
-      <h1 slot="header">Attributes</h1>
+      <h1 slot="header">{{$t("featureInfo.attributes")}}</h1>
       <div slot="body">
         <table>
           <tr v-for="attr in popupAttributes">
@@ -17,7 +17,7 @@
     <div id="popup" class="ol-popup">
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <ul id="popup-content">
-        <p class="caption">Select an item from the list below to get more data</p>
+        <p class="caption">{{$t("featureInfo.moreData")}}</p>
         <li v-for="(stat, i) in statisticsConfs" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
       </ul>
     </div>

@@ -67,9 +67,7 @@ export default {
     draw() {
       if (!this.draw) return;
 
-      if (drawInteraction) {
-        map.removeInteraction(drawInteraction);
-      }
+      if (drawInteraction) map.removeInteraction(drawInteraction);
       drawInteraction = new ol.interaction.Draw({
         source: this.drawSource,
         type: this.draw
@@ -90,11 +88,9 @@ export default {
 
       xhr.onreadystatechange = function() {
         if (this.readyState === 4) {
-          if (this.status === 200) {
-            alert('Feedback sent');
-          } else {
-            alert('Error sending feedback\n' + this.responseText);
-          }
+          if (this.status === 200) alert('Feedback sent');
+          else alert('Error sending feedback\n' + this.responseText);
+
           _this.disableFeedback();
         }
       };

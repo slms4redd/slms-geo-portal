@@ -21,8 +21,8 @@
           <icon v-else class="activate-button" v-bind:class="{highlighted, active}" name="square"></icon>
         </template>
       </span>
-      <span v-on:click="toggleLegend"  class="icon">
-        <icon class="legend-link" v-bind:class="{active}" v-show="conf.hasLegends" name="th-list"></icon>
+      <span v-on:click="toggleLegend" style="padding-left:2px;padding-right:2px" class="icon" v-if="conf.hasLegends" >
+        <icon class="legend-link" v-bind:class="{active}" name="th-list"></icon>
       </span>
       <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
       <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
@@ -154,9 +154,7 @@ export default {
       }
     },
     toggleLegend() {
-      if (this.active) {
-        this.showLegend = !this.showLegend;
-      }
+      if (this.active) this.showLegend = !this.showLegend;
     },
     showInfo() {
       this.$store.dispatch('showLayerInfo', { label: this.conf.label, fileName: this.conf.infoFile });

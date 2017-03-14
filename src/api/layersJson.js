@@ -1,25 +1,22 @@
 import { Layer, Context, Group } from '../config.js';
 import httpRequest from '../httpRequest';
 
-const setGroupsIds = function(group, ids) {
-  if (!group.id) {
-    group.id = ids.reduce((max, val) => Math.max(max, +val || 0), 0) + 1;
-    ids.push(group.id);
-  }
-  if (group.items) group.items.forEach(g => setGroupsIds(g, ids));
+const setGroupsIds = function(group, id) {
+  (function setGroupId(item) {
+    if (!item.id) item.id = id++;
+    if (item.items) item.items.forEach(g => setGroupId(g));
+  })(group);
 };
 
 class _Config {
   constructor(json) {
     this.layers = json.layers.map(layerConf => new Layer(layerConf));
     this.contexts = json.contexts.map(contextConf => new Context(contextConf, this.layers));
-    // this.contexts.forEach(context =>
-    //   context.layers.forEach(layer =>
-    //     layer.active = context.active));
     this.groups = new Group(json.contextGroups, this.contexts);
 
-    // Add unique id to groups, for use with v-for
-    setGroupsIds(this.groups, this.contexts.map(c => c.id));
+    // Add unique id to groups, only needed by v-for
+    const minGroupId = Math.max.apply(null, this.contexts.map(c => +c.id || 0)) + 1;
+    setGroupsIds(this.groups, minGroupId);
   }
 }
 
@@ -30,8 +27,6 @@ export default {
 
     httpRequest('GET', url)
     .then(responseText => cb(new _Config(JSON.parse(responseText))))
-    .catch(error => {
-      alert(error.statusText || error.message);
-    });
+    .catch(error => alert(error.statusText || error.message));
   }
 };

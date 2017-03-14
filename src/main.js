@@ -24,30 +24,26 @@ const QueryString = (function() {
   return queryString;
 })();
 
-const lang = QueryString.lang || 'en';
+const browserLang = QueryString.lang || (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
+const lang = browserLang || 'en';
 
-// install plugin
+// install the vue-i18n plugin
 Vue.use(VueI18n);
 
-const self = this;
-Vue.locale(lang, function() {
-  self.loading = true;
+/* eslint-disable no-new */
+Vue.locale(lang, () => {
   return httpRequest('GET', `../static/configuration/locale/${lang}.json`)
-  .then(function(res) {
-    return JSON.parse(res);
-  }).then(function(json) {
-    self.loading = false;
+  .then(res => {
+    const json = JSON.parse(res);
     if (Object.keys(json).length === 0) {
       return Promise.reject(new Error('locale empty'));
-    } else {
-      return Promise.resolve(json);
     }
-  }).catch(function(error) {
+    return Promise.resolve(json);
+  }).catch(error => {
     alert(`Error loading language file for ${lang}:\n${error.message}`);
     return Promise.reject();
   });
-}, function() {
-  /* eslint-disable no-new */
+}, () => {
   Vue.config.lang = lang;
   new Vue({
     el: '#app',
@@ -56,46 +52,3 @@ Vue.locale(lang, function() {
     components: { App }
   });
 });
-
-// Vue.locale(lang, function() {
-//   // self.loading = true;
-//   return function(resolve, reject) {
-//     httpRequest('GET', `../static/configuration/locale/${lang}.json`)
-//       .then(responseText => {
-//         try {
-//           resolve(JSON.parse(responseText));
-//         } catch (error) {
-//           alert(`Error loading app:\n${error}`);
-//           reject();
-//         }
-//       })
-//       .catch(error => {
-//         alert(`Error loading language file for ${lang}:\n${error.statusText}`);
-//         reject();
-//       });
-//   };
-// }, function() {
-//   Vue.config.lang = lang;
-//   new Vue({
-//     el: '#app',
-//     store,
-//     template: '<App/>',
-//     components: { App }
-//   });
-
-//   // If a geojson is provided as a http get parameter, overlay it to the map
-//   // if (QueryString.geojson_overlay) {
-//   //   store.commit('overlay_geojson', { geoJson: JSON.parse(QueryString.geojson_overlay) });
-//   // }
-// });
-
-// Object.keys(locales).forEach(function (lang) {
-//   Vue.locale(lang, locales[lang])
-// })
-
-// new Vue({
-//   el: '#app',
-//   store,
-//   template: '<App/>',
-//   components: { App }
-// });

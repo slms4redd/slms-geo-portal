@@ -48,7 +48,6 @@ class Layer {
           popupLabel: s.popupLabel
         };
         switch (s.type) {
-          case 'iframe': // TODO backward compatibility - delete it
           case 'url':
             ret.url = s.url;
             break;

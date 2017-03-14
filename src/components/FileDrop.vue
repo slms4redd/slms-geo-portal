@@ -74,7 +74,7 @@ export default {
         counter = 0;
       };
       if (show) {
-        this.$nextTick(function() {
+        this.$nextTick(() => {
           const dropTarget = document.getElementById('dropTarget');
           dropTarget.addEventListener('dragenter', dragenter, false);
           dropTarget.addEventListener('dragleave', dragleave, false);

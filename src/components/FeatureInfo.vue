@@ -60,8 +60,6 @@ let container,
 export default {
   data() {
     return {
-      // selectedFeaturesLayers: [],
-      // selectedFeaturesLabels: [],
       statisticsLabels: [],
       statisticsConfs: [],
       statisticsFeatures: [],
@@ -75,7 +73,6 @@ export default {
   },
   mounted() {
     container = document.getElementById('popup');
-    // content = document.getElementById('popup-content');
     closer = document.getElementById('popup-closer');
 
     closer.onclick = function() {

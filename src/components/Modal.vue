@@ -32,10 +32,7 @@ export default {
   },
   methods: {
     handleKeyDown(e) {
-      // enter || esc
-      if (e.keyCode === 13 || e.keyCode === 27) {
-        this.$emit('close');
-      }
+      if (e.keyCode === 13 || e.keyCode === 27) this.$emit('close'); // enter || esc
     }
   }
 };
@@ -95,15 +92,6 @@ export default {
   margin-top: 5px;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
 
 .modal-enter {
   opacity: 0;

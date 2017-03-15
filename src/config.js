@@ -30,7 +30,7 @@ class Layer {
   constructor(layerConfig) {
     this.type = layerConfig.type || 'WMS';
     this.id = layerConfig.id;
-    this.label = layerConfig.label || null;
+    // this.label = layerConfig.label || null;
     if (this.type === 'WMS') {
       this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null);
       this.name = layerConfig.wmsName || layerConfig.name || null;

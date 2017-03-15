@@ -22,11 +22,12 @@ class _Config {
 
 export default {
   getLayers(lang, cb) {
-    // To keep the compatibility with the old portal, layers.json can be localized
-    const url = '../static/configuration/layers.json' + (lang ? `?lang=${lang}` : '');
-
-    httpRequest('GET', url)
-    .then(responseText => cb(new _Config(JSON.parse(responseText))))
-    .catch(error => alert(error.statusText || error.message));
+    return new Promise(function(resolve, reject) {
+      // To keep the compatibility with the old portal, layers.json can be localized
+      const url = '../static/configuration/layers.json' + (lang ? `?lang=${lang}` : '');
+      httpRequest('GET', url)
+        .then(responseText => resolve(new _Config(JSON.parse(responseText))))
+        .catch(error => reject(error.statusText || error.message));
+    });
   }
 };

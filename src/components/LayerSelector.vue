@@ -1,6 +1,6 @@
 <template>
-  <ul v-if="treeData" id="layer-selector">
-    <item class="item" :conf="treeData"></item>
+  <ul v-if="groups" id="layer-selector">
+    <item class="item" :conf="groups"></item>
   </ul>
 </template>
 
@@ -13,19 +13,9 @@ export default {
   components: {
     'item': Item
   },
-  data() {
-    return {
-      treeData: null
-    };
-  },
   computed: mapState([
     'groups'
-  ]),
-  watch: {
-    groups: function(groups) {
-      this.treeData = groups;
-    }
-  }
+  ])
 };
 </script>
 
@@ -42,7 +32,6 @@ export default {
   min-width: 50px;
   color: white;
   padding: 10px;
-  /*max-height: 500px;*/
   overflow: auto;
   border-radius: 5px;
   backdrop-filter: blur(5px);

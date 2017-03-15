@@ -1,5 +1,5 @@
 {
-  "$schema": "../layersJsonSchema.json",
+  "$schema": "../../layersJsonSchema.json",
   "layers": [
     {
       "id": "blueMarble",
@@ -16,7 +16,6 @@
     },
     {
       "id": "forestClassification",
-      "label": "FACET Forest Classification",
       "name": "facet_forest_classification",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "facet_forest_classification.png" },
@@ -25,7 +24,6 @@
     },
     {
       "id": "FnFMask1990",
-      "label": "DRC 1990 Forest non Forest Mask",
       "name": "RDC_FNF_1990_V008C",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "RDC_FnF.png" },
@@ -34,7 +32,6 @@
     },
     {
       "id": "uclForestClassification",
-      "label": "UCL Forest Classification",
       "name": "ucl_forest_classification",
       "imageFormat": "image/png8",
       "legend": { "type": "wms", "style": "UCL_forest_classification_$(_lang)" },
@@ -58,7 +55,6 @@
     },
     {
       "id": "fire",
-      "label": "Fire",
       "name": "fires_2011",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "fire.png" },
@@ -67,7 +63,6 @@
     },
     {
       "id": "deforestation",
-      "label": "Deforestation (Gross forest cover loss)",
       "name": "deforestation",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "deforestation.png" },
@@ -76,14 +71,12 @@
     },
     {
       "id": "trainingData",
-      "label": "National Training Data",
       "name": "nov_2011_workshop",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "nov_workshop_data.png" }
     },
     {
       "id": "reddPlusProjects",
-      "label": "REDD+ Projects",
       "name": "redd_plus_projects",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.observatoire-comifac.net/",
@@ -97,7 +90,6 @@
     },
     {
       "id": "reddPlusInitiatives",
-      "label": "REDD+ Initiatives",
       "name": "redd_plus_initiatives",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.observatoire-comifac.net/",
@@ -118,7 +110,6 @@
     },
     {
       "id": "intactForest",
-      "label": "Intact Forest",
       "wmsTime": "2000,2005,2010",
       "name": "intact_forest",
       "imageFormat": "image/png8",
@@ -128,7 +119,6 @@
     },
     {
       "id": "loggingConcessions",
-      "label": "Logging Concessions",
       "name": "logging_concessions",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -158,7 +148,6 @@
     },
     {
       "id": "protectedAreas",
-      "label": "Protected Areas",
       "name": "protected_areas",
       "imageFormat": "image/png8",
       "sourceLink": "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
@@ -228,7 +217,6 @@
     },
     {
       "id": "settlements",
-      "label": "Settlements",
       "name": "settlements",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "settlements.png" },
@@ -237,7 +225,6 @@
     },
     {
       "id": "ecoregions",
-      "label": "Ecoregions",
       "name": "ecoregions",
       "imageFormat": "image/png8",
       "legend": { "type": "url", "url": "ecoregions.png" },
@@ -246,7 +233,6 @@
     },
     {
       "id": "plots",
-      "label": "Plots",
       "name": "plots",
       "imageFormat": "image/png8"
     }

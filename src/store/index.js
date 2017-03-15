@@ -9,10 +9,9 @@ Vue.use(Vuex);
 const state = {
   layers: [],
   contexts: [],
-  groups: {},
+  groups: null,
   layerInfo: null, // a modal with the file content is shown when not null
   contextsTimes: {},
-  // geoJsonOverlay: null,
   kmlOverlay: null,
   enableFeedback: false,
   activeContextsIds: []
@@ -70,9 +69,6 @@ const mutations = {
     newContextsTimes[contextId] = time;
     state.contextsTimes = newContextsTimes;
   },
-  // overlay_geojson(state, { geoJson }) {
-  //   state.geoJsonOverlay = geoJson;
-  // },
   overlay_kml(state, { kml }) {
     state.kmlOverlay = kml;
   },
@@ -85,7 +81,9 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getAllLayers({ commit }) {
-    layersJson.getLayers(Vue.config.lang, layersConf => commit('receive_layers', { layersConf }));
+    layersJson.getLayers(Vue.config.lang)
+      .then(layersConf => commit('receive_layers', { layersConf }))
+      .catch(error => alert(error));
   },
   showLayerInfo({ commit, state }, { fileName, label }) {
     commit('show_layer_info', { fileName: fileName, label: label });

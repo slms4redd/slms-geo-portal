@@ -73,9 +73,6 @@
         "id": {
           "type": "string"
         },
-        "label": {
-          "type": "string"
-        },
         "baseUrl": {
           "type": "string"
         },

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div :class="{dimmed: !nContexts}" v-if="isGroup" class="group" @click="toggleGroup">
+    <div :class="{dimmed: !nContexts}" v-if="conf.isGroup()" class="group" @click="toggleGroup">
       <span class="line group-label icon">
         <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
         {{isRoot ? $t("layerSelector.layers") : conf.label}}
@@ -40,7 +40,7 @@
         <ContextLegend :conf="conf"></ContextLegend>
       </template>
     </div>
-    <draggable element="ul" v-if="isGroup" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150 }" v-model='list'>
+    <draggable element="ul" v-if="conf.isGroup()" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150 }" v-model='list'>
       <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
     </draggable>
   </li>
@@ -92,12 +92,6 @@ export default {
         this.$store.commit('update_group', { groupId: this.conf.id, value: value });
       }
     },
-    isContext() {
-      return !this.conf.items;
-    },
-    isGroup() {
-      return !this.isContext;
-    },
     isRoot() {
       return !this.conf.label;
     },
@@ -118,7 +112,7 @@ export default {
     },
     nContexts() {
       return (function count(conf) {
-        if (conf.items) {
+        if (conf.isGroup()) {
           return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return conf.layers.length ? 1 : 0;
@@ -127,7 +121,7 @@ export default {
     nActive() {
       const activeContextsIds = this.activeContextsIds;
       return (function count(conf) {
-        if (conf.items) {
+        if (conf.isGroup()) {
           return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0;
@@ -144,9 +138,6 @@ export default {
     }
   },
   methods: {
-    // change(evt) {
-    //   // console.log(evt);
-    // },
     highlightContext(highlight) {
       this.highlighted = highlight;
     },

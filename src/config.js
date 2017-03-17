@@ -73,30 +73,31 @@ class Layer {
   }
 }
 
-const nextId = (function() {
-  let nextId = 1;
-  return () => nextId++;
-})();
-
 class Item {
   constructor(conf) {
-    this.id = nextId();
+    this.id = Item.nextId();
     this.infoFile = conf.infoFile || null;
     this.label = conf.label;
   }
 
   findById(id) {
     if (this.id === id) return this;
-    if (this.items) {
-      return this.items.find(item => item.findById(id));
+    if (this.isGroup && this.items) {
+      return this.items.reduce((found, item) => found || item.findById(id), null);
     }
-    return null;
   }
+
+  isGroup() {
+    return !!this.items;
+  }
+
+  static nextId = (function() {
+    let nextId = 1;
+    return () => nextId++;
+  })();
 }
 
 export class Context extends Item {
-  static maxNumericId = 0;
-
   constructor(contextConfig, layers) {
     super(contextConfig);
 
@@ -124,8 +125,6 @@ export class Group extends Item {
   constructor(groupConfig, contexts) {
     super(groupConfig);
 
-    // this.label = groupConfig.label;
-    // this.infoFile = groupConfig.infoFile || null;
     this.exclusive = !!groupConfig.exclusive;
     const tItems = groupConfig.items && groupConfig.items.map(item => {
       if (item.context) {
@@ -139,7 +138,7 @@ export class Group extends Item {
       return item.group && new Group(item.group, contexts);
     });
     // Silently remove undefined values (unmatched contexts) from the array
-    this.items = tItems.filter(x => x);
+    this.items = tItems ? tItems.filter(x => x) : [];
   }
 }
 

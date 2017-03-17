@@ -27,8 +27,7 @@ const state = {
 const mutations = {
   add_group(state) {
     const newGroup = new Group({
-      label: 'New group',
-      items: []
+      label: 'New group'
     });
     state.groups.items.push(newGroup);
   },

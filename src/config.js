@@ -1,4 +1,5 @@
 import { defaultGeoServerURLs } from './assets/config.json';
+import httpRequest from './httpRequest';
 
 const ISO8601ToDate = function(dateString) {
   const regexp = '([0-9]{4})(-([0-9]{2})(-([0-9]{2})' +
@@ -42,6 +43,7 @@ class Layer {
         humanReadable: time,
         date: ISO8601ToDate(time)
       }));
+
       this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
         const ret = {
           type: s.type,
@@ -64,18 +66,46 @@ class Layer {
         return ret;
       });
     }
+
     this.visible = layerConfig.visible !== false;
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;
   }
 }
 
-class Context {
+const nextId = (function() {
+  let nextId = 1;
+  return () => nextId++;
+})();
+
+class Item {
+  constructor(conf) {
+    this.id = nextId();
+    this.infoFile = conf.infoFile || null;
+    this.label = conf.label;
+  }
+
+  findById(id) {
+    if (this.id === id) return this;
+    if (this.items) {
+      return this.items.find(item => item.findById(id));
+    }
+    return null;
+  }
+}
+
+export class Context extends Item {
+  static maxNumericId = 0;
+
   constructor(contextConfig, layers) {
-    this.id = contextConfig.id;
+    super(contextConfig);
+
+    // Keeps track of the original id to be used in the Group constructor but creates a new one for internal use
+    // The original id can be a String but we use an incremental unique id for contexts and groups
+    this.originalId = contextConfig.id;
     this.active = !!contextConfig.active;
-    this.infoFile = contextConfig.infoFile || null;
-    this.label = contextConfig.label;
+
+    const _findById = (arr, id) => arr.find(item => item.id === id);
     const tLayers = contextConfig.layers && contextConfig.layers.map(id => _findById(layers, id))
                                                                 .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
     this.layers = tLayers || [];
@@ -90,16 +120,20 @@ class Context {
   }
 }
 
-class Group {
+export class Group extends Item {
   constructor(groupConfig, contexts) {
-    this.label = groupConfig.label;
-    this.infoFile = groupConfig.infoFile || null;
+    super(groupConfig);
+
+    // this.label = groupConfig.label;
+    // this.infoFile = groupConfig.infoFile || null;
     this.exclusive = !!groupConfig.exclusive;
     const tItems = groupConfig.items && groupConfig.items.map(item => {
       if (item.context) {
         // Create a dummy context if not found
-        const context = _findById(contexts, item.context) || new Context({ id: item.context, label: item.context });
+        const context = contexts.find(c => c.originalId === item.context) ||
+                        new Context({ id: item.context, label: item.context });
         context.group = this;
+
         return context;
       }
       return item.group && new Group(item.group, contexts);
@@ -109,6 +143,82 @@ class Group {
   }
 }
 
-const _findById = (arr, id) => arr.find(item => item.id === id);
+class _Config {
+  constructor(json) {
+    this.layers = json.layers.map(layerConf => new Layer(layerConf));
+    this.contexts = json.contexts.map(contextConf => new Context(contextConf, this.layers));
+    this.groups = new Group(json.contextGroups, this.contexts);
+  }
 
-export { Layer, Context, Group };
+  serialize() {
+    // Clean up before exporting
+    const layerReplacer = (key, value) => {
+      // TODO: urls should be removed if same as the default one
+      switch (key) {
+        case 'legend':
+        case 'sourceLink':
+        case 'sourceLabel':
+          return value || undefined;
+        default:
+          return value;
+      }
+    };
+    const layers = JSON.parse(JSON.stringify(this.layers, layerReplacer));
+
+    const contextReplacer = (key, value) => {
+      switch (key) {
+        case 'layers':
+          if (value.length === 0) return undefined;
+          return value.map(l => l.id);
+        case 'inlineLegendUrl':
+        case 'infoFile':
+          return value || undefined;
+        case 'group':
+        case 'hasLegends':
+        case 'times':
+          return undefined;
+        default:
+          return value;
+      }
+    };
+    const contexts = JSON.parse(JSON.stringify(this.contexts, contextReplacer));
+
+    const groupReplacer = (key, value) => {
+      switch (key) {
+        case 'id':
+          return undefined;
+        case 'infoFile':
+          return value || undefined;
+        case 'items':
+          if (value.length === 0) return undefined;
+          return value.map(i => {
+            if (i.items) return { group: i };
+            else return { context: i.id };
+          });
+        default:
+          return value;
+      }
+    };
+    const groups = JSON.parse(JSON.stringify(this.groups, groupReplacer));
+
+    const obj = {
+      layers: layers,
+      contexts: contexts,
+      groups: groups
+    };
+
+    return JSON.stringify(obj, null, '  ');
+  }
+}
+
+export function getLayers(lang, cb) {
+  return new Promise(function(resolve, reject) {
+    // To keep the compatibility with the old portal, layers.json can be localized
+    const url = '../static/configuration/layers.json' + (lang ? `?lang=${lang}` : '');
+    httpRequest('GET', url)
+      .then(responseText => resolve(new _Config(JSON.parse(responseText))))
+      .catch(error => reject(error.statusText || error.message));
+  });
+}
+
+// export { Layer, Context, Group };

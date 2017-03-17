@@ -35,7 +35,7 @@ export default {
     contextsTimes(contextsTimes) {
       for (const contextId in contextsTimes) {
         if (contextsTimes.hasOwnProperty(contextId) && contextsTimes[contextId]) {
-          const context = this.contexts.find(c => c.id === contextId);
+          const context = this.contexts.find(c => c.id === +contextId);
           context.layers.forEach(l =>
             olLayers[l.id].getSource().updateParams({ 'TIME': contextsTimes[contextId].date.toISOString() }));
         }

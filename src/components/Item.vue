@@ -1,5 +1,5 @@
 <template>
-  <li class="unselectable">
+  <li>
     <div :class="{dimmed: !nContexts}" v-if="isGroup" class="group" @click="toggleGroup">
       <span class="line group-label icon">
         <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
@@ -40,9 +40,9 @@
         <ContextLegend :conf="conf"></ContextLegend>
       </template>
     </div>
-    <ul v-show="open" v-if="isGroup">
-      <item class="item" v-for="conf in conf.items" :key="conf.id" :conf="conf"></item>
-    </ul>
+    <draggable element="ul" v-if="isGroup" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150 }" v-model='list'>
+      <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
+    </draggable>
   </li>
 </template>
 
@@ -51,6 +51,8 @@ import { mapState } from 'vuex';
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
 import Icon from 'vue-awesome/components/Icon.vue';
+import draggable from 'vuedraggable';
+
 import 'vue-awesome/icons/plus-square-o';
 import 'vue-awesome/icons/minus-square-o';
 import 'vue-awesome/icons/th-list';
@@ -67,6 +69,7 @@ export default {
   components: {
     ContextLegend,
     TimeSelect,
+    draggable,
     Icon
   },
   props: {
@@ -75,13 +78,20 @@ export default {
   data() {
     return {
       open: !this.conf.label,
-      // active: this.conf.active,
       showLegend: false,
       showTimeMenu: false,
       highlighted: false
     };
   },
   computed: {
+    list: {
+      get() {
+        return this.conf.items;
+      },
+      set(value) {
+        this.$store.commit('update_group', { groupId: this.conf.id, value: value });
+      }
+    },
     isContext() {
       return !this.conf.items;
     },
@@ -134,6 +144,9 @@ export default {
     }
   },
   methods: {
+    // change(evt) {
+    //   // console.log(evt);
+    // },
     highlightContext(highlight) {
       this.highlighted = highlight;
     },

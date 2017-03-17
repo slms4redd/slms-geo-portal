@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import layersJson from '../api/layersJson';
+import { getLayers, Group, Context } from '../config';
 
 Vue.use(Vuex);
+
+let _layersConf = null;
 
 // root state object.
 // each Vuex instance is just a single state tree.
@@ -11,7 +13,7 @@ const state = {
   contexts: [],
   groups: null,
   layerInfo: null, // a modal with the file content is shown when not null
-  contextsTimes: {},
+  contextsTimes: [],
   kmlOverlay: null,
   enableFeedback: false,
   activeContextsIds: []
@@ -23,20 +25,30 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
+  add_group(state) {
+    const newGroup = new Group({
+      label: 'New group',
+      items: []
+    });
+    state.groups.items.push(newGroup);
+  },
+  add_context(state) {
+    const newContext = new Context({
+      label: 'New context'
+    });
+    state.groups.items.push(newContext);
+  },
   receive_layers(state, { layersConf }) {
+    _layersConf = layersConf;
     state.layers = layersConf.layers;
     state.contexts = layersConf.contexts;
     state.groups = layersConf.groups;
 
-    const contextsTimes = {};
+    const contextsTimes = [];
     const activeContextsIds = [];
     state.contexts.forEach(c => {
-      if (c.times) {
-        contextsTimes[c.id] = c.times[c.times.length - 1];
-      }
-      if (c.active) {
-        activeContextsIds.push(c.id);
-      }
+      if (c.times) contextsTimes[c.id] = c.times[c.times.length - 1];
+      if (c.active) activeContextsIds.push(c.id);
     });
     state.contextsTimes = contextsTimes;
     state.activeContextsIds = activeContextsIds;
@@ -44,36 +56,27 @@ const mutations = {
   toggle_context(state, { contextId }) {
     const context = state.contexts.find(c => c.id === contextId);
     if (context) {
-      const activeContextsIds = state.activeContextsIds.slice(0), // Clone
-            idx = activeContextsIds.indexOf(contextId);
-
-      if (idx === -1) {
-        activeContextsIds.push(contextId);
-      } else {
-        activeContextsIds.splice(idx, 1);
-      }
-      state.activeContextsIds = activeContextsIds;
+      const idx = state.activeContextsIds.indexOf(contextId);
+      if (idx === -1) state.activeContextsIds.push(contextId);
+      else state.activeContextsIds.splice(idx, 1);
     }
   },
   show_layer_info(state, { fileName, label }) {
     state.layerInfo = { fileName: fileName, label: label };
   },
   set_context_time(state, { contextId, time }) {
-    const newContextsTimes = {};
-    // Make a shallow copy of the contextsTimes object
-    for (const t in state.contextsTimes) {
-      if (state.contextsTimes.hasOwnProperty(t)) {
-        newContextsTimes[t] = state.contextsTimes[t];
-      }
-    }
-    newContextsTimes[contextId] = time;
-    state.contextsTimes = newContextsTimes;
+    state.contextsTimes.splice(contextId, 1, time);
   },
   overlay_kml(state, { kml }) {
     state.kmlOverlay = kml;
   },
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable;
+  },
+  update_group(state, { groupId, value }) {
+    const group = state.groups.findById(groupId);
+    if (group) group.items = value;
+    console.log(_layersConf.serialize()); // DEBUG
   }
 };
 
@@ -81,7 +84,7 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getAllLayers({ commit }) {
-    layersJson.getLayers(Vue.config.lang)
+    getLayers(Vue.config.lang)
       .then(layersConf => commit('receive_layers', { layersConf }))
       .catch(error => alert(error));
   },

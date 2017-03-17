@@ -1,6 +1,10 @@
 <template>
   <ul v-if="groups" id="layer-selector">
     <item class="item" :conf="groups"></item>
+    <li>
+      <button type="button" class="small" @click="addGroup">Add Group</button>
+      <button type="button" class="small" @click="addContext">Add Context</button>
+    </li>
   </ul>
 </template>
 
@@ -12,6 +16,14 @@ export default {
   name: 'layerSelector',
   components: {
     'item': Item
+  },
+  methods: {
+    addGroup() {
+      this.$store.commit('add_group');
+    },
+    addContext() {
+      this.$store.commit('add_context');
+    }
   },
   computed: mapState([
     'groups'

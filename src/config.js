@@ -75,9 +75,10 @@ class Layer {
 
 class Item {
   constructor(conf) {
-    this.id = Item.nextId();
+    this.id = Item.nextId++;
     this.infoFile = conf.infoFile || null;
     this.label = conf.label;
+    this.labels = conf.labels || [];
   }
 
   findById(id) {
@@ -91,10 +92,11 @@ class Item {
     return !!this.items;
   }
 
-  static nextId = (function() {
-    let nextId = 1;
-    return () => nextId++;
-  })();
+  static nextId = 0;
+  // static nextId = (function() {
+  //   let nextId = 1;
+  //   return () => nextId++;
+  // })();
 }
 
 export class Context extends Item {

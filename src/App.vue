@@ -7,6 +7,7 @@
     <featureInfo></featureInfo>
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
+    <EditGroup></EditGroup>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import ContextInfoModal from './components/ContextInfoModal';
 import FeatureInfo from './components/FeatureInfo';
 import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
+import EditGroup from './components/EditGroup';
 
 export default {
   name: 'app',
@@ -28,7 +30,8 @@ export default {
     ContextInfoModal,
     FeatureInfo,
     Feedback,
-    KMLOverlay
+    KMLOverlay,
+    EditGroup
   },
   created() {
     this.$store.dispatch('getAllLayers');

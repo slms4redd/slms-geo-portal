@@ -16,7 +16,8 @@ const state = {
   contextsTimes: [],
   kmlOverlay: null,
   enableFeedback: false,
-  activeContextsIds: []
+  activeContextsIds: [],
+  editGroup: null
 };
 
 // mutations are operations that actually mutates the state.
@@ -36,6 +37,16 @@ const mutations = {
       label: 'New context'
     });
     state.groups.items.push(newContext);
+  },
+  edit_group(state, { groupId }) {
+    state.editGroup = state.groups.findById(groupId);
+  },
+  save_group(state, { id, label, labels, exclusive, infoFile }) {
+    const group = state.groups.findById(id);
+    group.label = label;
+    group.labels = labels;
+    group.exclusive = exclusive;
+    group.infoFile = infoFile;
   },
   receive_layers(state, { layersConf }) {
     _layersConf = layersConf;

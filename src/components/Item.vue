@@ -9,6 +9,9 @@
         <icon name="info-circle"></icon>
       </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
+      <span v-if="editing" class="icon" v-on:click.stop="editGroup">
+        <icon name="fa-pencil-square-o"></icon>
+      </span>
     </div>
     <div v-else>
       <span v-on:click="toggleActive" class="icon" v-if="hasLayers">
@@ -39,6 +42,9 @@
       <template v-if="conf.hasLegends && active && showLegend">
         <ContextLegend :conf="conf"></ContextLegend>
       </template>
+      <span v-if="editing" class="icon" v-on:click.stop="editContext">
+        <icon class="icon" name="fa-pencil-square-o"></icon>
+      </span>
     </div>
     <draggable element="ul" v-if="conf.isGroup()" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150 }" v-model='list'>
       <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
@@ -63,6 +69,7 @@ import 'vue-awesome/icons/square';
 import 'vue-awesome/icons/check-square';
 import 'vue-awesome/icons/circle';
 import 'vue-awesome/icons/dot-circle-o';
+import 'vue-awesome/icons/fa-pencil-square-o';
 
 export default {
   name: 'item',
@@ -80,7 +87,8 @@ export default {
       open: !this.conf.label,
       showLegend: false,
       showTimeMenu: false,
-      highlighted: false
+      highlighted: false,
+      editing: true // DEBUG
     };
   },
   computed: {
@@ -138,6 +146,12 @@ export default {
     }
   },
   methods: {
+    editContext() {
+      alert('test');
+    },
+    editGroup() {
+      this.$store.commit('edit_group', { groupId: this.conf.id });
+    },
     highlightContext(highlight) {
       this.highlighted = highlight;
     },

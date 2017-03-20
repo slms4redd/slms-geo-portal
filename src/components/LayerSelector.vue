@@ -10,12 +10,14 @@
 
 <script>
 import Item from './Item';
+import EditGroup from './EditGroup';
 import { mapState } from 'vuex';
 
 export default {
   name: 'layerSelector',
   components: {
-    'item': Item
+    'item': Item,
+    'editGroup': EditGroup
   },
   methods: {
     addGroup() {

@@ -1,5 +1,5 @@
 <template>
-  <modal v-if="editGroup" @close="$store.commit('edit_group', { contextId: null });">
+  <modal v-if="editGroup">
     <h1 slot="header">Edit group</h1>
     <div slot="body">
       Label: <input v-model="label">
@@ -10,17 +10,13 @@
         <label>{{label.language}}</label> <input v-model="label.label">
         <br>
       </template>
-      <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
-      <br>
       <label>Info file:</label> <input v-model="infoFile">
+      <br>
+      <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
     </div>
     <div slot="footer">
-      <a href="#" class="modal-default-button" @click.prevent="close">
-        Cancel
-      </a>
-      <a href="#" class="modal-default-button" @click.prevent="save">
-        Save
-      </a>
+      <a href="#" class="modal-default-button" @click.prevent="close">Cancel</a>
+      <a href="#" class="modal-default-button" @click.prevent="save">Save</a>
     </div>
   </modal>
 </template>
@@ -51,6 +47,11 @@ export default {
         exclusive: this.exclusive,
         infoFile: this.infoFile
       });
+
+      this.close();
+    },
+    close() {
+      this.$store.commit('edit_item', { id: null });
     }
   },
   watch: {

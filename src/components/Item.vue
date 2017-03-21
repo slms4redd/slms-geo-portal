@@ -9,7 +9,7 @@
         <icon name="info-circle"></icon>
       </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
-      <span v-if="editing" class="icon" v-on:click.stop="editGroup">
+      <span v-if="editing" class="icon" v-on:click.stop="editItem">
         <icon name="fa-pencil-square-o"></icon>
       </span>
     </div>
@@ -42,7 +42,7 @@
       <template v-if="conf.hasLegends && active && showLegend">
         <ContextLegend :conf="conf"></ContextLegend>
       </template>
-      <span v-if="editing" class="icon" v-on:click.stop="editContext">
+      <span v-if="editing" class="icon" v-on:click.stop="editItem">
         <icon class="icon" name="fa-pencil-square-o"></icon>
       </span>
     </div>
@@ -146,11 +146,8 @@ export default {
     }
   },
   methods: {
-    editContext() {
-      alert('test');
-    },
-    editGroup() {
-      this.$store.commit('edit_group', { groupId: this.conf.id });
+    editItem() {
+      this.$store.commit('edit_item', { id: this.conf.id });
     },
     highlightContext(highlight) {
       this.highlighted = highlight;

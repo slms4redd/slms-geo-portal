@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div :class="{dimmed: !nContexts}" v-if="conf.isGroup()" class="group" @click="toggleGroup">
+    <div :class="{dimmed: !nContexts}" v-if="conf.isGroup" class="group" @click="toggleGroup">
       <span class="line group-label icon">
         <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
         {{isRoot ? $t("layerSelector.layers") : conf.label}}
@@ -15,7 +15,7 @@
     </div>
     <div v-else>
       <span v-on:click="toggleActive" class="icon" v-if="hasLayers">
-        <template v-if="conf.group.exclusive">
+        <template v-if="conf.parent.exclusive">
           <icon v-if="active" class="activate-button" v-bind:class="{highlighted, active}" name="dot-circle-o"></icon>
           <icon v-else class="activate-button" v-bind:class="{highlighted, active}" name="circle"></icon>
         </template>
@@ -46,18 +46,26 @@
         <icon class="icon" name="fa-pencil-square-o"></icon>
       </span>
     </div>
-    <draggable element="ul" v-if="conf.isGroup()" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150 }" v-model='list'>
-      <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
-    </draggable>
+    <template v-if="editing">
+      <draggable element="ul" v-if="conf.isGroup" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150 }" v-model='list'>
+        <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
+      </draggable>
+    </template>
+    <template v-else>
+      <ul v-if="conf.isGroup" v-show="open" style="min-height:10px">
+        <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
+      </ul>
+    </template>
   </li>
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState } from 'vuex';
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
 import Icon from 'vue-awesome/components/Icon.vue';
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggable';
 
 import 'vue-awesome/icons/plus-square-o';
 import 'vue-awesome/icons/minus-square-o';
@@ -76,7 +84,7 @@ export default {
   components: {
     ContextLegend,
     TimeSelect,
-    draggable,
+    // draggable,
     Icon
   },
   props: {
@@ -87,8 +95,7 @@ export default {
       open: !this.conf.label,
       showLegend: false,
       showTimeMenu: false,
-      highlighted: false,
-      editing: true // DEBUG
+      highlighted: false
     };
   },
   computed: {
@@ -120,7 +127,7 @@ export default {
     },
     nContexts() {
       return (function count(conf) {
-        if (conf.isGroup()) {
+        if (conf.isGroup) {
           return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return conf.layers.length ? 1 : 0;
@@ -129,7 +136,7 @@ export default {
     nActive() {
       const activeContextsIds = this.activeContextsIds;
       return (function count(conf) {
-        if (conf.isGroup()) {
+        if (conf.isGroup) {
           return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0;
@@ -137,7 +144,8 @@ export default {
     },
     ...mapState([
       'contextsTimes',
-      'activeContextsIds'
+      'activeContextsIds',
+      'editing'
     ])
   },
   watch: {
@@ -149,6 +157,13 @@ export default {
     editItem() {
       this.$store.commit('edit_item', { id: this.conf.id });
     },
+    startEditing() {
+      require.ensure('vuedraggable', () => {
+        const vuedraggable = require('vuedraggable');
+        Vue.component('draggable', vuedraggable);
+        this.$store.commit('enable_edit', { editing: true });
+      });
+    },
     highlightContext(highlight) {
       this.highlighted = highlight;
     },
@@ -158,8 +173,8 @@ export default {
     toggleActive() {
       if (this.conf.layers.length) {
         this.$store.commit('toggle_context', { contextId: this.conf.id });
-        if (this.conf.group.exclusive) {
-          this.conf.group.items.forEach(item => {
+        if (this.conf.parent.exclusive) {
+          this.conf.parent.items.forEach(item => {
             if (item.id !== this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
               // it's not this context and it's active
               this.$store.commit('toggle_context', { contextId: item.id });
@@ -172,7 +187,7 @@ export default {
       if (this.active) this.showLegend = !this.showLegend;
     },
     showInfo() {
-      this.$store.dispatch('showLayerInfo', { label: this.conf.label, fileName: this.conf.infoFile });
+      this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile });
     },
     toggleTimeMenu() {
       this.showTimeMenu = !this.showTimeMenu;

@@ -1,5 +1,5 @@
 <template>
-  <modal v-if="showModal" @close="$store.dispatch('hideLayerInfo')">
+  <modal v-if="showModal" @close="$store.commit('show_layer_info', { fileName: null, label: null })">
     <h1 slot="header">{{label}}</h1>
     <div slot="body" v-html="content"></div>
   </modal>

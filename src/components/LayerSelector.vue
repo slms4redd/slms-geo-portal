@@ -1,9 +1,17 @@
 <template>
   <ul v-if="groups" id="layer-selector">
     <item class="item" :conf="groups"></item>
-    <li>
+    <li v-if="editing">
       <button type="button" class="small" @click="addGroup">Add Group</button>
       <button type="button" class="small" @click="addContext">Add Context</button>
+      <button type="button" class="small" @click="layers">Layers</button>
+    </li>
+    <li v-if="editing">
+      <button type="button" class="small danger" @click="save">Save</button>
+      <button type="button" class="small" @click="cancel">Cancel</button>
+    </li>
+    <li v-else>
+      <button type="button" class="small" @click="startEditing">Edit</button>
     </li>
   </ul>
 </template>
@@ -20,15 +28,28 @@ export default {
     'editGroup': EditGroup
   },
   methods: {
+    startEditing() {
+      this.$store.dispatch('enableEdit', { enable: true });
+    },
+    cancel() {
+      this.$store.dispatch('enableEdit', { enable: false });
+    },
     addGroup() {
       this.$store.commit('add_group');
     },
     addContext() {
       this.$store.commit('add_context');
+    },
+    layers() {
+      alert('Not implemented yet');
+    },
+    save() {
+      alert('Not implemented yet');
     }
   },
   computed: mapState([
-    'groups'
+    'groups',
+    'editing'
   ])
 };
 </script>

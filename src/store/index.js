@@ -17,6 +17,7 @@ const state = {
   kmlOverlay: null,
   enableFeedback: false,
   activeContextsIds: [],
+  editing: false,
   editGroup: null,
   editContext: null
 };
@@ -27,6 +28,9 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
+  enable_edit(state, { editing }) {
+    state.editing = editing;
+  },
   add_group(state) {
     const newGroup = new Group({
       label: 'New group'
@@ -37,14 +41,14 @@ const mutations = {
     const newContext = new Context({
       label: 'New context'
     });
-    newContext.group = state.groups;
+    newContext.parent = state.groups;
     state.groups.items.push(newContext);
     state.contexts.push(newContext);
   },
   edit_item(state, { id }) {
     const item = state.groups.findById(id);
     if (item) {
-      if (item.isGroup()) state.editGroup = item;
+      if (item.isGroup) state.editGroup = item;
       else state.editContext = item;
     } else state.editContext = state.editGroup = null;
   },
@@ -63,7 +67,6 @@ const mutations = {
     context.active = active;
     context.inlineLegendUrl = inlineLegendUrl;
     context.layers = layerIds.map(id => state.layers.find(layer => layer.id === id));
-    console.log(context.layers);
   },
   receive_layers(state, { layersConf }) {
     _layersConf = layersConf;
@@ -115,11 +118,12 @@ const actions = {
       .then(layersConf => commit('receive_layers', { layersConf }))
       .catch(error => alert(error));
   },
-  showLayerInfo({ commit, state }, { fileName, label }) {
-    commit('show_layer_info', { fileName: fileName, label: label });
-  },
-  hideLayerInfo({ commit, state }) {
-    commit('show_layer_info', { fileName: null, label: null });
+  enableEdit({ commit }, { enable }) {
+    require.ensure('vuedraggable', () => {
+      const vuedraggable = require('vuedraggable');
+      Vue.component('draggable', vuedraggable);
+      commit('enable_edit', { editing: enable });
+    });
   }
 };
 

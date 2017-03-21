@@ -88,11 +88,12 @@ class Item {
     }
   }
 
-  isGroup() {
+  get isGroup() {
     return !!this.items;
   }
 
   static nextId = 0;
+
   // static nextId = (function() {
   //   let nextId = 1;
   //   return () => nextId++;
@@ -133,7 +134,7 @@ export class Group extends Item {
         // Create a dummy context if not found
         const context = contexts.find(c => c.originalId === item.context) ||
                         new Context({ id: item.context, label: item.context });
-        context.group = this;
+        context.parent = this;
 
         return context;
       }
@@ -174,7 +175,7 @@ class _Config {
         case 'inlineLegendUrl':
         case 'infoFile':
           return value || undefined;
-        case 'group':
+        case 'parent':
         case 'hasLegends':
         case 'times':
           return undefined;

@@ -4,7 +4,7 @@
     <li v-if="editing">
       <button type="button" class="small" @click="addGroup">Add Group</button>
       <button type="button" class="small" @click="addContext">Add Context</button>
-      <button type="button" class="small" @click="layers">Layers</button>
+      <button type="button" class="small" @click="editLayers">Layers</button>
     </li>
     <li v-if="editing">
       <button type="button" class="small danger" @click="save">Save</button>
@@ -31,17 +31,17 @@ export default {
     startEditing() {
       this.$store.dispatch('enableEdit', { enable: true });
     },
+    editLayers() {
+      this.$store.commit('edit_layers', { edit: true });
+    },
     cancel() {
-      this.$store.dispatch('enableEdit', { enable: false });
+      this.$store.commit('enable_edit', { enable: false });
     },
     addGroup() {
       this.$store.commit('add_group');
     },
     addContext() {
       this.$store.commit('add_context');
-    },
-    layers() {
-      alert('Not implemented yet');
     },
     save() {
       alert('Not implemented yet');

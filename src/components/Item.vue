@@ -84,8 +84,8 @@ export default {
   components: {
     ContextLegend,
     TimeSelect,
-    // draggable,
     Icon
+    // The draggable component is loaded dynamically
   },
   props: {
     conf: Object
@@ -272,5 +272,8 @@ ul {
 }
 .icon.statistics svg {
   color: #999;
+}
+.draggable {
+  cursor: move;
 }
 </style>

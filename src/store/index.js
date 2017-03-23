@@ -19,7 +19,8 @@ const state = {
   activeContextsIds: [],
   editing: false,
   editGroup: null,
-  editContext: null
+  editContext: null,
+  editLayers: false
 };
 
 // mutations are operations that actually mutates the state.
@@ -51,6 +52,9 @@ const mutations = {
       if (item.isGroup) state.editGroup = item;
       else state.editContext = item;
     } else state.editContext = state.editGroup = null;
+  },
+  edit_layers(state, { edit }) {
+    state.editLayers = edit;
   },
   save_group(state, { id, label, labels, exclusive, infoFile }) {
     const group = state.groups.findById(id);
@@ -107,6 +111,15 @@ const mutations = {
     const group = state.groups.findById(groupId);
     if (group) group.items = value;
     console.log(_layersConf.serialize()); // DEBUG
+  },
+  update_layers(state, { value }) {
+    state.layers = value;
+
+    // swap the contexts' layers
+    state.contexts.forEach(context => {
+      const contextLayers = context.layers;
+      context.layers = contextLayers.map(layer => value.find(l => l.id === layer.id)).filter(l => !!l);
+    });
   }
 };
 
@@ -119,6 +132,7 @@ const actions = {
       .catch(error => alert(error));
   },
   enableEdit({ commit }, { enable }) {
+    // Register the vuedraggable component globally
     require.ensure('vuedraggable', () => {
       const vuedraggable = require('vuedraggable');
       Vue.component('draggable', vuedraggable);

@@ -16,6 +16,9 @@ export default {
   },
   watch: {
     layers(layers) {
+      // Remove all layers if any, used when sorting
+      map.getLayers().forEach(l => map.removeLayer(l));
+
       layers.forEach(layerConfig => {
         try {
           const olLayer = OlLayerFactory.createOlLayer(layerConfig);

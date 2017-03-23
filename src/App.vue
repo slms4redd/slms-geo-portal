@@ -9,6 +9,7 @@
     <KMLOverlay></KMLOverlay>
     <EditGroup></EditGroup>
     <EditContext></EditContext>
+    <EditLayers></EditLayers>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
 import EditGroup from './components/EditGroup';
 import EditContext from './components/EditContext';
+import EditLayers from './components/EditLayers';
 
 export default {
   name: 'app',
@@ -34,7 +36,8 @@ export default {
     Feedback,
     KMLOverlay,
     EditGroup,
-    EditContext
+    EditContext,
+    EditLayers
   },
   created() {
     this.$store.dispatch('getAllLayers');

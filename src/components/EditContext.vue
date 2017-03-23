@@ -1,23 +1,21 @@
 <template>
   <modal v-if="editContext">
     <h1 slot="header">Edit group</h1>
-    <div slot="body">
-      Label: <input v-model="label">
-      <br>
-      Labels:
+    <div slot="body" id="edit">
+      Default label:
+      <input type="text" v-model="label">
+      Localized labels:
       <br>
       <template v-for="label in labels">
-        <label>{{label.language}}</label> <input v-model="label.label">
+        <label class="short-input">{{label.language}}: <input class="short-input" type="text" v-model="label.label"></label>
         <br>
       </template>
-      <label>Info file:</label> <input v-model="infoFile">
-      <br>
+      <label>Info file:</label> <input type="text" v-model="infoFile">
       <label><input type="checkbox" v-model="active"> active by default</label>
       <br>
-      Inline legend URL: <input v-model="inlineLegendUrl">
-      <br>
+      Inline legend URL: <input type="text" v-model="inlineLegendUrl">
       <label>Layers:</label>
-      <select v-model="selectedLayers" multiple>
+      <select v-model="selectedLayers" multiple id="layer-select">
         <option v-for="layer in layers" v-bind:value="layer.id">
           {{ layer.label }}
         </option>
@@ -92,7 +90,14 @@ export default {
         this.infoFile = this.editContext.infoFile;
         this.active = this.editContext.active;
         this.inlineLegendUrl = this.editContext.inlineLegendUrl;
-        this.layers = this.allLayers.map(l => ({ id: l.id, label: l.id })); // TODO
+        this.layers = this.allLayers.map(l => {
+          const ret = { id: l.id };
+          if (l.type === 'wms') ret.label = l.name;
+          else if (l.type === 'bing-aerial') ret.label = 'Bing Aerial';
+          else if (l.type === 'osm') ret.label = 'OpenStreetMap';
+          else ret.label = '???';
+          return ret;
+        });
         this.selectedLayers = this.editContext.layers.map(l => l.id);
       }
     }
@@ -104,7 +109,6 @@ export default {
     allLayers() {
       return this.$store.state.layers;
     }
-
   }
 };
 </script>
@@ -112,5 +116,27 @@ export default {
 <style scoped>
 h1 {
   font-size: 16px;
+}
+#edit {
+  width: 340px;
+}
+input[type=text] {
+  width: 300px;
+  display: block;
+  margin-bottom: 9px;
+}
+label {
+  display: block;
+}
+label.short-input {
+  display: inline;
+}
+input[type=text].short-input {
+  width: 270px;
+  margin-bottom: 9px;
+  display: inline;
+}
+#layer-select {
+  width: 300px;
 }
 </style>

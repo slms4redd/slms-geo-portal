@@ -9,7 +9,7 @@ class OlLayerFactory {
     let source;
 
     switch (layerConfig.type) {
-      case 'OSM':
+      case 'osm':
         source = new ol.source.OSM();
         break;
       case 'bing-aerial':

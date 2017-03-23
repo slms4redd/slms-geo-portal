@@ -3,14 +3,17 @@
     <div :class="{dimmed: !nContexts}" v-if="conf.isGroup" class="group" @click="toggleGroup">
       <span class="line group-label icon">
         <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
-        {{isRoot ? $t("layerSelector.layers") : conf.label}}
+        <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : conf.label}}</span>
       </span>
       <span class="info-link icon" v-if="conf.infoFile" v-on:click.stop="showInfo">
         <icon name="info-circle"></icon>
       </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
-      <span v-if="editing" class="icon" v-on:click.stop="editItem">
+      <span v-if="editing && !isRoot" class="icon" v-on:click.stop="editItem">
         <icon name="fa-pencil-square-o"></icon>
+      </span>
+      <span v-if="editing && !isRoot" class="icon" v-on:click.stop="deleteItem">
+        <icon class="icon" name="trash-o"></icon>
       </span>
     </div>
     <div v-else>
@@ -28,7 +31,7 @@
         <icon class="legend-link" v-bind:class="{active}" name="th-list"></icon>
       </span>
       <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
-      <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
+      <span :class="{dimmed: !hasLayers, handle: editing}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
       <span class="info-link icon" v-if="conf.infoFile" v-on:click="showInfo">
         <icon name="info-circle"></icon>
       </span>
@@ -45,9 +48,12 @@
       <span v-if="editing" class="icon" v-on:click.stop="editItem">
         <icon class="icon" name="fa-pencil-square-o"></icon>
       </span>
+      <span v-if="editing" class="icon" v-on:click.stop="deleteItem">
+        <icon class="icon" name="trash-o"></icon>
+      </span>
     </div>
     <template v-if="editing">
-      <draggable element="ul" v-if="conf.isGroup" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150 }" v-model='list'>
+      <draggable element="ul" v-if="conf.isGroup" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150, handle: '.handle' }" v-model='list'>
         <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
       </draggable>
     </template>
@@ -78,6 +84,7 @@ import 'vue-awesome/icons/check-square';
 import 'vue-awesome/icons/circle';
 import 'vue-awesome/icons/dot-circle-o';
 import 'vue-awesome/icons/fa-pencil-square-o';
+import 'vue-awesome/icons/trash-o';
 
 export default {
   name: 'item',
@@ -108,7 +115,7 @@ export default {
       }
     },
     isRoot() {
-      return !this.conf.label;
+      return !this.conf.parent;
     },
     hasLayers() {
       return !!this.conf.layers.length;
@@ -154,15 +161,20 @@ export default {
     }
   },
   methods: {
-    editItem() {
-      this.$store.commit('edit_item', { id: this.conf.id });
-    },
     startEditing() {
       require.ensure('vuedraggable', () => {
         const vuedraggable = require('vuedraggable');
         Vue.component('draggable', vuedraggable);
         this.$store.commit('enable_edit', { editing: true });
       });
+    },
+    editItem() {
+      this.$store.commit('edit_item', { id: this.conf.id });
+    },
+    deleteItem() {
+      if (confirm('Are you sure that you want to delete this item?')) {
+        this.$store.commit('delete_item', { id: this.conf.id });
+      }
     },
     highlightContext(highlight) {
       this.highlighted = highlight;
@@ -273,7 +285,7 @@ ul {
 .icon.statistics svg {
   color: #999;
 }
-.draggable {
+.handle {
   cursor: move;
 }
 </style>

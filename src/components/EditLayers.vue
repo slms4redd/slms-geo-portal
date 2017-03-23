@@ -3,15 +3,20 @@
     <h1 slot="header">Edit layers</h1>
     <div slot="body" class="layer-editor">
       <div id='master'>
+        Add layer:
+        <a href="#" class="button default" @click.prevent="addLayer('wms')">WMS</a>
+        <a href="#" class="button default" @click.prevent="addLayer('osm')">OSM</a>
+        <a href="#" class="button default" @click.prevent="addLayer('bing')">Bing</a>
+        <br>
         <b>Drag to change the order</b>
         <br>
         <br>
         <draggable element="ul" :options="{ group: 'items', animation: 150, handle: '.handle' }" v-model='layersClone'>
           <li v-for="l in layersClone" class="layer-link" v-bind:class="{ highlighted: layer && l.id === layer.id }" v-on:click="editLayer(l)">
             <span class="handle"><icon name="sort"></icon></span>
-            <span v-if="l.type === 'WMS'">{{l.name}}</span>
+            <span v-if="l.type === 'wms'">{{l.name}}</span>
             <span v-else-if="l.type === 'bing-aerial'">Bing aerial</span>
-            <span v-else-if="l.type === 'OSM'">Open street map</span>
+            <span v-else-if="l.type === 'osm'">Open street map</span>
             <span v-if="l.statistics && l.statistics.length">
               <icon name="bar-chart"></icon>
             </span>
@@ -24,25 +29,25 @@
 
       <!-- "legend": { "type": "url", "url": "settlements.png" } -->
 
-      <template v-if="layer">
-        <div id="detail" v-if="layer.type='WMS'">
-          <a href="#" class="button default" @click.prevent="deleteLayer(layer)">Delete this layer</a>
+      <div id="detail" v-if="layer">
+        <a href="#" class="button default" @click.prevent="deleteLayer(layer)">Delete this layer</a>
 
+        <template v-if="layer.type === 'wms'">
           <label>WMS name: <input type="text" v-model="layer.name"></label>
           <label>Image format: <input type="text" v-model="layer.imageFormat"></label>
           <label>Source link: <input type="text" v-model="layer.sourceLink"></label>
           <label>Source label: <input type="text" v-model="layer.sourceLabel"></label>
 
-          <label class="short-text-input">Legend:
-            <select class="short-text-input" v-model="legendType">
+          <label class="short-input">Legend:
+            <select class="short-input" v-model="legendType">
               <option value="">none</option>
               <option>url</option>
               <option>wms</option>
             </select>
           </label>
 
-          <label v-if="legendType === 'wms'" class="short-text-input">Style: <input class="short-text-input" type="text" v-model="layer.legend.style"></label>
-          <label v-else-if="legendType === 'url'" class="short-text-input">URL: <input class="short-text-input" type="text" v-model="layer.legend.url"></label>
+          <label v-if="legendType === 'wms'" class="short-input">Style: <input class="short-input" type="text" v-model="layer.legend.style"></label>
+          <label v-else-if="legendType === 'url'" class="short-input">URL: <input class="short-input" type="text" v-model="layer.legend.url"></label>
 
           <br>
           <b>Statistics</b> - add
@@ -64,20 +69,20 @@
               <a href="#" class="button default" @click.prevent="addAttribute(statistics)">Add</a>
               <br>
               <template v-for="attribute in statistics.attributes">
-                <label class="short-text-input">Label: <input class="short-text-input" type="text" v-model="attribute.label"></label>
+                <label class="short-input">Label: <input class="short-input" type="text" v-model="attribute.label"></label>
                 -
-                <label class="short-text-input">Attribute: <input class="short-text-input" type="text" v-model="attribute.attribute"></label>
+                <label class="short-input">Attribute: <input class="short-input" type="text" v-model="attribute.attribute"></label>
                 <a href="#" class="button default" @click.prevent="deleteAttribute(statistics, attribute)">Delete</a>
                 <br>
               </template>
             </template>
             <hr>
           </template>
-        </div>
-      </template>
-      <template v-else>
+        </template>
+      </div>
+      <div id="detail" v-else>
         <b>Please select a layer on the left</b>
-      </template>
+      </div>
     </div>
     <div slot="footer">
       <a href="#" class="modal-default-button" @click.prevent="close">Cancel</a>
@@ -88,8 +93,10 @@
 
 <script>
 import Modal from './Modal';
+import { Layer } from '../config';
 import { mapState } from 'vuex';
 import Icon from 'vue-awesome/components/Icon.vue';
+
 import 'vue-awesome/icons/sort';
 import 'vue-awesome/icons/bar-chart';
 import 'vue-awesome/icons/th-list';
@@ -107,8 +114,37 @@ export default {
     // The draggable component is loaded dynamically
   },
   methods: {
+    addLayer(type) {
+      let layer;
+      switch (type) {
+        case 'wms':
+          layer = new Layer({
+            type: 'wms',
+            name: 'new_layer',
+            id: Math.random(10000000), // TODO
+            imageFormat: 'image/png8'
+          });
+          break;
+        case 'osm':
+          layer = new Layer({
+            type: 'osm',
+            id: Math.random(10000000) // TODO
+          });
+          break;
+        case 'bing':
+          layer = new Layer({
+            type: 'bing-aerial',
+            id: Math.random(10000000) // TODO
+          });
+          break;
+      }
+
+      if (layer) {
+        this.layersClone.push(layer);
+        this.layer = layer;
+      }
+    },
     editLayer(layer) {
-      // this.layer = JSON.parse(JSON.stringify(layer));
       this.layer = layer;
     },
     deleteLayer(layer) {
@@ -180,25 +216,11 @@ export default {
         }
       }
     },
-    // legend: {
-    //   get() {
-    //     return this.layer.legend || { type: null };
-    //   },
-    //   set(legend) {
-    //     console.log('setting');
-    //     if (legend.type) this.layer.legend = legend;
-    //     else this.layer.legend = undefined;
-    //   }
-    // },
     ...mapState([
       'editLayers',
       'layers'
     ])
   }
-  // computed: mapState([
-  //   'editLayers',
-  //   'layers'
-  // ])
 };
 </script>
 
@@ -241,14 +263,14 @@ input[type=text] {
   margin-bottom: 9px;
 }
 label {
-  display:block;
+  display: block;
 }
-input[type=text].short-text-input {
+input[type=text].short-input {
   width: 110px;
   margin-bottom: 9px;
   display: inline;
 }
-label.short-text-input {
+label.short-input {
   display: inline;
 }
 .highlighted {

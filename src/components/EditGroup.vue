@@ -1,17 +1,16 @@
 <template>
   <modal v-if="editGroup">
     <h1 slot="header">Edit group</h1>
-    <div slot="body">
-      Label: <input v-model="label">
-      <br>
-      Labels:
+    <div slot="body" id="edit">
+      Default label: <input type="text" v-model="label">
+      Localized labels:
       <br>
       <template v-for="label in labels">
-        <label>{{label.language}}</label> <input v-model="label.label">
+        <label class="short-input">{{label.language}}: <input class="short-input" type="text" v-model="label.label"></label>
         <br>
       </template>
-      <label>Info file:</label> <input v-model="infoFile">
-      <br>
+
+      <label>Info file: <input type="text" v-model="infoFile"></label>
       <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
     </div>
     <div slot="footer">
@@ -80,5 +79,24 @@ export default {
 <style scoped>
 h1 {
   font-size: 16px;
+}
+#edit {
+  width: 340px;
+}
+input[type=text] {
+  width: 300px;
+  display: block;
+  margin-bottom: 9px;
+}
+label {
+  display: block;
+}
+label.short-input {
+  display: inline;
+}
+input[type=text].short-input {
+  width: 270px;
+  margin-bottom: 9px;
+  display: inline;
 }
 </style>

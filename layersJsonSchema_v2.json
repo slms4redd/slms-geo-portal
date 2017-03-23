@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/definitions/wms" },
+          { "$ref": "#/definitions/bingAerial" },
+          { "$ref": "#/definitions/osm" }
+        ]
+      }
+    },
+    "contexts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "infoFile": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "inlineLegendUrl": {
+            "type": "string"
+          },
+          "downloadUrl": {
+            "type": "string"
+          },
+          "layers": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "contextGroups": {
+      "type": "object",
+      "properties": {
+        "items": { "$ref": "#/definitions/items" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "layers",
+    "contexts",
+    "contextGroups"
+  ],
+  "definitions": {
+    "wms": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["wms"] },
+        "id": {
+          "type": "number"
+        },
+        "baseUrl": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "imageFormat": {
+          "type": "string"
+        },
+        "legend": {
+          "type": "object",
+          "oneOf": [
+            { "$ref": "#/definitions/wmsLegend" },
+            { "$ref": "#/definitions/urlLegend" }
+          ]
+        },
+        "sourceLink": {
+          "type": "string"
+        },
+        "sourceLabel": {
+          "type": "string"
+        },
+        "wmsTime": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "statistics": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/definitions/attributesStatistics" },
+              { "$ref": "#/definitions/urlStatistics" }
+            ]
+          }
+        }
+      },
+      "required": ["id", "name"],
+      "additionalProperties": false
+    },
+    "bingAerial": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["bing-aerial"] },
+        "id": {
+          "type": "number"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": ["type", "id"],
+      "additionalProperties": false
+    },
+    "osm": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["osm"] },
+        "id": {
+          "type": "number"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": ["type", "id"],
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          { "$ref": "#/definitions/group" },
+          { "$ref": "#/definitions/context" }
+        ]
+      }
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "context": {
+          "type": "string"
+        }
+      },
+      "required": ["context"],
+      "additionalProperties": false
+    },
+    "group": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "object",
+          "properties": {
+            "label": { "type": "string" },
+            "infoFile": { "type": "string" },
+            "exclusive": { "type": "boolean" },
+            "items": { "$ref": "#/definitions/items" }
+          },
+          "required": ["label"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["group"],
+      "additionalProperties": false
+    },
+    "attributesStatistics": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["attributes"] },
+        "popupLabel": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "attribute": {
+                "type": "string"
+              }
+            },
+            "required": ["label", "attribute"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": ["type"]
+    },
+    "urlStatistics": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["url"] },
+        "popupLabel": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["type", "url"]
+    },
+    "wmsLegend": {
+      "properties": {
+        "type": { "enum": ["wms"] },
+        "style": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["type", "style"]
+    },
+    "urlLegend": {
+      "properties": {
+        "type": { "enum": ["url"] },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["type", "url"]
+    }
+  }
+}

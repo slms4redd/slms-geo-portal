@@ -1,5 +1,5 @@
 {
-  "$schema": "../../layersJsonSchema.json",
+  "$schema": "../../layersJsonSchema_v2.json",
   "layers": [
     {
       "id": "blueMarble",

@@ -27,12 +27,13 @@ const ISO8601ToDate = function(dateString) {
   throw new Error('Invalid date');
 };
 
-class Layer {
+export class Layer {
   constructor(layerConfig) {
-    this.type = layerConfig.type || 'WMS';
-    this.id = layerConfig.id;
+    this.id = Layer.nextId++;
+    this.originalId = layerConfig.id;
+    this.type = layerConfig.type || 'wms';
     // this.label = layerConfig.label || null;
-    if (this.type === 'WMS') {
+    if (this.type === 'wms') {
       this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null);
       this.name = layerConfig.wmsName || layerConfig.name || null;
       this.imageFormat = layerConfig.imageFormat || 'image/png8';
@@ -71,6 +72,8 @@ class Layer {
     this.sourceLink = layerConfig.sourceLink || null;
     this.sourceLabel = layerConfig.sourceLabel || null;
   }
+
+  static nextId = 0;
 }
 
 class Item {
@@ -109,14 +112,14 @@ export class Context extends Item {
     this.originalId = contextConfig.id;
     this.active = !!contextConfig.active;
 
-    const _findById = (arr, id) => arr.find(item => item.id === id);
+    const _findById = (arr, id) => arr.find(item => item.originalId === id);
     const tLayers = contextConfig.layers && contextConfig.layers.map(id => _findById(layers, id))
                                                                 .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
     this.layers = tLayers || [];
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
     this.hasLegends = this.layers.some(layer => layer.legend);
 
-    this.times = this.layers.filter(l => l.type === 'WMS' && l.times.length)
+    this.times = this.layers.filter(l => l.type === 'wms' && l.times.length)
                             .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
                             // Remove duplicates
                             .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos)
@@ -125,9 +128,10 @@ export class Context extends Item {
 }
 
 export class Group extends Item {
-  constructor(groupConfig, contexts) {
+  constructor(groupConfig, contexts, parent) {
     super(groupConfig);
 
+    this.parent = parent;
     this.exclusive = !!groupConfig.exclusive;
     const tItems = groupConfig.items && groupConfig.items.map(item => {
       if (item.context) {
@@ -138,7 +142,7 @@ export class Group extends Item {
 
         return context;
       }
-      return item.group && new Group(item.group, contexts);
+      return item.group && new Group(item.group, contexts, this);
     });
     // Silently remove undefined values (unmatched contexts) from the array
     this.items = tItems ? tItems.filter(x => x) : [];
@@ -149,14 +153,16 @@ class _Config {
   constructor(json) {
     this.layers = json.layers.map(layerConf => new Layer(layerConf));
     this.contexts = json.contexts.map(contextConf => new Context(contextConf, this.layers));
-    this.groups = new Group(json.contextGroups, this.contexts);
+    this.groups = new Group(json.contextGroups, this.contexts, null);
   }
 
   serialize() {
     // Clean up before exporting
     const layerReplacer = (key, value) => {
-      // TODO: urls should be removed if same as the default one
       switch (key) {
+        case 'originalId': // TODO the originalId attribute will be removed
+        case 'urls':
+          return undefined;
         case 'legend':
         case 'sourceLink':
         case 'sourceLabel':
@@ -178,6 +184,7 @@ class _Config {
         case 'parent':
         case 'hasLegends':
         case 'times':
+        case 'originalId': // TODO the originalId attribute will be removed
           return undefined;
         default:
           return value;
@@ -188,6 +195,7 @@ class _Config {
     const groupReplacer = (key, value) => {
       switch (key) {
         case 'id':
+        case 'parent':
           return undefined;
         case 'infoFile':
           return value || undefined;
@@ -204,6 +212,7 @@ class _Config {
     const groups = JSON.parse(JSON.stringify(this.groups, groupReplacer));
 
     const obj = {
+      $schema: '../../layersJsonSchema_v2.json', // TODO
       layers: layers,
       contexts: contexts,
       groups: groups

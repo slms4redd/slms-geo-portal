@@ -53,6 +53,11 @@ const mutations = {
       else state.editContext = item;
     } else state.editContext = state.editGroup = null;
   },
+  delete_item(state, { id }) {
+    const item = state.groups.findById(id);
+    const index = item.parent.items.findIndex(i => i.id === id);
+    if (index > -1) item.parent.items.splice(index, 1);
+  },
   edit_layers(state, { edit }) {
     state.editLayers = edit;
   },

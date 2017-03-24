@@ -26,9 +26,7 @@
           "infoFile": {
             "type": "string"
           },
-          "label": {
-            "type": "string"
-          },
+          "labels": { "$ref": "#/definitions/labels" },
           "inlineLegendUrl": {
             "type": "string"
           },
@@ -51,7 +49,7 @@
         "additionalProperties": false
       }
     },
-    "contextGroups": {
+    "group": {
       "type": "object",
       "properties": {
         "items": { "$ref": "#/definitions/items" }
@@ -63,9 +61,24 @@
   "required": [
     "layers",
     "contexts",
-    "contextGroups"
+    "group"
   ],
   "definitions": {
+    "labels": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "language": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": ["language", "label"],
+        "additionalProperties": false
+      }
+    },
     "wms": {
       "type": "object",
       "properties": {
@@ -95,8 +108,12 @@
         "sourceLabel": {
           "type": "string"
         },
-        "wmsTime": {
-          "type": "string"
+        "times": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^([0-9]{4})(-([0-9]{2})(-([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\\.([0-9]+))?)?(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?$"
+          }
         },
         "visible": {
           "type": "boolean"
@@ -156,7 +173,7 @@
       "type": "object",
       "properties": {
         "context": {
-          "type": "string"
+          "type": "number"
         }
       },
       "required": ["context"],
@@ -168,12 +185,12 @@
         "group": {
           "type": "object",
           "properties": {
-            "label": { "type": "string" },
+            "labels": { "$ref": "#/definitions/labels" },
             "infoFile": { "type": "string" },
             "exclusive": { "type": "boolean" },
             "items": { "$ref": "#/definitions/items" }
           },
-          "required": ["label"],
+          "required": ["labels"],
           "additionalProperties": false
         }
       },
@@ -184,21 +201,17 @@
       "type": "object",
       "properties": {
         "type": { "enum": ["attributes"] },
-        "popupLabel": {
-          "type": "string"
-        },
+        "labels": { "$ref": "#/definitions/labels" },
         "attributes": {
           "type": "array",
           "items": {
             "properties": {
-              "label": {
-                "type": "string"
-              },
+              "labels": { "$ref": "#/definitions/labels" },
               "attribute": {
                 "type": "string"
               }
             },
-            "required": ["label", "attribute"],
+            "required": ["labels", "attribute"],
             "additionalProperties": false
           }
         }
@@ -210,9 +223,7 @@
       "type": "object",
       "properties": {
         "type": { "enum": ["url"] },
-        "popupLabel": {
-          "type": "string"
-        },
+        "labels": { "$ref": "#/definitions/labels" },
         "url": {
           "type": "string"
         }

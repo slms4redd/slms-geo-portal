@@ -3,7 +3,7 @@
     <div :class="{dimmed: !nContexts}" v-if="conf.isGroup" class="group" @click="toggleGroup">
       <span class="line group-label icon">
         <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
-        <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : conf.label}}</span>
+        <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : label}}</span>
       </span>
       <span class="info-link icon" v-if="conf.infoFile" v-on:click.stop="showInfo">
         <icon name="info-circle"></icon>
@@ -31,7 +31,7 @@
         <icon class="legend-link" v-bind:class="{active}" name="th-list"></icon>
       </span>
       <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
-      <span :class="{dimmed: !hasLayers, handle: editing}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
+      <span :class="{dimmed: !hasLayers, handle: editing}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{label}}</span>
       <span class="info-link icon" v-if="conf.infoFile" v-on:click="showInfo">
         <icon name="info-circle"></icon>
       </span>
@@ -99,7 +99,7 @@ export default {
   },
   data() {
     return {
-      open: !this.conf.label,
+      open: !this.conf.parent,
       showLegend: false,
       showTimeMenu: false,
       highlighted: false
@@ -113,6 +113,10 @@ export default {
       set(value) {
         this.$store.commit('update_group', { groupId: this.conf.id, value: value });
       }
+    },
+    label() {
+      const loc = this.conf.labels.find(l => l.language === Vue.config.lang);
+      return loc ? loc.label : null;
     },
     isRoot() {
       return !this.conf.parent;

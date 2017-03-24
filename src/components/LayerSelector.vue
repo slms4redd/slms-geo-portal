@@ -18,7 +18,7 @@
 
 <script>
 import Item from './Item';
-import EditGroup from './EditGroup';
+import EditGroup from './edit/EditGroup';
 import { mapState } from 'vuex';
 
 export default {

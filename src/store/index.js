@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { getLayers, Group, Context } from '../config';
+import { getLayers, Group, Context, getLocalizedLabels } from '../config';
 
 Vue.use(Vuex);
 
@@ -34,13 +34,13 @@ const mutations = {
   },
   add_group(state) {
     const newGroup = new Group({
-      label: 'New group'
-    });
+      labels: getLocalizedLabels(null, 'New group')
+    }, [], state.groups);
     state.groups.items.push(newGroup);
   },
   add_context(state) {
     const newContext = new Context({
-      label: 'New context'
+      labels: getLocalizedLabels(null, 'New context')
     });
     newContext.parent = state.groups;
     state.groups.items.push(newContext);
@@ -120,7 +120,7 @@ const mutations = {
   update_layers(state, { value }) {
     state.layers = value;
 
-    // swap the contexts' layers
+    // swap the old contexts' layers with the new ones
     state.contexts.forEach(context => {
       const contextLayers = context.layers;
       context.layers = contextLayers.map(layer => value.find(l => l.id === layer.id)).filter(l => !!l);

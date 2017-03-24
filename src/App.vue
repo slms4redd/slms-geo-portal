@@ -21,9 +21,9 @@ import ContextInfoModal from './components/ContextInfoModal';
 import FeatureInfo from './components/FeatureInfo';
 import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
-import EditGroup from './components/EditGroup';
-import EditContext from './components/EditContext';
-import EditLayers from './components/EditLayers';
+import EditGroup from './components/edit/EditGroup';
+import EditContext from './components/edit/EditContext';
+import EditLayers from './components/edit/EditLayers';
 
 export default {
   name: 'app',

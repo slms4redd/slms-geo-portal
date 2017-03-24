@@ -27,8 +27,6 @@
         </draggable>
       </div>
 
-      <!-- "legend": { "type": "url", "url": "settlements.png" } -->
-
       <div id="detail" v-if="layer">
         <a href="#" class="button default" @click.prevent="deleteLayer(layer)">Delete this layer</a>
 
@@ -58,21 +56,23 @@
             Statistics - type: {{statistics.type}}
             <a href="#" class="button default" @click.prevent="deleteStatistics(statistics)">Delete statistics</a>
             <br>
+            Statistics labels:
             <br>
+            <EditLabels :labels="statistics.labels"></EditLabels>
             <template v-if="statistics.type === 'url'">
-              <label>Label: <input type="text" v-model="statistics.popupLabel"></label>
               <label>URL: <input type="text" v-model="statistics.url"></label>
             </template>
             <template v-if="statistics.type === 'attributes'">
-              <label>Label: <input type="text" v-model="statistics.popupLabel"></label>
               Attributes:
               <a href="#" class="button default" @click.prevent="addAttribute(statistics)">Add</a>
               <br>
               <template v-for="attribute in statistics.attributes">
-                <label class="short-input">Label: <input class="short-input" type="text" v-model="attribute.label"></label>
-                -
-                <label class="short-input">Attribute: <input class="short-input" type="text" v-model="attribute.attribute"></label>
-                <a href="#" class="button default" @click.prevent="deleteAttribute(statistics, attribute)">Delete</a>
+                <label class="short-input">Attribute name: <input class="short-input" type="text" v-model="attribute.attribute"></label>
+                <br>
+                Localized labels:
+                <br>
+                <EditLabels :labels="attribute.labels"></EditLabels>
+                <a href="#" class="button default" @click.prevent="deleteAttribute(statistics, attribute)">Delete attribute</a>
                 <br>
               </template>
             </template>
@@ -92,8 +92,9 @@
 </template>
 
 <script>
-import Modal from './Modal';
-import { Layer } from '../config';
+import Modal from '../Modal';
+import EditLabels from './EditLabels';
+import { Layer, getLocalizedLabels } from '../../config';
 import { mapState } from 'vuex';
 import Icon from 'vue-awesome/components/Icon.vue';
 
@@ -110,6 +111,7 @@ export default {
   },
   components: {
     'modal': Modal,
+    EditLabels,
     Icon
     // The draggable component is loaded dynamically
   },
@@ -121,20 +123,20 @@ export default {
           layer = new Layer({
             type: 'wms',
             name: 'new_layer',
-            id: Math.random(10000000), // TODO
+            id: Layer.nextId++,
             imageFormat: 'image/png8'
           });
           break;
         case 'osm':
           layer = new Layer({
             type: 'osm',
-            id: Math.random(10000000) // TODO
+            id: Layer.nextId++
           });
           break;
         case 'bing':
           layer = new Layer({
             type: 'bing-aerial',
-            id: Math.random(10000000) // TODO
+            id: Layer.nextId++
           });
           break;
       }
@@ -162,16 +164,20 @@ export default {
       if (!this.layer.statistics) this.$set(this.layer, 'statistics', []);
       this.layer.statistics.push({
         type: 'url',
-        url: ''
+        url: '',
+        labels: getLocalizedLabels()
       });
     },
     addAttributesStatistics() {
       if (!this.layer.statistics) this.$set(this.layer, 'statistics', []);
-      this.layer.statistics.push({ type: 'attributes' });
+      this.layer.statistics.push({
+        type: 'attributes',
+        labels: getLocalizedLabels()
+      });
     },
     addAttribute(statistics) {
       if (!statistics.attributes) this.$set(statistics, 'attributes', []);
-      statistics.attributes.push({ label: '', attribute: '' });
+      statistics.attributes.push({ labels: getLocalizedLabels(), attribute: null });
     },
     deleteAttribute(statistics, attribute) {
       if (confirm('Are you sure you want to delete the attribute?')) {
@@ -187,7 +193,7 @@ export default {
       this.close();
     },
     close() {
-      this.$store.commit('edit_layers', { value: false });
+      this.$store.commit('edit_layers', { edit: null });
     }
   },
   watch: {

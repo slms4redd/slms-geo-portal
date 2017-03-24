@@ -1,4 +1,4 @@
-import { defaultGeoServerURLs } from './assets/config.json';
+import { defaultGeoServerURLs, languages } from './assets/config.json';
 import httpRequest from './httpRequest';
 
 const ISO8601ToDate = function(dateString) {
@@ -27,28 +27,45 @@ const ISO8601ToDate = function(dateString) {
   throw new Error('Invalid date');
 };
 
+export function getLocalizedLabels(labelObj, defaultText) {
+  labelObj = labelObj || [];
+  const ret = [];
+
+  // Get the labels from the label object
+  labelObj.forEach(l => {
+    if (l.language) ret.push({ language: l.language, label: l.label || defaultText });
+  });
+
+  // Add the missing labels, based on the languages array
+  languages.forEach(lang => {
+    if (!ret.find(l => l.language === lang.id)) {
+      ret.push({ language: lang.id, label: defaultText });
+    }
+  });
+  return ret;
+}
+
 export class Layer {
   constructor(layerConfig) {
     this.id = Layer.nextId++;
     this.originalId = layerConfig.id;
     this.type = layerConfig.type || 'wms';
-    // this.label = layerConfig.label || null;
     if (this.type === 'wms') {
       this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null);
       this.name = layerConfig.wmsName || layerConfig.name || null;
       this.imageFormat = layerConfig.imageFormat || 'image/png8';
       this.legend = layerConfig.legend || null; // TODO check structure
 
-      const tTimes = layerConfig.wmsTime ? layerConfig.wmsTime.split(',') : [];
+      const tTimes = layerConfig.times || [];
       this.times = tTimes.map(time => ({
-        humanReadable: time,
+        humanReadable: time, // TODO
         date: ISO8601ToDate(time)
       }));
 
       this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
         const ret = {
           type: s.type,
-          popupLabel: s.popupLabel
+          labels: s.labels
         };
         switch (s.type) {
           case 'url':
@@ -57,7 +74,7 @@ export class Layer {
           case 'attributes':
             ret.attributes = s.attributes && s.attributes.map(a => ({
               attribute: a.attribute,
-              label: a.label || a.attribute
+              labels: a.labels || a.attribute
             }));
             break;
           default:
@@ -80,8 +97,7 @@ class Item {
   constructor(conf) {
     this.id = Item.nextId++;
     this.infoFile = conf.infoFile || null;
-    this.label = conf.label;
-    this.labels = conf.labels || [];
+    this.labels = getLocalizedLabels(conf.labels);
   }
 
   findById(id) {
@@ -153,14 +169,14 @@ class _Config {
   constructor(json) {
     this.layers = json.layers.map(layerConf => new Layer(layerConf));
     this.contexts = json.contexts.map(contextConf => new Context(contextConf, this.layers));
-    this.groups = new Group(json.contextGroups, this.contexts, null);
+    this.groups = new Group(json.group, this.contexts, null);
   }
 
   serialize() {
     // Clean up before exporting
     const layerReplacer = (key, value) => {
       switch (key) {
-        case 'originalId': // TODO the originalId attribute will be removed
+        // case 'originalId': // TODO the originalId attribute will be removed
         case 'urls':
           return undefined;
         case 'legend':
@@ -184,7 +200,7 @@ class _Config {
         case 'parent':
         case 'hasLegends':
         case 'times':
-        case 'originalId': // TODO the originalId attribute will be removed
+        // case 'originalId': // TODO the originalId attribute will be removed
           return undefined;
         default:
           return value;
@@ -224,9 +240,7 @@ class _Config {
 
 export function getLayers(lang, cb) {
   return new Promise(function(resolve, reject) {
-    // To keep the compatibility with the old portal, layers.json can be localized
-    const url = '../static/configuration/layers.json' + (lang ? `?lang=${lang}` : '');
-    httpRequest('GET', url)
+    httpRequest('GET', '../static/configuration/layers.json')
       .then(responseText => resolve(new _Config(JSON.parse(responseText))))
       .catch(error => reject(error.statusText || error.message));
   });

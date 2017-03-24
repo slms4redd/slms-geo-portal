@@ -2,14 +2,11 @@
   <modal v-if="editContext">
     <h1 slot="header">Edit group</h1>
     <div slot="body" id="edit">
-      Default label:
-      <input type="text" v-model="label">
+      <!--Default label:
+      <input type="text" v-model="label">-->
       Localized labels:
       <br>
-      <template v-for="label in labels">
-        <label class="short-input">{{label.language}}: <input class="short-input" type="text" v-model="label.label"></label>
-        <br>
-      </template>
+      <EditLabels :labels="labels"></EditLabels>
       <label>Info file:</label> <input type="text" v-model="infoFile">
       <label><input type="checkbox" v-model="active"> active by default</label>
       <br>
@@ -30,14 +27,13 @@
 </template>
 
 <script>
-// {
-import Modal from './Modal';
-import { languages } from '../assets/config.json';
+import Modal from '../Modal';
+import EditLabels from './EditLabels';
+import { languages } from '../../assets/config.json';
 
 export default {
   data() {
     return {
-      label: null,
       labels: null,
       infoFile: null,
       active: null,
@@ -47,14 +43,14 @@ export default {
     };
   },
   components: {
-    'modal': Modal
+    'modal': Modal,
+    EditLabels
   },
   methods: {
     save() {
-      console.log('saving');
       this.$store.commit('save_context', {
         id: this.editContext.id,
-        label: this.label,
+        // label: this.label,
         labels: this.labels,
         infoFile: this.infoFile,
         active: this.active,
@@ -69,21 +65,16 @@ export default {
     }
   },
   watch: {
-    selectedLayers() {
-      console.log(this.selectedLayers);
-    },
     editContext() {
       if (this.editContext) {
-        this.label = this.editContext.label;
         this.exclusive = this.editContext.exclusive;
         this.infoFile = this.editContext.infoFile;
 
-        // Look localized labels. If not found, use a default text
         this.labels = languages.map(l => {
           const loc = this.editContext.labels.find(l2 => l2.language === l.id);
           return {
             language: l.id,
-            label: loc ? loc.label : this.label || 'label ' + l.id
+            label: loc ? loc.label : null
           };
         });
 
@@ -127,14 +118,6 @@ input[type=text] {
 }
 label {
   display: block;
-}
-label.short-input {
-  display: inline;
-}
-input[type=text].short-input {
-  width: 270px;
-  margin-bottom: 9px;
-  display: inline;
 }
 #layer-select {
   width: 300px;

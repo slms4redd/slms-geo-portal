@@ -5,11 +5,7 @@
       Default label: <input type="text" v-model="label">
       Localized labels:
       <br>
-      <template v-for="label in labels">
-        <label class="short-input">{{label.language}}: <input class="short-input" type="text" v-model="label.label"></label>
-        <br>
-      </template>
-
+      <EditLabels :labels="labels"></EditLabels>
       <label>Info file: <input type="text" v-model="infoFile"></label>
       <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
     </div>
@@ -21,27 +17,27 @@
 </template>
 
 <script>
-import Modal from './Modal';
 import { mapState } from 'vuex';
-import { languages } from '../assets/config.json';
+import { languages } from '../../assets/config.json';
+import Modal from '../Modal';
+import EditLabels from './EditLabels';
 
 export default {
   data() {
     return {
-      label: null,
       labels: null,
       exclusive: null,
       infoFile: null
     };
   },
   components: {
-    'modal': Modal
+    'modal': Modal,
+    EditLabels
   },
   methods: {
     save() {
       this.$store.commit('save_group', {
         id: this.editGroup.id,
-        label: this.label,
         labels: this.labels,
         exclusive: this.exclusive,
         infoFile: this.infoFile
@@ -59,12 +55,11 @@ export default {
         this.label = this.editGroup.label;
         this.exclusive = this.editGroup.exclusive;
         this.infoFile = this.editGroup.infoFile;
-        // Look localized labels. If not found, use a default text
         this.labels = languages.map(l => {
           const loc = this.editGroup.labels.find(l2 => l2.language === l.id);
           return {
             language: l.id,
-            label: loc ? loc.label : this.label || 'label ' + l.id
+            label: loc ? loc.label : null
           };
         });
       }
@@ -90,13 +85,5 @@ input[type=text] {
 }
 label {
   display: block;
-}
-label.short-input {
-  display: inline;
-}
-input[type=text].short-input {
-  width: 270px;
-  margin-bottom: 9px;
-  display: inline;
 }
 </style>

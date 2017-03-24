@@ -142,7 +142,7 @@ export default {
                     const statistics = selectedFeaturesLayers[i].statistics;
                     statistics.forEach(stat => {
                       this.statisticsConfs.push(stat);
-                      const template = stat.popupLabel;
+                      const template = stat.labels.find(l => l.language === Vue.config.lang).label;
                       this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
                       this.statisticsFeatures.push(feature);
                     });
@@ -167,6 +167,11 @@ export default {
   },
   methods: {
     showStatistics(statsConf, feature) {
+      const attributeLabel = function(attribute) {
+        const loc = attribute.labels.find(l => l.language === Vue.config.lang);
+        return loc ? loc.label : null;
+      };
+
       switch (statsConf.type) {
         case 'url':
           const url = statsConf.url;
@@ -176,7 +181,7 @@ export default {
           const attributes = statsConf.attributes;
           if (attributes) {
             this.popupAttributes = attributes.map(a => ({
-              label: a.label,
+              label: attributeLabel(a),
               value: feature.getProperties()[a.attribute] || 'n/a'
             }));
           } else {

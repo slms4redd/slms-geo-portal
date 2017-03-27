@@ -62,7 +62,10 @@
       "type": "wms",
       "name": "landsat",
       "imageFormat": "image/png8",
-      "times": ["2000", "2005"],
+      "times": [
+        "2000",
+        "2005"
+      ],
       "visible": true,
       "sourceLink": "http://osfac.net/facet.html",
       "sourceLabel": "FACET"
@@ -163,7 +166,11 @@
         "type": "url",
         "url": "intact_forest.png"
       },
-      "times": ["2000", "2005", "2010"],
+      "times": [
+        "2000",
+        "2005",
+        "2010"
+      ],
       "visible": true,
       "sourceLink": "http://www.intactforests.org/",
       "sourceLabel": "www.intactforests.org"
@@ -186,22 +193,40 @@
         {
           "type": "attributes",
           "labels": [
-            { "language": "en", "label": "Logging concession: $(SOCIETE)" },
-            { "language": "fr", "label": "Concessions Forestières: $(SOCIETE)" }
+            {
+              "language": "en",
+              "label": "Logging concession: $(SOCIETE)"
+            },
+            {
+              "language": "fr",
+              "label": "Concessions Forestières: $(SOCIETE)"
+            }
           ],
           "attributes": [
             {
               "attribute": "SOCIETE",
               "labels": [
-                { "language": "en", "label": "Company" },
-                { "language": "fr", "label": "Societé" }
+                {
+                  "language": "en",
+                  "label": "Company"
+                },
+                {
+                  "language": "fr",
+                  "label": "Societé"
+                }
               ]
             },
             {
               "attribute": "SUPERFICIE",
               "labels": [
-                { "language": "en", "label": "Area" },
-                { "language": "fr", "label": "Surface" }
+                {
+                  "language": "en",
+                  "label": "Area"
+                },
+                {
+                  "language": "fr",
+                  "label": "Surface"
+                }
               ]
             }
           ]
@@ -273,16 +298,28 @@
         {
           "type": "url",
           "labels": [
-            { "language": "en", "label": "$(PROVINCE) forest statistics" },
-            { "language": "fr", "label": "Forêt statistics de $(PROVINCE)" }
+            {
+              "language": "en",
+              "label": "$(PROVINCE) forest statistics"
+            },
+            {
+              "language": "fr",
+              "label": "Forêt statistics de $(PROVINCE)"
+            }
           ],
           "url": "http://localhost:8080/charts/$(_lang)/admin1/admin1_$(OBJECTID).html?name=$(PROVINCE)"
         },
         {
           "type": "attributes",
           "labels": [
-            { "language": "en", "label": "$(PROVINCE) attributes" },
-            { "language": "fr", "label": "attributes de $(PROVINCE)" }
+            {
+              "language": "en",
+              "label": "$(PROVINCE) attributes"
+            },
+            {
+              "language": "fr",
+              "label": "attributes de $(PROVINCE)"
+            }
           ]
         }
       ],
@@ -336,8 +373,14 @@
       "id": 0,
       "infoFile": "bluemarble_def.html",
       "labels": [
-        { "language": "en", "label": "Blue Marble" },
-        { "language": "fr", "label": "Blue Marble" }
+        {
+          "language": "en",
+          "label": "Blue Marble"
+        },
+        {
+          "language": "fr",
+          "label": "Blue Marble"
+        }
       ],
       "active": false,
       "layers": [
@@ -348,8 +391,14 @@
       "id": 1,
       "infoFile": "forest_classification_def.html",
       "labels": [
-        { "language": "en", "label": "FACET Forest Classification" },
-        { "language": "fr", "label": "Classification des forêts FACET" }
+        {
+          "language": "en",
+          "label": "FACET Forest Classification"
+        },
+        {
+          "language": "fr",
+          "label": "Classification des forêts FACET"
+        }
       ],
       "active": false,
       "layers": [
@@ -360,8 +409,14 @@
       "id": 2,
       "infoFile": "/RDC_FnF.html",
       "labels": [
-        { "language": "en", "label": "DRC 1990 Forest non Forest Mask" },
-        { "language": "fr", "label": "Masque Forêt non Forêt 1990" }
+        {
+          "language": "en",
+          "label": "DRC 1990 Forest non Forest Mask"
+        },
+        {
+          "language": "fr",
+          "label": "Masque Forêt non Forêt 1990"
+        }
       ],
       "active": false,
       "layers": [
@@ -372,8 +427,14 @@
       "id": 3,
       "infoFile": "ucl_2010_forest_classification_def.html",
       "labels": [
-        { "language": "en", "label": "UCL Forest Classification" },
-        { "language": "fr", "label": "Classification des forêts UCL" }
+        {
+          "language": "en",
+          "label": "UCL Forest Classification"
+        },
+        {
+          "language": "fr",
+          "label": "Classification des forêts UCL"
+        }
       ],
       "active": false,
       "layers": [
@@ -384,8 +445,14 @@
       "id": 4,
       "infoFile": "landsat_def.html",
       "labels": [
-        { "language": "en", "label": "Landsat" },
-        { "language": "fr", "label": "Landsat" }
+        {
+          "language": "en",
+          "label": "Landsat"
+        },
+        {
+          "language": "fr",
+          "label": "Landsat"
+        }
       ],
       "active": false,
       "layers": [
@@ -396,8 +463,14 @@
       "id": 5,
       "infoFile": "hillshade_def.html",
       "labels": [
-        { "language": "en", "label": "Hillshade" },
-        { "language": "fr", "label": "Relief" }
+        {
+          "language": "en",
+          "label": "Hillshade"
+        },
+        {
+          "language": "fr",
+          "label": "Relief"
+        }
       ],
       "active": false,
       "layers": [
@@ -408,8 +481,14 @@
       "id": 6,
       "infoFile": "deforestation_def.html",
       "labels": [
-        { "language": "en", "label": "Deforestation (Gross forest cover loss)" },
-        { "language": "fr", "label": "Déforestation (perte brute de couverture forestiere)" }
+        {
+          "language": "en",
+          "label": "Deforestation (Gross forest cover loss)"
+        },
+        {
+          "language": "fr",
+          "label": "Déforestation (perte brute de couverture forestiere)"
+        }
       ],
       "active": false,
       "layers": [
@@ -420,8 +499,14 @@
       "id": 7,
       "infoFile": "training_data_def.html",
       "labels": [
-        { "language": "en", "label": "National Training Data" },
-        { "language": "fr", "label": "Données de la formation nationale" }
+        {
+          "language": "en",
+          "label": "National Training Data"
+        },
+        {
+          "language": "fr",
+          "label": "Données de la formation nationale"
+        }
       ],
       "active": false,
       "layers": [
@@ -432,8 +517,14 @@
       "id": 8,
       "infoFile": "redd_plus_projects_def.html",
       "labels": [
-        { "language": "en", "label": "REDD+ Projects" },
-        { "language": "fr", "label": "Projets REDD+" }
+        {
+          "language": "en",
+          "label": "REDD+ Projects"
+        },
+        {
+          "language": "fr",
+          "label": "Projets REDD+"
+        }
       ],
       "active": false,
       "layers": [
@@ -446,8 +537,14 @@
       "id": 9,
       "infoFile": "redd_plus_initiatives_def.html",
       "labels": [
-        { "language": "en", "label": "REDD+ Initiatives" },
-        { "language": "fr", "label": "Initiatives REDD+" }
+        {
+          "language": "en",
+          "label": "REDD+ Initiatives"
+        },
+        {
+          "language": "fr",
+          "label": "Initiatives REDD+"
+        }
       ],
       "active": false,
       "layers": [
@@ -460,8 +557,14 @@
       "id": 10,
       "infoFile": "hydrography_def.html",
       "labels": [
-        { "language": "en", "label": "Hydrography" },
-        { "language": "fr", "label": "Hydrographie" }
+        {
+          "language": "en",
+          "label": "Hydrography"
+        },
+        {
+          "language": "fr",
+          "label": "Hydrographie"
+        }
       ],
       "active": false,
       "layers": [
@@ -473,8 +576,14 @@
       "id": 11,
       "infoFile": "logging_concessions_def.html",
       "labels": [
-        { "language": "en", "label": "Logging Concessions" },
-        { "language": "fr", "label": "Concessions Forestières" }
+        {
+          "language": "en",
+          "label": "Logging Concessions"
+        },
+        {
+          "language": "fr",
+          "label": "Concessions Forestières"
+        }
       ],
       "active": false,
       "layers": [
@@ -487,8 +596,14 @@
       "id": 12,
       "infoFile": "protected_areas_def.html",
       "labels": [
-        { "language": "en", "label": "Protected Areas" },
-        { "language": "fr", "label": "Aires Protégées" }
+        {
+          "language": "en",
+          "label": "Protected Areas"
+        },
+        {
+          "language": "fr",
+          "label": "Aires Protégées"
+        }
       ],
       "active": false,
       "layers": [
@@ -501,8 +616,14 @@
       "id": 13,
       "infoFile": "provinces_def.html",
       "labels": [
-        { "language": "en", "label": "Provinces" },
-        { "language": "fr", "label": "Provinces" }
+        {
+          "language": "en",
+          "label": "Provinces"
+        },
+        {
+          "language": "fr",
+          "label": "Provinces"
+        }
       ],
       "active": true,
       "layers": [
@@ -515,8 +636,14 @@
       "id": 14,
       "infoFile": "administrative_boundaries_def.html",
       "labels": [
-        { "language": "en", "label": "Administrative Units" },
-        { "language": "fr", "label": "Unités administratives" }
+        {
+          "language": "en",
+          "label": "Administrative Units"
+        },
+        {
+          "language": "fr",
+          "label": "Unités administratives"
+        }
       ],
       "active": false,
       "layers": [
@@ -529,8 +656,14 @@
       "id": 15,
       "infoFile": "country_boundaries_def.html",
       "labels": [
-        { "language": "en", "label": "Country Boundaries" },
-        { "language": "fr", "label": "Frontières nationales" }
+        {
+          "language": "en",
+          "label": "Country Boundaries"
+        },
+        {
+          "language": "fr",
+          "label": "Frontières nationales"
+        }
       ],
       "active": false,
       "layers": [
@@ -542,8 +675,14 @@
       "id": 16,
       "infoFile": "roads_def.html",
       "labels": [
-        { "language": "en", "label": "Roads" },
-        { "language": "fr", "label": "Routes" }
+        {
+          "language": "en",
+          "label": "Roads"
+        },
+        {
+          "language": "fr",
+          "label": "Routes"
+        }
       ],
       "active": false,
       "layers": [
@@ -554,8 +693,14 @@
       "id": 17,
       "infoFile": "settlements_def.html",
       "labels": [
-        { "language": "en", "label": "Settlements" },
-        { "language": "fr", "label": "Localités" }
+        {
+          "language": "en",
+          "label": "Settlements"
+        },
+        {
+          "language": "fr",
+          "label": "Localités"
+        }
       ],
       "active": false,
       "layers": [
@@ -566,8 +711,14 @@
       "id": 18,
       "infoFile": "intact_forest_def.html",
       "labels": [
-        { "language": "en", "label": "Intact Forest" },
-        { "language": "fr", "label": "Forêts Intactes" }
+        {
+          "language": "en",
+          "label": "Intact Forest"
+        },
+        {
+          "language": "fr",
+          "label": "Forêts Intactes"
+        }
       ],
       "active": false,
       "layers": [
@@ -578,8 +729,14 @@
       "id": 19,
       "infoFile": "ecoregions_def.html",
       "labels": [
-        { "language": "en", "label": "Ecoregions" },
-        { "language": "fr", "label": "Écorégions" }
+        {
+          "language": "en",
+          "label": "Ecoregions"
+        },
+        {
+          "language": "fr",
+          "label": "Écorégions"
+        }
       ],
       "active": false,
       "layers": [
@@ -590,8 +747,14 @@
       "id": 20,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Deforestation (Gross forest cover loss)" },
-        { "language": "fr", "label": "Déforestation (perte brute de couverture forestiere)" }
+        {
+          "language": "en",
+          "label": "Deforestation (Gross forest cover loss)"
+        },
+        {
+          "language": "fr",
+          "label": "Déforestation (perte brute de couverture forestiere)"
+        }
       ],
       "active": false
     },
@@ -599,8 +762,14 @@
       "id": 21,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Degradation" },
-        { "language": "fr", "label": "Dégradation" }
+        {
+          "language": "en",
+          "label": "Degradation"
+        },
+        {
+          "language": "fr",
+          "label": "Dégradation"
+        }
       ],
       "active": false
     },
@@ -608,8 +777,14 @@
       "id": 22,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Enhancement" },
-        { "language": "fr", "label": "Accroissement des stocks de carbone" }
+        {
+          "language": "en",
+          "label": "Enhancement"
+        },
+        {
+          "language": "fr",
+          "label": "Accroissement des stocks de carbone"
+        }
       ],
       "active": false
     },
@@ -617,8 +792,14 @@
       "id": 23,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Conservation" },
-        { "language": "fr", "label": "Conservation" }
+        {
+          "language": "en",
+          "label": "Conservation"
+        },
+        {
+          "language": "fr",
+          "label": "Conservation"
+        }
       ],
       "active": false
     },
@@ -626,16 +807,28 @@
       "id": 24,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Sustainable Forest Management" },
-        { "language": "fr", "label": "Gestion durable" }
+        {
+          "language": "en",
+          "label": "Sustainable Forest Management"
+        },
+        {
+          "language": "fr",
+          "label": "Gestion durable"
+        }
       ],
       "active": false
     },
     {
       "id": 25,
       "labels": [
-        { "language": "en", "label": "Plots" },
-        { "language": "fr", "label": "Parcelles" }
+        {
+          "language": "en",
+          "label": "Plots"
+        },
+        {
+          "language": "fr",
+          "label": "Parcelles"
+        }
       ],
       "active": false,
       "layers": [
@@ -647,8 +840,14 @@
       "id": 26,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Degradation" },
-        { "language": "fr", "label": "Dégradation" }
+        {
+          "language": "en",
+          "label": "Degradation"
+        },
+        {
+          "language": "fr",
+          "label": "Dégradation"
+        }
       ],
       "active": false
     },
@@ -656,8 +855,14 @@
       "id": 27,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Regrowth" },
-        { "language": "fr", "label": "Régénération" }
+        {
+          "language": "en",
+          "label": "Regrowth"
+        },
+        {
+          "language": "fr",
+          "label": "Régénération"
+        }
       ],
       "active": false
     },
@@ -665,8 +870,14 @@
       "id": 28,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Conservation" },
-        { "language": "fr", "label": "Conservation" }
+        {
+          "language": "en",
+          "label": "Conservation"
+        },
+        {
+          "language": "fr",
+          "label": "Conservation"
+        }
       ],
       "active": false
     },
@@ -674,8 +885,14 @@
       "id": 29,
       "infoFile": "afforestation_def.html",
       "labels": [
-        { "language": "en", "label": "Afforestation" },
-        { "language": "fr", "label": "Afforestation" }
+        {
+          "language": "en",
+          "label": "Afforestation"
+        },
+        {
+          "language": "fr",
+          "label": "Afforestation"
+        }
       ],
       "active": false
     },
@@ -683,8 +900,14 @@
       "id": 30,
       "infoFile": "reforestation_def.html",
       "labels": [
-        { "language": "en", "label": "Reforestation" },
-        { "language": "fr", "label": "Reboisement" }
+        {
+          "language": "en",
+          "label": "Reforestation"
+        },
+        {
+          "language": "fr",
+          "label": "Reboisement"
+        }
       ],
       "active": false
     },
@@ -692,8 +915,14 @@
       "id": 31,
       "infoFile": "fire_def.html",
       "labels": [
-        { "language": "en", "label": "Fire 2011" },
-        { "language": "fr", "label": "Feux 2011" }
+        {
+          "language": "en",
+          "label": "Fire 2011"
+        },
+        {
+          "language": "fr",
+          "label": "Feux 2011"
+        }
       ],
       "active": false,
       "layers": [
@@ -704,16 +933,28 @@
       "id": 32,
       "infoFile": "data_not_available.html",
       "labels": [
-        { "language": "en", "label": "Burnt area" },
-        { "language": "fr", "label": "Surface brûlées" }
+        {
+          "language": "en",
+          "label": "Burnt area"
+        },
+        {
+          "language": "fr",
+          "label": "Surface brûlées"
+        }
       ],
       "active": false
     },
     {
       "id": 33,
       "labels": [
-        { "language": "en", "label": "OpenStreetMap" },
-        { "language": "fr", "label": "OpenStreetMap" }
+        {
+          "language": "en",
+          "label": "OpenStreetMap"
+        },
+        {
+          "language": "fr",
+          "label": "OpenStreetMap"
+        }
       ],
       "active": false,
       "layers": [
@@ -723,8 +964,14 @@
     {
       "id": 34,
       "labels": [
-        { "language": "en", "label": "Bing Aerial" },
-        { "language": "fr", "label": "Bing Aerial" }
+        {
+          "language": "en",
+          "label": "Bing Aerial"
+        },
+        {
+          "language": "fr",
+          "label": "Bing Aerial"
+        }
       ],
       "active": true,
       "layers": [
@@ -733,12 +980,19 @@
     }
   ],
   "group": {
+    "exclusive": false,
     "items": [
       {
         "group": {
           "labels": [
-            { "language": "en", "label": "Base Layers" },
-            { "language": "fr", "label": "Fond de la Carte" }
+            {
+              "language": "en",
+              "label": "Base Layers"
+            },
+            {
+              "language": "fr",
+              "label": "Fond de la Carte"
+            }
           ],
           "exclusive": true,
           "items": [
@@ -747,9 +1001,6 @@
             },
             {
               "context": 33
-            },
-            {
-              "context": 0
             },
             {
               "context": 2
@@ -772,8 +1023,14 @@
       {
         "group": {
           "labels": [
-            { "language": "en", "label": "Administrative Areas" },
-            { "language": "fr", "label": "Zones Administratives" }
+            {
+              "language": "en",
+              "label": "Administrative Areas"
+            },
+            {
+              "language": "fr",
+              "label": "Zones Administratives"
+            }
           ],
           "exclusive": true,
           "items": [
@@ -793,8 +1050,14 @@
         "group": {
           "infoFile": "redd_plus_activities_def.html",
           "labels": [
-            { "language": "en", "label": "REDD+ Initiatives" },
-            { "language": "fr", "label": "Initiatives REDD+" }
+            {
+              "language": "en",
+              "label": "REDD+ Initiatives"
+            },
+            {
+              "language": "fr",
+              "label": "Initiatives REDD+"
+            }
           ],
           "exclusive": false,
           "items": [
@@ -819,8 +1082,14 @@
       {
         "group": {
           "labels": [
-            { "language": "en", "label": "REDD+ Registry" },
-            { "language": "fr", "label": "Registre REDD+" }
+            {
+              "language": "en",
+              "label": "REDD+ Registry"
+            },
+            {
+              "language": "fr",
+              "label": "Registre REDD+"
+            }
           ],
           "exclusive": false,
           "items": [
@@ -837,16 +1106,28 @@
         "group": {
           "infoFile": "forest_area_and_forest_area_changes_def.html",
           "labels": [
-            { "language": "en", "label": "Forest area and forest area change" },
-            { "language": "fr", "label": "Superficie forestière et variation de la superficie des forêts" }
+            {
+              "language": "en",
+              "label": "Forest area and forest area change"
+            },
+            {
+              "language": "fr",
+              "label": "Superficie forestière et variation de la superficie des forêts"
+            }
           ],
           "exclusive": false,
           "items": [
             {
               "group": {
                 "labels": [
-                  { "language": "en", "label": "Forest land remaining forest land" },
-                  { "language": "fr", "label": "Terres forestières restant terres forestières" }
+                  {
+                    "language": "en",
+                    "label": "Forest land remaining forest land"
+                  },
+                  {
+                    "language": "fr",
+                    "label": "Terres forestières restant terres forestières"
+                  }
                 ],
                 "exclusive": false,
                 "items": [
@@ -865,8 +1146,14 @@
             {
               "group": {
                 "labels": [
-                  { "language": "en", "label": "Forest land converted to non-forest land" },
-                  { "language": "fr", "label": "Terres forestières converties en terres non-forestières" }
+                  {
+                    "language": "en",
+                    "label": "Forest land converted to non-forest land"
+                  },
+                  {
+                    "language": "fr",
+                    "label": "Terres forestières converties en terres non-forestières"
+                  }
                 ],
                 "exclusive": false,
                 "items": [
@@ -885,8 +1172,14 @@
             {
               "group": {
                 "labels": [
-                  { "language": "en", "label": "Non-forest land converted to forest land" },
-                  { "language": "fr", "label": "Terres non forestières converties en terres forestières" }
+                  {
+                    "language": "en",
+                    "label": "Non-forest land converted to forest land"
+                  },
+                  {
+                    "language": "fr",
+                    "label": "Terres non forestières converties en terres forestières"
+                  }
                 ],
                 "exclusive": false,
                 "items": [
@@ -902,8 +1195,14 @@
             {
               "group": {
                 "labels": [
-                  { "language": "en", "label": "Biomass fire" },
-                  { "language": "fr", "label": "Terres brûlées" }
+                  {
+                    "language": "en",
+                    "label": "Biomass fire"
+                  },
+                  {
+                    "language": "fr",
+                    "label": "Terres brûlées"
+                  }
                 ],
                 "exclusive": false,
                 "items": [
@@ -922,8 +1221,14 @@
       {
         "group": {
           "labels": [
-            { "language": "en", "label": "Other" },
-            { "language": "fr", "label": "Autres" }
+            {
+              "language": "en",
+              "label": "Other"
+            },
+            {
+              "language": "fr",
+              "label": "Autres"
+            }
           ],
           "exclusive": false,
           "items": [

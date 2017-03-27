@@ -52,7 +52,8 @@
     "group": {
       "type": "object",
       "properties": {
-        "items": { "$ref": "#/definitions/items" }
+        "items": { "$ref": "#/definitions/items" },
+        "exclusive": { "type": "boolean" }
       },
       "additionalProperties": false
     }

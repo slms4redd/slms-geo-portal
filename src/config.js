@@ -1,6 +1,7 @@
 import { defaultGeoServerURLs, languages } from './assets/config.json';
 import httpRequest from './httpRequest';
 
+// TODO: Date object handles ISO 8601 on modern browsers
 const ISO8601ToDate = function(dateString) {
   const regexp = '([0-9]{4})(-([0-9]{2})(-([0-9]{2})' +
                  '(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\\.([0-9]+))?)?' +
@@ -58,8 +59,9 @@ export class Layer {
 
       const tTimes = layerConfig.times || [];
       this.times = tTimes.map(time => ({
-        humanReadable: time, // TODO
-        date: ISO8601ToDate(time)
+        iso8601: time,
+        humanReadable: time, // TODO - create a function
+        date: ISO8601ToDate(time) // used for sorting
       }));
 
       this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
@@ -176,13 +178,16 @@ class _Config {
     // Clean up before exporting
     const layerReplacer = (key, value) => {
       switch (key) {
-        // case 'originalId': // TODO the originalId attribute will be removed
+        case 'originalId': // TODO the originalId attribute will be removed
         case 'urls':
           return undefined;
         case 'legend':
         case 'sourceLink':
         case 'sourceLabel':
           return value || undefined;
+        case 'times':
+          const t = value.map(t => t.iso8601);
+          return t.length ? t : undefined;
         default:
           return value;
       }
@@ -200,7 +205,7 @@ class _Config {
         case 'parent':
         case 'hasLegends':
         case 'times':
-        // case 'originalId': // TODO the originalId attribute will be removed
+        case 'originalId': // TODO the originalId attribute will be removed
           return undefined;
         default:
           return value;
@@ -210,6 +215,10 @@ class _Config {
 
     const groupReplacer = (key, value) => {
       switch (key) {
+        case '': // Root
+          // Remove the label attribute
+          value.labels = undefined;
+          return value;
         case 'id':
         case 'parent':
           return undefined;
@@ -225,13 +234,13 @@ class _Config {
           return value;
       }
     };
-    const groups = JSON.parse(JSON.stringify(this.groups, groupReplacer));
+    const group = JSON.parse(JSON.stringify(this.groups, groupReplacer));
 
     const obj = {
       $schema: '../../layersJsonSchema_v2.json', // TODO
       layers: layers,
       contexts: contexts,
-      groups: groups
+      group: group
     };
 
     return JSON.stringify(obj, null, '  ');

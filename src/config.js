@@ -60,8 +60,8 @@ export class Layer {
       const tTimes = layerConfig.times || [];
       this.times = tTimes.map(time => ({
         iso8601: time,
-        humanReadable: time, // TODO - create a function
-        date: ISO8601ToDate(time) // used for sorting
+        humanReadable: time, // TODO - create a humanReadable function
+        date: ISO8601ToDate(time) // Used for sorting
       }));
 
       this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
@@ -131,8 +131,9 @@ export class Context extends Item {
     this.active = !!contextConfig.active;
 
     const _findById = (arr, id) => arr.find(item => item.originalId === id);
-    const tLayers = contextConfig.layers && contextConfig.layers.map(id => _findById(layers, id))
-                                                                .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
+    const tLayers = contextConfig.layers &&
+                    contextConfig.layers.map(id => _findById(layers, id))
+                                        .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
     this.layers = tLayers || [];
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
     this.hasLegends = this.layers.some(layer => layer.legend);
@@ -151,7 +152,7 @@ export class Group extends Item {
 
     this.parent = parent;
     this.exclusive = !!groupConfig.exclusive;
-    const tItems = groupConfig.items && groupConfig.items.map(item => {
+    const tItems = (groupConfig.items || []).map(item => {
       if (item.context) {
         // Create a dummy context if not found
         const context = contexts.find(c => c.originalId === item.context) ||
@@ -163,7 +164,7 @@ export class Group extends Item {
       return item.group && new Group(item.group, contexts, this);
     });
     // Silently remove undefined values (unmatched contexts) from the array
-    this.items = tItems ? tItems.filter(x => x) : [];
+    this.items = tItems.filter(x => x);
   }
 }
 
@@ -197,8 +198,7 @@ class _Config {
     const contextReplacer = (key, value) => {
       switch (key) {
         case 'layers':
-          if (value.length === 0) return undefined;
-          return value.map(l => l.id);
+          return value.length ? value.map(l => l.id) : undefined;
         case 'inlineLegendUrl':
         case 'infoFile':
           return value || undefined;

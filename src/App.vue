@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <mapPane></mapPane>
-    <banner></banner>
     <layerSelector></layerSelector>
+    <banner></banner>
     <contextInfoModal></contextInfoModal>
     <featureInfo></featureInfo>
     <feedback></feedback>

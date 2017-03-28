@@ -1,18 +1,20 @@
 <template>
   <ul v-if="groups" id="layer-selector">
     <item class="item" :conf="groups"></item>
-    <li v-if="editing">
-      <button type="button" class="small" @click="addGroup">Add Group</button>
-      <button type="button" class="small" @click="addContext">Add Context</button>
-      <button type="button" class="small" @click="editLayers">Layers</button>
-    </li>
-    <li v-if="editing">
-      <button type="button" class="small danger" @click="save">Save</button>
-      <button type="button" class="small" @click="cancel">Cancel</button>
-    </li>
-    <li v-else>
-      <button type="button" class="small" @click="startEditing">Edit</button>
-    </li>
+    <template v-if="user.authenticated">
+      <li v-if="editing">
+        <button type="button" class="small" @click="addGroup">Add Group</button>
+        <button type="button" class="small" @click="addContext">Add Context</button>
+        <button type="button" class="small" @click="editLayers">Layers</button>
+      </li>
+      <li v-if="editing">
+        <button type="button" class="small danger" @click="save">Save</button>
+        <button type="button" class="small" @click="cancel">Cancel</button>
+      </li>
+      <li v-else>
+        <button type="button" class="small" @click="startEditing">Edit</button>
+      </li>
+    </template>
   </ul>
 </template>
 
@@ -20,12 +22,18 @@
 import Item from './Item';
 import EditGroup from './edit/EditGroup';
 import { mapState } from 'vuex';
+import auth from '../auth';
 
 export default {
   name: 'layerSelector',
   components: {
     'item': Item,
     'editGroup': EditGroup
+  },
+  data() {
+    return {
+      user: auth.user
+    };
   },
   methods: {
     startEditing() {

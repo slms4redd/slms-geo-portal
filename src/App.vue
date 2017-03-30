@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <mapPane></mapPane>
-    <layerSelector></layerSelector>
+    <div class="layers">
+      <layerSelector></layerSelector>
+      <editor-console v-if="user.authenticated"></editor-console>
+    </div>
     <banner></banner>
     <contextInfoModal></contextInfoModal>
     <featureInfo></featureInfo>
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
-    <EditGroup></EditGroup>
+<!--     <EditGroup></EditGroup>
     <EditContext></EditContext>
     <EditLayers></EditLayers>
-  </div>
+ -->  </div>
 </template>
 
 <script>
@@ -21,9 +24,11 @@ import ContextInfoModal from './components/ContextInfoModal';
 import FeatureInfo from './components/FeatureInfo';
 import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
-import EditGroup from './components/edit/EditGroup';
-import EditContext from './components/edit/EditContext';
-import EditLayers from './components/edit/EditLayers';
+// import EditGroup from './components/edit/EditGroup';
+// import EditContext from './components/edit/EditContext';
+// import EditLayers from './components/edit/EditLayers';
+import EditorConsole from './components/edit/EditorConsole';
+import auth from './auth';
 
 export default {
   name: 'app',
@@ -35,9 +40,15 @@ export default {
     FeatureInfo,
     Feedback,
     KMLOverlay,
-    EditGroup,
-    EditContext,
-    EditLayers
+    // EditGroup,
+    // EditContext,
+    // EditLayers,
+    EditorConsole
+  },
+  data() {
+    return {
+      user: auth.user
+    };
   },
   created() {
     this.$store.dispatch('getAllLayers');
@@ -45,7 +56,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "./assets/global.scss";
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -61,5 +74,11 @@ body {
   height: 100%;
   overflow: hidden;
   background: url(assets/page-background.jpg) repeat 0 0;
+}
+.layers {
+
+  position: absolute;
+  top: $banner-height + 8px;
+  left: 8px;
 }
 </style>

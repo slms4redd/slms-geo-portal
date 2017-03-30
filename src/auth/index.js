@@ -34,5 +34,9 @@ export default {
   // The object to be passed as a header for authenticated requests
   getAuthHeader() {
     return { 'Authorization': `Bearer ${localStorage.getItem('id_token')}` };
+  },
+
+  getAuthToken() {
+    return `Bearer ${localStorage.getItem('id_token')}`;
   }
 };

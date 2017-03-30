@@ -1,14 +1,17 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { getLayers, Group, Context, getLocalizedLabels } from '../config';
+import { getLayers, Group, Context, getLocalizedLabels, restoreVersion } from '../config';
 
 Vue.use(Vuex);
-
-let _layersConf = null;
 
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
+  // layersConf: [],
+  // layersConf is redundant as the next three variables are its attributes.
+  // layersConf is only used for exporting the configuration as JSON.
+  // The following are used for performance reasons
+  // TODO find a better solution
   layers: [],
   contexts: [],
   groups: null,
@@ -78,7 +81,7 @@ const mutations = {
     context.layers = layerIds.map(id => state.layers.find(layer => layer.id === id));
   },
   receive_layers(state, { layersConf }) {
-    _layersConf = layersConf;
+    // state.layersConf = layersConf;
     state.layers = layersConf.layers;
     state.contexts = layersConf.contexts;
     state.groups = layersConf.groups;
@@ -115,7 +118,6 @@ const mutations = {
   update_group(state, { groupId, value }) {
     const group = state.groups.findById(groupId);
     if (group) group.items = value;
-    console.log(_layersConf.serialize()); // DEBUG
   },
   update_layers(state, { value }) {
     state.layers = value;
@@ -138,11 +140,17 @@ const actions = {
   },
   enableEdit({ commit }, { enable }) {
     // Register the vuedraggable component globally
+    // TODO: this shouldn't be done here
     require.ensure('vuedraggable', () => {
       const vuedraggable = require('vuedraggable');
       Vue.component('draggable', vuedraggable);
       commit('enable_edit', { editing: enable });
     });
+  },
+  restoreBackup({ dispatch, commit }, { version }) {
+    restoreVersion(version)
+      .then((x) => dispatch('getAllLayers'))
+      .catch(error => alert('Server error:\n' + error.statusText));
   }
 };
 

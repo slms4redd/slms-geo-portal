@@ -1,5 +1,6 @@
-import { defaultGeoServerURLs, languages } from './assets/config.json';
+import { defaultGeoServerURLs, languages, layersConfigApi as api } from './assets/config.json';
 import httpRequest from './httpRequest';
+import auth from './auth';
 
 // TODO: Date object handles ISO 8601 on modern browsers
 const ISO8601ToDate = function(dateString) {
@@ -174,85 +175,119 @@ class _Config {
     this.contexts = json.contexts.map(contextConf => new Context(contextConf, this.layers));
     this.groups = new Group(json.group, this.contexts, null);
   }
-
-  serialize() {
-    // Clean up before exporting
-    const layerReplacer = (key, value) => {
-      switch (key) {
-        case 'originalId': // TODO the originalId attribute will be removed
-        case 'urls':
-          return undefined;
-        case 'legend':
-        case 'sourceLink':
-        case 'sourceLabel':
-          return value || undefined;
-        case 'times':
-          const t = value.map(t => t.iso8601);
-          return t.length ? t : undefined;
-        default:
-          return value;
-      }
-    };
-    const layers = JSON.parse(JSON.stringify(this.layers, layerReplacer));
-
-    const contextReplacer = (key, value) => {
-      switch (key) {
-        case 'layers':
-          return value.length ? value.map(l => l.id) : undefined;
-        case 'inlineLegendUrl':
-        case 'infoFile':
-          return value || undefined;
-        case 'parent':
-        case 'hasLegends':
-        case 'times':
-        case 'originalId': // TODO the originalId attribute will be removed
-          return undefined;
-        default:
-          return value;
-      }
-    };
-    const contexts = JSON.parse(JSON.stringify(this.contexts, contextReplacer));
-
-    const groupReplacer = (key, value) => {
-      switch (key) {
-        case '': // Root
-          // Remove the label attribute
-          value.labels = undefined;
-          return value;
-        case 'id':
-        case 'parent':
-          return undefined;
-        case 'infoFile':
-          return value || undefined;
-        case 'items':
-          if (value.length === 0) return undefined;
-          return value.map(i => {
-            if (i.items) return { group: i };
-            else return { context: i.id };
-          });
-        default:
-          return value;
-      }
-    };
-    const group = JSON.parse(JSON.stringify(this.groups, groupReplacer));
-
-    const obj = {
-      $schema: '../../layersJsonSchema_v2.json', // TODO
-      layers: layers,
-      contexts: contexts,
-      group: group
-    };
-
-    return JSON.stringify(obj, null, '  ');
-  }
 }
 
 export function getLayers(lang, cb) {
-  return new Promise(function(resolve, reject) {
-    httpRequest('GET', '../static/configuration/layers.json')
+  return new Promise((resolve, reject) => {
+    // httpRequest('GET', '../static/configuration/layers.json')
+    //   .then(responseText => resolve(new _Config(JSON.parse(responseText))))
+    //   .catch(error => reject(error.statusText || error.message));
+    const url = api.baseUrl + api.getLayersConfigUrl;
+    httpRequest('GET', url)
       .then(responseText => resolve(new _Config(JSON.parse(responseText))))
       .catch(error => reject(error.statusText || error.message));
   });
 }
+
+export function saveConfiguration(conf) {
+  return new Promise((resolve, reject) => {
+    const url = api.baseUrl + api.saveLayersConfigUrl;
+    httpRequest('POST', url, serializeConfiguration(conf), [['Content-Type', 'application/json'], ['Authorization', auth.getAuthToken()]])
+      .then(responseText => resolve())
+      .catch(error => reject(error));
+  });
+}
+
+export function getConfigurationHistory() {
+  return new Promise((resolve, reject) => {
+    const url = api.baseUrl + api.getLayersConfigHisoryUrl;
+    httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]])
+      .then(responseText => resolve(JSON.parse(responseText)))
+      .catch(error => reject(error));
+  });
+}
+
+export function restoreVersion(version) {
+  const url = api.baseUrl + api.restoreVersionUrl + '?version=' + version;
+  // return new Promise((resolve, reject) => {
+  //   httpRequest('GET', url)
+  //     .then(responseText => resolve(JSON.parse(responseText)))
+  //     .catch(error => reject(error));
+  // });
+  return httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]]);
+}
+
+const serializeConfiguration = function(conf) {
+  // Clean up before exporting
+  const layerReplacer = (key, value) => {
+    switch (key) {
+      case 'originalId': // TODO the originalId attribute will be removed
+      case 'urls':
+        return undefined;
+      case 'legend':
+      case 'sourceLink':
+      case 'sourceLabel':
+        return value || undefined;
+      case 'times':
+        const t = value.map(t => t.iso8601);
+        return t.length ? t : undefined;
+      default:
+        return value;
+    }
+  };
+  const layers = JSON.parse(JSON.stringify(conf.layers, layerReplacer));
+
+  const contextReplacer = (key, value) => {
+    switch (key) {
+      case 'layers':
+        return value.length ? value.map(l => l.id) : undefined;
+      case 'inlineLegendUrl':
+      case 'infoFile':
+        return value || undefined;
+      case 'parent':
+      case 'hasLegends':
+      case 'times':
+      case 'originalId': // TODO the originalId attribute will be removed
+        return undefined;
+      default:
+        return value;
+    }
+  };
+  const contexts = JSON.parse(JSON.stringify(conf.contexts, contextReplacer));
+
+  const groupReplacer = (key, value) => {
+    switch (key) {
+      case '': // Root
+        // Remove the label attribute
+        return {
+          exclusive: value.exclusive,
+          items: value.items
+        };
+      case 'id':
+      case 'parent':
+        return undefined;
+      case 'infoFile':
+        return value || undefined;
+      case 'items':
+        if (value.length === 0) return undefined;
+        return value.map(i => {
+          if (i.items) return { group: i };
+          else return { context: i.id };
+        });
+      default:
+        return value;
+    }
+  };
+  const group = JSON.parse(JSON.stringify(conf.groups, groupReplacer));
+
+  const obj = {
+    $schema: '../../layersJsonSchema_v2.json', // TODO
+    layers: layers,
+    contexts: contexts,
+    group: group
+  };
+
+  return JSON.stringify(obj);
+};
 
 // export { Layer, Context, Group };

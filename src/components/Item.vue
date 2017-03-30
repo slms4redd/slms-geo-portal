@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div :class="{dimmed: !nContexts}" v-if="conf.isGroup" class="group" @click="toggleGroup">
+    <div v-if="conf.isGroup" :class="{dimmed: !nContexts}" class="group" @click="toggleGroup">
       <span class="line group-label icon">
         <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
         <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : label}}</span>
@@ -71,7 +71,6 @@ import { mapState } from 'vuex';
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
 import Icon from 'vue-awesome/components/Icon.vue';
-// import draggable from 'vuedraggable';
 
 import 'vue-awesome/icons/plus-square-o';
 import 'vue-awesome/icons/minus-square-o';

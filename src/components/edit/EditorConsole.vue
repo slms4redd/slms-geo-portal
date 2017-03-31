@@ -59,7 +59,9 @@ export default {
     },
     cancel() {
       this.$store.commit('enable_edit', { enable: false });
-      this.$store.dispatch('getAllLayers');
+
+      // Reload the layers configuration from server
+      this.$store.dispatch('fetchLayersConfig');
     },
     addGroup() {
       this.$store.commit('add_group');
@@ -68,18 +70,18 @@ export default {
       this.$store.commit('add_context');
     },
     save() {
-      const conf = {
-        layers: this.layers,
-        contexts: this.contexts,
-        groups: this.groups
-      };
+      // const conf = {
+      //   layers: this.layers,
+      //   contexts: this.contexts,
+      //   groups: this.groups
+      // };
 
-      saveConfiguration(conf)
+      saveConfiguration(this.groups)
         .then(() => {
           alert('Configuration saved');
           this.$store.dispatch('enableEdit', { enable: false });
-        })
-        .catch(e => alert(e.statusText));
+        });
+        // .catch(e => alert(e.statusText));
     }
   },
   computed: mapState([

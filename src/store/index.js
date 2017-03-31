@@ -60,6 +60,8 @@ const mutations = {
     const item = state.groups.findById(id);
     const index = item.parent.items.findIndex(i => i.id === id);
     if (index > -1) item.parent.items.splice(index, 1);
+
+    // No need to delete contexts and layers here. They will be deleted on save
   },
   edit_layers(state, { edit }) {
     state.editLayers = edit;
@@ -133,7 +135,7 @@ const mutations = {
 // actions are functions that causes side effects and can involve
 // asynchronous operations.
 const actions = {
-  getAllLayers({ commit }) {
+  fetchLayersConfig({ commit }) {
     getLayers(Vue.config.lang)
       .then(layersConf => commit('receive_layers', { layersConf }))
       .catch(error => alert(error));
@@ -149,7 +151,7 @@ const actions = {
   },
   restoreBackup({ dispatch, commit }, { version }) {
     restoreVersion(version)
-      .then((x) => dispatch('getAllLayers'))
+      .then((x) => dispatch('fetchLayersConfig'))
       .catch(error => alert('Server error:\n' + error.statusText));
   }
 };

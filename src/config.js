@@ -131,9 +131,9 @@ export class Context extends Item {
     this.originalId = contextConfig.id;
     this.active = !!contextConfig.active;
 
-    const _findById = (arr, id) => arr.find(item => item.originalId === id);
+    const findLayerById = (arr, id) => arr.find(item => item.originalId === id);
     const tLayers = contextConfig.layers &&
-                    contextConfig.layers.map(id => _findById(layers, id))
+                    contextConfig.layers.map(id => findLayerById(layers, id))
                                         .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
     this.layers = tLayers || [];
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
@@ -153,9 +153,9 @@ export class Group extends Item {
 
     this.parent = parent;
     this.exclusive = !!groupConfig.exclusive;
-    const tItems = (groupConfig.items || []).map(item => {
-      if (item.context) {
-        // Create a dummy context if not found
+    this.items = (groupConfig.items || []).map(item => {
+      if (typeof item.context !== 'undefined') { // item.context might be 0
+        // Create a dummy context if not found in the contexts array
         const context = contexts.find(c => c.originalId === item.context) ||
                         new Context({ id: item.context, label: item.context });
         context.parent = this;
@@ -165,15 +165,28 @@ export class Group extends Item {
       return item.group && new Group(item.group, contexts, this);
     });
     // Silently remove undefined values (unmatched contexts) from the array
-    this.items = tItems.filter(x => x);
+    // this.items = this.items.filter(x => x);
   }
 }
 
 class _Config {
   constructor(json) {
-    this.layers = json.layers.map(layerConf => new Layer(layerConf));
-    this.contexts = json.contexts.map(contextConf => new Context(contextConf, this.layers));
-    this.groups = new Group(json.group, this.contexts, null);
+    const layers = json.layers.map(layerConf => new Layer(layerConf)),
+          contexts = json.contexts.map(contextConf => new Context(contextConf, layers));
+
+    this.groups = new Group(json.group, contexts, null);
+
+    // Delete the contexts that are not in a group
+    this.contexts = contexts.filter(c => this.groups.findById(c.id));
+
+    // Eelete the layers that are not in a context
+    this.layers = layers.filter(l => this.contexts.some(c => c.layers.indexOf(l) !== -1));
+
+    // // Mark layers that are not in a context (they will not be instantiated as OL layers)
+    // this.layers.forEach(l => {
+    //   if (this.contexts.some(c => c.layers.indexOf(l) !== -1)) l.hasContext = true;
+    // });
+    // console.log(this.layers.length + ' -> ' + this.layers.filter(l => l.hasContext).length); // DEBUG
   }
 }
 
@@ -189,12 +202,32 @@ export function getLayers(lang, cb) {
   });
 }
 
+function serializeConfiguration_(group) {
+  // Gather all the contexts
+  // function recRed1(arr, group) {
+  //   return group.items.reduce((acc, item) => item.isGroup ? recRed(acc, item) : acc.concat(item), arr);
+  // }
+
+  // function recRed2(arr, group) {
+  //   return group.items.reduce((acc, item) => item.isGroup ? recRed2(acc, item) : [].concat.apply(acc, item.layers), arr);
+  // }
+
+  function recRed(arr, items, fn) {
+    return items.reduce((acc, item) => item.isGroup ? recRed(acc, item.items, fn) : fn(acc, item), arr);
+  }
+
+  // Gather all the contexts and layers
+  console.log(recRed([], group.items, (acc, current) => acc.concat(current)));
+  console.log(recRed([], group.items, (acc, current) => [].concat.apply(acc, current.layers)));
+}
+
 export function saveConfiguration(conf) {
   return new Promise((resolve, reject) => {
-    const url = api.baseUrl + api.saveLayersConfigUrl;
-    httpRequest('POST', url, serializeConfiguration(conf), [['Content-Type', 'application/json'], ['Authorization', auth.getAuthToken()]])
-      .then(responseText => resolve())
-      .catch(error => reject(error));
+    console.log(serializeConfiguration_(conf));
+    // const url = api.baseUrl + api.saveLayersConfigUrl;
+    // httpRequest('POST', url, serializeConfiguration(conf), [['Content-Type', 'application/json'], ['Authorization', auth.getAuthToken()]])
+    //   .then(responseText => resolve())
+    //   .catch(error => reject(error));
   });
 }
 
@@ -217,6 +250,7 @@ export function restoreVersion(version) {
   return httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]]);
 }
 
+serializeConfiguration; // DEBUG
 const serializeConfiguration = function(conf) {
   // Clean up before exporting
   const layerReplacer = (key, value) => {
@@ -279,6 +313,8 @@ const serializeConfiguration = function(conf) {
     }
   };
   const group = JSON.parse(JSON.stringify(conf.groups, groupReplacer));
+
+  console.log(group);
 
   const obj = {
     $schema: '../../layersJsonSchema_v2.json', // TODO

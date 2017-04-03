@@ -2,7 +2,7 @@
   <modal v-if="editGroup">
     <h1 slot="header">Edit group</h1>
     <div slot="body" id="edit">
-      Default label: <input type="text" v-model="label">
+      <!-- Default label: <input type="text" v-model="label"> -->
       Localized labels:
       <br>
       <EditLabels :labels="labels"></EditLabels>
@@ -52,7 +52,7 @@ export default {
   watch: {
     editGroup() {
       if (this.editGroup) {
-        this.label = this.editGroup.label;
+        // this.label = this.editGroup.label;
         this.exclusive = this.editGroup.exclusive;
         this.infoFile = this.editGroup.infoFile;
         this.labels = languages.map(l => {

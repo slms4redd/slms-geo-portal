@@ -61,8 +61,7 @@ export class Layer {
       const tTimes = layerConfig.times || [];
       this.times = tTimes.map(time => ({
         iso8601: time,
-        humanReadable: time, // TODO - create a humanReadable function
-        date: ISO8601ToDate(time) // Used for sorting
+        humanReadable: time // TODO - create a humanReadable function
       }));
 
       this.statistics = layerConfig.statistics && layerConfig.statistics.map(s => {
@@ -103,23 +102,24 @@ class Item {
     this.labels = getLocalizedLabels(conf.labels);
   }
 
+  recReduce(fn, val) {
+    return this.items.reduce((acc, item) => item.isGroup ? item.recReduce(fn, acc) : fn(acc, item), val);
+  }
+
   findById(id) {
     if (this.id === id) return this;
-    if (this.isGroup && this.items) {
-      return this.items.reduce((found, item) => found || item.findById(id), null);
-    }
+    return this.isGroup && this.items.reduce((found, item) => found || item.findById(id), null);
   }
+
+  // findById_(id) {
+  //   return this.recReduce((found, item) => found || (item.id === id) && item, null);
+  // }
 
   get isGroup() {
     return !!this.items;
   }
 
   static nextId = 0;
-
-  // static nextId = (function() {
-  //   let nextId = 1;
-  //   return () => nextId++;
-  // })();
 }
 
 export class Context extends Item {
@@ -142,8 +142,8 @@ export class Context extends Item {
     this.times = this.layers.filter(l => l.type === 'wms' && l.times.length)
                             .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
                             // Remove duplicates
-                            .filter((elem, pos, arr) => arr.findIndex(el => +el.date === +elem.date) === pos)
-                            .sort((t1, t2) => t1.date - t2.date);
+                            .filter((elem, pos, arr) => arr.findIndex(el => el.iso8601 === elem.iso8601) === pos)
+                            .sort((t1, t2) => ISO8601ToDate(t1.iso8601) - ISO8601ToDate(t2.iso8601));
   }
 }
 
@@ -164,8 +164,6 @@ export class Group extends Item {
       }
       return item.group && new Group(item.group, contexts, this);
     });
-    // Silently remove undefined values (unmatched contexts) from the array
-    // this.items = this.items.filter(x => x);
   }
 }
 
@@ -186,15 +184,11 @@ class _Config {
     // this.layers.forEach(l => {
     //   if (this.contexts.some(c => c.layers.indexOf(l) !== -1)) l.hasContext = true;
     // });
-    // console.log(this.layers.length + ' -> ' + this.layers.filter(l => l.hasContext).length); // DEBUG
   }
 }
 
 export function getLayers(lang, cb) {
   return new Promise((resolve, reject) => {
-    // httpRequest('GET', '../static/configuration/layers.json')
-    //   .then(responseText => resolve(new _Config(JSON.parse(responseText))))
-    //   .catch(error => reject(error.statusText || error.message));
     const url = api.baseUrl + api.getLayersConfigUrl;
     httpRequest('GET', url)
       .then(responseText => resolve(new _Config(JSON.parse(responseText))))
@@ -202,56 +196,13 @@ export function getLayers(lang, cb) {
   });
 }
 
-function serializeConfiguration_(group) {
-  // Gather all the contexts
-  // function recRed1(arr, group) {
-  //   return group.items.reduce((acc, item) => item.isGroup ? recRed(acc, item) : acc.concat(item), arr);
-  // }
-
-  // function recRed2(arr, group) {
-  //   return group.items.reduce((acc, item) => item.isGroup ? recRed2(acc, item) : [].concat.apply(acc, item.layers), arr);
-  // }
-
-  function recRed(arr, items, fn) {
-    return items.reduce((acc, item) => item.isGroup ? recRed(acc, item.items, fn) : fn(acc, item), arr);
-  }
-
+function serializeConfiguration(groupConfig, layersRank) {
   // Gather all the contexts and layers
-  console.log(recRed([], group.items, (acc, current) => acc.concat(current)));
-  console.log(recRed([], group.items, (acc, current) => [].concat.apply(acc, current.layers)));
-}
+  // We are not using the layers array directly because we want to remove unused layers from the configuration
+  const contextsConfig = groupConfig.recReduce((acc, current) => acc.concat(current), []);
+  let layersConfig = groupConfig.recReduce((acc, current) => [].concat.apply(acc, current.layers), []);
+  layersConfig = layersRank.map(id => layersConfig.find(l => l.id === id)).filter(x => x);
 
-export function saveConfiguration(conf) {
-  return new Promise((resolve, reject) => {
-    console.log(serializeConfiguration_(conf));
-    // const url = api.baseUrl + api.saveLayersConfigUrl;
-    // httpRequest('POST', url, serializeConfiguration(conf), [['Content-Type', 'application/json'], ['Authorization', auth.getAuthToken()]])
-    //   .then(responseText => resolve())
-    //   .catch(error => reject(error));
-  });
-}
-
-export function getConfigurationHistory() {
-  return new Promise((resolve, reject) => {
-    const url = api.baseUrl + api.getLayersConfigHisoryUrl;
-    httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]])
-      .then(responseText => resolve(JSON.parse(responseText)))
-      .catch(error => reject(error));
-  });
-}
-
-export function restoreVersion(version) {
-  const url = api.baseUrl + api.restoreVersionUrl + '?version=' + version;
-  // return new Promise((resolve, reject) => {
-  //   httpRequest('GET', url)
-  //     .then(responseText => resolve(JSON.parse(responseText)))
-  //     .catch(error => reject(error));
-  // });
-  return httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]]);
-}
-
-serializeConfiguration; // DEBUG
-const serializeConfiguration = function(conf) {
   // Clean up before exporting
   const layerReplacer = (key, value) => {
     switch (key) {
@@ -269,7 +220,7 @@ const serializeConfiguration = function(conf) {
         return value;
     }
   };
-  const layers = JSON.parse(JSON.stringify(conf.layers, layerReplacer));
+  const layers = JSON.parse(JSON.stringify(layersConfig, layerReplacer));
 
   const contextReplacer = (key, value) => {
     switch (key) {
@@ -287,12 +238,12 @@ const serializeConfiguration = function(conf) {
         return value;
     }
   };
-  const contexts = JSON.parse(JSON.stringify(conf.contexts, contextReplacer));
+  const contexts = JSON.parse(JSON.stringify(contextsConfig, contextReplacer));
 
   const groupReplacer = (key, value) => {
     switch (key) {
       case '': // Root
-        // Remove the label attribute
+        // Remove the label attribute from the root
         return {
           exclusive: value.exclusive,
           items: value.items
@@ -304,17 +255,12 @@ const serializeConfiguration = function(conf) {
         return value || undefined;
       case 'items':
         if (value.length === 0) return undefined;
-        return value.map(i => {
-          if (i.items) return { group: i };
-          else return { context: i.id };
-        });
+        return value.map(item => item.isGroup ? { group: item } : { context: item.id });
       default:
         return value;
     }
   };
-  const group = JSON.parse(JSON.stringify(conf.groups, groupReplacer));
-
-  console.log(group);
+  const group = JSON.parse(JSON.stringify(groupConfig, groupReplacer));
 
   const obj = {
     $schema: '../../layersJsonSchema_v2.json', // TODO
@@ -324,6 +270,23 @@ const serializeConfiguration = function(conf) {
   };
 
   return JSON.stringify(obj);
-};
+}
 
-// export { Layer, Context, Group };
+export function saveConfiguration(conf, layersRank) {
+  const url = api.baseUrl + api.saveLayersConfigUrl;
+  return httpRequest('POST', url, serializeConfiguration(conf, layersRank), [['Content-Type', 'application/json'], ['Authorization', auth.getAuthToken()]]);
+}
+
+export function getConfigurationHistory() {
+  return new Promise((resolve, reject) => {
+    const url = api.baseUrl + api.getLayersConfigHisoryUrl;
+    httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]])
+      .then(responseText => resolve(JSON.parse(responseText)))
+      .catch(error => reject(error));
+  });
+}
+
+export function restoreVersion(version) {
+  const url = api.baseUrl + api.restoreVersionUrl + '?version=' + version;
+  return httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]]);
+}

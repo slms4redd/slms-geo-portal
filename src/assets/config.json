@@ -4,7 +4,7 @@
   "mapCenterLonLat": [21.7587, -4.0383],
   "mapZoom": 5,
   "defaultGeoServerURLs": ["http://rdc-snsf.org/diss_geoserver/wms", "http://178.33.8.115/diss_geoserver/wms"],
-  "feedbackUrl": "http://localhost:3000/feedback",
+  "feedbackUrl": "http://localhost:3001/feedback",
   "feedbackCategories": [ "Thematic mapping and Monitoring", "Forest Offences", "Information Dissemination (RTI)" ],
   "layersConfigApi": {
     "baseUrl": "http://localhost:3001/api/",

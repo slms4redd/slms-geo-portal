@@ -75,8 +75,9 @@ export default {
       //   contexts: this.contexts,
       //   groups: this.groups
       // };
+      const layersRank = this.layers.map(l => l.id);
 
-      saveConfiguration(this.groups)
+      saveConfiguration(this.groups, layersRank)
         .then(() => {
           alert('Configuration saved');
           this.$store.dispatch('enableEdit', { enable: false });

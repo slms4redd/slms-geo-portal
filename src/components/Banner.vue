@@ -1,7 +1,8 @@
 <template>
   <div id="header">
     <div id="title">
-      <h1>{{$t("banner.title")}}</h1>
+      <h1 v-bind:class="{ hasSubtitle: $te('banner.subtitle') }">{{$t("banner.title")}}</h1>
+      <h2 v-if="$te('banner.subtitle')">{{$t("banner.subtitle")}}</h2>
     </div>
     <ul id="languageLinks" class="buttons">
       <li v-for="language in languages">
@@ -59,12 +60,9 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/global.scss";
 
-h1 {
-  font-weight: normal;
-}
 #header {
-  background: rgb(0, 0, 0) url(../../static/configuration/logos.png) no-repeat 0 0 10px 10px;
-  background: rgba(0, 0, 0, 0.5) url(../../static/configuration/logos.png) no-repeat 10px 10px;
+  background: rgb(0, 0, 0) url(/static/configuration/logos.png) no-repeat 0 0 10px 10px;
+  background: rgba(0, 0, 0, 0.5) url(/static/configuration/logos.png) no-repeat 10px 10px;
   color: #eaeaea;
   position: fixed;
   top: 0;
@@ -80,9 +78,24 @@ h1 {
   margin: 10px;
 }
 h1 {
+  position: absolute;
+  width: 100%;
   font-weight: bold;
   text-align: center;
-  padding-top: 8px;
+  margin-top: 0;
+  top: 28px;
+}
+h1.hasSubtitle {
+  top: 14px;
+}
+h2 {
+  position: absolute;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  top: 55px;
+  margin-top: 0;
+  font-size: 22px;
 }
 ul#languageLinks {
   position: absolute;

@@ -20,6 +20,8 @@
     "ol.Map#getSize",
     "ol.Map#getLayers",
     "ol.Map#getView",
+    "ol.Map#on",
+    "ol.Map#un",
     "ol.layer.Layer#setVisible",
     "ol.layer.Layer#getSource",
     "ol.source.TileWMS#updateParams",

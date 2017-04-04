@@ -11,6 +11,10 @@ import { mapState } from 'vuex';
 import httpRequest from '../httpRequest';
 import Vue from 'vue';
 
+const processUrlTemplate = function(urlTemplate) {
+  return urlTemplate.replace('$(_lang)', Vue.config.lang);
+};
+
 export default {
   data() {
     return {
@@ -31,7 +35,8 @@ export default {
           this.content = content;
           this.showModal = true;
         };
-        httpRequest('GET', `/static/configuration/loc/${Vue.config.lang}/html/${val.fileName}`)
+        // httpRequest('GET', `/static/configuration/loc/${Vue.config.lang}/html/${val.fileName}`)
+        httpRequest('GET', processUrlTemplate(val.fileName))
           .then(responseText => showContent(responseText))
           .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`));
       }

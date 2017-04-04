@@ -82,8 +82,8 @@ h1 {
   font-weight: normal;
 }
 #header {
-  background: rgb(0, 0, 0) url(../../static/configuration/logos.png) no-repeat 0 0 10px 10px;
-  background: rgba(0, 0, 0, 0.5) url(../../static/configuration/logos.png) no-repeat 10px 10px;
+  background: rgb(0, 0, 0) url(/static/configuration/logos.png) no-repeat 0 0 10px 10px;
+  background: rgba(0, 0, 0, 0.5) url(/static/configuration/logos.png) no-repeat 10px 10px;
   color: #eaeaea;
   position: fixed;
   top: 0;

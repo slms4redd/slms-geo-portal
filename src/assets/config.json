@@ -7,7 +7,8 @@
   "feedbackUrl": "http://localhost:3001/feedback",
   "feedbackCategories": [ "Thematic mapping and Monitoring", "Forest Offences", "Information Dissemination (RTI)" ],
   "layersConfigApi": {
-    "baseUrl": "http://localhost:3001/api/",
+    "baseUrl": "/api/",
+    "loginUrl": "sessions/create",
     "getLayersConfigUrl": "layers.json",
     "saveLayersConfigUrl": "protected/layers_conf/save/",
     "getLayersConfigHisoryUrl": "protected/layers_conf/versions",

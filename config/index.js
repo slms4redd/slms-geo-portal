@@ -33,7 +33,8 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: { '^/gs': '' }
       },
-      '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true }
+      '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true },
+      '/api': { target: 'http://localhost:3001', changeOrigin: true }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

@@ -59,6 +59,7 @@ li {
 ul {
   padding: 0;
   margin: 0;
+  max-height: 600px;
 }
 .highlighted {
   font-weight: bold;

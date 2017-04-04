@@ -1,6 +1,7 @@
 {
   "banner": {
     "title": "Portail d'exemple SLMS",
+    "subtitle": "Sous-titre facultatif",
     "feedback": "Feedback",
     "uploadKml": "Télécharger KML"
   },

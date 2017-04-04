@@ -1,6 +1,7 @@
 {
   "banner": {
     "title": "SLMS Sample Portal",
+    "subtitle": "Optional subtitle",
     "feedback": "Feedback",
     "uploadKml": "Upload KML"
   },

@@ -1,20 +1,29 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import layersJson from '../api/layersJson';
+import { getLayers, Group, Context, getLocalizedLabels, restoreVersion } from '../config';
 
 Vue.use(Vuex);
 
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
+  // layersConf: [],
+  // layersConf is redundant as the next three variables are its attributes.
+  // layersConf is only used for exporting the configuration as JSON.
+  // The following are used for performance reasons
+  // TODO find a better solution
   layers: [],
   contexts: [],
   groups: null,
   layerInfo: null, // a modal with the file content is shown when not null
-  contextsTimes: {},
+  contextsTimes: [],
   kmlOverlay: null,
   enableFeedback: false,
-  activeContextsIds: []
+  activeContextsIds: [],
+  editing: false,
+  editGroup: null,
+  editContext: null,
+  editLayers: false
 };
 
 // mutations are operations that actually mutates the state.
@@ -23,20 +32,67 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
+  enable_edit(state, { editing }) {
+    state.editing = editing;
+  },
+  add_group(state) {
+    const newGroup = new Group({
+      labels: getLocalizedLabels(null, 'New group')
+    }, [], state.groups);
+    state.groups.items.push(newGroup);
+  },
+  add_context(state) {
+    const newContext = new Context({
+      labels: getLocalizedLabels(null, 'New context')
+    });
+    newContext.parent = state.groups;
+    state.groups.items.push(newContext);
+    state.contexts.push(newContext);
+  },
+  edit_item(state, { id }) {
+    const item = state.groups.findById(id);
+    if (item) {
+      if (item.isGroup) state.editGroup = item;
+      else state.editContext = item;
+    } else state.editContext = state.editGroup = null;
+  },
+  delete_item(state, { id }) {
+    const item = state.groups.findById(id);
+    const index = item.parent.items.findIndex(i => i.id === id);
+    if (index > -1) item.parent.items.splice(index, 1);
+
+    // No need to delete contexts and layers here. They will be deleted on save
+  },
+  edit_layers(state, { edit }) {
+    state.editLayers = edit;
+  },
+  save_group(state, { id, label, labels, exclusive, infoFile }) {
+    const group = state.groups.findById(id);
+    group.label = label;
+    group.labels = labels;
+    group.exclusive = exclusive;
+    group.infoFile = infoFile;
+  },
+  save_context(state, { id, label, labels, infoFile, active, inlineLegendUrl, layerIds }) {
+    const context = state.groups.findById(id);
+    context.label = label;
+    context.labels = labels;
+    context.infoFile = infoFile;
+    context.active = active;
+    context.inlineLegendUrl = inlineLegendUrl;
+    context.layers = layerIds.map(id => state.layers.find(layer => layer.id === id));
+  },
   receive_layers(state, { layersConf }) {
+    // state.layersConf = layersConf;
     state.layers = layersConf.layers;
     state.contexts = layersConf.contexts;
     state.groups = layersConf.groups;
 
-    const contextsTimes = {};
+    const contextsTimes = [];
     const activeContextsIds = [];
     state.contexts.forEach(c => {
-      if (c.times) {
-        contextsTimes[c.id] = c.times[c.times.length - 1];
-      }
-      if (c.active) {
-        activeContextsIds.push(c.id);
-      }
+      if (c.times) contextsTimes[c.id] = c.times[c.times.length - 1];
+      if (c.active) activeContextsIds.push(c.id);
     });
     state.contextsTimes = contextsTimes;
     state.activeContextsIds = activeContextsIds;
@@ -44,52 +100,59 @@ const mutations = {
   toggle_context(state, { contextId }) {
     const context = state.contexts.find(c => c.id === contextId);
     if (context) {
-      const activeContextsIds = state.activeContextsIds.slice(0), // Clone
-            idx = activeContextsIds.indexOf(contextId);
-
-      if (idx === -1) {
-        activeContextsIds.push(contextId);
-      } else {
-        activeContextsIds.splice(idx, 1);
-      }
-      state.activeContextsIds = activeContextsIds;
+      const idx = state.activeContextsIds.indexOf(contextId);
+      if (idx === -1) state.activeContextsIds.push(contextId);
+      else state.activeContextsIds.splice(idx, 1);
     }
   },
   show_layer_info(state, { fileName, label }) {
     state.layerInfo = { fileName: fileName, label: label };
   },
   set_context_time(state, { contextId, time }) {
-    const newContextsTimes = {};
-    // Make a shallow copy of the contextsTimes object
-    for (const t in state.contextsTimes) {
-      if (state.contextsTimes.hasOwnProperty(t)) {
-        newContextsTimes[t] = state.contextsTimes[t];
-      }
-    }
-    newContextsTimes[contextId] = time;
-    state.contextsTimes = newContextsTimes;
+    state.contextsTimes.splice(contextId, 1, time);
   },
   overlay_kml(state, { kml }) {
     state.kmlOverlay = kml;
   },
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable;
+  },
+  update_group(state, { groupId, value }) {
+    const group = state.groups.findById(groupId);
+    if (group) group.items = value;
+  },
+  update_layers(state, { value }) {
+    state.layers = value;
+
+    // swap the old contexts' layers with the new ones
+    state.contexts.forEach(context => {
+      const contextLayers = context.layers;
+      context.layers = contextLayers.map(layer => value.find(l => l.id === layer.id)).filter(l => !!l);
+    });
   }
 };
 
 // actions are functions that causes side effects and can involve
 // asynchronous operations.
 const actions = {
-  getAllLayers({ commit }) {
-    layersJson.getLayers(Vue.config.lang)
+  fetchLayersConfig({ commit }) {
+    getLayers(Vue.config.lang)
       .then(layersConf => commit('receive_layers', { layersConf }))
       .catch(error => alert(error));
   },
-  showLayerInfo({ commit, state }, { fileName, label }) {
-    commit('show_layer_info', { fileName: fileName, label: label });
+  enableEdit({ commit }, { enable }) {
+    // Register the vuedraggable component globally
+    // TODO: this shouldn't be done here
+    require.ensure('vuedraggable', () => {
+      const vuedraggable = require('vuedraggable');
+      Vue.component('draggable', vuedraggable);
+      commit('enable_edit', { editing: enable });
+    });
   },
-  hideLayerInfo({ commit, state }) {
-    commit('show_layer_info', { fileName: null, label: null });
+  restoreBackup({ dispatch, commit }, { version }) {
+    restoreVersion(version)
+      .then((x) => dispatch('fetchLayersConfig'))
+      .catch(error => alert('Server error:\n' + error.statusText));
   }
 };
 

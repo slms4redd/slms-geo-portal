@@ -1,13 +1,19 @@
 <template>
   <div id="app">
     <mapPane></mapPane>
+    <div class="layers">
+      <layerSelector></layerSelector>
+      <editor-console v-if="user.authenticated"></editor-console>
+    </div>
     <banner></banner>
-    <layerSelector></layerSelector>
     <contextInfoModal></contextInfoModal>
     <featureInfo></featureInfo>
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
-  </div>
+<!--     <EditGroup></EditGroup>
+    <EditContext></EditContext>
+    <EditLayers></EditLayers>
+ -->  </div>
 </template>
 
 <script>
@@ -18,6 +24,11 @@ import ContextInfoModal from './components/ContextInfoModal';
 import FeatureInfo from './components/FeatureInfo';
 import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
+// import EditGroup from './components/edit/EditGroup';
+// import EditContext from './components/edit/EditContext';
+// import EditLayers from './components/edit/EditLayers';
+import EditorConsole from './components/edit/EditorConsole';
+import auth from './auth';
 
 export default {
   name: 'app',
@@ -28,15 +39,26 @@ export default {
     ContextInfoModal,
     FeatureInfo,
     Feedback,
-    KMLOverlay
+    KMLOverlay,
+    // EditGroup,
+    // EditContext,
+    // EditLayers,
+    EditorConsole
+  },
+  data() {
+    return {
+      user: auth.user
+    };
   },
   created() {
-    this.$store.dispatch('getAllLayers');
+    this.$store.dispatch('fetchLayersConfig');
   }
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "./assets/global.scss";
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -52,5 +74,11 @@ body {
   height: 100%;
   overflow: hidden;
   background: url(assets/page-background.jpg) repeat 0 0;
+}
+.layers {
+
+  position: absolute;
+  top: $banner-height + 8px;
+  left: 8px;
 }
 </style>

@@ -27,7 +27,7 @@ module.exports = {
     'indent': [2, 2, { 'SwitchCase': 1, 'VariableDeclarator': { 'var': 2, 'let': 2, 'const': 3 } }],
     'no-extra-semi': 2,
     'object-curly-spacing': [2, 'always', { objectsInObjects: true }],
-    'max-statements-per-line': ['error', { 'max': 1 }],
+    // 'max-statements-per-line': ['error', { 'max': 2 }],
     'no-var': 2,
     'one-var': 0,
     'prefer-const': 2,

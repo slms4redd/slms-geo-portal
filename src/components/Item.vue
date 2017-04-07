@@ -1,18 +1,24 @@
 <template>
-  <li class="unselectable">
-    <div :class="{dimmed: !nContexts}" v-if="isGroup" class="group" @click="toggleGroup">
+  <li>
+    <div v-if="conf.isGroup" :class="{dimmed: !nContexts}" class="group" @click="toggleGroup">
       <span class="line group-label icon">
         <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
-        {{isRoot ? $t("layerSelector.layers") : conf.label}}
+        <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : label}}</span>
       </span>
       <span class="info-link icon" v-if="conf.infoFile" v-on:click.stop="showInfo">
         <icon name="info-circle"></icon>
       </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
+      <span v-if="editing && !isRoot" class="icon" v-on:click.stop="editItem">
+        <icon name="fa-pencil-square-o"></icon>
+      </span>
+      <span v-if="editing && !isRoot" class="icon" v-on:click.stop="deleteItem">
+        <icon class="icon" name="trash-o"></icon>
+      </span>
     </div>
     <div v-else>
       <span v-on:click="toggleActive" class="icon" v-if="hasLayers">
-        <template v-if="conf.group.exclusive">
+        <template v-if="conf.parent.exclusive">
           <icon v-if="active" class="activate-button" v-bind:class="{highlighted, active}" name="dot-circle-o"></icon>
           <icon v-else class="activate-button" v-bind:class="{highlighted, active}" name="circle"></icon>
         </template>
@@ -25,7 +31,7 @@
         <icon class="legend-link" v-bind:class="{active}" name="th-list"></icon>
       </span>
       <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
-      <span :class="{dimmed: !hasLayers}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{conf.label}}</span>
+      <span :class="{dimmed: !hasLayers, handle: editing}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{label}}</span>
       <span class="info-link icon" v-if="conf.infoFile" v-on:click="showInfo">
         <icon name="info-circle"></icon>
       </span>
@@ -39,18 +45,33 @@
       <template v-if="conf.hasLegends && active && showLegend">
         <ContextLegend :conf="conf"></ContextLegend>
       </template>
+      <span v-if="editing" class="icon" v-on:click.stop="editItem">
+        <icon class="icon" name="fa-pencil-square-o"></icon>
+      </span>
+      <span v-if="editing" class="icon" v-on:click.stop="deleteItem">
+        <icon class="icon" name="trash-o"></icon>
+      </span>
     </div>
-    <ul v-show="open" v-if="isGroup">
-      <item class="item" v-for="conf in conf.items" :key="conf.id" :conf="conf"></item>
-    </ul>
+    <template v-if="editing">
+      <draggable element="ul" v-if="conf.isGroup" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150, handle: '.handle' }" v-model='list'>
+        <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
+      </draggable>
+    </template>
+    <template v-else>
+      <ul v-if="conf.isGroup" v-show="open" style="min-height:10px">
+        <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
+      </ul>
+    </template>
   </li>
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState } from 'vuex';
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
 import Icon from 'vue-awesome/components/Icon.vue';
+
 import 'vue-awesome/icons/plus-square-o';
 import 'vue-awesome/icons/minus-square-o';
 import 'vue-awesome/icons/th-list';
@@ -61,6 +82,8 @@ import 'vue-awesome/icons/square';
 import 'vue-awesome/icons/check-square';
 import 'vue-awesome/icons/circle';
 import 'vue-awesome/icons/dot-circle-o';
+import 'vue-awesome/icons/fa-pencil-square-o';
+import 'vue-awesome/icons/trash-o';
 
 export default {
   name: 'item',
@@ -68,28 +91,34 @@ export default {
     ContextLegend,
     TimeSelect,
     Icon
+    // The draggable component is loaded dynamically
   },
   props: {
     conf: Object
   },
   data() {
     return {
-      open: !this.conf.label,
-      // active: this.conf.active,
+      open: !this.conf.parent,
       showLegend: false,
       showTimeMenu: false,
       highlighted: false
     };
   },
   computed: {
-    isContext() {
-      return !this.conf.items;
+    list: {
+      get() {
+        return this.conf.items;
+      },
+      set(value) {
+        this.$store.commit('update_group', { groupId: this.conf.id, value: value });
+      }
     },
-    isGroup() {
-      return !this.isContext;
+    label() {
+      const loc = this.conf.labels.find(l => l.language === Vue.config.lang);
+      return loc ? loc.label : null;
     },
     isRoot() {
-      return !this.conf.label;
+      return !this.conf.parent;
     },
     hasLayers() {
       return !!this.conf.layers.length;
@@ -108,7 +137,7 @@ export default {
     },
     nContexts() {
       return (function count(conf) {
-        if (conf.items) {
+        if (conf.isGroup) {
           return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return conf.layers.length ? 1 : 0;
@@ -117,7 +146,7 @@ export default {
     nActive() {
       const activeContextsIds = this.activeContextsIds;
       return (function count(conf) {
-        if (conf.items) {
+        if (conf.isGroup) {
           return conf.items.reduce((n, item) => n + count(item), 0);
         }
         return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0;
@@ -125,7 +154,8 @@ export default {
     },
     ...mapState([
       'contextsTimes',
-      'activeContextsIds'
+      'activeContextsIds',
+      'editing'
     ])
   },
   watch: {
@@ -134,6 +164,21 @@ export default {
     }
   },
   methods: {
+    startEditing() {
+      require.ensure('vuedraggable', () => {
+        const vuedraggable = require('vuedraggable');
+        Vue.component('draggable', vuedraggable);
+        this.$store.commit('enable_edit', { editing: true });
+      });
+    },
+    editItem() {
+      this.$store.commit('edit_item', { id: this.conf.id });
+    },
+    deleteItem() {
+      if (confirm('Are you sure that you want to delete this item?')) {
+        this.$store.commit('delete_item', { id: this.conf.id });
+      }
+    },
     highlightContext(highlight) {
       this.highlighted = highlight;
     },
@@ -143,8 +188,8 @@ export default {
     toggleActive() {
       if (this.conf.layers.length) {
         this.$store.commit('toggle_context', { contextId: this.conf.id });
-        if (this.conf.group.exclusive) {
-          this.conf.group.items.forEach(item => {
+        if (this.conf.parent.exclusive) {
+          this.conf.parent.items.forEach(item => {
             if (item.id !== this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
               // it's not this context and it's active
               this.$store.commit('toggle_context', { contextId: item.id });
@@ -157,7 +202,7 @@ export default {
       if (this.active) this.showLegend = !this.showLegend;
     },
     showInfo() {
-      this.$store.dispatch('showLayerInfo', { label: this.conf.label, fileName: this.conf.infoFile });
+      this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile });
     },
     toggleTimeMenu() {
       this.showTimeMenu = !this.showTimeMenu;
@@ -242,5 +287,8 @@ ul {
 }
 .icon.statistics svg {
   color: #999;
+}
+.handle {
+  cursor: move;
 }
 </style>

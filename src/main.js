@@ -3,6 +3,7 @@ import store from './store';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import httpRequest from './httpRequest';
+import auth from './auth';
 
 // From http://stackoverflow.com/a/979995
 const QueryString = (function() {
@@ -52,3 +53,6 @@ Vue.locale(lang, () => {
     components: { App }
   });
 });
+
+// Check the users auth status when the app starts
+auth.checkAuth();

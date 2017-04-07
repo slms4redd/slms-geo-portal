@@ -11,6 +11,12 @@
       </li>
     </ul>
     <ul id="tools" class="buttons">
+      <li v-if="!user.authenticated">
+        <a href="#" @click="showLoginDialog(true)">Admin</a>
+      </li>
+      <li v-else>
+        <a href="#" @click="logout">Logout</a>
+      </li>
       <li>
         <a href="#" @click.stop="enableFeedback">{{$t("banner.feedback")}}</a>
       </li>
@@ -19,6 +25,8 @@
       </li>
     </ul>
     <fileDrop :show=showUpload v-on:disable="disableUpload"></fileDrop>
+    <!--<LoginModal v-if="loggingIn" v-on:login="login"></LoginModal>-->
+    <LoginModal :show=showLogin v-on:disable="showLoginDialog(false)"></LoginModal>
   </div>
 </template>
 
@@ -26,16 +34,21 @@
 import { languages } from '../assets/config.json';
 import Vue from 'vue';
 import FileDrop from './FileDrop';
+import LoginModal from './LoginModal';
+import auth from '../auth';
 
 export default {
   components: {
-    'fileDrop': FileDrop
+    'fileDrop': FileDrop,
+    LoginModal
   },
   data() {
     return {
       languages: languages,
       selectedLanguage: Vue.config.lang,
-      showUpload: false
+      showUpload: false,
+      showLogin: false,
+      user: auth.user
     };
   },
   methods: {
@@ -52,6 +65,12 @@ export default {
     },
     disableUpload() {
       this.showUpload = false;
+    },
+    logout() {
+      auth.logout();
+    },
+    showLoginDialog(show) {
+      this.showLogin = show;
     }
   }
 };

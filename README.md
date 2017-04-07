@@ -1,6 +1,6 @@
-# SLMS portal refactoring
+# SLMS geoportal
 
-> Refactoring of the SLMS portal using vue.js
+> Satellite Landcover Monitoring System geoportal
 
 ## Build Setup
 

@@ -82,7 +82,7 @@ import 'vue-awesome/icons/square';
 import 'vue-awesome/icons/check-square';
 import 'vue-awesome/icons/circle';
 import 'vue-awesome/icons/dot-circle-o';
-import 'vue-awesome/icons/fa-pencil-square-o';
+import 'vue-awesome/icons/pencil-square-o';
 import 'vue-awesome/icons/trash-o';
 
 export default {

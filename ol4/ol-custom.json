@@ -22,6 +22,7 @@
     "ol.Map#getView",
     "ol.Map#on",
     "ol.Map#un",
+    "ol.Map#removeInteraction",
     "ol.layer.Layer#setVisible",
     "ol.layer.Layer#getSource",
     "ol.source.TileWMS#updateParams",

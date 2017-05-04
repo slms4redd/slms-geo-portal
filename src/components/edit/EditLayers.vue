@@ -194,6 +194,7 @@ export default {
     },
     close() {
       this.$store.commit('edit_layers', { edit: null });
+      this.layer = null;
     }
   },
   watch: {

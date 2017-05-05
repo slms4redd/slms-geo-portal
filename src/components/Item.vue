@@ -10,7 +10,7 @@
       </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
       <span v-if="editing && !isRoot" class="icon" v-on:click.stop="editItem">
-        <icon name="fa-pencil-square-o"></icon>
+        <icon name="pencil-square-o"></icon>
       </span>
       <span v-if="editing && !isRoot" class="icon" v-on:click.stop="deleteItem">
         <icon class="icon" name="trash-o"></icon>
@@ -46,7 +46,7 @@
         <ContextLegend :conf="conf"></ContextLegend>
       </template>
       <span v-if="editing" class="icon" v-on:click.stop="editItem">
-        <icon class="icon" name="fa-pencil-square-o"></icon>
+        <icon class="icon" name="pencil-square-o"></icon>
       </span>
       <span v-if="editing" class="icon" v-on:click.stop="deleteItem">
         <icon class="icon" name="trash-o"></icon>

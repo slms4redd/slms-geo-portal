@@ -54,7 +54,9 @@ const mutations = {
     if (item) {
       if (item.isGroup) state.editGroup = item;
       else state.editContext = item;
-    } else state.editContext = state.editGroup = null;
+    } else {
+      state.editContext = state.editGroup = null;
+    }
   },
   delete_item(state, { id }) {
     const item = state.groups.findById(id);
@@ -118,8 +120,12 @@ const mutations = {
     state.enableFeedback = enable;
   },
   update_group(state, { groupId, value }) {
+    // Called when dragging an item from one group to another, for both old and new group
     const group = state.groups.findById(groupId);
     if (group) group.items = value;
+
+    // Update all items' partents
+    group.items.forEach(item => { item.parent = group });
   },
   update_layers(state, { value }) {
     state.layers = value;

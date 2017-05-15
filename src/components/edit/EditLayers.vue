@@ -183,6 +183,7 @@ export default {
       if (confirm('Are you sure you want to delete the attribute?')) {
         const index = statistics.attributes.indexOf(attribute);
         if (index > -1) statistics.attributes.splice(index, 1);
+        if (!statistics.attributes.length) this.$set(statistics, 'attributes', undefined);
       }
     },
     save() {

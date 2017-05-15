@@ -48,11 +48,12 @@
           <label v-else-if="legendType === 'url'" class="short-input">URL: <input class="short-input" type="text" v-model="layer.legend.url"></label>
 
           <br>
-          <b>Statistics</b> - add
+          <b>Statistics</b>
+          <br>
+          Add statistics - type:
           <a href="#" class="button default" @click.prevent="addUrlStatistics">URL</a>
           <a href="#" class="button default" @click.prevent="addAttributesStatistics">Attributes</a>
-          <hr>
-          <template v-for="statistics in layer.statistics">
+          <div v-for="statistics in layer.statistics" class="statistics-edit">
             Statistics - type: {{statistics.type}}
             <a href="#" class="button default" @click.prevent="deleteStatistics(statistics)">Delete statistics</a>
             <br>
@@ -64,20 +65,20 @@
             </template>
             <template v-if="statistics.type === 'attributes'">
               Attributes:
-              <a href="#" class="button default" @click.prevent="addAttribute(statistics)">Add</a>
               <br>
-              <template v-for="attribute in statistics.attributes">
-                <label class="short-input">Attribute name: <input class="short-input" type="text" v-model="attribute.attribute"></label>
+              <a href="#" class="button default" @click.prevent="addAttribute(statistics)">Add attribute</a>
+              <br>
+              <div v-for="attribute in statistics.attributes" class="attribute-edit">
+                <label class="short-input">Name: <input class="short-input" type="text" v-model="attribute.attribute"></label>
                 <br>
-                Localized labels:
+                Labels:
                 <br>
                 <EditLabels :labels="attribute.labels"></EditLabels>
                 <a href="#" class="button default" @click.prevent="deleteAttribute(statistics, attribute)">Delete attribute</a>
                 <br>
-              </template>
+              </div>
             </template>
-            <hr>
-          </template>
+          </div>
         </template>
       </div>
       <div id="detail" v-else>
@@ -86,7 +87,7 @@
     </div>
     <div slot="footer">
       <a href="#" class="modal-default-button" @click.prevent="close">Cancel</a>
-      <a href="#" class="modal-default-button" @click.prevent="save">Save</a>
+      <a href="#" class="modal-default-button" @click.prevent="save">Ok</a>
     </div>
   </modal>
 </template>
@@ -266,7 +267,7 @@ ul {
   width: 408px;
 }
 input[type=text] {
-  width: 400px;
+  width: 380px;
   display: block;
   margin-bottom: 9px;
 }
@@ -283,5 +284,15 @@ label.short-input {
 }
 .highlighted {
   font-weight: bold;
+}
+.statistics-edit {
+  border: 1px dashed grey;
+  padding: 8px;
+  margin-top: 8px;
+}
+.attribute-edit {
+  border: 1px dashed grey;
+  padding: 8px;
+  margin:8px
 }
 </style>

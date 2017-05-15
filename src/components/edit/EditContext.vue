@@ -21,7 +21,7 @@
     </div>
     <div slot="footer">
       <a href="#" class="modal-default-button" @click.prevent="close">Cancel</a>
-      <a href="#" class="modal-default-button" @click.prevent="save">Save</a>
+      <a href="#" class="modal-default-button" @click.prevent="save">Ok</a>
     </div>
   </modal>
 </template>

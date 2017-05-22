@@ -31,6 +31,12 @@
         <a href="#" class="button default" @click.prevent="deleteLayer(layer)">Delete this layer</a>
 
         <template v-if="layer.type === 'wms'">
+          <br>
+          <input class="short-input" id="custom-urls" type="checkbox" :checked="layer.serverUrls !== null" v-on:change="toggleCustomUrls">
+          <label class="short-input" for="custom-urls">Custom server urls (csv)</label>
+
+          <label v-if="layer.serverUrls !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
+
           <label>WMS name: <input type="text" v-model="layer.name"></label>
           <label>Image format: <input type="text" v-model="layer.imageFormat"></label>
           <label>Source link: <input type="text" v-model="layer.sourceLink"></label>
@@ -103,11 +109,14 @@ import 'vue-awesome/icons/sort';
 import 'vue-awesome/icons/bar-chart';
 import 'vue-awesome/icons/th-list';
 
+import { defaultGeoServerURLs } from '../../assets/config.json';
+
 export default {
   data() {
     return {
       layersClone: null,
-      layer: null
+      layer: null,
+      serverUrlsCsv: null
     };
   },
   components: {
@@ -117,6 +126,10 @@ export default {
     // The draggable component is loaded dynamically
   },
   methods: {
+    toggleCustomUrls() {
+      if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null;
+      else this.serverUrlsCsv = '';
+    },
     addLayer(type) {
       let layer;
       switch (type) {
@@ -190,6 +203,8 @@ export default {
     save() {
       this.layersClone.forEach(function(l) {
         if (l.statistics && l.statistics.length === 0) l.statistics = null;
+        if (l.serverUrls) l.urls = l.serverUrls;
+        else l.urls = defaultGeoServerURLs;
       });
       this.$store.commit('update_layers', { value: this.layersClone });
       this.close();
@@ -202,8 +217,20 @@ export default {
   watch: {
     editLayers() {
       // Deep clone the layers vector
-      // this.layersClone = this.layers.slice();
       this.layersClone = JSON.parse(JSON.stringify(this.layers));
+    },
+    layer(layer) {
+      if (layer && layer.serverUrls) {
+        this.serverUrlsCsv = layer.serverUrls.join(', ');
+      } else {
+        this.serverUrlsCsv = null;
+      }
+    },
+    serverUrlsCsv(csv) {
+      // TODO remove circularity (layer => serverUrlsCsv => layer.serverUrls)
+      if (this.layer) {
+        this.layer.serverUrls = csv && csv.split(',').map(url => url.trim());
+      }
     }
   },
   computed: {

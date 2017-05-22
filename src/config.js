@@ -53,7 +53,9 @@ export class Layer {
     this.originalId = layerConfig.id;
     this.type = layerConfig.type || 'wms';
     if (this.type === 'wms') {
-      this.urls = layerConfig.baseUrl ? [layerConfig.baseUrl] : (defaultGeoServerURLs || null);
+      this.serverUrls = layerConfig.serverUrls || null;
+      // the urls attribute will be deleted when saving
+      this.urls = layerConfig.serverUrls ? layerConfig.serverUrls : (defaultGeoServerURLs || null);
       this.name = layerConfig.wmsName || layerConfig.name || null;
       this.imageFormat = layerConfig.imageFormat || 'image/png8';
       this.legend = layerConfig.legend || null; // TODO check structure
@@ -209,6 +211,8 @@ function serializeConfiguration(groupConfig, layersRank) {
       case 'originalId': // TODO the originalId attribute will be removed
       case 'urls':
         return undefined;
+      case 'serverUrls':
+        return value || undefined;
       case 'legend':
       case 'sourceLink':
       case 'sourceLabel':

@@ -21,9 +21,8 @@
 
 [Moving groups and contexts](#moving-groups-and-contexts)
 
-## Introduction
-
-
+<!--- ## Introduction --->
+<!--- TODO --->
 
 ## Editing interface
 

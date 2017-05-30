@@ -22,15 +22,18 @@
 
 [Restoring previous configurations](#restoring-previous-configurations)
 
-## Introduction
+## Editing interface
 
-The administation user interface is used to add and delete maps from the portal, and to configure additional content (statistics, metadata). The text can be entered in different languages.
+The configuration editing interface is used to add and delete maps from the portal, and to configure additional content (statistics, metadata). The text can be entered in different languages.
 
-It is important to keep in mind that, when modifying the configuration, the changes are not saved until the administrator clicks on the *Save* button. This has the advantage that he can make bilk changes and only save when the configuration is consistent, but also has the disadvantage all the changes he made are lost if he forgets to save before closing or reloading the page.
+---
+
+**NOTE**:
+it is important to keep in mind that, when modifying the configuration, the changes are not saved until the administrator clicks on the *Save* button. This has the advantage that he can make bilk changes and only save when the configuration is consistent, but also has the disadvantage all the changes he made are lost if he forgets to save before closing or reloading the page.
+
+---
 
 Once a configuration is saved, all the previous ones, together with the current, are stored in a database and can be restored in case something goes wrong.
-
-## Editing interface
 
 To access the editing interface, click on the *Admin* link at the right of the banner. A login popup will open. Enter you credentials and click *Login*.
 
@@ -64,7 +67,11 @@ You can either edit an existing layer by clickint on its name on the list of the
 
 When editing the layers, you are working on a *clone* of the layer configuration. You need to apply the changes by clicking on *Ok* (or cancel them by clicking on *Cancel*).
 
-Please note that when clicking on *Ok*, the changes to the layers configuration is not saved yet but just applied to the current sets of changes. In order to permanently save it, you will need to click on the *Save* button.
+---
+**NOTE**:
+when clicking on *Ok*, the changes to the layers configuration are not saved yet but just applied to the current sets of changes. In order to permanently save it, you will need to click on the *Save* button.
+
+---
 
 ### Adding a new layer
 
@@ -134,7 +141,7 @@ To set the context name, edit the *Localized labels* field. There's one field pe
 
 ### Setting context's layers
 
-To add layers to a context, choose them from the *Layers* list in the context editing dialog. As explained, a context can contain more than one layer - you can select multiple layers by pressing Ctrl (on Windows) or Command (on Mac) While clicking.
+To add layers to a context, choose them from the *Layers* list in the context editing dialog. As explained, a context can contain more than one layer --- you can select multiple layers by pressing Ctrl (on Windows) or Command (on Mac) While clicking.
 
 ### Other options
 

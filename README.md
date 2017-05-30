@@ -2,6 +2,8 @@
 
 > Satellite Landcover Monitoring System geoportal
 
+User documentation: https://slms4redd.github.io/slms-geo-portal/
+
 ## Build Setup
 
 ``` bash

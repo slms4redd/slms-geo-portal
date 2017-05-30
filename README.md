@@ -18,11 +18,17 @@
 - [Adding a new group](#adding-a-new-group)
 - [Configuring groups](#configuring-groups)
 - [Deleting a group](#deleting-a-group)
+- [Moving groups and contexts](#moving-groups-and-contexts)
 
-[Moving groups and contexts](#moving-groups-and-contexts)
+[Restoring previous configurations](#restoring-previous-configurations)
 
-<!--- ## Introduction --->
-<!--- TODO --->
+## Introduction
+
+The administation user interface allows to add and delete maps from the portal, and to configure additional content (statistics, metadata). Text can be set in different languages.
+
+It is important to keep in mind that, when modifying the portal, the changes are not saved until the administrator clicks on the *Save* button. This has the advantage that he can try different configurations without saving them, but has the disadvantage that he can forget to save and loose the changes he made.
+
+Once saved, all the previous configurations, together with the current ones, are stored, and can be restored at
 
 ## Editing interface
 
@@ -36,13 +42,15 @@ Two new buttons (Edit and Versions) will appear under the layers tree menu. Thes
 
 After clicking on the Edit button, additional editing buttons will appear besides each item in the tree menu, together with additional buttons under the menu:
 
-* Layers
-* Add Context
 * Add Group
+* Add Context
+* Layers
+* Cancel
+* Save
 
 ![Edit buttons](/images/layers_menu_2.png)
 
-We'll go through all of the options in the next chapters. For now, let's see what layers, context and groups are.
+Changes are not saved until the administrator click on the *Save* button.
 
 ## Layers
 
@@ -89,13 +97,13 @@ To delete a layer, choose it from the list of layers at the left of the dialog, 
 
 ### Adding a layer legend
 
-TODO
+*TODO*
 
 ### Adding layer statistics
 
 `/static/configuration/loc/$(_lang)/html/statistics/forest_classification.html`
 
-TODO
+*TODO*
 
 ## Contexts
 
@@ -177,6 +185,16 @@ You can make the contexts in the group mutually exclusive by checking the *Exclu
 
 To delete a group, click on the *bin* icon next to it.
 
-## Moving groups and contexts
+### Moving groups and contexts
 
 Groups and context can be moved from one group to another by dragging them in the destination group. This allows to organize the content of the menu in a tree structure (category/subcategory/...). The destination group needs to be expanded.
+
+## Restoring previous configurations
+
+When the administator clicks the *Save* button, a new configurationversion is added to the version history. At any time, he can restore any of the previous configurations by clicking on the *Versions* button and choosing one of the previous configurations from the list. When restoring one of the previously saved configurations, it becomes the current one so it's saved as an additional version at the top of the list.
+
+![Versions](images/versions.png)
+
+To restore the version click on the *Restore* button, to exit without restoring a previous version, click the *Cancel* button.
+
+Versions cannot be deleted from the list.

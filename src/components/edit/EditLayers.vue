@@ -236,8 +236,8 @@ export default {
   computed: {
     legendType: {
       get() {
-        if (!this.layer.legend) return null;
-        return this.layer.legend.type;
+        if (!this.layer.legend) return '';
+        return this.layer.legend.type || '';
       },
       set(type) {
         switch (type) {
@@ -245,10 +245,10 @@ export default {
             this.layer.legend = { type: 'wms', 'style': '' };
             break;
           case 'url':
-            this.layer.legend = { type: 'url', 'style': '' };
+            this.layer.legend = { type: 'url', 'url': '' };
             break;
-          case null:
-            this.layer.legend = undefined;
+          case '':
+            this.layer.legend = null;
         }
       }
     },

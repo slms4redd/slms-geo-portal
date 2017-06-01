@@ -139,13 +139,15 @@ export class Context extends Item {
                                         .filter(layer => !!layer); // Silently remove nulls (unmatched layers)
     this.layers = tLayers || [];
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null;
-    this.hasLegends = this.layers.some(layer => layer.legend);
-
     this.times = this.layers.filter(l => l.type === 'wms' && l.times.length)
                             .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
                             // Remove duplicates
                             .filter((elem, pos, arr) => arr.findIndex(el => el.iso8601 === elem.iso8601) === pos)
                             .sort((t1, t2) => ISO8601ToDate(t1.iso8601) - ISO8601ToDate(t2.iso8601));
+  }
+
+  get hasLegends() {
+    return this.layers.some(layer => layer.legend);
   }
 }
 

@@ -123,7 +123,6 @@ export default {
                         `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
                         `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
                         `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
-
             httpRequest('GET', url)
               .then(responseText => {
                 const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' });
@@ -135,9 +134,12 @@ export default {
 
                   // Look for the related layer config objects (f.getId is of the form "provinces_simp.1")
                   const selectedFeaturesLayers = features.map(f =>
-                    this.layers.find(l =>
-                      l.name === f.getId().substring(0, f.getId().lastIndexOf('.'))));
-
+                    this.queryableLayers.find(l => {
+                      // Remove the workspace, reasonabily assuming that it's safe
+                      const pos = l.name.lastIndexOf(':');
+                      const name = (pos > -1) ? l.name.substring(pos + 1) : name;
+                      return name === f.getId().substring(0, f.getId().lastIndexOf('.'));
+                    }));
                   features.forEach((feature, i) => {
                     const statistics = selectedFeaturesLayers[i].statistics;
                     statistics.forEach(stat => {
@@ -147,14 +149,12 @@ export default {
                       this.statisticsFeatures.push(feature);
                     });
                   });
-
-                  // this.features = features;
                   overlay.setPosition(event.coordinate);
                 } else {
                   overlay.setPosition(undefined);
                 }
               })
-              .catch(error => alert(error.statusText));
+              .catch(error => alert(error.statusText || error));
           }
         }.bind(this);
       }

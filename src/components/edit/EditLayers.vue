@@ -32,13 +32,37 @@
 
         <template v-if="layer.type === 'wms'">
           <br>
-          <input class="short-input" id="custom-urls" type="checkbox" :checked="layer.serverUrls !== null" v-on:change="toggleCustomUrls">
+          <input class="short-input" id="custom-urls" type="checkbox" :checked="serverUrlsCsv !== null" v-on:change="toggleCustomUrls">
           <label class="short-input" for="custom-urls">Custom server urls (csv)</label>
 
-          <label v-if="layer.serverUrls !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
+          <label v-if="serverUrlsCsv !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
 
+          <br>
+          <button class="small" v-on:click="getWmsLayers">Get list of layers</button>
+          <br><br>
+
+          <template v-if="!getCapabilitiesError">
+            <label>WMS layers:
+              <select v-model=selectedWmsName>
+                <option disabled value="">Please select one</option>
+                <option v-for="option in wmsLayerNames" v-bind:value="option">
+                  {{option}}
+                </option>
+              </select>
+            </label>
+          </template>
+          <span v-else style="color:red">Error getting wms layers</span>
           <label>WMS name: <input type="text" v-model="layer.name"></label>
-          <label>Image format: <input type="text" v-model="layer.imageFormat"></label>
+
+          <label>Image format:
+            <select v-model=layer.imageFormat>
+              <option>image/jpeg</option>
+              <option>image/gif</option>
+              <option>image/png</option>
+              <option>image/png8</option>
+            </select>
+          </label>
+
           <label>Source link: <input type="text" v-model="layer.sourceLink"></label>
           <label>Source label: <input type="text" v-model="layer.sourceLabel"></label>
 
@@ -50,7 +74,7 @@
             </select>
           </label>
 
-          <label v-if="legendType === 'wms'" class="short-input">Style: <input class="short-input" type="text" v-model="layer.legend.style"></label>
+          <label v-if="legendType === 'wms'" class="short-input">Style name: <input class="short-input" type="text" v-model="layer.legend.style"></label>
           <label v-else-if="legendType === 'url'" class="short-input">URL: <input class="short-input" type="text" v-model="layer.legend.url"></label>
 
           <br>
@@ -65,7 +89,7 @@
             <br>
             Statistics labels:
             <br>
-            <EditLabels :labels="statistics.labels"></EditLabels>
+            <edit-labels :labels="statistics.labels"></edit-labels>
             <template v-if="statistics.type === 'url'">
               <label>URL: <input type="text" v-model="statistics.url"></label>
             </template>
@@ -79,7 +103,7 @@
                 <br>
                 Labels:
                 <br>
-                <EditLabels :labels="attribute.labels"></EditLabels>
+                <edit-labels :labels="attribute.labels"></edit-labels>
                 <a href="#" class="button default" @click.prevent="deleteAttribute(statistics, attribute)">Delete attribute</a>
                 <br>
               </div>
@@ -100,10 +124,15 @@
 
 <script>
 import Modal from '../Modal';
-import EditLabels from './EditLabels';
-import { Layer, getLocalizedLabels } from '../../config';
+// import EditLabels from './EditLabels';
 import { mapState } from 'vuex';
+
+import { Layer, getLocalizedLabels } from '../../config';
+import httpRequest from '../../httpRequest';
+
 import Icon from 'vue-awesome/components/Icon.vue';
+
+// import xml2js from 'xml2js';
 
 import 'vue-awesome/icons/sort';
 import 'vue-awesome/icons/bar-chart';
@@ -116,12 +145,16 @@ export default {
     return {
       layersClone: null,
       layer: null,
-      serverUrlsCsv: null
+      serverUrlsCsv: null,
+      wmsLayerNames: [],
+      selectedWmsName: null,
+      getCapabilitiesError: false
     };
   },
   components: {
     'modal': Modal,
-    EditLabels,
+    'edit-labels': resolve => require.ensure(['./EditLabels'], () => resolve(require('./EditLabels')), 'editing-chunk'),
+    // 'edit-labels': () => import('./EditLabels'),
     Icon
     // The draggable component is loaded dynamically
   },
@@ -129,6 +162,39 @@ export default {
     toggleCustomUrls() {
       if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null;
       else this.serverUrlsCsv = '';
+    },
+    getWmsLayers() {
+      if (this.layer && this.layer.type === 'wms') {
+        const url = `${this.layer.urls[0]}?service=wms&version=1.1.1&request=GetCapabilities`;
+        require.ensure(['xml2js'], function(require) {
+          const xml2js = require('xml2js');
+          httpRequest('GET', url).then(xml => {
+            xml2js.parseString(xml, (err, result) => {
+              if (err) throw err;
+
+              const wmsLayers = (result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer);
+
+              // Fill the options element
+              this.wmsLayerNames = wmsLayers.map(l => l.Name[0]);
+
+              // If it doesn't find the current layer name in the list, set the selectedWmsName
+              // to null so that this.layer.name isn't changed.
+              // Needed for example when this.layer.name doesn't contain the workspace yet.
+              if (this.wmsLayerNames.indexOf(this.layer.name) > -1) {
+                this.selectedWmsName = this.layer.name;
+              } else {
+                this.selectedWmsName = null;
+              }
+            });
+
+            this.getCapabilitiesError = false;
+          })
+          .catch(err => {
+            err; // jslint expects error to be handled
+            this.getCapabilitiesError = true;
+          });
+        }, 'editing-chunk');
+      }
     },
     addLayer(type) {
       let layer;
@@ -203,8 +269,8 @@ export default {
     save() {
       this.layersClone.forEach(function(l) {
         if (l.statistics && l.statistics.length === 0) l.statistics = null;
-        if (l.serverUrls) l.urls = l.serverUrls;
-        else l.urls = defaultGeoServerURLs;
+        // if (l.serverUrls) l.urls = l.serverUrls;
+        // else l.urls = defaultGeoServerURLs;
       });
       this.$store.commit('update_layers', { value: this.layersClone });
       this.close();
@@ -220,24 +286,33 @@ export default {
       this.layersClone = JSON.parse(JSON.stringify(this.layers));
     },
     layer(layer) {
-      if (layer && layer.serverUrls) {
-        this.serverUrlsCsv = layer.serverUrls.join(', ');
-      } else {
+      if (layer && layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(', ');
+      else {
         this.serverUrlsCsv = null;
+        this.wmsLayerNames = [];
+        this.selectedWmsName = null;
+        this.getCapabilitiesError = false;
+      }
+    },
+    selectedWmsName() {
+      if (this.selectedWmsName) {
+        this.layer.name = this.selectedWmsName;
       }
     },
     serverUrlsCsv(csv) {
       // TODO remove circularity (layer => serverUrlsCsv => layer.serverUrls)
       if (this.layer) {
-        this.layer.serverUrls = csv && csv.split(',').map(url => url.trim());
+        this.layer.serverUrls = csv !== null && csv.split(',').map(url => url.trim());
+        if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls;
+        else this.layer.urls = defaultGeoServerURLs;
       }
     }
   },
   computed: {
     legendType: {
       get() {
-        if (!this.layer.legend) return '';
-        return this.layer.legend.type || '';
+        if (!this.layer.legend) return null;
+        return this.layer.legend.type;
       },
       set(type) {
         switch (type) {
@@ -245,10 +320,10 @@ export default {
             this.layer.legend = { type: 'wms', 'style': '' };
             break;
           case 'url':
-            this.layer.legend = { type: 'url', 'url': '' };
+            this.layer.legend = { type: 'url', 'style': '' };
             break;
-          case '':
-            this.layer.legend = null;
+          case null:
+            this.layer.legend = undefined;
         }
       }
     },

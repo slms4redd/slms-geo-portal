@@ -14,7 +14,7 @@
       <!-- <button type="button" class="small" @click="copyToClipboard">Copy</button> -->
     </template>
     <edit-group></edit-group>
-    <edit-contexts></edit-contexts>
+    <edit-context></edit-context>
     <edit-layers></edit-layers>
     <restore-backup v-on:close="hideHistory" :backups="backups" v-if="backups"></restore-backup>
   </div>
@@ -23,10 +23,10 @@
 <script>
 import { mapState } from 'vuex';
 import { saveConfiguration, getConfigurationHistory } from '../../config';
-import EditGroup from './EditGroup';
-import EditContext from './EditContext';
-import EditLayers from './EditLayers';
-import RestoreBackup from './RestoreBackup';
+// import EditGroup from './EditGroup';
+// import EditContext from './EditContext';
+// import EditLayers from './EditLayers';
+// import RestoreBackup from './RestoreBackup';
 
 export default {
   data() {
@@ -35,10 +35,15 @@ export default {
     };
   },
   components: {
-    'edit-group': EditGroup,
-    'edit-contexts': EditContext,
-    'edit-layers': EditLayers,
-    'restore-backup': RestoreBackup
+    'edit-group': resolve => require.ensure(['./EditGroup'], (require) => resolve(require('./EditGroup')), 'editing-chunk'),
+    'edit-context': resolve => require.ensure(['./EditContext'], require => resolve(require('./EditContext')), 'editing-chunk'),
+    'edit-layers': resolve => require.ensure(['./EditLayers'], (require) => resolve(require('./EditLayers')), 'editing-chunk'),
+    'restore-backup': resolve => require.ensure(['./RestoreBackup'], (require) => resolve(require('./RestoreBackup')), 'editing-chunk')
+
+    // 'edit-group': () => import('./EditGroup'),
+    // 'edit-context': () => import('./EditContext'),
+    // 'edit-layers': () => import('./EditLayers'),
+    // 'restore-backup': () => import('./RestoreBackup')
   },
   methods: {
     startEditing() {

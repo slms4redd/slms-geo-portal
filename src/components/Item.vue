@@ -165,11 +165,12 @@ export default {
   },
   methods: {
     startEditing() {
-      require.ensure('vuedraggable', () => {
-        const vuedraggable = require('vuedraggable');
-        Vue.component('draggable', vuedraggable);
-        this.$store.commit('enable_edit', { editing: true });
-      });
+      // require.ensure('vuedraggable', () => {
+      //   const vuedraggable = require('vuedraggable');
+      //   Vue.component('draggable', vuedraggable);
+      //   this.$store.commit('enable_edit', { editing: true });
+      // });
+      this.$store.commit('enable_edit', { editing: true });
     },
     editItem() {
       this.$store.commit('edit_item', { id: this.conf.id });

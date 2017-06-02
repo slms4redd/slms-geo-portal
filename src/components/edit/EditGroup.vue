@@ -5,7 +5,7 @@
       <!-- Default label: <input type="text" v-model="label"> -->
       Localized labels:
       <br>
-      <EditLabels :labels="labels"></EditLabels>
+      <edit-labels :labels="labels"></edit-labels>
       <label>Info file: <input type="text" v-model="infoFile"></label>
       <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
     </div>
@@ -20,7 +20,7 @@
 import { mapState } from 'vuex';
 import { languages } from '../../assets/config.json';
 import Modal from '../Modal';
-import EditLabels from './EditLabels';
+// import EditLabels from './EditLabels';
 
 export default {
   data() {
@@ -32,7 +32,8 @@ export default {
   },
   components: {
     'modal': Modal,
-    EditLabels
+    'edit-labels': resolve => require.ensure(['./EditLabels'], (require) => resolve(require('./EditLabels')), 'editing-chunk')
+    // 'edit-labels': () => import('./EditLabels')
   },
   methods: {
     save() {

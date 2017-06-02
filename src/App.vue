@@ -3,20 +3,19 @@
     <mapPane></mapPane>
     <div class="layers">
       <layerSelector></layerSelector>
-      <editor-console v-if="user.authenticated"></editor-console>
+      <editor-console v-if="showConsole"></editor-console>
     </div>
     <banner></banner>
     <contextInfoModal></contextInfoModal>
     <featureInfo></featureInfo>
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
-<!--     <EditGroup></EditGroup>
-    <EditContext></EditContext>
-    <EditLayers></EditLayers>
- -->  </div>
+  </div>
 </template>
 
 <script>
+import Vue from 'vue';
+
 import Banner from './components/Banner';
 import MapPane from './components/MapPane';
 import LayerSelector from './components/LayerSelector';
@@ -24,10 +23,8 @@ import ContextInfoModal from './components/ContextInfoModal';
 import FeatureInfo from './components/FeatureInfo';
 import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
-// import EditGroup from './components/edit/EditGroup';
-// import EditContext from './components/edit/EditContext';
-// import EditLayers from './components/edit/EditLayers';
-import EditorConsole from './components/edit/EditorConsole';
+// import EditorConsole from './components/edit/EditorConsole';
+
 import auth from './auth';
 
 export default {
@@ -39,19 +36,36 @@ export default {
     ContextInfoModal,
     FeatureInfo,
     Feedback,
-    KMLOverlay,
-    // EditGroup,
-    // EditContext,
-    // EditLayers,
-    EditorConsole
+    KMLOverlay
+    // EditorConsole
   },
   data() {
     return {
-      user: auth.user
+      user: auth.user,
+      showConsole: false
     };
   },
   created() {
     this.$store.dispatch('fetchLayersConfig');
+    if (this.user.authenticated) this.loadEditor();
+  },
+  watch: {
+    'user.authenticated'() {
+      if (this.user.authenticated) this.loadEditor();
+      else this.showConsole = false;
+    }
+  },
+  methods: {
+    loadEditor() {
+      // TODO add to editing chunk
+      // Vue.component('editorConsole', function(resolve) {
+      //   require(['./components/edit/EditorConsole'], resolve);
+      // });
+      require.ensure(['./components/edit/editorConsole'], () => {
+        Vue.component('editorConsole', require('./components/edit/editorConsole'));
+        this.showConsole = true;
+      }, 'editing-chunk');
+    }
   }
 };
 </script>

@@ -6,7 +6,7 @@
       <input type="text" v-model="label">-->
       Localized labels:
       <br>
-      <EditLabels :labels="labels"></EditLabels>
+      <edit-labels :labels="labels"></edit-labels>
       <label>Info file:</label> <input type="text" v-model="infoFile">
       <label><input type="checkbox" v-model="active"> active by default</label>
       <br>
@@ -28,7 +28,7 @@
 
 <script>
 import Modal from '../Modal';
-import EditLabels from './EditLabels';
+// import EditLabels from './EditLabels';
 import { languages } from '../../assets/config.json';
 
 export default {
@@ -44,7 +44,8 @@ export default {
   },
   components: {
     'modal': Modal,
-    EditLabels
+    'edit-labels': resolve => require.ensure(['./EditLabels'], () => resolve(require('./EditLabels')), 'editing-chunk')
+    // 'edit-labels': () => import('./EditLabels')
   },
   methods: {
     save() {

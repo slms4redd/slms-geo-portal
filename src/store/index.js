@@ -153,7 +153,7 @@ const actions = {
       const vuedraggable = require('vuedraggable');
       Vue.component('draggable', vuedraggable);
       commit('enable_edit', { editing: enable });
-    });
+    }, 'editing-chunk');
   },
   restoreBackup({ dispatch, commit }, { version }) {
     restoreVersion(version)

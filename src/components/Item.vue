@@ -70,7 +70,7 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 import ContextLegend from './ContextLegend';
 import TimeSelect from './TimeSelect';
-import Icon from 'vue-awesome/components/Icon.vue';
+import Icon from 'vue-awesome/components/Icon';
 
 import 'vue-awesome/icons/plus-square-o';
 import 'vue-awesome/icons/minus-square-o';

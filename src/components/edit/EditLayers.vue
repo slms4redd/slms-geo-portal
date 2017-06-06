@@ -130,7 +130,7 @@ import { mapState } from 'vuex';
 import { Layer, getLocalizedLabels } from '../../config';
 import httpRequest from '../../httpRequest';
 
-import Icon from 'vue-awesome/components/Icon.vue';
+import Icon from 'vue-awesome/components/Icon';
 
 // import xml2js from 'xml2js';
 

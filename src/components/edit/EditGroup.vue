@@ -32,7 +32,7 @@ export default {
   },
   components: {
     'modal': Modal,
-    'edit-labels': resolve => require.ensure(['./EditLabels'], (require) => resolve(require('./EditLabels')), 'editing-chunk')
+    'edit-labels': resolve => require.ensure(['./EditLabels'], require => resolve(require('./EditLabels')), 'editing-chunk')
     // 'edit-labels': () => import('./EditLabels')
   },
   methods: {

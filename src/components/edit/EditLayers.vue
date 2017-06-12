@@ -153,7 +153,7 @@ export default {
   },
   components: {
     'modal': Modal,
-    'edit-labels': resolve => require.ensure(['./EditLabels'], () => resolve(require('./EditLabels')), 'editing-chunk'),
+    'edit-labels': resolve => require.ensure(['./EditLabels'], require => resolve(require('./EditLabels')), 'editing-chunk'),
     // 'edit-labels': () => import('./EditLabels'),
     Icon
     // The draggable component is loaded dynamically

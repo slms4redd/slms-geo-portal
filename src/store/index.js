@@ -149,7 +149,7 @@ const actions = {
   enableEdit({ commit }, { enable }) {
     // Register the vuedraggable component globally
     // TODO: this shouldn't be done here
-    require.ensure('vuedraggable', () => {
+    require.ensure('vuedraggable', require => {
       const vuedraggable = require('vuedraggable');
       Vue.component('draggable', vuedraggable);
       commit('enable_edit', { editing: enable });

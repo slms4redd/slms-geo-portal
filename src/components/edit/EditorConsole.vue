@@ -35,10 +35,10 @@ export default {
     };
   },
   components: {
-    'edit-group': resolve => require.ensure(['./EditGroup'], (require) => resolve(require('./EditGroup')), 'editing-chunk'),
+    'edit-group': resolve => require.ensure(['./EditGroup'], require => resolve(require('./EditGroup')), 'editing-chunk'),
     'edit-context': resolve => require.ensure(['./EditContext'], require => resolve(require('./EditContext')), 'editing-chunk'),
-    'edit-layers': resolve => require.ensure(['./EditLayers'], (require) => resolve(require('./EditLayers')), 'editing-chunk'),
-    'restore-backup': resolve => require.ensure(['./RestoreBackup'], (require) => resolve(require('./RestoreBackup')), 'editing-chunk')
+    'edit-layers': resolve => require.ensure(['./EditLayers'], require => resolve(require('./EditLayers')), 'editing-chunk'),
+    'restore-backup': resolve => require.ensure(['./RestoreBackup'], require => resolve(require('./RestoreBackup')), 'editing-chunk')
 
     // 'edit-group': () => import('./EditGroup'),
     // 'edit-context': () => import('./EditContext'),

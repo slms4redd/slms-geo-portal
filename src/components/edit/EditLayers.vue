@@ -166,13 +166,13 @@ export default {
     getWmsLayers() {
       if (this.layer && this.layer.type === 'wms') {
         const url = `${this.layer.urls[0]}?service=wms&version=1.1.1&request=GetCapabilities`;
-        require.ensure(['xml2js'], function(require) {
+        require.ensure(['xml2js'], require => {
           const xml2js = require('xml2js');
           httpRequest('GET', url).then(xml => {
             xml2js.parseString(xml, (err, result) => {
               if (err) throw err;
 
-              const wmsLayers = (result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer);
+              const wmsLayers = result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer;
 
               // Fill the options element
               this.wmsLayerNames = wmsLayers.map(l => l.Name[0]);

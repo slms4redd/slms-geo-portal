@@ -61,8 +61,8 @@ export default {
       // Vue.component('editorConsole', function(resolve) {
       //   require(['./components/edit/EditorConsole'], resolve);
       // });
-      require.ensure(['./components/edit/editorConsole'], require => {
-        Vue.component('editorConsole', require('./components/edit/editorConsole'));
+      require.ensure(['./components/edit/EditorConsole'], require => {
+        Vue.component('EditorConsole', require('./components/edit/EditorConsole'));
         this.showConsole = true;
       }, 'editing-chunk');
     }

@@ -322,7 +322,7 @@ export default {
           case 'url':
             this.layer.legend = { type: 'url', 'style': '' };
             break;
-          case null:
+          case '':
             this.layer.legend = undefined;
         }
       }

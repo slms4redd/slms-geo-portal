@@ -95,10 +95,11 @@ export default {
   watch: {
     layers() {
       const parser = new ol.format.GeoJSON();
-      let baseURL;
 
-      if (process.env.NODE_ENV === 'development') baseURL = '/gs/wms';
-      else baseURL = defaultGeoServerURLs[0];
+      // let baseURL;
+      // if (process.env.NODE_ENV === 'development') baseURL = '/gs/wms';
+      // else baseURL = defaultGeoServerURLs[0];
+      const baseURL = defaultGeoServerURLs[0];
 
       // Store the click callback as a propery as we will need to unlisten the click handler
       if (!this.clickCallback) {
@@ -137,7 +138,7 @@ export default {
                     this.queryableLayers.find(l => {
                       // Remove the workspace, reasonabily assuming that it's safe
                       const pos = l.name.lastIndexOf(':');
-                      const name = (pos > -1) ? l.name.substring(pos + 1) : name;
+                      const name = (pos > -1) ? l.name.substring(pos + 1) : l.name;
                       return name === f.getId().substring(0, f.getId().lastIndexOf('.'));
                     }));
                   features.forEach((feature, i) => {

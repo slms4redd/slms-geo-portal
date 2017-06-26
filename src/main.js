@@ -36,6 +36,7 @@ Vue.locale(lang, () => {
   return httpRequest('GET', `../static/configuration/locale/${lang}.json`)
   .then(res => {
     const json = JSON.parse(res);
+    if (json.banner && json.banner.title) document.title = json.banner.title;
     if (Object.keys(json).length === 0) {
       return Promise.reject(new Error('locale empty'));
     }

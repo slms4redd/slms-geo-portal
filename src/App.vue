@@ -10,6 +10,7 @@
     <featureInfo></featureInfo>
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
+    <Logos id="ll_logos" :logosList="llLogos"></Logos>
   </div>
 </template>
 
@@ -23,7 +24,9 @@ import ContextInfoModal from './components/ContextInfoModal';
 import FeatureInfo from './components/FeatureInfo';
 import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
-// import EditorConsole from './components/edit/EditorConsole';
+import Logos from './components/Logos';
+
+import { logos } from './assets/config.json';
 
 import auth from './auth';
 
@@ -36,13 +39,15 @@ export default {
     ContextInfoModal,
     FeatureInfo,
     Feedback,
-    KMLOverlay
+    KMLOverlay,
+    Logos
     // EditorConsole
   },
   data() {
     return {
       user: auth.user,
-      showConsole: false
+      showConsole: false,
+      llLogos: logos.ll
     };
   },
   created() {
@@ -94,5 +99,10 @@ body {
   position: absolute;
   top: $banner-height + 8px;
   left: 8px;
+}
+#ll_logos {
+  position: absolute;
+  bottom: 10px;
+  left: 0px;
 }
 </style>

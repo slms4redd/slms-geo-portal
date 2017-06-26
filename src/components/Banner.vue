@@ -25,7 +25,6 @@
       </li>
     </ul>
     <fileDrop :show=showUpload v-on:disable="disableUpload"></fileDrop>
-    <!--<LoginModal v-if="loggingIn" v-on:login="login"></LoginModal>-->
     <LoginModal :show=showLogin v-on:disable="showLoginDialog(false)"></LoginModal>
   </div>
 </template>

@@ -13,5 +13,12 @@
     "saveLayersConfigUrl": "protected/layers_conf/save/",
     "getLayersConfigHisoryUrl": "protected/layers_conf/versions",
     "restoreVersionUrl": "protected/layers_conf/restore_version"
+  },
+  "logos": {
+    "ul": "flag.gif",
+    "ll": [
+      { "imgUrl": "/static/configuration/logos/unredd.png", "link": "http://www.unredd.net/", "size": { "height": 35 } },
+      { "imgUrl": "/static/configuration/logos/inpe.png", "link": "http://www.inpe.br/ingles/", "size": { "height": 35 } }
+    ]
   }
 }

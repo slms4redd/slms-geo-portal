@@ -136,6 +136,7 @@ export default {
     border-radius: 5px;
     backdrop-filter: blur(5px);
     margin: 0;
+    z-index: 1000;
   }
   #message-text {
     font-size: 12px;

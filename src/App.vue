@@ -62,10 +62,6 @@ export default {
   },
   methods: {
     loadEditor() {
-      // TODO add to editing chunk
-      // Vue.component('editorConsole', function(resolve) {
-      //   require(['./components/edit/EditorConsole'], resolve);
-      // });
       require.ensure(['./components/edit/EditorConsole'], require => {
         Vue.component('EditorConsole', require('./components/edit/EditorConsole'));
         this.showConsole = true;

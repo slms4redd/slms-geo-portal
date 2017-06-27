@@ -153,10 +153,10 @@ export default {
     };
   },
   components: {
-    'modal': Modal,
-    'edit-labels': EditLabels,
+    Modal,
+    EditLabels,
     Icon,
-    'draggable': vuedraggable
+    vuedraggable
   },
   methods: {
     toggleCustomUrls() {

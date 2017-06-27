@@ -11,7 +11,7 @@ import Modal from './Modal';
 
 export default {
   components: {
-    'modal': Modal
+    Modal
   },
   props: ['show'],
   methods: {

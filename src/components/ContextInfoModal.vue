@@ -22,7 +22,7 @@ export default {
     };
   },
   components: {
-    'modal': Modal
+    Modal
   },
   watch: {
     layerInfo: function(val) {

@@ -69,7 +69,7 @@ export default {
     };
   },
   components: {
-    'modal': Modal
+    Modal
   },
   mounted() {
     container = document.getElementById('popup');

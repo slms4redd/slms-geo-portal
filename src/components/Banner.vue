@@ -24,8 +24,8 @@
         <a href="#" @click="enableUpload">{{$t("banner.uploadKml")}}</a>
       </li>
     </ul>
-    <fileDrop :show=showUpload v-on:disable="disableUpload"></fileDrop>
-    <LoginModal :show=showLogin v-on:disable="showLoginDialog(false)"></LoginModal>
+    <file-drop :show=showUpload v-on:disable="disableUpload"></file-drop>
+    <login-modal :show=showLogin v-on:disable="showLoginDialog(false)"></login-modal>
   </div>
 </template>
 
@@ -38,7 +38,7 @@ import auth from '../auth';
 
 export default {
   components: {
-    'fileDrop': FileDrop,
+    FileDrop,
     LoginModal
   },
   data() {

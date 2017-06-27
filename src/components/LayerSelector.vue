@@ -19,7 +19,7 @@
         <button type="button" class="small" @click="copyToClipboard">Copy</button>
       </li>
     </template>
- -->  
+ -->
   </ul>
 </template>
 
@@ -33,8 +33,7 @@ import auth from '../auth';
 export default {
   name: 'layerSelector',
   components: {
-    'item': Item
-    // 'editor-console': EditorConsole
+    Item
   },
   data() {
     return {

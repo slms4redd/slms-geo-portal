@@ -49,7 +49,7 @@ export default {
     };
   },
   components: {
-    'modal': Modal
+    Modal
   },
   props: ['show'],
   methods: {

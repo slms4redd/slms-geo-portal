@@ -41,9 +41,9 @@
       <span v-bind:title="$t('item.statisticsAvailable')" v-if="hasStatistics" class="icon statistics">
         <icon name="bar-chart"></icon>
       </span>
-      <TimeSelect v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></TimeSelect>
+      <time-select v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></time-select>
       <template v-if="conf.hasLegends && active && showLegend">
-        <ContextLegend :conf="conf"></ContextLegend>
+        <context-legend :conf="conf"></context-legend>
       </template>
       <span v-if="editing" class="icon" v-on:click.stop="editItem">
         <icon class="icon" name="pencil-square-o"></icon>

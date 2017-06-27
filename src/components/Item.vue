@@ -90,8 +90,9 @@ export default {
   components: {
     ContextLegend,
     TimeSelect,
-    Icon
-    // The draggable component is loaded dynamically
+    Icon,
+    // load vuedraggable dynamically as it's only needed for editing
+    'draggable': resolve => require.ensure(['vuedraggable'], require => resolve(require('vuedraggable')), 'editing-chunk')
   },
   props: {
     conf: Object
@@ -165,11 +166,6 @@ export default {
   },
   methods: {
     startEditing() {
-      // require.ensure('vuedraggable', () => {
-      //   const vuedraggable = require('vuedraggable');
-      //   Vue.component('draggable', vuedraggable);
-      //   this.$store.commit('enable_edit', { editing: true });
-      // });
       this.$store.commit('enable_edit', { editing: true });
     },
     editItem() {

@@ -124,7 +124,7 @@
 
 <script>
 import Modal from '../Modal';
-// import EditLabels from './EditLabels';
+import EditLabels from './EditLabels';
 import { mapState } from 'vuex';
 
 import { Layer, getLocalizedLabels } from '../../config';
@@ -132,7 +132,8 @@ import httpRequest from '../../httpRequest';
 
 import Icon from 'vue-awesome/components/Icon';
 
-// import xml2js from 'xml2js';
+import xml2js from 'xml2js';
+import vuedraggable from 'vuedraggable';
 
 import 'vue-awesome/icons/sort';
 import 'vue-awesome/icons/bar-chart';
@@ -153,10 +154,9 @@ export default {
   },
   components: {
     'modal': Modal,
-    'edit-labels': resolve => require.ensure(['./EditLabels'], require => resolve(require('./EditLabels')), 'editing-chunk'),
-    // 'edit-labels': () => import('./EditLabels'),
-    Icon
-    // The draggable component is loaded dynamically
+    'edit-labels': EditLabels,
+    Icon,
+    'draggable': vuedraggable
   },
   methods: {
     toggleCustomUrls() {
@@ -166,34 +166,31 @@ export default {
     getWmsLayers() {
       if (this.layer && this.layer.type === 'wms') {
         const url = `${this.layer.urls[0]}?service=wms&version=1.1.1&request=GetCapabilities`;
-        require.ensure(['xml2js'], require => {
-          const xml2js = require('xml2js');
-          httpRequest('GET', url).then(xml => {
-            xml2js.parseString(xml, (err, result) => {
-              if (err) throw err;
+        httpRequest('GET', url).then(xml => {
+          xml2js.parseString(xml, (err, result) => {
+            if (err) throw err;
 
-              const wmsLayers = result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer;
+            const wmsLayers = result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer;
 
-              // Fill the options element
-              this.wmsLayerNames = wmsLayers.map(l => l.Name[0]);
+            // Fill the options element
+            this.wmsLayerNames = wmsLayers.map(l => l.Name[0]);
 
-              // If it doesn't find the current layer name in the list, set the selectedWmsName
-              // to null so that this.layer.name isn't changed.
-              // Needed for example when this.layer.name doesn't contain the workspace yet.
-              if (this.wmsLayerNames.indexOf(this.layer.name) > -1) {
-                this.selectedWmsName = this.layer.name;
-              } else {
-                this.selectedWmsName = null;
-              }
-            });
-
-            this.getCapabilitiesError = false;
-          })
-          .catch(err => {
-            err; // jslint expects error to be handled
-            this.getCapabilitiesError = true;
+            // If it doesn't find the current layer name in the list, set the selectedWmsName
+            // to null so that this.layer.name isn't changed.
+            // Needed for example when this.layer.name doesn't contain the workspace yet.
+            if (this.wmsLayerNames.indexOf(this.layer.name) > -1) {
+              this.selectedWmsName = this.layer.name;
+            } else {
+              this.selectedWmsName = null;
+            }
           });
-        }, 'editing-chunk');
+
+          this.getCapabilitiesError = false;
+        })
+        .catch(err => {
+          err; // jslint expects error to be handled
+          this.getCapabilitiesError = true;
+        });
       }
     },
     addLayer(type) {

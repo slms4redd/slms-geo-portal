@@ -23,10 +23,10 @@
 <script>
 import { mapState } from 'vuex';
 import { saveConfiguration, getConfigurationHistory } from '../../config';
-// import EditGroup from './EditGroup';
-// import EditContext from './EditContext';
-// import EditLayers from './EditLayers';
-// import RestoreBackup from './RestoreBackup';
+import EditGroup from './EditGroup';
+import EditContext from './EditContext';
+import EditLayers from './EditLayers';
+import RestoreBackup from './RestoreBackup';
 
 export default {
   data() {
@@ -35,20 +35,19 @@ export default {
     };
   },
   components: {
-    'edit-group': resolve => require.ensure(['./EditGroup'], require => resolve(require('./EditGroup')), 'editing-chunk'),
-    'edit-context': resolve => require.ensure(['./EditContext'], require => resolve(require('./EditContext')), 'editing-chunk'),
-    'edit-layers': resolve => require.ensure(['./EditLayers'], require => resolve(require('./EditLayers')), 'editing-chunk'),
-    'restore-backup': resolve => require.ensure(['./RestoreBackup'], require => resolve(require('./RestoreBackup')), 'editing-chunk')
-
-    // 'edit-group': () => import('./EditGroup'),
-    // 'edit-context': () => import('./EditContext'),
-    // 'edit-layers': () => import('./EditLayers'),
-    // 'restore-backup': () => import('./RestoreBackup')
+    'edit-group': EditGroup,
+    'edit-context': EditContext,
+    'edit-layers': EditLayers,
+    'restore-backup': RestoreBackup
+    // 'edit-group': resolve => require.ensure(['./EditGroup'], require => resolve(require('./EditGroup')), 'editing-chunk'),
+    // 'edit-context': resolve => require.ensure(['./EditContext'], require => resolve(require('./EditContext')), 'editing-chunk'),
+    // 'edit-layers': resolve => require.ensure(['./EditLayers'], require => resolve(require('./EditLayers')), 'editing-chunk'),
+    // 'restore-backup': resolve => require.ensure(['./RestoreBackup'], require => resolve(require('./RestoreBackup')), 'editing-chunk')
   },
   methods: {
     startEditing() {
       // the 'editing' flag is also used in Item.vue
-      this.$store.dispatch('enableEdit', { enable: true });
+      this.$store.commit('enable_edit', { editing: true });
     },
     showHistory() {
       getConfigurationHistory().then(backups => { this.backups = backups });
@@ -85,7 +84,7 @@ export default {
       saveConfiguration(this.groups, layersRank)
         .then(() => {
           alert('Configuration saved');
-          this.$store.dispatch('enableEdit', { enable: false });
+          this.$store.commit('enable_edit', { editing: false });
         });
         // .catch(e => alert(e.statusText));
     }

@@ -20,7 +20,7 @@
 import { mapState } from 'vuex';
 import { languages } from '../../assets/config.json';
 import Modal from '../Modal';
-// import EditLabels from './EditLabels';
+import EditLabels from './EditLabels';
 
 export default {
   data() {
@@ -32,8 +32,7 @@ export default {
   },
   components: {
     'modal': Modal,
-    'edit-labels': resolve => require.ensure(['./EditLabels'], require => resolve(require('./EditLabels')), 'editing-chunk')
-    // 'edit-labels': () => import('./EditLabels')
+    'edit-labels': EditLabels
   },
   methods: {
     save() {

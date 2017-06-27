@@ -28,7 +28,7 @@
 
 <script>
 import Modal from '../Modal';
-// import EditLabels from './EditLabels';
+import EditLabels from './EditLabels';
 import { languages } from '../../assets/config.json';
 
 export default {
@@ -44,8 +44,7 @@ export default {
   },
   components: {
     'modal': Modal,
-    'edit-labels': resolve => require.ensure(['./EditLabels'], require => resolve(require('./EditLabels')), 'editing-chunk')
-    // 'edit-labels': () => import('./EditLabels')
+    'edit-labels': EditLabels
   },
   methods: {
     save() {

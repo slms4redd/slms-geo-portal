@@ -146,15 +146,6 @@ const actions = {
       .then(layersConf => commit('receive_layers', { layersConf }))
       .catch(error => alert(error));
   },
-  enableEdit({ commit }, { enable }) {
-    // Register the vuedraggable component globally
-    // TODO: this shouldn't be done here
-    require.ensure('vuedraggable', require => {
-      const vuedraggable = require('vuedraggable');
-      Vue.component('draggable', vuedraggable);
-      commit('enable_edit', { editing: enable });
-    }, 'editing-chunk');
-  },
   restoreBackup({ dispatch, commit }, { version }) {
     restoreVersion(version)
       .then((x) => dispatch('fetchLayersConfig'))

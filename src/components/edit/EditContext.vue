@@ -43,8 +43,8 @@ export default {
     };
   },
   components: {
-    'modal': Modal,
-    'edit-labels': EditLabels
+    Modal,
+    EditLabels
   },
   methods: {
     save() {

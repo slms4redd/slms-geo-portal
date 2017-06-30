@@ -156,7 +156,7 @@ export default {
     Modal,
     EditLabels,
     Icon,
-    vuedraggable
+    'draggable': vuedraggable
   },
   methods: {
     toggleCustomUrls() {

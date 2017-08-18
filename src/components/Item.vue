@@ -115,7 +115,7 @@ export default {
       }
     },
     label() {
-      const loc = this.conf.labels.find(l => l.language === Vue.config.lang);
+      const loc = this.conf.labels.find(l => l.language === Vue.i18n.locale());
       return loc ? loc.label : null;
     },
     isRoot() {

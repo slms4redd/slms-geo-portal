@@ -12,7 +12,7 @@ import httpRequest from '../httpRequest';
 import Vue from 'vue';
 
 const processUrlTemplate = function(urlTemplate) {
-  return urlTemplate.replace('$(_lang)', Vue.config.lang);
+  return urlTemplate.replace('$(_lang)', Vue.i18n.locale());
 };
 
 export default {

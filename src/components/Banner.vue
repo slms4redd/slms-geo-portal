@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       languages: languages,
-      selectedLanguage: Vue.config.lang,
+      selectedLanguage: Vue.i18n.locale(),
       showUpload: false,
       showLogin: false,
       user: auth.user

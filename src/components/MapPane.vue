@@ -16,7 +16,7 @@ export default {
   },
   watch: {
     layers(layers) {
-      // Remove all layers if any, used when sorting
+      // Remove all layers if any, needed when sorting layers through the UI
       map.getLayers().forEach(l => map.removeLayer(l));
 
       layers.forEach(layerConfig => {

@@ -1,9 +1,12 @@
 import App from './App';
 import store from './store';
 import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import httpRequest from './httpRequest';
+// import VueI18n from 'vue-i18n'; // TODO delete
+// import httpRequest from './httpRequest';
 import auth from './auth';
+
+// load vuex i18n module
+import I18n from './I18n';
 
 // From http://stackoverflow.com/a/979995
 const QueryString = (function() {
@@ -25,35 +28,19 @@ const QueryString = (function() {
   return queryString;
 })();
 
+// initialize the internationalization plugin on the vue instance.
+Vue.use(I18n.plugin, store);
+
 const browserLang = QueryString.lang || (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
 const lang = browserLang || 'en';
-
-// install the vue-i18n plugin
-Vue.use(VueI18n);
+Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`);
+Vue.i18n.set(lang);
 
 /* eslint-disable no-new */
-Vue.locale(lang, () => {
-  return httpRequest('GET', `../static/configuration/locale/${lang}.json`)
-  .then(res => {
-    const json = JSON.parse(res);
-    if (json.banner && json.banner.title) document.title = json.banner.title;
-    if (Object.keys(json).length === 0) {
-      return Promise.reject(new Error('locale empty'));
-    }
-    return Promise.resolve(json);
-  }).catch(error => {
-    alert(`Error loading language file for ${lang}:\n${error.message}`);
-    return Promise.reject();
-  });
-}, () => {
-  Vue.config.lang = lang;
-  new Vue({
-    el: '#app',
-    store,
-    render: h => h(App)
-    // template: '<App/>',
-    // components: { App }
-  });
+new Vue({
+  el: '#app',
+  store,
+  render: h => h(App)
 });
 
 // Check the users auth status when the app starts

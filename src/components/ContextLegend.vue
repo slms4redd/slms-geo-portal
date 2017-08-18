@@ -18,11 +18,11 @@ export default {
       legendUrls: this.conf.layers.map(layer => {
         if (layer.legend) {
           if (layer.legend.type === 'wms') {
-            const wmsLegendStyle = layer.legend.style.replace('$(_lang)', Vue.config.lang);
+            const wmsLegendStyle = layer.legend.style.replace('$(_lang)', Vue.i18n.locale());
             return `${layer.urls[0]}?LEGEND_OPTIONS=forceRule:True;fontColor:ffffff;fontAntiAliasing:true;
   &LAYER=${layer.name}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`;
           }
-          return `/static/configuration/loc/${Vue.config.lang}/images/${layer.legend.url}`;
+          return `/static/configuration/loc/${Vue.i18n.locale()}/images/${layer.legend.url}`;
         }
         return null;
       }).filter(url => url)

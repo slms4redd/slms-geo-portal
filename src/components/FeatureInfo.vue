@@ -50,7 +50,7 @@ const processTemplate = function(template, feature) {
 };
 
 const processUrlTemplate = function(urlTemplate, feature) {
-  return processTemplate(urlTemplate.replace('$(_lang)', Vue.config.lang), feature);
+  return processTemplate(urlTemplate.replace('$(_lang)', Vue.i18n.locale()), feature);
 };
 
 let container,
@@ -145,7 +145,7 @@ export default {
                     const statistics = selectedFeaturesLayers[i].statistics;
                     statistics.forEach(stat => {
                       this.statisticsConfs.push(stat);
-                      const template = stat.labels.find(l => l.language === Vue.config.lang).label;
+                      const template = stat.labels.find(l => l.language === Vue.i18n.locale()).label;
                       this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
                       this.statisticsFeatures.push(feature);
                     });
@@ -169,7 +169,7 @@ export default {
   methods: {
     showStatistics(statsConf, feature) {
       const attributeLabel = function(attribute) {
-        const loc = attribute.labels.find(l => l.language === Vue.config.lang);
+        const loc = attribute.labels.find(l => l.language === Vue.i18n.locale());
         return loc ? loc.label : null;
       };
 

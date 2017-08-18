@@ -1,3 +1,5 @@
+// © vuex-i18n https://github.com/dkfbasel/vuex-i18n
+
 /* vuex-i18n-store defines a vuex module to store locale translations. Make sure
 ** to also include the file vuex-i18n.js to enable easy access to localized
 ** strings in your vue components.
@@ -18,9 +20,6 @@ const i18nVuexModule = {
 
     // add a new locale
     ADD_LOCALE(state, { locale, translations }) {
-      console.log(translations);
-      console.log(flattenTranslations(translations));
-
       // reduce the given translations to a single-depth tree
       state.translations[locale] = flattenTranslations(translations);
 
@@ -74,16 +73,16 @@ const i18nVuexModule = {
     },
 
     loadLocale({ dispatch }, { locale, url }) {
-      fetch(url)
-        .then(response => {
-          if (response.status !== 200) {
-            console.log(`Looks like there was a problem. Status Code: ${response.status}`);
-            return;
-          }
-          response.json().then(data => {
-            dispatch('addLocale', { locale: locale, translations: data });
-          });
-        });
+      return fetch(url).then(response => {
+        if (response.status !== 200) {
+          // console.log(`Looks like there was a problem. Status Code: ${response.status}`);
+          return Promise.reject(`Looks like there was a problem. Status Code: ${response.status}`);
+        }
+        return response.json().then(data => {
+          dispatch('addLocale', { locale: locale, translations: data });
+          return Promise.resolve();
+        }).catch(e => Promise.reject(e));
+      });
     },
 
     // remove the given locale translations

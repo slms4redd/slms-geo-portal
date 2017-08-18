@@ -1,3 +1,5 @@
+// © vuex-i18n https://github.com/dkfbasel/vuex-i18n
+
 /* vuex-i18n defines the Vuexi18nPlugin to enable localization using a vuex
 ** module to store the translation information. Make sure to also include the
 ** file vuex-i18n-store.js to include a respective vuex module.
@@ -246,7 +248,7 @@ const renderFn = function(identifiers) {
     console.warn('You must specify the start and end character identifying variable substitutions');
   }
 
-  // construct a regular expression ot find variable substitutions, i.e. {test}
+  // construct a regular expression or find variable substitutions, i.e. {test}
   const matcher = new RegExp('' + identifiers[0] + '\\w+' + identifiers[1], 'g');
 
   // define the replacement function
@@ -295,7 +297,7 @@ const renderFn = function(identifiers) {
       }
     };
 
-      // return translation item directly
+    // return translation item directly
     if (pluralization === null) {
       return replacedText();
     }

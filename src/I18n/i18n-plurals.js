@@ -1,3 +1,5 @@
+// © vuex-i18n https://github.com/dkfbasel/vuex-i18n
+
 export default {
   getTranslationIndex: function(languageCode, n) {
     switch (languageCode) {

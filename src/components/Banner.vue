@@ -7,7 +7,8 @@
     <ul id="languageLinks" class="buttons">
       <li v-for="language in languages">
         <span v-if="language.id === selectedLanguage" :href="'?lang=' + language.id">{{language.label}}</span>
-        <a v-else :href="'?lang=' + language.id">{{language.label}}</a>
+        <!-- <a v-else :href="'?lang=' + language.id">{{language.label}}</a> -->
+         <a v-else href="#" @click="setLanguage(language.id)">{{language.label}}</a>
       </li>
     </ul>
     <ul id="tools" class="buttons">
@@ -51,8 +52,11 @@ export default {
     };
   },
   methods: {
-    setLanguage(id) {
-      Vue.config.lang = id;
+    setLanguage(lang) {
+      Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`).then((a) => {
+        Vue.i18n.set(lang);
+        this.selectedLanguage = Vue.i18n.locale();
+      }).catch(e => Promise.reject(e));
     },
     enableFeedback(e) {
       e.preventDefault();

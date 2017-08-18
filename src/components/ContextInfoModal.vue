@@ -35,7 +35,6 @@ export default {
           this.content = content;
           this.showModal = true;
         };
-        // httpRequest('GET', `/static/configuration/loc/${Vue.config.lang}/html/${val.fileName}`)
         httpRequest('GET', processUrlTemplate(val.fileName))
           .then(responseText => showContent(responseText))
           .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`));

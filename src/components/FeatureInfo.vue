@@ -93,77 +93,77 @@ export default {
     map.addOverlay(overlay);
   },
   watch: {
-    layers() {
-      const parser = new ol.format.GeoJSON();
+    layers: {
+      immediate: true,
+      handler: function() {
+        const parser = new ol.format.GeoJSON();
 
-      // let baseURL;
-      // if (process.env.NODE_ENV === 'development') baseURL = '/gs/wms';
-      // else baseURL = defaultGeoServerURLs[0];
-      const baseURL = defaultGeoServerURLs[0];
+        const baseURL = defaultGeoServerURLs[0];
 
-      // Store the click callback as a propery as we will need to unlisten the click handler
-      if (!this.clickCallback) {
-        this.clickCallback = function(event) {
-          if (this.enableFeedback) return;
+        // Store the click callback as a property as we will need to unlisten the click handler
+        if (!this.clickCallback) {
+          this.clickCallback = function(event) {
+            if (this.enableFeedback) return;
 
-          if (!this.queryableLayers.length) {
-            highlightOverlay.getSource().clear();
-            overlay.setPosition(undefined);
-          } else {
-            this.statisticsConfs = [];
-            this.statisticsLabels = [];
-            this.statisticsFeatures = [];
+            if (!this.queryableLayers.length) {
+              highlightOverlay.getSource().clear();
+              overlay.setPosition(undefined);
+            } else {
+              this.statisticsConfs = [];
+              this.statisticsLabels = [];
+              this.statisticsFeatures = [];
 
-            // Build the GetFeatureInfo request
-            const mapSize = map.getSize(),
-                  [width, height] = mapSize,
-                  [evtx, evty] = event.pixel,
-                  extent = map.getView().calculateExtent(mapSize),
-                  layersStr = this.queryableLayers.map(layer => layer.name).join(','),
-                  url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1` +
-                        `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
-                        `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
-                        `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
-            httpRequest('GET', url)
-              .then(responseText => {
-                const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' });
+              // Build the GetFeatureInfo request
+              const mapSize = map.getSize(),
+                    [width, height] = mapSize,
+                    [evtx, evty] = event.pixel,
+                    extent = map.getView().calculateExtent(mapSize),
+                    layersStr = this.queryableLayers.map(layer => layer.name).join(','),
+                    url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1` +
+                          `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
+                          `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
+                          `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`;
+              httpRequest('GET', url)
+                .then(responseText => {
+                  const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' });
 
-                highlightOverlay.getSource().clear();
-                if (features.length) {
-                  // Highlight the features on the map
-                  highlightOverlay.getSource().addFeatures(features);
+                  highlightOverlay.getSource().clear();
+                  if (features.length) {
+                    // Highlight the features on the map
+                    highlightOverlay.getSource().addFeatures(features);
 
-                  // Look for the related layer config objects (f.getId is of the form "provinces_simp.1")
-                  const selectedFeaturesLayers = features.map(f =>
-                    this.queryableLayers.find(l => {
-                      // Remove the workspace, reasonabily assuming that it's safe
-                      const pos = l.name.lastIndexOf(':');
-                      const name = (pos > -1) ? l.name.substring(pos + 1) : l.name;
-                      return name === f.getId().substring(0, f.getId().lastIndexOf('.'));
-                    }));
-                  features.forEach((feature, i) => {
-                    const statistics = selectedFeaturesLayers[i].statistics;
-                    statistics.forEach(stat => {
-                      this.statisticsConfs.push(stat);
-                      const template = stat.labels.find(l => l.language === Vue.i18n.locale()).label;
-                      this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
-                      this.statisticsFeatures.push(feature);
+                    // Look for the related layer config objects (f.getId is of the form "provinces_simp.1")
+                    const selectedFeaturesLayers = features.map(f =>
+                      this.queryableLayers.find(l => {
+                        // Remove the workspace, reasonabily assuming that it's safe
+                        const pos = l.name.lastIndexOf(':');
+                        const name = (pos > -1) ? l.name.substring(pos + 1) : l.name;
+                        return name === f.getId().substring(0, f.getId().lastIndexOf('.'));
+                      }));
+                    features.forEach((feature, i) => {
+                      const statistics = selectedFeaturesLayers[i].statistics;
+                      statistics.forEach(stat => {
+                        this.statisticsConfs.push(stat);
+                        const template = stat.labels.find(l => l.language === Vue.i18n.locale()).label;
+                        this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId());
+                        this.statisticsFeatures.push(feature);
+                      });
                     });
-                  });
-                  overlay.setPosition(event.coordinate);
-                } else {
-                  overlay.setPosition(undefined);
-                }
-              })
-              .catch(error => alert(error.statusText || error));
-          }
-        }.bind(this);
+                    overlay.setPosition(event.coordinate);
+                  } else {
+                    overlay.setPosition(undefined);
+                  }
+                })
+                .catch(error => alert(error.statusText || error));
+            }
+          }.bind(this);
+        }
+
+        // Delete previous click handler (needed when editing and changing the layers array)
+        map.un('singleclick', this.clickCallback);
+
+        this.handlerKey = map.on('singleclick', this.clickCallback);
       }
-
-      // Delete previous click handler (needed when editing and changing the layers array)
-      map.un('singleclick', this.clickCallback);
-
-      this.handlerKey = map.on('singleclick', this.clickCallback);
     }
   },
   methods: {

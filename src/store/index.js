@@ -7,11 +7,6 @@ Vue.use(Vuex);
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
-  // layersConf: [],
-  // layersConf is redundant as the next three variables are its attributes.
-  // layersConf is only used for exporting the configuration as JSON.
-  // The following are used for performance reasons
-  // TODO find a better solution
   layers: [],
   contexts: [],
   groups: null,

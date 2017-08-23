@@ -36,9 +36,6 @@
 import auth from '../auth';
 
 import Modal from './Modal';
-// import { mapState } from 'vuex';
-// import httpRequest from '../httpRequest';
-// import Vue from 'vue';
 
 export default {
   data() {

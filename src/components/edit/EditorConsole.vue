@@ -70,11 +70,6 @@ export default {
       this.$store.commit('add_context');
     },
     save() {
-      // const conf = {
-      //   layers: this.layers,
-      //   contexts: this.contexts,
-      //   groups: this.groups
-      // };
       const layersRank = this.layers.map(l => l.id);
 
       saveConfiguration(this.groups, layersRank)

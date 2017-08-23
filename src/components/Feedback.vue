@@ -3,9 +3,7 @@
     <div id="feedback-category">
       <select v-model="selectedCategory">
         <option value="" disabled>{{$t("featureInfo.moreData")}}</option>
-        <option v-for="cat in categories">
-          <option>{{cat}}</option>
-        </option>
+        <option v-for="cat in categories">{{cat}}</option>
       </select>
     </div>
     <div id="tools">

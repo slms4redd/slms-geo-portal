@@ -23,21 +23,21 @@ export default {
     show(show) {
       let counter = 0;
 
-      const dragenter = function(e) {
+      const dragEnter = function(e) {
         e.stopPropagation();
         e.preventDefault();
         counter++;
         document.getElementById('dropTarget').classList.add('dragover');
       };
 
-      const dragleave = function(e) {
+      const dragLeave = function(e) {
         counter--;
         if (counter === 0) {
           document.getElementById('dropTarget').classList.remove('dragover');
         }
       };
 
-      const dragover = function(e) {
+      const dragOver = function(e) {
         e.stopPropagation();
         e.preventDefault();
       };
@@ -76,9 +76,9 @@ export default {
       if (show) {
         this.$nextTick(() => {
           const dropTarget = document.getElementById('dropTarget');
-          dropTarget.addEventListener('dragenter', dragenter, false);
-          dropTarget.addEventListener('dragleave', dragleave, false);
-          dropTarget.addEventListener('dragover', dragover, false);
+          dropTarget.addEventListener('dragenter', dragEnter, false);
+          dropTarget.addEventListener('dragleave', dragLeave, false);
+          dropTarget.addEventListener('dragover', dragOver, false);
           dropTarget.addEventListener('drop', drop, false);
         });
       }

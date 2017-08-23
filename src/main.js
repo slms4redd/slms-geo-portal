@@ -3,6 +3,7 @@ import store from './store';
 import Vue from 'vue';
 import auth from './auth';
 import I18n from './I18n';
+import { languages } from './assets/config.json';
 
 // © http://stackoverflow.com/a/979995
 const httpGetParams = (function() {
@@ -27,19 +28,45 @@ const httpGetParams = (function() {
 // initialize the internationalization plugin on the vue instance.
 Vue.use(I18n.plugin, store);
 
-// const browserLang = QueryString.lang || (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
-// const lang = browserLang || 'en';
-const lang = httpGetParams.lang || 'en';
-Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`).catch(e => alert(e));
+// const lang = httpGetParams.lang || 'en';
+// Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`).catch(e => alert(e));
+// Vue.i18n.set(lang);
+// // TODO set fallback language
+
+// /* eslint-disable no-new */
+// new Vue({
+//   el: '#app',
+//   store,
+//   render: h => h(App)
+// });
+
+// Set the language and load the language file
+const languageCodes = languages.map(l => l.id);
+let lang;
+let navigatorLanguage = (navigator.language || navigator.userLanguage);
+if (navigatorLanguage) {
+  navigatorLanguage = navigatorLanguage.substr(0, navigatorLanguage.indexOf('-'));
+}
+if (languageCodes.indexOf(httpGetParams.lang) !== -1) {
+  lang = httpGetParams.lang;
+} else if (navigatorLanguage && languageCodes.indexOf(navigatorLanguage) !== -1) {
+  lang = navigatorLanguage;
+} else {
+  lang = languageCodes[0];
+}
 Vue.i18n.set(lang);
-// TODO set fallback language
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
+  data: { loaded: false },
   store,
   render: h => h(App)
 });
+
+Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`)
+  .then(() => { app.loaded = true })
+  .catch(e => alert('Error loading language file: ' + e));
 
 // Check the users auth status when the app starts
 auth.checkAuth();

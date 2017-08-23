@@ -5,6 +5,8 @@
 ** strings in your vue components.
 */
 
+import httpRequest from '../httpRequest';
+
 // define a simple vuex module to handle locale translations
 const i18nVuexModule = {
   state: {
@@ -72,17 +74,33 @@ const i18nVuexModule = {
       });
     },
 
+    // loadLocale({ dispatch }, { locale, url }) {
+    //   return fetch(url).then(response => {
+    //     if (response.status !== 200) {
+    //       // console.log(`Looks like there was a problem. Status Code: ${response.status}`);
+    //       return Promise.reject(`Looks like there was a problem. Status Code: ${response.status}`);
+    //     }
+    //     return response.json().then(data => {
+    //       dispatch('addLocale', { locale: locale, translations: data });
+    //       return Promise.resolve();
+    //     }).catch(e => Promise.reject(e));
+    //   });
+    //   return httpRequest('GET', url)
+    //     .then(responseText => {
+    //       dispatch('addLocale', { locale: locale, translations: JSON.parse(responseText) });
+    //       return Promise.resolve()
+    //     })
+    //     .catch(e => Promise.reject(e));
+    //   }
+    // },
+
     loadLocale({ dispatch }, { locale, url }) {
-      return fetch(url).then(response => {
-        if (response.status !== 200) {
-          // console.log(`Looks like there was a problem. Status Code: ${response.status}`);
-          return Promise.reject(`Looks like there was a problem. Status Code: ${response.status}`);
-        }
-        return response.json().then(data => {
-          dispatch('addLocale', { locale: locale, translations: data });
+      return httpRequest('GET', url)
+        .then(responseText => {
+          dispatch('addLocale', { locale: locale, translations: JSON.parse(responseText) });
           return Promise.resolve();
-        }).catch(e => Promise.reject(e));
-      });
+        })
+        .catch(e => Promise.reject(e));
     },
 
     // remove the given locale translations

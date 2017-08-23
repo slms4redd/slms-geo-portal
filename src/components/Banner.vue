@@ -56,7 +56,7 @@ export default {
       Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`).then((a) => {
         Vue.i18n.set(lang);
         this.selectedLanguage = Vue.i18n.locale();
-      }).catch(e => Promise.reject(e));
+      }).catch(e => alert('Error loading language file: ' + e));
     },
     enableFeedback(e) {
       e.preventDefault();

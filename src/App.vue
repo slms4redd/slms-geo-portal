@@ -1,16 +1,22 @@
 <template>
   <div id="app">
+    <!-- Map has to be there when the layers are added -->
+    <!-- An alternative is to move it inside the template call map.updateSize() -->
     <mapPane></mapPane>
-    <div class="layers">
-      <layerSelector></layerSelector>
-      <editor-console v-if="showConsole"></editor-console>
-    </div>
-    <banner></banner>
-    <contextInfoModal></contextInfoModal>
-    <featureInfo></featureInfo>
-    <feedback></feedback>
-    <KMLOverlay></KMLOverlay>
-    <Logos id="ll_logos" :logosList="llLogos"></Logos>
+
+    <!-- Hide until language is first loaded -->
+    <template v-if="this.$parent.loaded">
+      <div class="layers">
+        <layerSelector></layerSelector>
+        <editor-console v-if="showConsole"></editor-console>
+      </div>
+      <banner></banner>
+      <contextInfoModal></contextInfoModal>
+      <featureInfo></featureInfo>
+      <feedback></feedback>
+      <KMLOverlay></KMLOverlay>
+      <Logos id="ll_logos" :logosList="llLogos"></Logos>
+    </template>
   </div>
 </template>
 

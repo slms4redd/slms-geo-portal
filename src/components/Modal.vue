@@ -28,14 +28,14 @@
 <script>
 export default {
   created() {
-    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keydown', this.handleKeyDown)
   },
   methods: {
     handleKeyDown(e) {
-      if (e.keyCode === 13 || e.keyCode === 27) this.$emit('close'); // enter || esc
+      if (e.keyCode === 13 || e.keyCode === 27) this.$emit('close') // enter || esc
     }
   }
-};
+}
 </script>
 
 <style scoped>

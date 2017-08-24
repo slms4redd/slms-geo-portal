@@ -10,10 +10,10 @@
 <script>
 /* global ol */
 
-import { mapState } from 'vuex';
-import map from '../map';
+import { mapState } from 'vuex'
+import map from '../map'
 
-let vectorLayer;
+let vectorLayer
 
 export default {
   methods: {
@@ -21,24 +21,24 @@ export default {
   },
   watch: {
     kmlOverlay(kml) {
-      map.removeLayer(vectorLayer);
+      map.removeLayer(vectorLayer)
       if (kml) {
         const vectorSource = new ol.source.Vector({
           features: (new ol.format.KML({ extractStyles: false })).readFeatures(kml, { featureProjection: 'EPSG:3857' })
-        });
+        })
 
         const stroke = new ol.style.Stroke({
           color: '#319FD3',
           width: 1
-        });
+        })
         const fill = new ol.style.Fill({
           color: 'rgba(255, 255, 255, 0.3)'
-        });
+        })
         const circle = new ol.style.Circle({
           fill: fill,
           stroke: stroke,
           radius: 5
-        });
+        })
 
         const defaultStyle = {
           'Point': new ol.style.Style({
@@ -61,32 +61,32 @@ export default {
             fill: fill,
             stroke: stroke
           })
-        };
+        }
 
         const styleFunction = function(feature, resolution) {
-          const featureStyleFunction = feature.getStyleFunction();
+          const featureStyleFunction = feature.getStyleFunction()
           if (featureStyleFunction) {
-            return featureStyleFunction.call(feature, resolution);
+            return featureStyleFunction.call(feature, resolution)
           }
-          return defaultStyle[feature.getGeometry().getType()];
-        };
+          return defaultStyle[feature.getGeometry().getType()]
+        }
 
         vectorLayer = new ol.layer.Vector({
           source: vectorSource,
           style: styleFunction
-        });
+        })
 
         // Make sure it stays on top
-        vectorLayer.setZIndex(1000);
-        map.addLayer(vectorLayer);
-        map.getView().fit(vectorSource.getExtent(), map.getSize());
+        vectorLayer.setZIndex(1000)
+        map.addLayer(vectorLayer)
+        map.getView().fit(vectorSource.getExtent(), map.getSize())
       }
     }
   },
   computed: mapState([
     'kmlOverlay'
   ])
-};
+}
 </script>
 
 <style scoped>

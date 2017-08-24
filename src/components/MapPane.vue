@@ -3,44 +3,44 @@
 </template>
 
 <script>
-import OlLayerFactory from '../olLayerFactory';
-import { mapGetters, mapState } from 'vuex';
-import map from '../map';
+import OlLayerFactory from '../olLayerFactory'
+import { mapGetters, mapState } from 'vuex'
+import map from '../map'
 
-const olLayers = {};
+const olLayers = {}
 
 export default {
   name: 'mapPane',
   mounted() {
-    map.setTarget('map');
+    map.setTarget('map')
   },
   watch: {
     layers(layers) {
       // Remove all layers if any, needed when sorting layers through the UI
-      map.getLayers().forEach(l => map.removeLayer(l));
+      map.getLayers().forEach(l => map.removeLayer(l))
 
       layers.forEach(layerConfig => {
         try {
-          const olLayer = OlLayerFactory.createOlLayer(layerConfig);
+          const olLayer = OlLayerFactory.createOlLayer(layerConfig)
           if (olLayer) {
-            olLayers[layerConfig.id] = olLayer;
-            map.addLayer(olLayer);
+            olLayers[layerConfig.id] = olLayer
+            map.addLayer(olLayer)
           }
         } catch (e) {
-          console.log(e);
+          console.log(e)
         }
-      });
+      })
     },
     activeLayers(activeLayers) {
       this.layers.forEach(l =>
-        olLayers[l.id].setVisible(l.visible && activeLayers.find(a => a.id === l.id)));
+        olLayers[l.id].setVisible(l.visible && activeLayers.find(a => a.id === l.id)))
     },
     contextsTimes(contextsTimes) {
       for (const contextId in contextsTimes) {
         if (contextsTimes[contextId]) {
-          const context = this.contexts.find(c => c.id === +contextId);
+          const context = this.contexts.find(c => c.id === +contextId)
           context.layers.forEach(l =>
-            olLayers[l.id].getSource().updateParams({ 'TIME': contextsTimes[contextId].iso8601 }));
+            olLayers[l.id].getSource().updateParams({ 'TIME': contextsTimes[contextId].iso8601 }))
         }
       }
     }
@@ -56,7 +56,7 @@ export default {
       'activeLayers'
     ])
   }
-};
+}
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Modal from './Modal';
+import Modal from './Modal'
 
 export default {
   components: {
@@ -16,75 +16,75 @@ export default {
   props: ['show'],
   methods: {
     hideUploadPopup() {
-      this.$emit('disable');
+      this.$emit('disable')
     }
   },
   watch: {
     show(show) {
-      let counter = 0;
+      let counter = 0
 
       const dragEnter = function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        counter++;
-        document.getElementById('dropTarget').classList.add('dragover');
-      };
+        e.stopPropagation()
+        e.preventDefault()
+        counter++
+        document.getElementById('dropTarget').classList.add('dragover')
+      }
 
       const dragLeave = function(e) {
-        counter--;
+        counter--
         if (counter === 0) {
-          document.getElementById('dropTarget').classList.remove('dragover');
+          document.getElementById('dropTarget').classList.remove('dragover')
         }
-      };
+      }
 
       const dragOver = function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-      };
+        e.stopPropagation()
+        e.preventDefault()
+      }
 
       const handleFiles = files => {
-        const file = files[0]; // only the first file is shown - TODO show error
+        const file = files[0] // only the first file is shown - TODO show error
         // TODO check file type
         // if (file.type !== 'application/xml') {
-        //   alert('Not a KML file');
-        //   return;
+        //   alert('Not a KML file')
+        //   return
         // }
 
-        const reader = new FileReader();
+        const reader = new FileReader()
         reader.onload = e => {
           try {
-            this.$store.commit('overlay_kml', { kml: e.target.result });
+            this.$store.commit('overlay_kml', { kml: e.target.result })
           } catch (err) {
-            alert('Error reading the KML file:\n' + err);
+            alert('Error reading the KML file:\n' + err)
           }
-          this.hideUploadPopup();
-        };
-        reader.readAsText(file);
-      };
+          this.hideUploadPopup()
+        }
+        reader.readAsText(file)
+      }
 
       const drop = function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation()
+        e.preventDefault()
 
         const dt = e.dataTransfer,
-              files = dt.files;
+              files = dt.files
 
-        handleFiles(files);
+        handleFiles(files)
 
-        counter = 0;
-      };
+        counter = 0
+      }
       if (show) {
         this.$nextTick(() => {
-          const dropTarget = document.getElementById('dropTarget');
-          dropTarget.addEventListener('dragenter', dragEnter, false);
-          dropTarget.addEventListener('dragleave', dragLeave, false);
-          dropTarget.addEventListener('dragover', dragOver, false);
-          dropTarget.addEventListener('drop', drop, false);
-        });
+          const dropTarget = document.getElementById('dropTarget')
+          dropTarget.addEventListener('dragenter', dragEnter, false)
+          dropTarget.addEventListener('dragleave', dragLeave, false)
+          dropTarget.addEventListener('dragover', dragOver, false)
+          dropTarget.addEventListener('drop', drop, false)
+        })
       }
     }
   }
-};
+}
 </script>
 
 <style>

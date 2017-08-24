@@ -123,23 +123,23 @@
 </template>
 
 <script>
-import Modal from '../Modal';
-import EditLabels from './EditLabels';
-import { mapState } from 'vuex';
+import Modal from '../Modal'
+import EditLabels from './EditLabels'
+import { mapState } from 'vuex'
 
-import { Layer, getLocalizedLabels } from '../../config';
-import httpRequest from '../../httpRequest';
+import { Layer, getLocalizedLabels } from '../../config'
+import httpRequest from '../../httpRequest'
 
-import Icon from 'vue-awesome/components/Icon';
+import Icon from 'vue-awesome/components/Icon'
 
-import xml2js from 'xml2js';
-import vuedraggable from 'vuedraggable';
+import xml2js from 'xml2js'
+import vuedraggable from 'vuedraggable'
 
-import 'vue-awesome/icons/sort';
-import 'vue-awesome/icons/bar-chart';
-import 'vue-awesome/icons/th-list';
+import 'vue-awesome/icons/sort'
+import 'vue-awesome/icons/bar-chart'
+import 'vue-awesome/icons/th-list'
 
-import { map as mapConfig } from 'config';
+import { map as mapConfig } from 'config'
 
 export default {
   data() {
@@ -150,7 +150,7 @@ export default {
       wmsLayerNames: [],
       selectedWmsName: null,
       getCapabilitiesError: false
-    };
+    }
   },
   components: {
     Modal,
@@ -160,41 +160,41 @@ export default {
   },
   methods: {
     toggleCustomUrls() {
-      if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null;
-      else this.serverUrlsCsv = '';
+      if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null
+      else this.serverUrlsCsv = ''
     },
     getWmsLayers() {
       if (this.layer && this.layer.type === 'wms') {
-        const url = `${this.layer.urls[0]}?service=wms&version=1.1.1&request=GetCapabilities`;
+        const url = `${this.layer.urls[0]}?service=wms&version=1.1.1&request=GetCapabilities`
         httpRequest('GET', url).then(xml => {
           xml2js.parseString(xml, (err, result) => {
-            if (err) throw err;
+            if (err) throw err
 
-            const wmsLayers = result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer;
+            const wmsLayers = result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer
 
             // Fill the options element
-            this.wmsLayerNames = wmsLayers.map(l => l.Name[0]);
+            this.wmsLayerNames = wmsLayers.map(l => l.Name[0])
 
             // If it doesn't find the current layer name in the list, set the selectedWmsName
             // to null so that this.layer.name isn't changed.
             // Needed for example when this.layer.name doesn't contain the workspace yet.
             if (this.wmsLayerNames.indexOf(this.layer.name) > -1) {
-              this.selectedWmsName = this.layer.name;
+              this.selectedWmsName = this.layer.name
             } else {
-              this.selectedWmsName = null;
+              this.selectedWmsName = null
             }
-          });
+          })
 
-          this.getCapabilitiesError = false;
+          this.getCapabilitiesError = false
         })
         .catch(err => {
-          err; // jslint expects error to be handled
-          this.getCapabilitiesError = true;
-        });
+          err // jslint expects error to be handled
+          this.getCapabilitiesError = true
+        })
       }
     },
     addLayer(type) {
-      let layer;
+      let layer
       switch (type) {
         case 'wms':
           layer = new Layer({
@@ -202,125 +202,125 @@ export default {
             name: 'new_layer',
             id: Layer.nextId++,
             imageFormat: 'image/png8'
-          });
-          break;
+          })
+          break
         case 'osm':
           layer = new Layer({
             type: 'osm',
             id: Layer.nextId++
-          });
-          break;
+          })
+          break
         case 'bing':
           layer = new Layer({
             type: 'bing-aerial',
             id: Layer.nextId++
-          });
-          break;
+          })
+          break
       }
 
       if (layer) {
-        this.layersClone.push(layer);
-        this.layer = layer;
+        this.layersClone.push(layer)
+        this.layer = layer
       }
     },
     editLayer(layer) {
-      this.layer = layer;
+      this.layer = layer
     },
     deleteLayer(layer) {
-      const index = this.layersClone.indexOf(layer);
-      if (index > -1) this.layersClone.splice(index, 1);
-      this.layer = null;
+      const index = this.layersClone.indexOf(layer)
+      if (index > -1) this.layersClone.splice(index, 1)
+      this.layer = null
     },
     deleteStatistics(statistics) {
       if (confirm('Are you sure you want to delete the statistics?')) {
-        const index = this.layer.statistics.indexOf(statistics);
-        if (index > -1) this.layer.statistics.splice(index, 1);
+        const index = this.layer.statistics.indexOf(statistics)
+        if (index > -1) this.layer.statistics.splice(index, 1)
       }
     },
     addUrlStatistics() {
-      if (!this.layer.statistics) this.$set(this.layer, 'statistics', []);
+      if (!this.layer.statistics) this.$set(this.layer, 'statistics', [])
       this.layer.statistics.push({
         type: 'url',
         url: '',
         labels: getLocalizedLabels()
-      });
+      })
     },
     addAttributesStatistics() {
-      if (!this.layer.statistics) this.$set(this.layer, 'statistics', []);
+      if (!this.layer.statistics) this.$set(this.layer, 'statistics', [])
       this.layer.statistics.push({
         type: 'attributes',
         labels: getLocalizedLabels()
-      });
+      })
     },
     addAttribute(statistics) {
-      if (!statistics.attributes) this.$set(statistics, 'attributes', []);
-      statistics.attributes.push({ labels: getLocalizedLabels(), attribute: null });
+      if (!statistics.attributes) this.$set(statistics, 'attributes', [])
+      statistics.attributes.push({ labels: getLocalizedLabels(), attribute: null })
     },
     deleteAttribute(statistics, attribute) {
       if (confirm('Are you sure you want to delete the attribute?')) {
-        const index = statistics.attributes.indexOf(attribute);
-        if (index > -1) statistics.attributes.splice(index, 1);
-        if (!statistics.attributes.length) this.$set(statistics, 'attributes', undefined);
+        const index = statistics.attributes.indexOf(attribute)
+        if (index > -1) statistics.attributes.splice(index, 1)
+        if (!statistics.attributes.length) this.$set(statistics, 'attributes', undefined)
       }
     },
     save() {
       this.layersClone.forEach(function(l) {
-        if (l.statistics && l.statistics.length === 0) l.statistics = null;
-        // if (l.serverUrls) l.urls = l.serverUrls;
-        // else l.urls = defaultGeoServerURLs;
-      });
-      this.$store.commit('update_layers', { value: this.layersClone });
-      this.close();
+        if (l.statistics && l.statistics.length === 0) l.statistics = null
+        // if (l.serverUrls) l.urls = l.serverUrls
+        // else l.urls = defaultGeoServerURLs
+      })
+      this.$store.commit('update_layers', { value: this.layersClone })
+      this.close()
     },
     close() {
-      this.$store.commit('edit_layers', { edit: null });
-      this.layer = null;
+      this.$store.commit('edit_layers', { edit: null })
+      this.layer = null
     }
   },
   watch: {
     editLayers() {
       // Deep clone the layers vector
-      this.layersClone = JSON.parse(JSON.stringify(this.layers));
+      this.layersClone = JSON.parse(JSON.stringify(this.layers))
     },
     layer(layer) {
-      if (layer && layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(', ');
+      if (layer && layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(', ')
       else {
-        this.serverUrlsCsv = null;
-        this.wmsLayerNames = [];
-        this.selectedWmsName = null;
-        this.getCapabilitiesError = false;
+        this.serverUrlsCsv = null
+        this.wmsLayerNames = []
+        this.selectedWmsName = null
+        this.getCapabilitiesError = false
       }
     },
     selectedWmsName() {
       if (this.selectedWmsName) {
-        this.layer.name = this.selectedWmsName;
+        this.layer.name = this.selectedWmsName
       }
     },
     serverUrlsCsv(csv) {
       // TODO remove circularity (layer => serverUrlsCsv => layer.serverUrls)
       if (this.layer) {
-        this.layer.serverUrls = csv !== null && csv.split(',').map(url => url.trim());
-        if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls;
-        else this.layer.urls = mapConfig.defaultGeoServerURLs;
+        this.layer.serverUrls = csv !== null && csv.split(',').map(url => url.trim())
+        if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls
+        else this.layer.urls = mapConfig.defaultGeoServerURLs
       }
     }
   },
   computed: {
     legendType: {
       get() {
-        if (!this.layer.legend) return null;
-        return this.layer.legend.type;
+        if (!this.layer.legend) return null
+        return this.layer.legend.type
       },
       set(type) {
         switch (type) {
           case 'wms':
-            this.layer.legend = { type: 'wms', 'style': '' };
-            break;
+            this.layer.legend = { type: 'wms', 'style': '' }
+            break
           case 'url':
-            this.layer.legend = { type: 'url', 'style': '' };
-            break;
+            this.layer.legend = { type: 'url', 'style': '' }
+            break
           case '':
-            this.layer.legend = undefined;
+            this.layer.legend = undefined
         }
       }
     },
@@ -329,7 +329,7 @@ export default {
       'layers'
     ])
   }
-};
+}
 </script>
 
 <style scoped>

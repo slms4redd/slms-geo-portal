@@ -25,12 +25,12 @@
 <script>
 /* global ol */
 
-import { mapState } from 'vuex';
-import map from '../map';
-import { feedbackApi } from 'config';
+import { mapState } from 'vuex'
+import map from '../map'
+import { feedbackApi } from 'config'
 
 let drawLayer = null,
-    drawInteraction = null;
+    drawInteraction = null
 
 export default {
   data() {
@@ -40,85 +40,85 @@ export default {
       draw: null,
       categories: feedbackApi.feedbackCategories,
       selectedCategory: ''
-    };
+    }
   },
   watch: {
     enableFeedback(enable) {
       if (enable) {
-        this.drawSource = new ol.source.Vector({ wrapX: false });
+        this.drawSource = new ol.source.Vector({ wrapX: false })
 
         drawLayer = new ol.layer.Vector({
           source: this.drawSource,
           map: map
-        });
+        })
 
-        this.draw = 'Polygon';
+        this.draw = 'Polygon'
       } else {
-        this.message = '';
-        this.selectedCategory = '';
-        map.removeInteraction(drawInteraction);
-        this.clear();
-        map.removeLayer(drawLayer);
-        this.draw = null;
+        this.message = ''
+        this.selectedCategory = ''
+        map.removeInteraction(drawInteraction)
+        this.clear()
+        map.removeLayer(drawLayer)
+        this.draw = null
       }
     },
     draw() {
-      if (!this.draw) return;
+      if (!this.draw) return
 
-      if (drawInteraction) map.removeInteraction(drawInteraction);
+      if (drawInteraction) map.removeInteraction(drawInteraction)
       drawInteraction = new ol.interaction.Draw({
         source: this.drawSource,
         type: this.draw
-      });
-      map.addInteraction(drawInteraction);
+      })
+      map.addInteraction(drawInteraction)
     }
   },
   methods: {
     setDrawTool(type) {
-      this.draw = type;
+      this.draw = type
     },
     sendFeedback() {
       const allFeatures = drawLayer.getSource().getFeatures(),
             format = new ol.format.KML(),
             kml = format.writeFeatures(allFeatures, { featureProjection: 'EPSG:3857' }),
             xhr = new XMLHttpRequest(),
-            _this = this;
+            _this = this
 
       xhr.onreadystatechange = function() {
         if (this.readyState === 4) {
-          if (this.status === 200) alert('Feedback sent');
-          else alert('Error sending feedback\n' + this.responseText);
+          if (this.status === 200) alert('Feedback sent')
+          else alert('Error sending feedback\n' + this.responseText)
 
-          _this.disableFeedback();
+          _this.disableFeedback()
         }
-      };
+      }
 
-      const params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`;
+      const params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`
 
-      xhr.open('POST', feedbackApi.feedbackUrl, true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.open('POST', feedbackApi.feedbackUrl, true)
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 
-      xhr.send(params);
+      xhr.send(params)
     },
     disableFeedback() {
-      this.$store.commit('enable_feedback', { enable: false });
+      this.$store.commit('enable_feedback', { enable: false })
     },
     clear() {
-      drawLayer.getSource().clear();
+      drawLayer.getSource().clear()
     }
   },
   computed: {
     drew: function() {
-      return !!(this.drawSource && this.drawSource.getFeatures().length);
+      return !!(this.drawSource && this.drawSource.getFeatures().length)
     },
     disableSend: function() {
-      return !(this.drew && this.message !== '' && this.selectedCategory !== '');
+      return !(this.drew && this.message !== '' && this.selectedCategory !== '')
     },
     ...mapState([
       'enableFeedback'
     ])
   }
-};
+}
 </script>
 
 <style scoped>

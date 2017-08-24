@@ -1,17 +1,17 @@
 /* global ol */
 
-import { map as mapConfig } from 'config';
+import { map as mapConfig } from 'config'
 
-const attributions = [];
+const attributions = []
 
 class OlLayerFactory {
   static createOlLayer(layerConfig) {
-    let source;
+    let source
 
     switch (layerConfig.type) {
       case 'osm':
-        source = new ol.source.OSM();
-        break;
+        source = new ol.source.OSM()
+        break
       case 'bing-aerial':
         source = new ol.source.BingMaps({
           key: mapConfig.bingMapsKey,
@@ -19,28 +19,28 @@ class OlLayerFactory {
           // use maxZoom 19 to see stretched tiles instead of the BingMaps
           // "no photos at this zoom level" tiles
           // maxZoom: 19
-        });
-        break;
+        })
+        break
       default:
         const olAttributions = [],
               sourceLabel = layerConfig.sourceLabel,
-              sourceLink = layerConfig.sourceLink;
+              sourceLink = layerConfig.sourceLink
 
         if (sourceLabel || sourceLink) {
-          let attribution = attributions[sourceLabel || sourceLink];
+          let attribution = attributions[sourceLabel || sourceLink]
           if (!attribution) {
             if (sourceLink) {
               attribution = new ol.Attribution({
                 html: `<a target="_blank" href="${layerConfig.sourceLink}">${sourceLabel || sourceLink}</a>`
-              });
+              })
             } else {
               attribution = new ol.Attribution({
                 html: sourceLabel
-              });
+              })
             }
           }
-          attributions[sourceLabel || sourceLink] = attribution;
-          olAttributions.push(attribution);
+          attributions[sourceLabel || sourceLink] = attribution
+          olAttributions.push(attribution)
         }
         source = new ol.source.TileWMS(({
           urls: layerConfig.urls,
@@ -55,15 +55,15 @@ class OlLayerFactory {
           },
           serverType: 'geoserver',
           attributions: olAttributions
-        }));
+        }))
     }
     if (source) {
       return new ol.layer.Tile({
         visible: false, // will be set by the activeLayers watch in MapPane
         source: source
-      });
+      })
     }
   }
 }
 
-export default OlLayerFactory;
+export default OlLayerFactory

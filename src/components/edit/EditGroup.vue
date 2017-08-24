@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { languages } from 'config';
-import Modal from '../Modal';
-import EditLabels from './EditLabels';
+import { mapState } from 'vuex'
+import { languages } from 'config'
+import Modal from '../Modal'
+import EditLabels from './EditLabels'
 
 export default {
   data() {
@@ -28,7 +28,7 @@ export default {
       labels: null,
       exclusive: null,
       infoFile: null
-    };
+    }
   },
   components: {
     Modal,
@@ -41,34 +41,34 @@ export default {
         labels: this.labels,
         exclusive: this.exclusive,
         infoFile: this.infoFile
-      });
+      })
 
-      this.close();
+      this.close()
     },
     close() {
-      this.$store.commit('edit_item', { id: null });
+      this.$store.commit('edit_item', { id: null })
     }
   },
   watch: {
     editGroup() {
       if (this.editGroup) {
         // this.label = this.editGroup.label;
-        this.exclusive = this.editGroup.exclusive;
-        this.infoFile = this.editGroup.infoFile;
+        this.exclusive = this.editGroup.exclusive
+        this.infoFile = this.editGroup.infoFile
         this.labels = languages.map(l => {
-          const loc = this.editGroup.labels.find(l2 => l2.language === l.id);
+          const loc = this.editGroup.labels.find(l2 => l2.language === l.id)
           return {
             language: l.id,
             label: loc ? loc.label : null
-          };
-        });
+          }
+        })
       }
     }
   },
   computed: mapState([
     'editGroup'
   ])
-};
+}
 </script>
 
 <style scoped>

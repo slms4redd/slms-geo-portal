@@ -21,18 +21,18 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { saveConfiguration, getConfigurationHistory } from '../../config';
-import EditGroup from './EditGroup';
-import EditContext from './EditContext';
-import EditLayers from './EditLayers';
-import RestoreBackup from './RestoreBackup';
+import { mapState } from 'vuex'
+import { saveConfiguration, getConfigurationHistory } from '../../config'
+import EditGroup from './EditGroup'
+import EditContext from './EditContext'
+import EditLayers from './EditLayers'
+import RestoreBackup from './RestoreBackup'
 
 export default {
   data() {
     return {
       backups: null
-    };
+    }
   },
   components: {
     EditGroup,
@@ -43,40 +43,40 @@ export default {
   methods: {
     startEditing() {
       // the 'editing' flag is also used in Item.vue
-      this.$store.commit('enable_edit', { editing: true });
+      this.$store.commit('enable_edit', { editing: true })
     },
     showHistory() {
-      getConfigurationHistory().then(backups => { this.backups = backups });
+      getConfigurationHistory().then(backups => { this.backups = backups })
     },
     hideHistory() {
-      this.backups = null;
+      this.backups = null
     },
     // copyToClipboard() {
     //   alert('Not implemented yet');
     // },
     editLayers() {
-      this.$store.commit('edit_layers', { edit: true });
+      this.$store.commit('edit_layers', { edit: true })
     },
     cancel() {
-      this.$store.commit('enable_edit', { enable: false });
+      this.$store.commit('enable_edit', { enable: false })
 
       // Reload the layers configuration from server
-      this.$store.dispatch('fetchLayersConfig');
+      this.$store.dispatch('fetchLayersConfig')
     },
     addGroup() {
-      this.$store.commit('add_group');
+      this.$store.commit('add_group')
     },
     addContext() {
-      this.$store.commit('add_context');
+      this.$store.commit('add_context')
     },
     save() {
-      const layersRank = this.layers.map(l => l.id);
+      const layersRank = this.layers.map(l => l.id)
 
       saveConfiguration(this.groups, layersRank)
         .then(() => {
-          alert('Configuration saved');
-          this.$store.commit('enable_edit', { editing: false });
-        });
+          alert('Configuration saved')
+          this.$store.commit('enable_edit', { editing: false })
+        })
         // .catch(e => alert(e.statusText));
     }
   },
@@ -87,7 +87,7 @@ export default {
     'contexts',
     'groups'
   ])
-};
+}
 </script>
 
 <style scoped>

@@ -16,7 +16,7 @@ export default {
   props: {
     logosList: Array
   }
-};
+}
 </script>
 
 <style scoped>

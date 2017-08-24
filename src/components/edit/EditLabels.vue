@@ -12,7 +12,7 @@ export default {
   props: {
     labels: Array
   }
-};
+}
 </script>
 
 <style scoped>

@@ -6,20 +6,20 @@
 </template>
 
 <script>
-import Modal from './Modal';
-import { mapState } from 'vuex';
-import httpRequest from '../httpRequest';
-import Vue from 'vue';
+import Modal from './Modal'
+import { mapState } from 'vuex'
+import httpRequest from '../httpRequest'
+import Vue from 'vue'
 
 const processUrlTemplate = function(urlTemplate) {
-  return urlTemplate.replace('$(_lang)', Vue.i18n.locale());
-};
+  return urlTemplate.replace('$(_lang)', Vue.i18n.locale())
+}
 
 export default {
   data() {
     return {
       showModal: false
-    };
+    }
   },
   components: {
     Modal
@@ -27,24 +27,24 @@ export default {
   watch: {
     layerInfo: function(val) {
       if (!val.fileName) {
-        this.showModal = false;
+        this.showModal = false
       } else {
-        this.label = val.label;
+        this.label = val.label
 
         const showContent = content => {
-          this.content = content;
-          this.showModal = true;
-        };
+          this.content = content
+          this.showModal = true
+        }
         httpRequest('GET', processUrlTemplate(val.fileName))
           .then(responseText => showContent(responseText))
-          .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`));
+          .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`))
       }
     }
   },
   computed: mapState([
     'layerInfo'
   ])
-};
+}
 </script>
 
 <style scoped>

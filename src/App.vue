@@ -18,20 +18,20 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from 'vue'
 
-import Banner from './components/Banner';
-import MapPane from './components/MapPane';
-import LayerSelector from './components/LayerSelector';
-import ContextInfoModal from './components/ContextInfoModal';
-import FeatureInfo from './components/FeatureInfo';
-import Feedback from './components/Feedback';
-import KMLOverlay from './components/KMLOverlay';
-import Logos from './components/Logos';
+import Banner from './components/Banner'
+import MapPane from './components/MapPane'
+import LayerSelector from './components/LayerSelector'
+import ContextInfoModal from './components/ContextInfoModal'
+import FeatureInfo from './components/FeatureInfo'
+import Feedback from './components/Feedback'
+import KMLOverlay from './components/KMLOverlay'
+import Logos from './components/Logos'
 
-import { logos } from 'config';
+import { logos } from 'config'
 
-import auth from './auth';
+import auth from './auth'
 
 export default {
   name: 'app',
@@ -51,27 +51,27 @@ export default {
       user: auth.user,
       showConsole: false,
       llLogos: logos.ll
-    };
+    }
   },
   created() {
-    this.$store.dispatch('fetchLayersConfig');
-    if (this.user.authenticated) this.loadEditor();
+    this.$store.dispatch('fetchLayersConfig')
+    if (this.user.authenticated) this.loadEditor()
   },
   watch: {
     'user.authenticated'() {
-      if (this.user.authenticated) this.loadEditor();
-      else this.showConsole = false;
+      if (this.user.authenticated) this.loadEditor()
+      else this.showConsole = false
     }
   },
   methods: {
     loadEditor() {
       require.ensure(['./components/edit/EditorConsole'], require => {
-        Vue.component('EditorConsole', require('./components/edit/EditorConsole'));
-        this.showConsole = true;
-      }, 'editing-chunk');
+        Vue.component('EditorConsole', require('./components/edit/EditorConsole'))
+        this.showConsole = true
+      }, 'editing-chunk')
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

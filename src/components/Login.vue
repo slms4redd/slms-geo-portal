@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import auth from '../auth';
+import auth from '../auth'
 
 export default {
   data() {
@@ -34,18 +34,18 @@ export default {
         password: ''
       },
       error: ''
-    };
+    }
   },
   methods: {
     submit() {
       const credentials = {
         username: this.credentials.username,
         password: this.credentials.password
-      };
+      }
       // We need to pass the component's this context
       // to properly make use of http in the auth service
-      auth.login(this, credentials, 'secretquote');
+      auth.login(this, credentials, 'secretquote')
     }
   }
-};
+}
 </script>

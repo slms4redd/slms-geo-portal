@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import Modal from '../Modal';
-import EditLabels from './EditLabels';
-import { languages } from 'config';
+import Modal from '../Modal'
+import EditLabels from './EditLabels'
+import { languages } from 'config'
 
 export default {
   data() {
@@ -40,7 +40,7 @@ export default {
       inlineLegendUrl: null,
       layers: null,
       selectedLayers: null
-    };
+    }
   },
   components: {
     Modal,
@@ -56,52 +56,52 @@ export default {
         active: this.active,
         inlineLegendUrl: this.inlineLegendUrl,
         layerIds: this.selectedLayers
-      });
+      })
 
-      this.close();
+      this.close()
     },
     close() {
-      this.$store.commit('edit_item', { id: null });
+      this.$store.commit('edit_item', { id: null })
     }
   },
   watch: {
     editContext() {
       if (this.editContext) {
-        this.exclusive = this.editContext.exclusive;
-        this.infoFile = this.editContext.infoFile;
+        this.exclusive = this.editContext.exclusive
+        this.infoFile = this.editContext.infoFile
 
         this.labels = languages.map(l => {
-          const loc = this.editContext.labels.find(l2 => l2.language === l.id);
+          const loc = this.editContext.labels.find(l2 => l2.language === l.id)
           return {
             language: l.id,
             label: loc ? loc.label : null
-          };
-        });
+          }
+        })
 
-        this.infoFile = this.editContext.infoFile;
-        this.active = this.editContext.active;
-        this.inlineLegendUrl = this.editContext.inlineLegendUrl;
+        this.infoFile = this.editContext.infoFile
+        this.active = this.editContext.active
+        this.inlineLegendUrl = this.editContext.inlineLegendUrl
         this.layers = this.allLayers.map(l => {
-          const ret = { id: l.id };
-          if (l.type === 'wms') ret.label = l.name;
-          else if (l.type === 'bing-aerial') ret.label = 'Bing Aerial';
-          else if (l.type === 'osm') ret.label = 'OpenStreetMap';
-          else ret.label = '???';
-          return ret;
-        });
-        this.selectedLayers = this.editContext.layers.map(l => l.id);
+          const ret = { id: l.id }
+          if (l.type === 'wms') ret.label = l.name
+          else if (l.type === 'bing-aerial') ret.label = 'Bing Aerial'
+          else if (l.type === 'osm') ret.label = 'OpenStreetMap'
+          else ret.label = '???'
+          return ret
+        })
+        this.selectedLayers = this.editContext.layers.map(l => l.id)
       }
     }
   },
   computed: {
     editContext() {
-      return this.$store.state.editContext;
+      return this.$store.state.editContext
     },
     allLayers() {
-      return this.$store.state.layers;
+      return this.$store.state.layers
     }
   }
-};
+}
 </script>
 
 <style scoped>

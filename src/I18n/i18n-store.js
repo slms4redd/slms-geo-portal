@@ -5,7 +5,7 @@
 ** strings in your vue components.
 */
 
-import httpRequest from '../httpRequest';
+import httpRequest from '../httpRequest'
 
 // define a simple vuex module to handle locale translations
 const i18nVuexModule = {
@@ -17,17 +17,17 @@ const i18nVuexModule = {
   mutations: {
     // set the current locale
     SET_LOCALE(state, { locale }) {
-      state.locale = locale;
+      state.locale = locale
     },
 
     // add a new locale
     ADD_LOCALE(state, { locale, translations }) {
       // reduce the given translations to a single-depth tree
-      state.translations[locale] = flattenTranslations(translations);
+      state.translations[locale] = flattenTranslations(translations)
 
       // make sure to notify vue of changes (this might break with new vue versions)
       try {
-        if (state.translations.__ob__) state.translations.__ob__.dep.notify();
+        if (state.translations.__ob__) state.translations.__ob__.dep.notify()
       } catch (ex) {}
     },
 
@@ -38,22 +38,22 @@ const i18nVuexModule = {
         // check if the current locale is the given locale to remvoe
         if (state.locale === locale) {
           // reset the current locale
-          state.locale = null;
+          state.locale = null
         }
 
         // create a copy of the translations object
-        const translationCopy = Object.assign({}, state.translations);
+        const translationCopy = Object.assign({}, state.translations)
 
         // remove the given locale
-        delete translationCopy[locale];
+        delete translationCopy[locale]
 
         // set the state to the new object
-        state.translations = translationCopy;
+        state.translations = translationCopy
       }
     },
 
     SET_FALLBACK_LOCALE(state, { locale }) {
-      state.fallback = locale;
+      state.fallback = locale
     }
   },
   actions: {
@@ -62,7 +62,7 @@ const i18nVuexModule = {
       context.commit({
         type: 'SET_LOCALE',
         locale: payload.locale
-      });
+      })
     },
 
     // add a new locale with translations
@@ -71,36 +71,36 @@ const i18nVuexModule = {
         type: 'ADD_LOCALE',
         locale: locale,
         translations: translations
-      });
+      })
     },
 
     // loadLocale({ dispatch }, { locale, url }) {
     //   return fetch(url).then(response => {
     //     if (response.status !== 200) {
-    //       // console.log(`Looks like there was a problem. Status Code: ${response.status}`);
-    //       return Promise.reject(`Looks like there was a problem. Status Code: ${response.status}`);
+    //       // console.log(`Looks like there was a problem. Status Code: ${response.status}`)
+    //       return Promise.reject(`Looks like there was a problem. Status Code: ${response.status}`)
     //     }
     //     return response.json().then(data => {
-    //       dispatch('addLocale', { locale: locale, translations: data });
-    //       return Promise.resolve();
-    //     }).catch(e => Promise.reject(e));
-    //   });
+    //       dispatch('addLocale', { locale: locale, translations: data })
+    //       return Promise.resolve()
+    //     }).catch(e => Promise.reject(e))
+    //   })
     //   return httpRequest('GET', url)
     //     .then(responseText => {
-    //       dispatch('addLocale', { locale: locale, translations: JSON.parse(responseText) });
+    //       dispatch('addLocale', { locale: locale, translations: JSON.parse(responseText) })
     //       return Promise.resolve()
     //     })
-    //     .catch(e => Promise.reject(e));
+    //     .catch(e => Promise.reject(e))
     //   }
     // },
 
     loadLocale({ dispatch }, { locale, url }) {
       return httpRequest('GET', url)
         .then(responseText => {
-          dispatch('addLocale', { locale: locale, translations: JSON.parse(responseText) });
-          return Promise.resolve();
+          dispatch('addLocale', { locale: locale, translations: JSON.parse(responseText) })
+          return Promise.resolve()
         })
-        .catch(e => Promise.reject(e));
+        .catch(e => Promise.reject(e))
     },
 
     // remove the given locale translations
@@ -109,54 +109,54 @@ const i18nVuexModule = {
         type: 'REMOVE_LOCALE',
         locale: locale,
         translations: translations
-      });
+      })
     },
 
     setFallbackLocale(context, { locale }) {
       context.commit({
         type: 'SET_FALLBACK_LOCALE',
         locale: locale
-      });
+      })
     }
 
   }
-};
+}
 
 // flattenTranslations will convert object trees for translations into a
 // single-depth object tree
 const flattenTranslations = function flattenTranslations(translations) {
-  const flattened = {};
+  const flattened = {}
 
   for (const i in translations) {
     // check if the property is present
-    if (!translations.hasOwnProperty(i)) continue;
+    if (!translations.hasOwnProperty(i)) continue
 
-    const translation = translations[i];
+    const translation = translations[i]
 
     // allow unflattened array of strings
     if (isArray(translation)) {
       if (translation.find(el => typeof el !== 'string')) {
-        console.warn('i18n:', 'currently only arrays of strings are supported', translation);
+        console.warn('i18n:', 'currently only arrays of strings are supported', translation)
       }
 
-      flattened[i] = translation;
+      flattened[i] = translation
     } else if (typeof translation === 'object' && translation !== null) {
-      const flatObject = flattenTranslations(translation);
+      const flatObject = flattenTranslations(translation)
 
       for (const x in flatObject) {
-        if (!flatObject.hasOwnProperty(x)) continue;
-        flattened[i + '.' + x] = flatObject[x];
+        if (!flatObject.hasOwnProperty(x)) continue
+        flattened[i + '.' + x] = flatObject[x]
       }
     } else {
-      flattened[i] = translation;
+      flattened[i] = translation
     }
   }
-  return flattened;
-};
+  return flattened
+}
 
 // check if the given object is an array
 function isArray(obj) {
-  return !!obj && Array === obj.constructor;
+  return !!obj && Array === obj.constructor
 }
 
-export default i18nVuexModule;
+export default i18nVuexModule

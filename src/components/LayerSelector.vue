@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import Item from './Item';
-// import EditorConsole from './edit/EditorConsole';
-import { mapState } from 'vuex';
-// import { saveConfiguration, getConfigurationHistory } from '../config';
-import auth from '../auth';
+import Item from './Item'
+// import EditorConsole from './edit/EditorConsole'
+import { mapState } from 'vuex'
+// import { saveConfiguration, getConfigurationHistory } from '../config'
+import auth from '../auth'
 
 export default {
   name: 'layerSelector',
@@ -19,13 +19,13 @@ export default {
   data() {
     return {
       user: auth.user
-    };
+    }
   },
 
   computed: mapState([
     'groups'
   ])
-};
+}
 </script>
 
 <style scoped>

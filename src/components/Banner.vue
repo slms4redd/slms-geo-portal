@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import { languages } from 'config';
-import Vue from 'vue';
-import FileDrop from './FileDrop';
-import LoginModal from './LoginModal';
-import auth from '../auth';
+import { languages } from 'config'
+import Vue from 'vue'
+import FileDrop from './FileDrop'
+import LoginModal from './LoginModal'
+import auth from '../auth'
 
 export default {
   components: {
@@ -49,34 +49,34 @@ export default {
       showUpload: false,
       showLogin: false,
       user: auth.user
-    };
+    }
   },
   methods: {
     setLanguage(lang) {
       Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`).then((a) => {
-        Vue.i18n.set(lang);
-        this.selectedLanguage = Vue.i18n.locale();
-      }).catch(e => alert('Error loading language file: ' + e));
+        Vue.i18n.set(lang)
+        this.selectedLanguage = Vue.i18n.locale()
+      }).catch(e => alert('Error loading language file: ' + e))
     },
     enableFeedback(e) {
-      e.preventDefault();
-      this.$store.commit('enable_feedback', { enable: true });
+      e.preventDefault()
+      this.$store.commit('enable_feedback', { enable: true })
     },
     enableUpload(e) {
-      e.preventDefault();
-      this.showUpload = true;
+      e.preventDefault()
+      this.showUpload = true
     },
     disableUpload() {
-      this.showUpload = false;
+      this.showUpload = false
     },
     logout() {
-      auth.logout();
+      auth.logout()
     },
     showLoginDialog(show) {
-      this.showLogin = show;
+      this.showLogin = show
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

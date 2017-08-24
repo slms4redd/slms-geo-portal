@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import auth from '../auth';
+import auth from '../auth'
 
-import Modal from './Modal';
+import Modal from './Modal'
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
       user: null,
       password: null,
       error: null
-    };
+    }
   },
   components: {
     Modal
@@ -54,20 +54,20 @@ export default {
       const credentials = {
         username: this.user,
         password: this.password
-      };
+      }
       auth.login(credentials, 'secretquote')
           .then(user => {
-            this.$emit('disable');
-            this.user = this.password = this.error = null;
+            this.$emit('disable')
+            this.user = this.password = this.error = null
           })
-          .catch(function(error) { this.error = error.statusText }.bind(this));
+          .catch(function(error) { this.error = error.statusText }.bind(this))
     },
     cancel() {
-      this.$emit('disable');
-      this.user = this.password = this.error = null;
+      this.$emit('disable')
+      this.user = this.password = this.error = null
     }
   }
-};
+}
 </script>
 
 <style scoped>

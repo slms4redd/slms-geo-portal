@@ -66,24 +66,24 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapState } from 'vuex';
-import ContextLegend from './ContextLegend';
-import TimeSelect from './TimeSelect';
-import Icon from 'vue-awesome/components/Icon';
+import Vue from 'vue'
+import { mapState } from 'vuex'
+import ContextLegend from './ContextLegend'
+import TimeSelect from './TimeSelect'
+import Icon from 'vue-awesome/components/Icon'
 
-import 'vue-awesome/icons/plus-square-o';
-import 'vue-awesome/icons/minus-square-o';
-import 'vue-awesome/icons/th-list';
-import 'vue-awesome/icons/info-circle';
-import 'vue-awesome/icons/clock-o';
-import 'vue-awesome/icons/bar-chart';
-import 'vue-awesome/icons/square';
-import 'vue-awesome/icons/check-square';
-import 'vue-awesome/icons/circle';
-import 'vue-awesome/icons/dot-circle-o';
-import 'vue-awesome/icons/pencil-square-o';
-import 'vue-awesome/icons/trash-o';
+import 'vue-awesome/icons/plus-square-o'
+import 'vue-awesome/icons/minus-square-o'
+import 'vue-awesome/icons/th-list'
+import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/clock-o'
+import 'vue-awesome/icons/bar-chart'
+import 'vue-awesome/icons/square'
+import 'vue-awesome/icons/check-square'
+import 'vue-awesome/icons/circle'
+import 'vue-awesome/icons/dot-circle-o'
+import 'vue-awesome/icons/pencil-square-o'
+import 'vue-awesome/icons/trash-o'
 
 export default {
   name: 'item',
@@ -103,55 +103,55 @@ export default {
       showLegend: false,
       showTimeMenu: false,
       highlighted: false
-    };
+    }
   },
   computed: {
     list: {
       get() {
-        return this.conf.items;
+        return this.conf.items
       },
       set(value) {
-        this.$store.commit('update_group', { groupId: this.conf.id, value: value });
+        this.$store.commit('update_group', { groupId: this.conf.id, value: value })
       }
     },
     label() {
-      const loc = this.conf.labels.find(l => l.language === Vue.i18n.locale());
-      return loc ? loc.label : null;
+      const loc = this.conf.labels.find(l => l.language === Vue.i18n.locale())
+      return loc ? loc.label : null
     },
     isRoot() {
-      return !this.conf.parent;
+      return !this.conf.parent
     },
     hasLayers() {
-      return !!this.conf.layers.length;
+      return !!this.conf.layers.length
     },
     hasTimes() {
-      return !!this.conf.times.length;
+      return !!this.conf.times.length
     },
     hasStatistics() {
-      return this.conf.layers && this.conf.layers.some(l => l.statistics);
+      return this.conf.layers && this.conf.layers.some(l => l.statistics)
     },
     selectedTime() {
-      return this.contextsTimes[this.conf.id];
+      return this.contextsTimes[this.conf.id]
     },
     active() {
-      return this.activeContextsIds.indexOf(this.conf.id) !== -1;
+      return this.activeContextsIds.indexOf(this.conf.id) !== -1
     },
     nContexts() {
       return (function count(conf) {
         if (conf.isGroup) {
-          return conf.items.reduce((n, item) => n + count(item), 0);
+          return conf.items.reduce((n, item) => n + count(item), 0)
         }
-        return conf.layers.length ? 1 : 0;
-      })(this.conf);
+        return conf.layers.length ? 1 : 0
+      })(this.conf)
     },
     nActive() {
-      const activeContextsIds = this.activeContextsIds;
+      const activeContextsIds = this.activeContextsIds
       return (function count(conf) {
         if (conf.isGroup) {
-          return conf.items.reduce((n, item) => n + count(item), 0);
+          return conf.items.reduce((n, item) => n + count(item), 0)
         }
-        return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0;
-      })(this.conf);
+        return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0
+      })(this.conf)
     },
     ...mapState([
       'contextsTimes',
@@ -161,54 +161,54 @@ export default {
   },
   watch: {
     active() {
-      this.showLegend = !this.active && false;
+      this.showLegend = !this.active && false
     }
   },
   methods: {
     startEditing() {
-      this.$store.commit('enable_edit', { editing: true });
+      this.$store.commit('enable_edit', { editing: true })
     },
     editItem() {
-      this.$store.commit('edit_item', { id: this.conf.id });
+      this.$store.commit('edit_item', { id: this.conf.id })
     },
     deleteItem() {
       if (confirm('Are you sure that you want to delete this item?')) {
-        this.$store.commit('delete_item', { id: this.conf.id });
+        this.$store.commit('delete_item', { id: this.conf.id })
       }
     },
     highlightContext(highlight) {
-      this.highlighted = highlight;
+      this.highlighted = highlight
     },
     toggleGroup() {
-      this.open = !this.open;
+      this.open = !this.open
     },
     toggleActive() {
       if (this.conf.layers.length) {
-        this.$store.commit('toggle_context', { contextId: this.conf.id });
+        this.$store.commit('toggle_context', { contextId: this.conf.id })
         if (this.conf.parent.exclusive) {
           this.conf.parent.items.forEach(item => {
             if (item.id !== this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
               // it's not this context and it's active
-              this.$store.commit('toggle_context', { contextId: item.id });
+              this.$store.commit('toggle_context', { contextId: item.id })
             }
-          });
+          })
         }
       }
     },
     toggleLegend() {
-      if (this.active) this.showLegend = !this.showLegend;
+      if (this.active) this.showLegend = !this.showLegend
     },
     showInfo() {
-      this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile });
+      this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile })
     },
     toggleTimeMenu() {
-      this.showTimeMenu = !this.showTimeMenu;
+      this.showTimeMenu = !this.showTimeMenu
     },
     setTime(time) {
-      this.$store.commit('set_context_time', { contextId: this.conf.id, time: time });
+      this.$store.commit('set_context_time', { contextId: this.conf.id, time: time })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import Modal from '../Modal';
+import Modal from '../Modal'
 
 export default {
   data() {
     return {
       restoreVersion: Math.max.apply(null, this.backups.map(b => b.version)),
       versions: this.backups.map(b => ({ version: b.version, date: new Date(b.date).toLocaleString() }))
-    };
+    }
   },
   components: {
     Modal
@@ -36,15 +36,15 @@ export default {
   methods: {
     restore() {
       if (confirm(`Are you sure you want to restore version ${this.restoreVersion} of the configuration?`)) {
-        this.$emit('close');
-        this.$store.dispatch('restoreBackup', { version: this.restoreVersion });
+        this.$emit('close')
+        this.$store.dispatch('restoreBackup', { version: this.restoreVersion })
       }
     },
     setRestoreVersion(version) {
-      this.restoreVersion = version;
+      this.restoreVersion = version
     }
   }
-};
+}
 </script>
 
 <style scoped>

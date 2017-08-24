@@ -17,10 +17,10 @@ export default {
   },
   methods: {
     set(time) {
-      this.$emit('setTime', time);
+      this.$emit('setTime', time)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

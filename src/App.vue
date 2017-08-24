@@ -1,22 +1,19 @@
 <template>
   <div id="app">
-    <!-- Map has to be there when the layers are added -->
-    <!-- An alternative is to move it inside the template call map.updateSize() -->
     <mapPane></mapPane>
+    <div class="layers">
+      <layerSelector></layerSelector>
+      <editor-console v-if="showConsole"></editor-console>
+    </div>
+    <!-- Hide until language is first loaded, to avoid showing i18n placeholders -->
+    <!-- Using v-show instead of v-if to optimize image loading -->
+    <banner v-show="this.$parent.loaded"></banner>
 
-    <!-- Hide until language is first loaded -->
-    <template v-if="this.$parent.loaded">
-      <div class="layers">
-        <layerSelector></layerSelector>
-        <editor-console v-if="showConsole"></editor-console>
-      </div>
-      <banner></banner>
-      <contextInfoModal></contextInfoModal>
-      <featureInfo></featureInfo>
-      <feedback></feedback>
-      <KMLOverlay></KMLOverlay>
-      <Logos id="ll_logos" :logosList="llLogos"></Logos>
-    </template>
+    <contextInfoModal></contextInfoModal>
+    <featureInfo></featureInfo>
+    <feedback></feedback>
+    <KMLOverlay></KMLOverlay>
+    <Logos id="ll_logos" :logosList="llLogos"></Logos>
   </div>
 </template>
 
@@ -97,7 +94,6 @@ body {
   background: url(assets/page-background.jpg) repeat 0 0;
 }
 .layers {
-
   position: absolute;
   top: $banner-height + 8px;
   left: 8px;

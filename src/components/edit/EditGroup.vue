@@ -18,7 +18,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { languages } from '../../assets/config.json';
+import { languages } from 'config';
 import Modal from '../Modal';
 import EditLabels from './EditLabels';
 

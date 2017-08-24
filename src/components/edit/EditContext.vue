@@ -29,7 +29,7 @@
 <script>
 import Modal from '../Modal';
 import EditLabels from './EditLabels';
-import { languages } from '../../assets/config.json';
+import { languages } from 'config';
 
 export default {
   data() {

@@ -3,7 +3,7 @@ import store from './store';
 import Vue from 'vue';
 import auth from './auth';
 import I18n from './I18n';
-import { languages } from './assets/config.json';
+import { languages } from 'config';
 
 // © http://stackoverflow.com/a/979995
 const httpGetParams = (function() {

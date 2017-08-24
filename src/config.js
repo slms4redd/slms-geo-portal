@@ -1,4 +1,4 @@
-import { defaultGeoServerURLs, languages, layersConfigApi as api } from './assets/config.json';
+import { map as mapConfig, languages, layersConfigApi as api } from 'config';
 import httpRequest from './httpRequest';
 import auth from './auth';
 
@@ -55,7 +55,7 @@ export class Layer {
     if (this.type === 'wms') {
       this.serverUrls = layerConfig.serverUrls || null;
       // the urls attribute will be deleted when saving
-      this.urls = layerConfig.serverUrls ? layerConfig.serverUrls : (defaultGeoServerURLs || null);
+      this.urls = layerConfig.serverUrls ? layerConfig.serverUrls : (mapConfig.defaultGeoServerURLs || null);
       this.name = layerConfig.wmsName || layerConfig.name || null;
       this.imageFormat = layerConfig.imageFormat || 'image/png8';
       this.legend = layerConfig.legend || null; // TODO check structure

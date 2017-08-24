@@ -139,7 +139,7 @@ import 'vue-awesome/icons/sort';
 import 'vue-awesome/icons/bar-chart';
 import 'vue-awesome/icons/th-list';
 
-import { defaultGeoServerURLs } from '../../assets/config.json';
+import { map as mapConfig } from 'config';
 
 export default {
   data() {
@@ -301,7 +301,7 @@ export default {
       if (this.layer) {
         this.layer.serverUrls = csv !== null && csv.split(',').map(url => url.trim());
         if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls;
-        else this.layer.urls = defaultGeoServerURLs;
+        else this.layer.urls = mapConfig.defaultGeoServerURLs;
       }
     }
   },

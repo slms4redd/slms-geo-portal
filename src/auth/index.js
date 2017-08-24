@@ -1,7 +1,7 @@
 // See https://auth0.com/blog/build-an-app-with-vuejs/
 
 import httpRequest from '../httpRequest';
-import { layersConfigApi as api } from '../assets/config.json';
+import { layersConfigApi as api } from 'config';
 
 export default {
   // User object will let us check authentication status

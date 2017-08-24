@@ -1,6 +1,6 @@
 /* global ol */
 
-import config from './assets/config.json';
+import { map as mapConfig } from 'config';
 
 const mousePositionControl = new ol.control.MousePosition({
   coordinateFormat: ol.coordinate.createStringXY(4),
@@ -13,7 +13,7 @@ export default new ol.Map({
     attributionOptions: ({ collapsible: false })
   }).extend([mousePositionControl]),
   view: new ol.View({
-    center: ol.proj.fromLonLat(config.mapCenterLonLat || [0, 0]),
-    zoom: config.mapZoom || 4
+    center: ol.proj.fromLonLat(mapConfig.mapCenterLonLat || [0, 0]),
+    zoom: mapConfig.mapZoom || 4
   })
 });

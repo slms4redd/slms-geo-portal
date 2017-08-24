@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { languages } from '../assets/config.json';
+import { languages } from 'config';
 import Vue from 'vue';
 import FileDrop from './FileDrop';
 import LoginModal from './LoginModal';

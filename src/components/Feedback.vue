@@ -27,7 +27,7 @@
 
 import { mapState } from 'vuex';
 import map from '../map';
-import config from '../assets/config.json';
+import { feedbackApi } from 'config';
 
 let drawLayer = null,
     drawInteraction = null;
@@ -38,7 +38,7 @@ export default {
       drawSource: null,
       message: '',
       draw: null,
-      categories: config.feedbackCategories,
+      categories: feedbackApi.feedbackCategories,
       selectedCategory: ''
     };
   },
@@ -95,7 +95,7 @@ export default {
 
       const params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`;
 
-      xhr.open('POST', config.feedbackUrl, true);
+      xhr.open('POST', feedbackApi.feedbackUrl, true);
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
       xhr.send(params);

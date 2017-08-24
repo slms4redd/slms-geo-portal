@@ -1,6 +1,6 @@
 /* global ol */
 
-import { bingMapsKey } from './assets/config.json';
+import { map as mapConfig } from 'config';
 
 const attributions = [];
 
@@ -14,7 +14,7 @@ class OlLayerFactory {
         break;
       case 'bing-aerial':
         source = new ol.source.BingMaps({
-          key: bingMapsKey,
+          key: mapConfig.bingMapsKey,
           imagerySet: 'Aerial'
           // use maxZoom 19 to see stretched tiles instead of the BingMaps
           // "no photos at this zoom level" tiles

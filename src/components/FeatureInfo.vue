@@ -32,7 +32,7 @@ import map from '../map';
 import httpRequest from '../httpRequest';
 import Modal from './Modal';
 import Vue from 'vue';
-import { defaultGeoServerURLs } from '../assets/config.json';
+import { map as mapConfig } from 'config';
 
 // Add a vector layer to show the highlighted features
 const highlightOverlay = new ol.layer.Vector({
@@ -98,7 +98,7 @@ export default {
       handler: function() {
         const parser = new ol.format.GeoJSON();
 
-        const baseURL = defaultGeoServerURLs[0];
+        const baseURL = mapConfig.defaultGeoServerURLs[0];
 
         // Store the click callback as a property as we will need to unlisten the click handler
         if (!this.clickCallback) {

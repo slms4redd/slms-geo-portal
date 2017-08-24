@@ -29,7 +29,7 @@ import Feedback from './components/Feedback';
 import KMLOverlay from './components/KMLOverlay';
 import Logos from './components/Logos';
 
-import { logos } from './assets/config.json';
+import { logos } from 'config';
 
 import auth from './auth';
 

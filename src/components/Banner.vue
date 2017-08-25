@@ -1,5 +1,5 @@
 <template>
-  <div id="header">
+  <div id="header" v-bind:class="{ danger: user.authenticated }">
     <div id="title">
       <h1 v-bind:class="{ hasSubtitle: $te('banner.subtitle') }">{{$t("banner.title")}}</h1>
       <h2 v-if="$te('banner.subtitle')">{{$t("banner.subtitle")}}</h2>
@@ -81,6 +81,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/global.scss";
+
+#header.danger {
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255, 230, 0, 0.6),
+    rgba(255, 230, 0, 0.6) 30px,
+    rgba(0, 0, 0, 0.7) 30px,
+    rgba(0, 0, 0, 0.7) 60px
+  );
+  backdrop-filter: none;
+  text-shadow: 0px 0px 6px #000000;
+}
 
 #header {
   background: rgb(0, 0, 0) url(/static/configuration/logos.png) no-repeat 0 0 10px 10px;

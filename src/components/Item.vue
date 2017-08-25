@@ -10,10 +10,10 @@
       </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
       <span v-if="editing && !isRoot" class="icon" v-on:click.stop="editItem">
-        <icon name="pencil-square-o"></icon>
+        <icon class="icon edit" name="pencil-square-o"></icon>
       </span>
       <span v-if="editing && !isRoot" class="icon" v-on:click.stop="deleteItem">
-        <icon class="icon" name="trash-o"></icon>
+        <icon class="icon edit" name="trash-o"></icon>
       </span>
     </div>
     <div v-else>
@@ -46,10 +46,10 @@
         <context-legend :conf="conf"></context-legend>
       </template>
       <span v-if="editing" class="icon" v-on:click.stop="editItem">
-        <icon class="icon" name="pencil-square-o"></icon>
+        <icon class="icon edit" name="pencil-square-o"></icon>
       </span>
       <span v-if="editing" class="icon" v-on:click.stop="deleteItem">
-        <icon class="icon" name="trash-o"></icon>
+        <icon class="icon edit" name="trash-o"></icon>
       </span>
     </div>
     <template v-if="editing">
@@ -287,5 +287,8 @@ ul {
 }
 .handle {
   cursor: move;
+}
+.icon.edit {
+  color: #ffd600;
 }
 </style>

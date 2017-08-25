@@ -58,25 +58,29 @@ export default {
 }
 
 .modal-container {
-  font-size: 14px;
   width: auto;
-  display: inline-block;
+  min-width: 250px;
+  max-width: 80%;
+  /* max-height: 80%; */
   margin: 0px auto;
   padding: 13px 20px 6px 20px;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+  display: inline-block;
+  font-size: 14px;
   text-align: left;
-  min-width: 250px;
-  max-width: 80%;
-  max-height: 80%;
   overflow: auto;
+  /*
+  text-align: left;
+  overflow: auto; */
 }
 
-.modal-header h3 {
+.modal-header {
   margin-top: 0;
-  color: #42b983;
+  text-align: center;
 }
 
 .modal-body {

@@ -1,5 +1,5 @@
 <template>
-  <modal v-if="editLayers">
+  <modal v-if="editLayers" id="edit-layers-modal">
     <h1 slot="header">Edit layers</h1>
     <div slot="body" class="layer-editor">
       <div id='master'>
@@ -333,6 +333,13 @@ export default {
 </script>
 
 <style scoped>
+#master, #detail {
+  max-height: 500px;
+  overflow: auto;
+}
+#detail {
+  width: 800px;
+}
 h1 {
   font-size: 16px;
 }
@@ -356,14 +363,14 @@ ul {
 }
 #master {
   width: 250px;
-  float:left; /* add this */
+  float:left;
   overflow-y: auto;
   padding: 10px;
 }
 #detail {
-  margin-left: 20px;
-  float: left; /* add this */
-  width: 408px;
+  margin-left: 5px;
+  float: left;
+  width: 530px;
 }
 input[type=text] {
   width: 380px;

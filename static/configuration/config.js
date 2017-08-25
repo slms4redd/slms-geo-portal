@@ -1,4 +1,4 @@
-var globalConf = {
+window.globalConf = {
   languages: [{ id: 'en', 'label': 'English' }, { id: 'fr', 'label': 'Français' }],
   map: {
     bingMapsKey: 'ArXO9BbbCsJXDlX8dLLxcI5BhFPTPrKBdg9o-BNWvC8kJFTetsc96izVu0415SDy',

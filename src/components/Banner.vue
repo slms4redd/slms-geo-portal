@@ -16,7 +16,7 @@
         <a href="#" @click="showLoginDialog(true)">Admin</a>
       </li>
       <li v-else>
-        <a href="#" @click="logout">Logout</a>
+        <a id="logout-button" href="#" @click="logout">Logout</a>
       </li>
       <li>
         <a href="#" @click.stop="enableFeedback">{{$t("banner.feedback")}}</a>
@@ -83,7 +83,8 @@ export default {
 @import "../assets/global.scss";
 
 #header.danger {
-  background: repeating-linear-gradient(
+  background: url('/static/configuration/logos.png') no-repeat 10px 10px,
+  repeating-linear-gradient(
     135deg,
     rgba(255, 230, 0, 0.6),
     rgba(255, 230, 0, 0.6) 30px,
@@ -95,7 +96,7 @@ export default {
 }
 
 #header {
-  background: rgb(0, 0, 0) url(/static/configuration/logos.png) no-repeat 0 0 10px 10px;
+  background: rgb(0, 0, 0) url(/static/configuration/logos.png) no-repeat 10px 10px;
   background: rgba(0, 0, 0, 0.5) url(/static/configuration/logos.png) no-repeat 10px 10px;
   color: #eaeaea;
   position: fixed;
@@ -165,7 +166,10 @@ ul#tools li a {
   color: #ececec;
   text-decoration: none;
 }
-ul#tools li a:hover {
+ul#tools li a:hover, ul#tools li a#logout-button:hover {
   color: $highlight-color;
+}
+ul#tools li a#logout-button {
+  color: #f00;
 }
 </style>

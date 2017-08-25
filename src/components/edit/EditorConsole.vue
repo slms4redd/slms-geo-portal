@@ -44,6 +44,10 @@ export default {
     startEditing() {
       // the 'editing' flag is also used in Item.vue
       this.$store.commit('enable_edit', { editing: true })
+
+      window.onbeforeunload = function(e) {
+        return 'Data will be lost if you leave the page, are you sure?'
+      }
     },
     showHistory() {
       getConfigurationHistory().then(backups => { this.backups = backups })
@@ -59,6 +63,8 @@ export default {
     },
     cancel() {
       this.$store.commit('enable_edit', { enable: false })
+
+      window.onbeforeunload = undefined
 
       // Reload the layers configuration from server
       this.$store.dispatch('fetchLayersConfig')

@@ -77,6 +77,8 @@
           <label v-if="legendType === 'wms'" class="short-input">Style name: <input class="short-input" type="text" v-model="layer.legend.style"></label>
           <label v-else-if="legendType === 'url'" class="short-input">URL: <input class="short-input" type="text" v-model="layer.legend.url"></label>
 
+          <label>Times: <input type="text" v-model="timesCsv"></label>
+
           <br>
           <b>Statistics</b>
           <br>
@@ -147,6 +149,7 @@ export default {
       layersClone: null,
       layer: null,
       serverUrlsCsv: null,
+      timesCsv: [],
       wmsLayerNames: [],
       selectedWmsName: null,
       getCapabilitiesError: false
@@ -266,8 +269,6 @@ export default {
     save() {
       this.layersClone.forEach(function(l) {
         if (l.statistics && l.statistics.length === 0) l.statistics = null
-        // if (l.serverUrls) l.urls = l.serverUrls
-        // else l.urls = defaultGeoServerURLs
       })
       this.$store.commit('update_layers', { value: this.layersClone })
       this.close()
@@ -283,9 +284,12 @@ export default {
       this.layersClone = JSON.parse(JSON.stringify(this.layers))
     },
     layer(layer) {
-      if (layer && layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(', ')
-      else {
+      if (layer) {
+        if (layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(', ')
+        if (layer.times) this.timesCsv = layer.times.map(t => t.iso8601).join(', ')
+      } else {
         this.serverUrlsCsv = null
+        this.timesCsv = []
         this.wmsLayerNames = []
         this.selectedWmsName = null
         this.getCapabilitiesError = false
@@ -302,6 +306,16 @@ export default {
         this.layer.serverUrls = csv !== null && csv.split(',').map(url => url.trim())
         if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls
         else this.layer.urls = mapConfig.defaultGeoServerURLs
+      }
+    },
+    timesCsv(csv) {
+      if (this.layer) {
+        if (csv !== []) {
+          this.layer.times = csv.split(',').map(time => ({
+            iso8601: time.trim(),
+            humanReadable: time.trim()
+          }))
+        } else this.layer.times = null
       }
     }
   },

@@ -4,6 +4,21 @@ import { getLayers, Group, Context, getLocalizedLabels, restoreVersion } from '.
 
 Vue.use(Vuex)
 
+const setContextsTimes = function(state) {
+  const contextsTimes = []
+  state.contexts.forEach(c => {
+    const times = c.layers.filter(l => l.type === 'wms' && l.times.length)
+                          .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
+                          // Remove duplicates
+                          .filter((elem, pos, arr) => arr.findIndex(el => el.iso8601 === elem.iso8601) === pos)
+                          .sort((t1, t2) => Date.parse(t1.iso8601) - Date.parse(t2.iso8601))
+    c.times = times
+    if (times) contextsTimes[c.id] = c.times[c.times.length - 1]
+  })
+
+  state.contextsTimes = contextsTimes
+}
+
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
@@ -80,19 +95,13 @@ const mutations = {
     context.layers = layerIds.map(id => state.layers.find(layer => layer.id === id))
   },
   receive_layers(state, { layersConf }) {
-    // state.layersConf = layersConf
     state.layers = layersConf.layers
     state.contexts = layersConf.contexts
     state.groups = layersConf.groups
 
-    const contextsTimes = []
-    const activeContextsIds = []
-    state.contexts.forEach(c => {
-      if (c.times) contextsTimes[c.id] = c.times[c.times.length - 1]
-      if (c.active) activeContextsIds.push(c.id)
-    })
-    state.contextsTimes = contextsTimes
-    state.activeContextsIds = activeContextsIds
+    setContextsTimes(state)
+
+    state.activeContextsIds = state.contexts.reduce((a, c) => c.active ? a.concat(c.id) : a, [])
   },
   toggle_context(state, { contextId }) {
     const context = state.contexts.find(c => c.id === contextId)
@@ -130,6 +139,8 @@ const mutations = {
       const contextLayers = context.layers
       context.layers = contextLayers.map(layer => value.find(l => l.id === layer.id)).filter(l => !!l)
     })
+
+    setContextsTimes(state)
   }
 }
 

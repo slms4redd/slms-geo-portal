@@ -30,6 +30,7 @@ const state = {
   kmlOverlay: null,
   enableFeedback: false,
   activeContextsIds: [],
+
   editing: false,
   editGroup: null,
   editContext: null,
@@ -56,6 +57,7 @@ const mutations = {
       labels: getLocalizedLabels(null, 'New context')
     })
     newContext.parent = state.groups
+    newContext.times = []
     state.groups.items.push(newContext)
     state.contexts.push(newContext)
   },
@@ -93,6 +95,7 @@ const mutations = {
     context.active = active
     context.inlineLegendUrl = inlineLegendUrl
     context.layers = layerIds.map(id => state.layers.find(layer => layer.id === id))
+    setContextsTimes(state)
   },
   receive_layers(state, { layersConf }) {
     state.layers = layersConf.layers

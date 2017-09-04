@@ -3,9 +3,13 @@
     <ul>
       <li v-for="logo in logosList" v-bind:key="logo.url">
         <a v-if="logo.link" v-bind:href="logo.link" target="_blank">
-          <img v-bind:src="logo.imgUrl" v-bind:width="logo.size.width" v-bind:height="logo.size.height"></img>
+          <img v-if="logo.imgUrl" v-bind:src="logo.imgUrl" v-bind:width="logo.size.width" v-bind:height="logo.size.height"></img>
+          <span v-if="logo.text">{{logo.text}}</span>
         </a>
-        <img v-else v-bind:src="logo.imgUrl" v-bind:width="logo.size.width" v-bind:height="logo.size.height"></img>
+        <template v-else>
+          <img v-if="logo.imgUrl" v-bind:src="logo.imgUrl" v-bind:width="logo.size.width" v-bind:height="logo.size.height"></img>
+          <span v-if="logo.text">{{logo.text}}</span>
+        </template>
       </li>
     </ul>
   </div>
@@ -31,6 +35,9 @@ ul li {
 }
 ul li a {
   display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
 }
 ul li img {
   vertical-align: middle;

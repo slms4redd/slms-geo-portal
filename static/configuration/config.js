@@ -37,6 +37,11 @@ window.globalConf = {
         imgUrl: '/static/configuration/logos/inpe.png',
         link: 'http://www.inpe.br/ingles/',
         size: { height: 35 }
+      },
+      {
+        text: 'Text link',
+        link: 'http://uxmyths.com/post/715009009/myth-icons-enhance-usability',
+        size: { height: 35 }
       }
     ]
   }

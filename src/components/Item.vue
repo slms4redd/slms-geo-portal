@@ -128,7 +128,7 @@ export default {
       return !!this.conf.times.length
     },
     hasStatistics() {
-      return this.conf.layers && this.conf.layers.some(l => l.statistics)
+      return !!this.conf.layers && this.conf.layers.some(l => l.statistics)
     },
     selectedTime() {
       return this.contextsTimes[this.conf.id]

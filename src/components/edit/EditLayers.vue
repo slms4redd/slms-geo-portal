@@ -129,7 +129,7 @@ import Modal from '../Modal'
 import EditLabels from './EditLabels'
 import { mapState } from 'vuex'
 
-import { Layer, getLocalizedLabels } from '../../config'
+import { Layer, getLocalizedLabels } from '../../layersConfig'
 import httpRequest from '../../httpRequest'
 
 import Icon from 'vue-awesome/components/Icon'

@@ -6,9 +6,7 @@
 
 <script>
 import Item from './Item'
-// import EditorConsole from './edit/EditorConsole'
 import { mapState } from 'vuex'
-// import { saveConfiguration, getConfigurationHistory } from '../config'
 import auth from '../auth'
 
 export default {

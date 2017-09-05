@@ -22,7 +22,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { saveConfiguration, getConfigurationHistory } from '../../config'
+import { saveConfiguration, getConfigurationHistory } from '../../layersConfig'
 import EditGroup from './EditGroup'
 import EditContext from './EditContext'
 import EditLayers from './EditLayers'

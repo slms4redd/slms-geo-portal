@@ -30,6 +30,7 @@ export class Layer {
       // the urls attribute will be deleted when saving
       this.urls = layerConfig.serverUrls ? layerConfig.serverUrls : (mapConfig.defaultGeoServerURLs || null)
       this.name = layerConfig.wmsName || layerConfig.name || null
+      this.styles = getLocalizedLabels(layerConfig.styles)
       this.imageFormat = layerConfig.imageFormat || 'image/png8'
       this.legend = layerConfig.legend || null // TODO check structure
 
@@ -115,7 +116,9 @@ export class Context extends Item {
   }
 
   get hasLegends() {
-    return this.layers.some(layer => layer.legend)
+    // The context has a legend if any of his layers has one
+    // i.e. if any of is layers has a legend attribute or a styles attribute with a not null label
+    return this.layers.some(layer => layer.legend || layer.styles && layer.styles.some(s => s.label))
   }
 }
 
@@ -189,7 +192,12 @@ function serializeConfiguration(groupConfig, layersRank) {
         return value || undefined
       case 'times':
         const t = value.map(t => t.iso8601)
-        return t.length ? t : undefined
+        return t && t.length ? t : undefined
+      case 'styles':
+        // Delete style languages with no label (not localized)
+        const styles = value.map(s => s.label ? s : null).filter(s => !!s)
+        // Don't save the style array if it's empty
+        return styles.length ? styles : undefined
       default:
         return value
     }

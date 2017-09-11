@@ -1,17 +1,15 @@
 <template>
   <span>
-    <span v-for="label in labels">
+    <template v-for="label in value">
       <label class="short-input">{{label.language}}: <input class="short-input" type="text" v-model="label.label"></label>
       <br>
-    </span>
+    </template>
   </span>
 </template>
 
 <script>
 export default {
-  props: {
-    labels: Array
-  }
+  props: ['value']
 }
 </script>
 

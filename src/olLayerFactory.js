@@ -1,5 +1,6 @@
 /* global ol */
 
+import Vue from 'vue' // Used to get the locale - TODO pass it as a parameter to createOlLayer
 import { map as mapConfig } from 'config'
 
 const attributions = []
@@ -42,10 +43,12 @@ class OlLayerFactory {
           attributions[sourceLabel || sourceLink] = attribution
           olAttributions.push(attribution)
         }
+        const style = layerConfig.styles && layerConfig.styles.find(s => s.language === Vue.i18n.locale()).label // TODO 'label' should be renamed to 'value'
         source = new ol.source.TileWMS(({
           urls: layerConfig.urls,
           params: {
             'LAYERS': layerConfig.name,
+            'STYLES': style || undefined,
             'TILED': true,
             'VERSION': '1.3.0',
             'FORMAT': layerConfig.imageFormat,

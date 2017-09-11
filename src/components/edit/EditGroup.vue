@@ -5,7 +5,7 @@
       <!-- Default label: <input type="text" v-model="label"> -->
       Localized labels:
       <br>
-      <edit-labels :labels="labels"></edit-labels>
+      <localized-text-input v-model="labels"></localized-text-input>
       <label>Info file: <input type="text" v-model="infoFile"></label>
       <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
     </div>
@@ -20,7 +20,7 @@
 import { mapState } from 'vuex'
 import { languages } from 'config'
 import Modal from '../Modal'
-import EditLabels from './EditLabels'
+import LocalizedTextInput from './LocalizedTextInput'
 
 export default {
   data() {
@@ -32,7 +32,7 @@ export default {
   },
   components: {
     Modal,
-    EditLabels
+    LocalizedTextInput
   },
   methods: {
     save() {

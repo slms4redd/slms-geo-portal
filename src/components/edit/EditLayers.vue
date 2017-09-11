@@ -3,10 +3,12 @@
     <h1 slot="header">Edit layers</h1>
     <div slot="body" class="layer-editor">
       <div id='master'>
-        Add layer:
-        <a href="#" class="button default" @click.prevent="addLayer('wms')">WMS</a>
-        <a href="#" class="button default" @click.prevent="addLayer('osm')">OSM</a>
-        <a href="#" class="button default" @click.prevent="addLayer('bing')">Bing</a>
+        <a href="#" class="button default" @click.prevent="addLayer('wms')">Add a GeoServer (WMS) layer</a>
+        <br>
+        <a href="#" class="button default" @click.prevent="addLayer('osm')">Add a OSM layer</a>
+        <br>
+        <a href="#" class="button default" @click.prevent="addLayer('bing')">Add a Bing Aerial layer</a>
+        <br>
         <br>
         <b>Drag to change the order</b>
         <br>
@@ -22,6 +24,9 @@
             </span>
             <span v-if="l.legend">
               <icon name="th-list"></icon>
+            </span>
+            <span v-if="l.times && l.times.length">
+              <icon name="clock-o"></icon>
             </span>
           </li>
         </draggable>
@@ -41,8 +46,9 @@
           <button class="small" v-on:click="getWmsLayers">Get list of layers</button>
           <br><br>
 
-          <template v-if="!getCapabilitiesError">
-            <label>WMS layers:
+          <template v-if="wmsLayerNames && !getCapabilitiesError">
+            <label>
+              WMS layers:
               <select v-model=selectedWmsName>
                 <option disabled value="">Please select one</option>
                 <option v-for="option in wmsLayerNames" v-bind:value="option">
@@ -50,10 +56,21 @@
                 </option>
               </select>
             </label>
+            <!--
+            <label>
+              Styles
+              <localized-select v-model="test1" :options="test2"></localized-select>
+            </label>
+            -->
           </template>
-          <span v-else style="color:red">Error getting wms layers</span>
+          <span v-else-if="getCapabilitiesError" style="color:red">Error getting wms layers</span>
           <label>WMS name: <input type="text" v-model="layer.name"></label>
 
+          Styles (leave empty for default):
+          <br>
+          <localized-text-input v-model="layer.styles"></localized-text-input>
+
+          <br>
           <label>Image format:
             <select v-model=layer.imageFormat>
               <option>image/jpeg</option>
@@ -63,6 +80,7 @@
             </select>
           </label>
 
+          <br>
           <label>Source link: <input type="text" v-model="layer.sourceLink"></label>
           <label>Source label: <input type="text" v-model="layer.sourceLabel"></label>
 
@@ -91,7 +109,7 @@
             <br>
             Statistics labels:
             <br>
-            <edit-labels :labels="statistics.labels"></edit-labels>
+            <localized-text-input v-model="statistics.labels"></localized-text-input>
             <template v-if="statistics.type === 'url'">
               <label>URL: <input type="text" v-model="statistics.url"></label>
             </template>
@@ -105,7 +123,7 @@
                 <br>
                 Labels:
                 <br>
-                <edit-labels :labels="attribute.labels"></edit-labels>
+                <localized-text-input v-model="attribute.labels"></localized-text-input>
                 <a href="#" class="button default" @click.prevent="deleteAttribute(statistics, attribute)">Delete attribute</a>
                 <br>
               </div>
@@ -126,7 +144,8 @@
 
 <script>
 import Modal from '../Modal'
-import EditLabels from './EditLabels'
+import LocalizedTextInput from './LocalizedTextInput'
+// import LocalizedSelect from './LocalizedSelect'
 import { mapState } from 'vuex'
 
 import { Layer, getLocalizedLabels } from '../../layersConfig'
@@ -149,15 +168,16 @@ export default {
       layersClone: null,
       layer: null,
       serverUrlsCsv: null,
-      timesCsv: [],
-      wmsLayerNames: [],
+      timesCsv: '',
+      wmsLayerNames: null,
       selectedWmsName: null,
       getCapabilitiesError: false
     }
   },
   components: {
     Modal,
-    EditLabels,
+    LocalizedTextInput,
+    // LocalizedSelect,
     Icon,
     'draggable': vuedraggable
   },
@@ -267,9 +287,16 @@ export default {
       }
     },
     save() {
-      this.layersClone.forEach(function(l) {
-        if (l.statistics && l.statistics.length === 0) l.statistics = null
+      // Housekeeping before saving
+      this.layersClone.forEach(layer => {
+        // Delete statistics array if empty
+        if (layer.statistics && layer.statistics.length === 0) layer.statistics = null
+
+        // Set each localized style to null if empty string
+        // Only wms layers have the styles attribute
+        if (layer.styles) layer.styles.forEach(s => { s.label = s.label || null })
       })
+
       this.$store.commit('update_layers', { value: this.layersClone })
       this.close()
     },
@@ -289,8 +316,8 @@ export default {
         if (layer.times) this.timesCsv = layer.times.map(t => t.iso8601).join(', ')
       } else {
         this.serverUrlsCsv = null
-        this.timesCsv = []
-        this.wmsLayerNames = []
+        this.timesCsv = ''
+        this.wmsLayerNames = null
         this.selectedWmsName = null
         this.getCapabilitiesError = false
       }
@@ -309,13 +336,14 @@ export default {
       }
     },
     timesCsv(csv) {
+      csv = csv.trim()
       if (this.layer) {
-        if (csv !== []) {
+        if (csv !== '') {
           this.layer.times = csv.split(',').map(time => ({
             iso8601: time.trim(),
             humanReadable: time.trim()
           }))
-        } else this.layer.times = null
+        } else this.layer.times = []
       }
     }
   },

@@ -55,6 +55,7 @@ if (languageCodes.indexOf(httpGetParams.lang) !== -1) {
   lang = languageCodes[0]
 }
 Vue.i18n.set(lang)
+// TODO set fallback language
 
 /* eslint-disable no-new */
 const app = new Vue({

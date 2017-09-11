@@ -16,8 +16,8 @@ export default {
   },
   watch: {
     layers(layers) {
-      // Remove all layers if any, needed when sorting layers through the UI
-      map.getLayers().forEach(l => map.removeLayer(l))
+      // Remove all layers if any, needed when sorting layers through the admin UI
+      map.getLayers().clear()
 
       layers.forEach(layerConfig => {
         try {
@@ -30,6 +30,18 @@ export default {
           console.log(e)
         }
       })
+    },
+    locale(locale, prev) {
+      // Don't refresh layers if the page has just been loaded
+      if (prev !== null) {
+        this.layers.forEach(layer => {
+          if (layer.type !== 'wms') return
+          const oldStyle = layer.styles.find(s => s.language === prev).label // TODO rename language to locale
+          const newStyle = layer.styles.find(s => s.language === locale).label
+
+          if (oldStyle !== newStyle) olLayers[layer.id].getSource().updateParams({ 'STYLES': newStyle })
+        })
+      }
     },
     activeLayers(activeLayers) {
       this.layers.forEach(l =>
@@ -47,11 +59,12 @@ export default {
   },
 
   computed: {
-    ...mapState([
-      'layers',
-      'contexts',
-      'contextsTimes'
-    ]),
+    ...mapState({
+      'layers': state => state.layers,
+      'contexts': state => state.contexts,
+      'contextsTimes': state => state.contextTImes,
+      'locale': state => state.i18n.locale
+    }),
     ...mapGetters([
       'activeLayers'
     ])

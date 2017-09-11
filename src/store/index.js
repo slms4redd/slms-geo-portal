@@ -13,7 +13,7 @@ const setContextsTimes = function(state) {
                           .filter((elem, pos, arr) => arr.findIndex(el => el.iso8601 === elem.iso8601) === pos)
                           .sort((t1, t2) => Date.parse(t1.iso8601) - Date.parse(t2.iso8601))
     c.times = times
-    if (times) contextsTimes[c.id] = c.times[c.times.length - 1]
+    if (times && times.length) contextsTimes[c.id] = c.times[c.times.length - 1]
   })
 
   state.contextsTimes = contextsTimes
@@ -95,6 +95,7 @@ const mutations = {
     context.active = active
     context.inlineLegendUrl = inlineLegendUrl
     context.layers = layerIds.map(id => state.layers.find(layer => layer.id === id))
+
     setContextsTimes(state)
   },
   receive_layers(state, { layersConf }) {

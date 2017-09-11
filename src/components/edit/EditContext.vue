@@ -6,7 +6,7 @@
       <input type="text" v-model="label">-->
       Localized labels:
       <br>
-      <edit-labels :labels="labels"></edit-labels>
+      <localized-text-input v-model="labels"></localized-text-input>
       <label>Info file:</label> <input type="text" v-model="infoFile">
       <label><input type="checkbox" v-model="active"> active by default</label>
       <br>
@@ -14,10 +14,9 @@
       <label>Layers:</label>
       <select v-model="selectedLayers" multiple id="layer-select">
         <option v-for="layer in layers" v-bind:value="layer.id">
-          {{ layer.label }}
+          {{layer.label}}
         </option>
       </select>
-
     </div>
     <div slot="footer">
       <a href="#" class="modal-default-button" @click.prevent="close">Cancel</a>
@@ -28,7 +27,7 @@
 
 <script>
 import Modal from '../Modal'
-import EditLabels from './EditLabels'
+import LocalizedTextInput from './LocalizedTextInput'
 import { languages } from 'config'
 
 export default {
@@ -44,7 +43,7 @@ export default {
   },
   components: {
     Modal,
-    EditLabels
+    LocalizedTextInput
   },
   methods: {
     save() {

@@ -1,7 +1,7 @@
 <template>
   <span>
     <modal v-if="statisticsUrl" @close="hideStatistics()">
-      <iframe width="840" height="600" slot="body" v-bind:src="statisticsUrl"></iframe>
+      <iframe width="840" height="600" slot="body" :src="statisticsUrl"></iframe>
     </modal>
     <modal v-if="popupAttributes" @close="hideStatistics()">
       <h1 slot="header">{{$t("featureInfo.attributes")}}</h1>

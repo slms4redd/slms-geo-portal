@@ -8,16 +8,16 @@
     </div>
     <div id="tools">
       Draw:
-      <button type="button" class="small" v-bind:class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
-      <button type="button" class="small" v-bind:class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
+      <button type="button" class="small" :class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
+      <button type="button" class="small" :class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
     </div>
     <div id="message">
       <textarea v-model="message" id="message-text" rows="6" placeholder="Write your message"></textarea>
     </div>
     <div id="buttons">
       <button type="button" class="small" @click="disableFeedback">Cancel</button>
-      <button type="button" class="small" @click="clear" v-bind:disabled="drew === false">Clear</button>
-      <button type="button" class="small danger" @click="sendFeedback" v-bind:disabled="disableSend">Send</button>
+      <button type="button" class="small" @click="clear" :disabled="drew === false">Clear</button>
+      <button type="button" class="small danger" @click="sendFeedback" :disabled="disableSend">Send</button>
     </div>
   </div>
 </template>

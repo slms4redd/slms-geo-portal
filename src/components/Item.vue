@@ -2,53 +2,53 @@
   <li>
     <div v-if="conf.isGroup" :class="{dimmed: !nContexts}" class="group" @click="toggleGroup">
       <span class="line group-label icon">
-        <icon class="open-button" v-bind:name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
+        <icon class="open-button" :name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
         <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : label}}</span>
       </span>
-      <span class="info-link icon" v-if="conf.infoFile" v-on:click.stop="showInfo">
+      <span class="info-link icon" v-if="conf.infoFile" @click.stop="showInfo">
         <icon name="info-circle"></icon>
       </span>
       <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
-      <span v-if="editing && !isRoot" class="icon" v-on:click.stop="editItem">
+      <span v-if="editing && !isRoot" class="icon" @click.stop="editItem">
         <icon class="icon edit" name="pencil-square-o"></icon>
       </span>
-      <span v-if="editing && !isRoot" class="icon" v-on:click.stop="deleteItem">
+      <span v-if="editing && !isRoot" class="icon" @click.stop="deleteItem">
         <icon class="icon edit" name="trash-o"></icon>
       </span>
     </div>
     <div v-else>
-      <span v-on:click="toggleActive" class="icon" v-if="hasLayers">
+      <span @click="toggleActive" class="icon" v-if="hasLayers">
         <template v-if="conf.parent.exclusive">
-          <icon v-if="active" class="activate-button" v-bind:class="{highlighted, active}" name="dot-circle-o"></icon>
-          <icon v-else class="activate-button" v-bind:class="{highlighted, active}" name="circle"></icon>
+          <icon v-if="active" class="activate-button" :class="{highlighted, active}" name="dot-circle-o"></icon>
+          <icon v-else class="activate-button" :class="{highlighted, active}" name="circle"></icon>
         </template>
         <template v-else>
-          <icon v-if="active" class="activate-button" v-bind:class="{highlighted, active}" name="check-square"></icon>
-          <icon v-else class="activate-button" v-bind:class="{highlighted, active}" name="square"></icon>
+          <icon v-if="active" class="activate-button" :class="{highlighted, active}" name="check-square"></icon>
+          <icon v-else class="activate-button" :class="{highlighted, active}" name="square"></icon>
         </template>
       </span>
-      <span v-on:click="toggleLegend" style="padding-left:2px;padding-right:2px" class="icon" v-if="conf.hasLegends" >
-        <icon class="legend-link" v-bind:class="{active}" name="th-list"></icon>
+      <span @click="toggleLegend" style="padding-left:2px;padding-right:2px" class="icon" v-if="conf.hasLegends" >
+        <icon class="legend-link" :class="{active}" name="th-list"></icon>
       </span>
-      <img v-if="conf.inlineLegendUrl" class="inline-legend" v-bind:src="conf.inlineLegendUrl">
-      <span :class="{dimmed: !hasLayers, handle: editing}" v-on:mouseover="highlightContext(true)" v-on:mouseout="highlightContext(false)" v-on:click="toggleActive">{{label}}</span>
-      <span class="info-link icon" v-if="conf.infoFile" v-on:click="showInfo">
+      <img v-if="conf.inlineLegendUrl" class="inline-legend" :src="conf.inlineLegendUrl">
+      <span :class="{dimmed: !hasLayers, handle: editing}" @mouseover="highlightContext(true)" @mouseout="highlightContext(false)" @click="toggleActive">{{label}}</span>
+      <span class="info-link icon" v-if="conf.infoFile" @click="showInfo">
         <icon name="info-circle"></icon>
       </span>
-      <span class="times-button icon" v-if="!!this.conf.times.length" @click="toggleTimeMenu" v-bind:class="{active: showTimeMenu}">
+      <span class="times-button icon" v-if="!!this.conf.times.length" @click="toggleTimeMenu" :class="{active: showTimeMenu}">
         <icon name="clock-o"></icon> {{selectedTime.humanReadable}}
       </span>
-      <span v-bind:title="$t('item.statisticsAvailable')" v-if="hasStatistics" class="icon statistics">
+      <span :title="$t('item.statisticsAvailable')" v-if="hasStatistics" class="icon statistics">
         <icon name="bar-chart"></icon>
       </span>
-      <time-select v-if="showTimeMenu" v-on:setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></time-select>
+      <time-select v-if="showTimeMenu" @setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></time-select>
       <template v-if="conf.hasLegends && active && showLegend">
         <context-legend :conf="conf"></context-legend>
       </template>
-      <span v-if="editing" class="icon" v-on:click.stop="editItem">
+      <span v-if="editing" class="icon" @click.stop="editItem">
         <icon class="icon edit" name="pencil-square-o"></icon>
       </span>
-      <span v-if="editing" class="icon" v-on:click.stop="deleteItem">
+      <span v-if="editing" class="icon" @click.stop="deleteItem">
         <icon class="icon edit" name="trash-o"></icon>
       </span>
     </div>

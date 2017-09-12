@@ -5,7 +5,7 @@
       <ul>
         <li v-for="backup in versions"
             @click="setRestoreVersion(backup.version)"
-            v-bind:class="{ highlighted: backup.version === restoreVersion }" >
+            :class="{ highlighted: backup.version === restoreVersion }" >
           Version {{backup.version}} - {{backup.date}}
         </li>
       </ul>

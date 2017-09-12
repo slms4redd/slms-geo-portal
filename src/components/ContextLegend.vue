@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="legendUrl in legendUrls">
-      <img v-bind:src="legendUrl"></img>
+      <img :src="legendUrl"></img>
     </div>
   </div>
 </template>

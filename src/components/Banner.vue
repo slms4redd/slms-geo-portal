@@ -1,7 +1,7 @@
 <template>
-  <div id="header" v-bind:class="{ danger: user.authenticated }">
+  <div id="header" :class="{ danger: user.authenticated }">
     <div id="title">
-      <h1 v-bind:class="{ hasSubtitle: $te('banner.subtitle') }">{{$t("banner.title")}}</h1>
+      <h1 :class="{ hasSubtitle: $te('banner.subtitle') }">{{$t("banner.title")}}</h1>
       <h2 v-if="$te('banner.subtitle')">{{$t("banner.subtitle")}}</h2>
     </div>
     <ul id="languageLinks" class="buttons">
@@ -25,8 +25,8 @@
         <a href="#" @click="enableUpload">{{$t("banner.uploadKml")}}</a>
       </li>
     </ul>
-    <file-drop :show=showUpload v-on:disable="disableUpload"></file-drop>
-    <login-modal :show=showLogin v-on:disable="showLoginDialog(false)"></login-modal>
+    <file-drop :show=showUpload @disable="disableUpload"></file-drop>
+    <login-modal :show=showLogin @disable="showLoginDialog(false)"></login-modal>
   </div>
 </template>
 

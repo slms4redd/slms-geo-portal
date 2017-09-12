@@ -1,7 +1,7 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper" @mousedown="$emit('close')">
+    <div class="modal-mask" @mousedown="$emit('close')">
+      <!-- <div class="modal-wrapper" @mousedown="$emit('close')"> -->
         <div class="modal-container" @mousedown.stop>
           <div v-if="$slots.header" class="modal-header">
             <slot name="header"></slot>
@@ -20,7 +20,7 @@
             </slot>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
     </div>
   </transition>
 </template>
@@ -47,35 +47,38 @@ export default {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, .33);
-  display: table;
+
   transition: opacity .2s ease;
 }
 
-.modal-wrapper {
-  display: table-cell;
+/* .modal-wrapper {
   vertical-align: middle;
-  text-align: center;
-}
+  height: 100%;
+} */
 
 .modal-container {
-  width: auto;
-  min-width: 250px;
-  max-width: 80%;
-  /* max-height: 80%; */
-  margin: 0px auto;
-  padding: 13px 20px 6px 20px;
+  margin: auto;
+  /* padding: 20px 30px; */
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
-  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: opacity .2s ease;
+
+  overflow-y: auto;
+  width: auto;
+  min-width: 250px;
   font-size: 14px;
-  text-align: left;
-  overflow: auto;
-  /*
-  text-align: left;
-  overflow: auto; */
+  padding: 13px 20px 6px 20px;
+
+  max-height: 80%;
+
+  display: inline-block;
+
+  position: fixed;
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
 }
 
 .modal-header {
@@ -84,7 +87,9 @@ export default {
 }
 
 .modal-body {
+  /* display: table-row; */
   margin: 20px 0;
+  max-height: 80%;
 }
 
 .modal-default-button {
@@ -105,11 +110,11 @@ export default {
   opacity: 0;
 }
 
-.modal-enter .modal-container,
+/* .modal-enter .modal-container,
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
-}
+} */
 
 hr {
   margin:0 -20px;
@@ -117,9 +122,4 @@ hr {
   height: 1px;
   background: #ddd;
 }
-
-/*.modal-container {
-  / * Float fix * /
-  overflow: hidden;
-}*/
 </style>

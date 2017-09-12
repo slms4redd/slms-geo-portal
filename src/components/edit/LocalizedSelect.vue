@@ -5,7 +5,7 @@
       {{lang.id}}
       <select>
         <option value="">Default</option>
-        <option v-for="option in options" v-bind:value="option">
+        <option v-for="option in options" :value="option">
           {{option}}
         </option>
       </select>

@@ -14,7 +14,7 @@
         <br>
         <br>
         <draggable element="ul" :options="{ group: 'items', animation: 150, handle: '.handle' }" v-model='layersClone'>
-          <li v-for="l in layersClone" class="layer-link" v-bind:class="{ highlighted: layer && l.id === layer.id }" v-on:click="editLayer(l)">
+          <li v-for="l in layersClone" class="layer-link" :class="{ highlighted: layer && l.id === layer.id }" @click="editLayer(l)">
             <span class="handle"><icon name="sort"></icon></span>
             <span v-if="l.type === 'wms'">{{l.name}}</span>
             <span v-else-if="l.type === 'bing-aerial'">Bing aerial</span>
@@ -37,13 +37,13 @@
 
         <template v-if="layer.type === 'wms'">
           <br>
-          <input class="short-input" id="custom-urls" type="checkbox" :checked="serverUrlsCsv !== null" v-on:change="toggleCustomUrls">
+          <input class="short-input" id="custom-urls" type="checkbox" :checked="serverUrlsCsv !== null" @change="toggleCustomUrls">
           <label class="short-input" for="custom-urls">Custom server urls (csv)</label>
 
           <label v-if="serverUrlsCsv !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
 
           <br>
-          <button class="small" v-on:click="getWmsLayers">Get list of layers</button>
+          <button class="small" @click="getWmsLayers">Get list of layers</button>
           <br><br>
 
           <template v-if="wmsLayerNames && !getCapabilitiesError">
@@ -51,7 +51,7 @@
               WMS layers:
               <select v-model=selectedWmsName>
                 <option disabled value="">Please select one</option>
-                <option v-for="option in wmsLayerNames" v-bind:value="option">
+                <option v-for="option in wmsLayerNames" :value="option">
                   {{option}}
                 </option>
               </select>
@@ -376,8 +376,8 @@ export default {
 
 <style scoped>
 #master, #detail {
-  max-height: 500px;
-  overflow: auto;
+  /* max-height: 500px; */
+  /* overflow: auto; */
 }
 #detail {
   width: 800px;
@@ -390,7 +390,8 @@ h1 {
 }
 .layer-editor {
   /*width: 700px;*/
-  overflow: hidden; /* add this to contain floated children */
+  /* overflow: hidden; add this to contain floated children */
+  display: table;
 }
 li {
   list-style: none;
@@ -405,14 +406,15 @@ ul {
 }
 #master {
   width: 250px;
-  float:left;
-  overflow-y: auto;
-  padding: 10px;
+  /* float:left;
+  padding: 10px; */
+  display: table-cell;
 }
 #detail {
   margin-left: 5px;
-  float: left;
+  /* float: left; */
   width: 530px;
+  display: table-cell;
 }
 input[type=text] {
   width: 380px;

@@ -16,7 +16,7 @@
     <edit-group></edit-group>
     <edit-context></edit-context>
     <edit-layers></edit-layers>
-    <restore-backup v-on:close="hideHistory" :backups="backups" v-if="backups"></restore-backup>
+    <restore-backup @close="hideHistory" :backups="backups" v-if="backups"></restore-backup>
   </div>
 </template>
 

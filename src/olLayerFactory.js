@@ -49,12 +49,14 @@ class OlLayerFactory {
           params: {
             'LAYERS': layerConfig.name,
             'STYLES': style || undefined,
-            'TILED': true,
             'VERSION': '1.3.0',
             'FORMAT': layerConfig.imageFormat,
             'WIDTH': 256,
             'HEIGHT': 256,
-            'CRS': 'EPSG:3857'
+            'CRS': 'EPSG:3857',
+            'TILED': true,
+            // TODO not sure if these are the correct values for tilesorigin
+            'tilesorigin': '-20037508.34,-20037508.34'
           },
           serverType: 'geoserver',
           attributions: olAttributions

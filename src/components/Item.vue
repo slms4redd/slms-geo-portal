@@ -8,7 +8,7 @@
       <span class="info-link icon" v-if="conf.infoFile" @click.stop="showInfo">
         <icon name="info-circle"></icon>
       </span>
-      <span class="counter">{{nActive ? '[' + nActive + ']' : null}}</span>
+      <span class="counter">{{nActive ? '&lrm;[' + nActive + ']' : null}}</span>
       <span v-if="editing && !isRoot" class="icon" @click.stop="editItem">
         <icon class="icon edit" name="pencil-square-o"></icon>
       </span>

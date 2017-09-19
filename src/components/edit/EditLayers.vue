@@ -43,7 +43,7 @@
           <label class="mandatory" v-if="serverUrlsCsv !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
 
           <br>
-          <button class="small" @click="getWmsLayers">Get list of layers</button>
+          <button class="small" @click="fetchWmsLayers">Get list of layers</button>
           <br><br>
 
           <template v-if="wmsLayerNames && !getCapabilitiesError">
@@ -66,9 +66,7 @@
           <span v-else-if="getCapabilitiesError" style="color:red">Error getting wms layers</span>
           <label class="mandatory">WMS name: <input type="text" v-model="layer.name"></label>
 
-          Styles (leave empty for default style):
-          <br>
-          <localized-text-input v-model="layer.styles"></localized-text-input>
+          <localized-text-input v-model="layer.styles" label="Styles (leave empty for default style):"></localized-text-input>
 
           <br>
           <label>Image format:
@@ -111,13 +109,12 @@
           Add statistics - type:
           <a href="#" class="button default" @click.prevent="addUrlStatistics">URL</a>
           <a href="#" class="button default" @click.prevent="addAttributesStatistics">Attributes</a>
-          <div v-for="statistics in layer.statistics" class="statistics-edit">
+          <div v-for="statistics in layer.statistics" class="section-edit">
             Statistics - type: {{statistics.type}}
             <a href="#" class="button default" @click.prevent="deleteStatistics(statistics)">Delete statistics</a>
-            <br>
-            Statistics labels:
-            <br>
-            <localized-text-input v-model="statistics.labels"></localized-text-input>
+
+            <localized-text-input v-model="statistics.labels" label="Statistics labels:"></localized-text-input>
+
             <template v-if="statistics.type === 'url'">
               <label class="mandatory">URL: <input type="text" v-model="statistics.url"></label>
             </template>
@@ -126,12 +123,11 @@
               <br>
               <a href="#" class="button default" @click.prevent="addAttribute(statistics)">Add attribute</a>
               <br>
-              <div v-for="attribute in statistics.attributes" class="attribute-edit">
+              <div v-for="attribute in statistics.attributes" class="section-edit">
                 <label class="short-input mandatory">Name: <input class="short-input" type="text" v-model="attribute.attribute"></label>
-                <br>
-                Labels:
-                <br>
-                <localized-text-input v-model="attribute.labels"></localized-text-input>
+
+                <localized-text-input v-model="attribute.labels" label="Labels:"></localized-text-input>
+
                 <a href="#" class="button default" @click.prevent="deleteAttribute(statistics, attribute)">Delete attribute</a>
                 <br>
               </div>
@@ -194,7 +190,7 @@ export default {
       if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null
       else this.serverUrlsCsv = ''
     },
-    getWmsLayers() {
+    fetchWmsLayers() {
       if (this.layer && this.layer.type === 'wms') {
         const url = `${this.layer.urls[0]}?service=wms&version=1.1.1&request=GetCapabilities`
         httpRequest('GET', url).then(xml => {
@@ -443,12 +439,12 @@ label.short-input {
 .highlighted {
   font-weight: bold;
 }
-.statistics-edit {
+.section-edit {
   border: 1px dashed grey;
   padding: 8px;
   margin-top: 8px;
 }
-.attribute-edit {
+.section-edit {
   border: 1px dashed grey;
   padding: 8px;
   margin:8px

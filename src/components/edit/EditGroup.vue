@@ -2,10 +2,7 @@
   <modal v-if="editGroup">
     <h1 slot="header">Edit group</h1>
     <div slot="body" id="edit">
-      <!-- Default label: <input type="text" v-model="label"> -->
-      Localized labels:
-      <br>
-      <localized-text-input v-model="labels"></localized-text-input>
+      <localized-text-input v-model="labels" label="Labels:"></localized-text-input>
       <label>Info file: <input type="text" v-model="infoFile"></label>
       <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
     </div>

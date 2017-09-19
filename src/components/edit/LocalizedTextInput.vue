@@ -1,33 +1,38 @@
 <template>
-  <span>
-    <template v-for="label in value">
-      <label class="short-input">{{label.language}}: <input class="short-input" type="text" v-model="label.label"></label>
-      <br>
-    </template>
-  </span>
+  <div class="label-edit">
+    <span id="label">{{label}}</span>
+    <div v-for="label in value">
+      <label>{{langName(label.language)}}: <input type="text" v-model="label.label"></label>
+    </div>
+  </div>
 </template>
 
 <script>
+import { languages } from 'config'
+
 export default {
-  props: ['value']
+  props: ['value', 'label'],
+  methods: {
+    langName(langCode) {
+      const language = languages.find(l => l.id === langCode)
+      return language ? language.label : langCode
+    }
+  }
 }
 </script>
 
 <style scoped>
-input[type=text] {
-  width: 300px;
-  display: block;
+input {
+  width: 250px;
   margin-bottom: 9px;
 }
 label {
-  display: block;
+  width: 30px;
 }
-label.short-input {
-  display: inline;
-}
-input[type=text].short-input {
-  width: 270px;
-  margin-bottom: 9px;
-  display: inline;
+.label-edit {
+  border: 1px dashed grey;
+  padding: 8px;
+  margin-top: 8px;
+  margin-bottom: 10px;
 }
 </style>

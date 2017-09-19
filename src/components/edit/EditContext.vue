@@ -1,12 +1,8 @@
 <template>
   <modal v-if="editContext">
-    <h1 slot="header">Edit group</h1>
+    <h1 slot="header">Edit context</h1>
     <div slot="body" id="edit">
-      <!--Default label:
-      <input type="text" v-model="label">-->
-      Localized labels:
-      <br>
-      <localized-text-input v-model="labels"></localized-text-input>
+      <localized-text-input v-model="labels" label="Labels:"></localized-text-input>
       <label>Info file:</label> <input type="text" v-model="infoFile">
       <label><input type="checkbox" v-model="active"> active by default</label>
       <br>

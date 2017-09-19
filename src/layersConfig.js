@@ -27,7 +27,7 @@ export class Layer {
     this.type = layerConfig.type || 'wms'
     if (this.type === 'wms') {
       this.serverUrls = layerConfig.serverUrls || null
-      // the urls attribute will be deleted when saving
+      // The urls attribute will be deleted when saving
       this.urls = layerConfig.serverUrls ? layerConfig.serverUrls : (mapConfig.defaultGeoServerURLs || null)
       this.name = layerConfig.wmsName || layerConfig.name || null
       this.styles = getLocalizedLabels(layerConfig.styles)

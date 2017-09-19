@@ -71,6 +71,7 @@ import { mapState } from 'vuex'
 import ContextLegend from './ContextLegend'
 import TimeSelect from './TimeSelect'
 import Icon from 'vue-awesome/components/Icon'
+import { languages } from 'config'
 
 import 'vue-awesome/icons/plus-square-o'
 import 'vue-awesome/icons/minus-square-o'
@@ -151,8 +152,12 @@ export default {
       })(this.conf)
     },
     locNActive() {
+      let locale = Vue.i18n.locale()
+      const lang = languages.find(l => l.id === locale)
+      if (lang && lang.u) locale += `-u-${lang.u}`
+
       if (typeof Intl === 'object' && typeof Intl.NumberFormat === 'function') {
-        return this.nActive.toLocaleString(Vue.i18n.locale())
+        return this.nActive.toLocaleString(locale)
       } else {
         return this.nActive
       }

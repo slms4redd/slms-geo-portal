@@ -25,36 +25,20 @@ const httpGetParams = (function() {
   return queryString
 })()
 
-// initialize the internationalization plugin on the vue instance.
+// Initialize the internationalization plugin on the vue instance.
 Vue.use(I18n.plugin, store)
-
-// const lang = httpGetParams.lang || 'en'
-// Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`).catch(e => alert(e))
-// Vue.i18n.set(lang)
-// // TODO set fallback language
-
-// /* eslint-disable no-new */
-// new Vue({
-//   el: '#app',
-//   store,
-//   render: h => h(App)
-// })
 
 // Set the language and load the language file
 const languageCodes = languages.map(l => l.id)
-let lang
-let navigatorLanguage = (navigator.language || navigator.userLanguage)
-if (navigatorLanguage) {
-  navigatorLanguage = navigatorLanguage.substr(0, navigatorLanguage.indexOf('-'))
-}
-if (languageCodes.indexOf(httpGetParams.lang) !== -1) {
-  lang = httpGetParams.lang
-} else if (navigatorLanguage && languageCodes.indexOf(navigatorLanguage) !== -1) {
-  lang = navigatorLanguage
-} else {
-  lang = languageCodes[0]
-}
+let lang = languageCodes[0]
+const navigatorLanguage = (navigator.language || navigator.userLanguage)
+// if (navigatorLanguage) {
+//   navigatorLanguage = navigatorLanguage.substr(0, navigatorLanguage.indexOf('-'))
+// }
+if (languageCodes.indexOf(httpGetParams.lang) !== -1) lang = httpGetParams.lang
+else if (navigatorLanguage && languageCodes.indexOf(navigatorLanguage) !== -1) lang = navigatorLanguage
 Vue.i18n.set(lang)
+
 // TODO set fallback language
 
 /* eslint-disable no-new */

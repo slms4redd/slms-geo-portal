@@ -40,7 +40,7 @@
           <input class="short-input" id="custom-urls" type="checkbox" :checked="serverUrlsCsv !== null" @change="toggleCustomUrls">
           <label class="short-input" for="custom-urls">Custom server urls (csv)</label>
 
-          <label v-if="serverUrlsCsv !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
+          <label class="mandatory" v-if="serverUrlsCsv !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
 
           <br>
           <button class="small" @click="getWmsLayers">Get list of layers</button>
@@ -64,15 +64,15 @@
             -->
           </template>
           <span v-else-if="getCapabilitiesError" style="color:red">Error getting wms layers</span>
-          <label>WMS name: <input type="text" v-model="layer.name"></label>
+          <label class="mandatory">WMS name: <input type="text" v-model="layer.name"></label>
 
-          Styles (leave empty for default):
+          Styles (leave empty for default style):
           <br>
           <localized-text-input v-model="layer.styles"></localized-text-input>
 
           <br>
           <label>Image format:
-            <select v-model=layer.imageFormat>
+            <select v-model="layer.imageFormat">
               <option>image/jpeg</option>
               <option>image/gif</option>
               <option>image/png</option>
@@ -92,9 +92,17 @@
             </select>
           </label>
 
-          <label v-if="legendType === 'wms'" class="short-input">Style name: <input class="short-input" type="text" v-model="layer.legend.style"></label>
-          <label v-else-if="legendType === 'url'" class="short-input">URL: <input class="short-input" type="text" v-model="layer.legend.url"></label>
-
+          <label v-if="legendType === 'wms'" class="short-input mandatory">Style name: <input class="short-input" type="text" v-model="layer.legend.style"></label>
+          <label v-else-if="legendType === 'url'" class="short-input mandatory">URL: <input class="short-input" type="text" v-model="layer.legend.url"></label>
+<!--
+          <label>Times
+            <select>
+              <option>None</option>
+              <option>List</option>
+              <option>From server</option>
+            </select>
+          </label>
+ -->
           <label>Times: <input type="text" v-model="timesCsv"></label>
 
           <br>
@@ -111,7 +119,7 @@
             <br>
             <localized-text-input v-model="statistics.labels"></localized-text-input>
             <template v-if="statistics.type === 'url'">
-              <label>URL: <input type="text" v-model="statistics.url"></label>
+              <label class="mandatory">URL: <input type="text" v-model="statistics.url"></label>
             </template>
             <template v-if="statistics.type === 'attributes'">
               Attributes:
@@ -119,7 +127,7 @@
               <a href="#" class="button default" @click.prevent="addAttribute(statistics)">Add attribute</a>
               <br>
               <div v-for="attribute in statistics.attributes" class="attribute-edit">
-                <label class="short-input">Name: <input class="short-input" type="text" v-model="attribute.attribute"></label>
+                <label class="short-input mandatory">Name: <input class="short-input" type="text" v-model="attribute.attribute"></label>
                 <br>
                 Labels:
                 <br>
@@ -350,7 +358,7 @@ export default {
   computed: {
     legendType: {
       get() {
-        if (!this.layer.legend) return null
+        if (!this.layer.legend) return ''
         return this.layer.legend.type
       },
       set(type) {
@@ -444,5 +452,9 @@ label.short-input {
   border: 1px dashed grey;
   padding: 8px;
   margin:8px
+}
+.mandatory {
+  color: #f00;
+  font-weight: bold;
 }
 </style>

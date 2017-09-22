@@ -87,9 +87,12 @@
         "id": {
           "type": "number"
         },
-        "baseUrl": {
-          "type": "string"
-        },
+        "serverUrls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+      },
         "name": {
           "type": "string"
         },
@@ -130,7 +133,7 @@
           }
         }
       },
-      "required": ["id", "name"],
+      "required": ["id", "name", "serverUrls"],
       "additionalProperties": false
     },
     "bingAerial": {

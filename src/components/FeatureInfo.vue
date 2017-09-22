@@ -18,7 +18,7 @@
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <ul id="popup-content">
         <p class="caption">{{$t("featureInfo.moreData")}}</p>
-        <li v-for="(stat, i) in statisticsConfs" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
+        <li class="statsLink" v-for="(stat, i) in statisticsConfs" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
       </ul>
     </div>
   </span>
@@ -218,70 +218,78 @@ export default {
 </script>
 
 <style>
-  .ol-popup {
-    position: absolute;
-    background-color: white;
-    -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
-    bottom: 12px;
-    left: -50px;
-  }
-  .ol-popup:after, .ol-popup:before {
-    top: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-  .ol-popup:after {
-    border-top-color: white;
-    border-width: 10px;
-    left: 48px;
-    margin-left: -10px;
-  }
-  .ol-popup:before {
-    border-top-color: #cccccc;
-    border-width: 11px;
-    left: 48px;
-    margin-left: -11px;
-  }
-  .ol-popup-closer {
-    text-decoration: none;
-    position: absolute;
-    top: 2px;
-    right: 8px;
-    color: #006ae8;
-  }
-  .ol-popup-closer:after {
-    content: "✖";
-  }
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+}
+.ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  color: #006ae8;
+}
+.ol-popup-closer:after {
+  content: "✖";
+}
 </style>
 
-<style scoped>
-  #popup-content {
-    padding: 0;
-    margin: 0;
-    white-space: nowrap;
-  }
-  #popup-content li {
-    list-style: none;
-    cursor: pointer;
-  }
-  h1 {
-    font-size: 16px;
-  }
-  th, td {
-    font-size:14px;
-  }
-  th {
-    padding-right: 9px;
-  }
-  .caption {
-    font-size: 12px;
-  }
+<style lang="scss"  scoped>
+@import "../assets/global.scss";
+
+#popup-content {
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+}
+#popup-content li {
+  list-style: none;
+  cursor: pointer;
+}
+h1 {
+  font-size: 16px;
+}
+th, td {
+  font-size:14px;
+}
+th {
+  padding-right: 9px;
+}
+.caption {
+  font-size: 12px;
+}
+.statsLink {
+  text-decoration: underline;
+}
+.statsLink:hover {
+  color: $highlight-color;
+}
 </style>

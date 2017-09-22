@@ -37,34 +37,24 @@
 
         <template v-if="layer.type === 'wms'">
           <br>
-          <input class="short-input" id="custom-urls" type="checkbox" :checked="serverUrlsCsv !== null" @change="toggleCustomUrls">
-          <label class="short-input" for="custom-urls">Custom server urls (csv)</label>
+          <!-- <input class="short-input" id="custom-urls" type="checkbox" :checked="serverUrlsCsv !== null" @change="toggleCustomUrls"> -->
+          <!-- <label class="short-input" for="custom-urls">Custom server urls (csv)</label> -->
 
-          <label class="mandatory" v-if="serverUrlsCsv !== null">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
+          <label class="mandatory">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
 
           <br>
           <button class="small" @click="fetchWmsLayers">Get list of layers</button>
           <br><br>
 
-          <template v-if="wmsLayerNames && !getCapabilitiesError">
-            <label>
-              WMS layers:
-              <select v-model=selectedWmsName>
-                <option disabled value="">Please select one</option>
-                <option v-for="option in wmsLayerNames" :value="option">
-                  {{option}}
-                </option>
-              </select>
-            </label>
-            <!--
-            <label>
-              Styles
-              <localized-select v-model="test1" :options="test2"></localized-select>
-            </label>
-            -->
-          </template>
-          <span v-else-if="getCapabilitiesError" style="color:red">Error getting wms layers</span>
-          <label class="mandatory">WMS name: <input type="text" v-model="layer.name"></label>
+          <label class="mandatory">WMS name:
+            <input type="text" v-model="layer.name" list="wms_servers">
+            <datalist id="wms_servers" v-if="wmsLayerNames && !getCapabilitiesError">
+              <option v-for="option in wmsLayerNames" :value="option">
+                {{option}}
+              </option>
+            </datalist>
+          </label>
+          <span v-if="getCapabilitiesError" style="color:red">Error getting wms layers</span>
 
           <localized-text-input v-model="layer.styles" label="Styles (leave empty for default style):"></localized-text-input>
 
@@ -77,6 +67,9 @@
               <option>image/png8</option>
             </select>
           </label>
+
+          <br>
+          <label><input type="checkbox" v-model="layer.visible"> Visible</label>
 
           <br>
           <label>Source link: <input type="text" v-model="layer.sourceLink"></label>
@@ -164,7 +157,7 @@ import 'vue-awesome/icons/sort'
 import 'vue-awesome/icons/bar-chart'
 import 'vue-awesome/icons/th-list'
 
-import { map as mapConfig } from 'config'
+// import { map as mapConfig } from 'config'
 
 export default {
   data() {
@@ -186,13 +179,13 @@ export default {
     'draggable': vuedraggable
   },
   methods: {
-    toggleCustomUrls() {
-      if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null
-      else this.serverUrlsCsv = ''
-    },
+    // toggleCustomUrls() {
+    //   if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null
+    //   else this.serverUrlsCsv = ''
+    // },
     fetchWmsLayers() {
       if (this.layer && this.layer.type === 'wms') {
-        const url = `${this.layer.urls[0]}?service=wms&version=1.1.1&request=GetCapabilities`
+        const url = `${this.layer.serverUrls[0]}?service=wms&version=1.1.1&request=GetCapabilities`
         httpRequest('GET', url).then(xml => {
           xml2js.parseString(xml, (err, result) => {
             if (err) throw err
@@ -316,8 +309,8 @@ export default {
     },
     layer(layer) {
       if (layer) {
-        if (layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(', ')
-        if (layer.times) this.timesCsv = layer.times.map(t => t.iso8601).join(', ')
+        if (layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(',')
+        if (layer.times) this.timesCsv = layer.times.map(t => t.iso8601).join(',')
       } else {
         this.serverUrlsCsv = null
         this.timesCsv = ''
@@ -335,8 +328,8 @@ export default {
       // TODO remove circularity (layer => serverUrlsCsv => layer.serverUrls)
       if (this.layer) {
         this.layer.serverUrls = csv !== null && csv.split(',').map(url => url.trim())
-        if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls
-        else this.layer.urls = mapConfig.defaultGeoServerURLs
+        // if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls
+        // else this.layer.urls = mapConfig.defaultGeoServerURLs
       }
     },
     timesCsv(csv) {

@@ -26,9 +26,10 @@ export class Layer {
     this.originalId = layerConfig.id
     this.type = layerConfig.type || 'wms'
     if (this.type === 'wms') {
-      this.serverUrls = layerConfig.serverUrls || null
+      // Backwards compatibility - all layers will have the serverUrls attribute
+      this.serverUrls = layerConfig.serverUrls || mapConfig.defaultGeoServerURLs
       // The urls attribute will be deleted when saving
-      this.urls = layerConfig.serverUrls ? layerConfig.serverUrls : (mapConfig.defaultGeoServerURLs || null)
+      // this.urls = layerConfig.serverUrls ? layerConfig.serverUrls : (mapConfig.defaultGeoServerURLs || null)
       this.name = layerConfig.wmsName || layerConfig.name || null
       this.styles = getLocalizedLabels(layerConfig.styles)
       this.imageFormat = layerConfig.imageFormat || 'image/png8'
@@ -63,7 +64,7 @@ export class Layer {
       })
     }
 
-    this.visible = layerConfig.visible !== false
+    this.visible = !!layerConfig.visible !== false
     this.sourceLink = layerConfig.sourceLink || null
     this.sourceLabel = layerConfig.sourceLabel || null
   }

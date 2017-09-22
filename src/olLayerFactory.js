@@ -45,7 +45,7 @@ class OlLayerFactory {
         }
         const style = layerConfig.styles && layerConfig.styles.find(s => s.language === Vue.i18n.locale()).label // TODO 'label' should be renamed to 'value'
         source = new ol.source.TileWMS(({
-          urls: layerConfig.urls,
+          urls: layerConfig.serverUrls,
           params: {
             'LAYERS': layerConfig.name,
             'STYLES': style || undefined,

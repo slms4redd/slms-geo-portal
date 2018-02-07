@@ -10,7 +10,7 @@
     "moreData": "Select an item from the list below to get more data"
   },
   "feedback": {
-    "selectCategory": "Veuillez sélectionner une catégorie"
+    "selectCategory": "Please select a category"
   },
   "fileDrop": {
     "dropKml": "Drop<br>your KML<br>file here"

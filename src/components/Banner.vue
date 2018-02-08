@@ -5,7 +5,7 @@
       <h2 v-if="$te('banner.subtitle')">{{$t("banner.subtitle")}}</h2>
     </div>
     <ul id="languageLinks" class="buttons">
-      <li v-for="language in languages">
+      <li v-for="language in languages" :key="language.id">
         <span v-if="language.id === selectedLanguage" :href="'?lang=' + language.id">{{language.label}}</span>
         <!-- <a v-else :href="'?lang=' + language.id">{{language.label}}</a> -->
          <a v-else href="#" @click="setLanguage(language.id)">{{language.label}}</a>

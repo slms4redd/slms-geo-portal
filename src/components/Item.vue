@@ -35,7 +35,7 @@
       <span class="info-link icon" v-if="conf.infoFile" @click="showInfo">
         <icon name="info-circle"></icon>
       </span>
-      <span class="times-button icon" v-if="!!this.conf.times.length" @click="toggleTimeMenu" :class="{active: showTimeMenu}">
+      <span class="times-button icon" v-if="this.conf.times && !!this.conf.times.length" @click="toggleTimeMenu" :class="{active: showTimeMenu}">
         <icon name="clock-o"></icon> {{selectedTime.humanReadable}}
       </span>
       <span :title="$t('item.statisticsAvailable')" v-if="hasStatistics" class="icon statistics">
@@ -123,7 +123,7 @@ export default {
       return !this.conf.parent
     },
     hasLayers() {
-      return !!this.conf.layers.length
+      return !!this.conf.layers && !!this.conf.layers.length
     },
     hasStatistics() {
       return !!this.conf.layers && this.conf.layers.some(l => l.statistics)

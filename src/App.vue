@@ -14,6 +14,7 @@
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
     <Logos id="ll_logos" :logosList="llLogos"></Logos>
+    <measure></measure>
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import FeatureInfo from './components/FeatureInfo'
 import Feedback from './components/Feedback'
 import KMLOverlay from './components/KMLOverlay'
 import Logos from './components/Logos'
+import Measure from './components/Measure'
 
 import { logos } from 'config'
 
@@ -43,6 +45,7 @@ export default {
     FeatureInfo,
     Feedback,
     KMLOverlay,
+    Measure,
     Logos
     // EditorConsole
   },

@@ -24,6 +24,9 @@
       <li>
         <a href="#" @click="enableUpload">{{$t("banner.uploadKml")}}</a>
       </li>
+      <li>
+        <a href="#" @click.stop="toggleMeasure">{{$t("banner.measure")}}</a>
+      </li>
     </ul>
     <file-drop :show=showUpload @disable="disableUpload"></file-drop>
     <login-modal :show=showLogin @disable="showLoginDialog(false)"></login-modal>
@@ -74,6 +77,10 @@ export default {
     },
     showLoginDialog(show) {
       this.showLogin = show
+    },
+    toggleMeasure(e) {
+      e.preventDefault()
+      this.$store.commit('toggle_measure', { enable: true })
     }
   }
 }

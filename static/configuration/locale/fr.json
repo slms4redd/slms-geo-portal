@@ -3,7 +3,8 @@
     "title": "Portail d'exemple SLMS",
     "subtitle": "Sous-titre facultatif",
     "feedback": "Feedback",
-    "uploadKml": "Télécharger KML"
+    "uploadKml": "Télécharger KML",
+    "measure": "Measure"
   },
   "featureInfo": {
     "attributes": "Attributs",

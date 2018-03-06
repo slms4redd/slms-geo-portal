@@ -3,7 +3,8 @@
     "title": "SLMS Sample Portal",
     "subtitle": "Optional subtitle",
     "feedback": "Feedback",
-    "uploadKml": "Upload KML"
+    "uploadKml": "Upload KML",
+    "measure": "Measure"
   },
   "featureInfo": {
     "attributes": "Attributes",

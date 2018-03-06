@@ -29,6 +29,7 @@ const state = {
   contextsTimes: [],
   kmlOverlay: null,
   enableFeedback: false,
+  measureActive: false,
   activeContextsIds: [],
 
   editing: false,

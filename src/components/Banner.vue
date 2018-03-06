@@ -5,7 +5,7 @@
       <h2 v-if="$te('banner.subtitle')">{{$t("banner.subtitle")}}</h2>
     </div>
     <ul id="languageLinks" class="buttons">
-      <li v-for="language in languages">
+      <li v-for="language in languages" :key="language.id">
         <span v-if="language.id === selectedLanguage" :href="'?lang=' + language.id">{{language.label}}</span>
         <!-- <a v-else :href="'?lang=' + language.id">{{language.label}}</a> -->
          <a v-else href="#" @click="setLanguage(language.id)">{{language.label}}</a>
@@ -23,6 +23,9 @@
       </li>
       <li>
         <a href="#" @click="enableUpload">{{$t("banner.uploadKml")}}</a>
+      </li>
+      <li>
+        <a href="#" @click.stop="toggleMeasure">{{$t("banner.measure")}}</a>
       </li>
     </ul>
     <file-drop :show=showUpload @disable="disableUpload"></file-drop>
@@ -74,6 +77,10 @@ export default {
     },
     showLoginDialog(show) {
       this.showLogin = show
+    },
+    toggleMeasure(e) {
+      e.preventDefault()
+      this.$store.commit('toggle_measure', { enable: true })
     }
   }
 }

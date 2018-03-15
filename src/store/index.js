@@ -128,6 +128,9 @@ const mutations = {
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable
   },
+  toggle_measure(state, { enable }) {
+    state.measureActive = !state.measureActive
+  },
   update_group(state, { groupId, value }) {
     // Called when dragging an item from one group to another, for both old and new group
     const group = state.groups.findById(groupId)

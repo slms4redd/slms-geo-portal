@@ -2,7 +2,14 @@
   <div class="label-edit">
     <span id="label">{{label}}</span>
     <div v-for="label in value">
-      <label>{{langName(label.language)}}: <input type="text" v-model="label.label"></label>
+      <label>{{langName(label.language)}}:
+        <input type="text" v-model="label.label" :list="label.language">
+        <datalist v-if="options" :id="label.language">
+          <option v-for="option in options" :value="option">
+            {{option}}
+          </option>
+        </datalist>
+      </label>
     </div>
   </div>
 </template>
@@ -11,7 +18,7 @@
 import { languages } from 'config'
 
 export default {
-  props: ['value', 'label'],
+  props: ['value', 'label', 'options'],
   methods: {
     langName(langCode) {
       const language = languages.find(l => l.id === langCode)

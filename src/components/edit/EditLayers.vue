@@ -42,21 +42,21 @@
 
           <label class="mandatory">Server urls: <input type="text" v-model="serverUrlsCsv"></label>
 
-          <br>
-          <button class="small" @click="fetchWmsLayers">Get list of layers</button>
+          <button class="small" @click="fetchWmsLayers">Refresh list of layers</button>
           <br><br>
 
           <label class="mandatory">WMS name:
-            <input type="text" v-model="layer.name" list="wms_servers">
-            <datalist id="wms_servers" v-if="wmsLayerNames && !getCapabilitiesError">
-              <option v-for="option in wmsLayerNames" :value="option">
+            <input type="text" v-model.lazy="layer.name" list="wms_servers">
+            <datalist id="wms_servers" v-if="wmsLayers && !getCapabilitiesError">
+              <option v-for="option in wmsLayers.map(l => l.Name[0])" :value="option">
                 {{option}}
               </option>
             </datalist>
           </label>
+
           <span v-if="getCapabilitiesError" style="color:red">Error getting wms layers</span>
 
-          <localized-text-input v-model="layer.styles" label="Styles (leave empty for default style):"></localized-text-input>
+          <localized-text-input v-model="layer.styles" label="Styles (leave empty for default style):" :options="wmsStyleNames"></localized-text-input>
 
           <br>
           <label>Image format:
@@ -84,6 +84,7 @@
           </label>
 
           <label v-if="legendType === 'wms'" class="short-input mandatory">Style name: <input class="short-input" type="text" v-model="layer.legend.style"></label>
+
           <label v-else-if="legendType === 'url'" class="short-input mandatory">URL: <input class="short-input" type="text" v-model="layer.legend.url"></label>
 <!--
           <label>Times
@@ -157,8 +158,6 @@ import 'vue-awesome/icons/sort'
 import 'vue-awesome/icons/bar-chart'
 import 'vue-awesome/icons/th-list'
 
-// import { map as mapConfig } from 'config'
-
 export default {
   data() {
     return {
@@ -166,45 +165,30 @@ export default {
       layer: null,
       serverUrlsCsv: null,
       timesCsv: '',
-      wmsLayerNames: null,
-      selectedWmsName: null,
+      wmsLayers: null,
+      wmsStyleNames: null,
       getCapabilitiesError: false
     }
   },
   components: {
     Modal,
     LocalizedTextInput,
-    // LocalizedSelect,
     Icon,
     'draggable': vuedraggable
   },
   methods: {
-    // toggleCustomUrls() {
-    //   if (this.serverUrlsCsv !== null) this.serverUrlsCsv = null
-    //   else this.serverUrlsCsv = ''
-    // },
     fetchWmsLayers() {
       if (this.layer && this.layer.type === 'wms') {
         const url = `${this.layer.serverUrls[0]}?service=wms&version=1.1.1&request=GetCapabilities`
         httpRequest('GET', url).then(xml => {
           xml2js.parseString(xml, (err, result) => {
             if (err) throw err
+            this.wmsLayers = result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer
 
-            const wmsLayers = result.WMT_MS_Capabilities.Capability[0].Layer[0].Layer
-
-            // Fill the options element
-            this.wmsLayerNames = wmsLayers.map(l => l.Name[0])
-
-            // If it doesn't find the current layer name in the list, set the selectedWmsName
-            // to null so that this.layer.name isn't changed.
-            // Needed for example when this.layer.name doesn't contain the workspace yet.
-            if (this.wmsLayerNames.indexOf(this.layer.name) > -1) {
-              this.selectedWmsName = this.layer.name
-            } else {
-              this.selectedWmsName = null
-            }
+            const layer = this.wmsLayers.find(l => l.Name[0] === this.layer.name)
+            if (layer && layer.Style) this.wmsStyleNames = layer.Style.map(s => s.Name[0])
+            else this.wmsStyleNames = null
           })
-
           this.getCapabilitiesError = false
         })
         .catch(err => {
@@ -219,9 +203,10 @@ export default {
         case 'wms':
           layer = new Layer({
             type: 'wms',
-            name: 'new_layer',
+            name: '',
             id: Layer.nextId++,
-            imageFormat: 'image/png8'
+            imageFormat: 'image/png8',
+            visible: true
           })
           break
         case 'osm':
@@ -309,27 +294,23 @@ export default {
     },
     layer(layer) {
       if (layer) {
-        if (layer.serverUrls) this.serverUrlsCsv = layer.serverUrls.join(',')
+        if (layer.serverUrls) {
+          this.serverUrlsCsv = layer.serverUrls.join(',')
+          this.fetchWmsLayers()
+        }
         if (layer.times) this.timesCsv = layer.times.map(t => t.iso8601).join(',')
       } else {
         this.serverUrlsCsv = null
         this.timesCsv = ''
-        this.wmsLayerNames = null
-        this.selectedWmsName = null
+        this.wmsLayers = null
+        // this.selectedWmsName = null
         this.getCapabilitiesError = false
-      }
-    },
-    selectedWmsName() {
-      if (this.selectedWmsName) {
-        this.layer.name = this.selectedWmsName
       }
     },
     serverUrlsCsv(csv) {
       // TODO remove circularity (layer => serverUrlsCsv => layer.serverUrls)
       if (this.layer) {
         this.layer.serverUrls = csv !== null && csv.split(',').map(url => url.trim())
-        // if (this.layer.serverUrls) this.layer.urls = this.layer.serverUrls
-        // else this.layer.urls = mapConfig.defaultGeoServerURLs
       }
     },
     timesCsv(csv) {

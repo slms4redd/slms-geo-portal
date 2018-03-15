@@ -62,7 +62,7 @@ export default {
     ...mapState({
       'layers': state => state.layers,
       'contexts': state => state.contexts,
-      'contextsTimes': state => state.contextTImes,
+      'contextsTimes': state => state.contextsTimes,
       'locale': state => state.i18n.locale
     }),
     ...mapGetters([

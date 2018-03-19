@@ -193,8 +193,10 @@ export default {
     },
     toggleActive() {
       if (this.conf.layers.length) {
-        this.$store.commit('toggle_context', { contextId: this.conf.id })
-        if (this.conf.parent.exclusive) {
+        if (!this.conf.parent.exclusive) {
+          this.$store.commit('toggle_context', { contextId: this.conf.id })
+        } else {
+          if (this.conf.parent.allowDisableAll || !this.active) this.$store.commit('toggle_context', { contextId: this.conf.id })
           this.conf.parent.items.forEach(item => {
             if (item.id !== this.conf.id && this.activeContextsIds.indexOf(item.id) !== -1) {
               // it's not this context and it's active

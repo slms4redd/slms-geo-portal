@@ -129,6 +129,13 @@ export class Group extends Item {
 
     this.parent = parent
     this.exclusive = !!groupConfig.exclusive
+
+    // Keep backwards compatibility (pre allowDisableAll)
+    if (groupConfig.exclusive) {
+      if (typeof groupConfig.allowDisableAll === 'undefined') this.allowDisableAll = true
+      else this.allowDisableAll = !!groupConfig.allowDisableAll
+    }
+
     this.items = (groupConfig.items || []).map(item => {
       if (typeof item.context !== 'undefined') { // item.context might be 0
         // Create a dummy context if not found in the contexts array

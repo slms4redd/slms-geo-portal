@@ -5,6 +5,7 @@
       <localized-text-input v-model="labels" label="Labels:"></localized-text-input>
       <label>Info file: <input type="text" v-model="infoFile"></label>
       <label><input type="checkbox" v-model="exclusive"> Exclusive</label>
+      <label v-if="exclusive"><input type="checkbox" v-model="allowDisableAll"> Allow to disable all</label>
     </div>
     <div slot="footer">
       <a href="#" class="modal-default-button" @click.prevent="close">Cancel</a>
@@ -24,6 +25,7 @@ export default {
     return {
       labels: null,
       exclusive: null,
+      allowDisableAll: null,
       infoFile: null
     }
   },
@@ -37,6 +39,7 @@ export default {
         id: this.editGroup.id,
         labels: this.labels,
         exclusive: this.exclusive,
+        allowDisableAll: this.exclusive ? !!this.allowDisableAll : undefined,
         infoFile: this.infoFile
       })
 
@@ -51,6 +54,7 @@ export default {
       if (this.editGroup) {
         // this.label = this.editGroup.label;
         this.exclusive = this.editGroup.exclusive
+        this.allowDisableAll = this.editGroup.allowDisableAll
         this.infoFile = this.editGroup.infoFile
         this.labels = languages.map(l => {
           const loc = this.editGroup.labels.find(l2 => l2.language === l.id)

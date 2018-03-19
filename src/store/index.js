@@ -81,11 +81,12 @@ const mutations = {
   edit_layers(state, { edit }) {
     state.editLayers = edit
   },
-  save_group(state, { id, label, labels, exclusive, infoFile }) {
+  save_group(state, { id, labels, exclusive, allowDisableAll, infoFile }) {
     const group = state.groups.findById(id)
-    group.label = label
+    // group.label = label
     group.labels = labels
     group.exclusive = exclusive
+    group.allowDisableAll = allowDisableAll
     group.infoFile = infoFile
   },
   save_context(state, { id, label, labels, infoFile, active, inlineLegendUrl, layerIds }) {

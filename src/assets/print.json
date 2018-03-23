@@ -1,0 +1,39 @@
+{
+  "layout": "A4 portrait",
+  "srs": "EPSG:3857",
+  "units": "meters",
+  "geodetic": true,
+  "outputFilename": "maps",
+  "outputFormat": "pdf",
+  "layers": [
+    {
+      "type": "WMS",
+      "layers": ["unredd:provinces"],
+      "baseURL": "http://147.135.130.114/geoserver/wms?",
+      "format": "image/png"
+    }
+  ],
+  "pages": [
+    {
+      "mapTitle": "This is the title",
+      "center": [-8237642.319, 4968191.930],
+      "scale": 25000,
+      "dpi": 150,
+      "geodetic": false,
+      "strictEpsg4326": false
+    }
+  ],
+  "legends___": [
+    {
+      "classes": [
+        {
+          "icons": [
+            "http://www.rdc-snsf.org/portal/static/loc/en/images/ucl_2010.png"
+          ],
+          "name": ""
+        }
+      ],
+      "name": "a class name"
+    }
+  ]
+}

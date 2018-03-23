@@ -27,6 +27,9 @@
       <li>
         <a href="#" @click.stop="toggleMeasure">{{$t("banner.measure")}}</a>
       </li>
+      <li>
+        <a href="#" @click.stop="printMap">Print</a>
+      </li>
     </ul>
     <file-drop :show=showUpload @disable="disableUpload"></file-drop>
     <login-modal :show=showLogin @disable="showLoginDialog(false)"></login-modal>
@@ -39,6 +42,10 @@ import Vue from 'vue'
 import FileDrop from './FileDrop'
 import LoginModal from './LoginModal'
 import auth from '../auth'
+
+import printRequest from '../assets/print.json'
+import map from '../map'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -81,8 +88,108 @@ export default {
     toggleMeasure(e) {
       e.preventDefault()
       this.$store.commit('toggle_measure', { enable: true })
+    },
+    printMap(e) {
+      // see https://nehalist.io/downloading-files-from-post-requests/
+      e.preventDefault()
+
+      // get the map scale
+      // const scale = INCHES_PER_UNIT[units] * DOTS_PER_INCH * resolution;
+      // console.log(ol.has.DEVICE_PIXEL_RATIO)
+      // console.log(window.devicePixelRatio)
+      const scales = [1128, 2256, 4513, 9027, 18055, 36111, 72223, 144447, 288895, 577790, 1155581,
+        2311162, 4622324, 9244649, 18489298, 36978596, 73957193, 147914387, 295828775, 591657550]
+      const scale = Math.round(39.37 * 90 * map.getView().getResolution())
+      const printScale = scales.find(s => s >= scale) || scales.slice(-1)[0]
+
+      printRequest.pages[0].center = map.getView().getCenter()
+      printRequest.pages[0].scale = printScale
+
+      const visibleActiveLayers = this.activeLayers.filter(layer => !!layer.visible)
+      if (!visibleActiveLayers.length) return // TODO notify
+
+      // Reverse the order of WMS layers only
+      let reversedWmsGroups = visibleActiveLayers.reduce((grouped, layer) => {
+        switch (layer.type) {
+          case 'osm':
+          case 'bing-aerial':
+            grouped.push([layer])
+            return grouped
+          case 'wms':
+            if (!grouped.length) grouped.push([])
+            const lastGroup = grouped[grouped.length - 1]
+            if (!lastGroup.length || (lastGroup[0].type === 'wms' && lastGroup[0].serverUrls[0] !== layer.serverUrls[0])) {
+              lastGroup.unshift(layer)
+              return grouped
+            } else {
+              grouped.push([layer])
+              return grouped
+            }
+        }
+      }, [])
+
+      // Flatten the two level structure
+      reversedWmsGroups = [].concat.apply([], reversedWmsGroups)
+
+      printRequest.layers = reversedWmsGroups.map(layer => {
+        if (!layer.visible) return null
+        switch (layer.type) {
+          case 'wms':
+            return {
+              type: 'wms',
+              layers: [layer.name],
+              baseURL: layer.serverUrls[0],
+              format: layer.imageFormat
+            }
+          case 'osm':
+            return {
+              baseURL: 'http://a.tile.openstreetmap.org/',
+              singleTile: false,
+              type: 'OSM',
+              maxExtent: [-20037508.3392, -20037508.3392, 20037508.3392, 20037508.3392],
+              tileSize: [256, 256],
+              extension: 'png',
+              resolutions: [156543.0339, 78271.51695, 39135.758475, 19567.8792375, 9783.93961875, 4891.969809375, 2445.9849046875, 1222.99245234375, 611.496226171875, 305.7481130859375, 152.87405654296876, 76.43702827148438, 38.21851413574219, 19.109257067871095, 9.554628533935547, 4.777314266967774, 2.388657133483887, 1.1943285667419434, 0.5971642833709717]
+            }
+          default:
+            return null
+        }
+      }).filter(l => !!l)
+
+      const geoserverUrl = 'http://localhost:8081/geoserver/pdf/print.pdf' // DEBUG
+      const request = new XMLHttpRequest()
+      request.open('POST', geoserverUrl, true)
+      request.setRequestHeader('Content-Type', 'application/json')
+      request.responseType = 'blob'
+
+      request.onload = function() {
+        // Only handle status code 200
+        if (request.status === 200) {
+          // Try to find out the filename from the content disposition `filename` value
+          const disposition = request.getResponseHeader('content-disposition')
+          const matches = /"([^"]*)"/.exec(disposition)
+          const filename = (matches != null && matches[1] ? matches[1] : 'file.pdf')
+
+          // The actual download
+          const blob = new Blob([request.response], { type: 'application/pdf' })
+          const link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = filename
+
+          document.body.appendChild(link)
+
+          link.click()
+
+          document.body.removeChild(link)
+        }
+        // some error handling should be done here...
+      }
+      request.send(JSON.stringify(printRequest))
     }
-  }
+  },
+  computed: mapGetters([
+    'activeLayers'
+  ])
 }
 </script>
 

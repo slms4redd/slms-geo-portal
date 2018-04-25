@@ -3,7 +3,7 @@
   "srs": "EPSG:3857",
   "units": "meters",
   "geodetic": true,
-  "outputFilename": "maps",
+  "outputFilename": "map",
   "outputFormat": "pdf",
   "layers": [
     {
@@ -23,7 +23,7 @@
       "strictEpsg4326": false
     }
   ],
-  "legends___": [
+  "legends": [
     {
       "classes": [
         {

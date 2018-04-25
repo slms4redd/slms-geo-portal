@@ -28,7 +28,7 @@
         <a href="#" @click.stop="toggleMeasure">{{$t("banner.measure")}}</a>
       </li>
       <li>
-        <a href="#" @click.stop="printMap">Print</a>
+        <a href="#" @click.stop="printMap">PDF</a>
       </li>
     </ul>
     <file-drop :show=showUpload @disable="disableUpload"></file-drop>
@@ -106,7 +106,7 @@ export default {
       printRequest.pages[0].scale = printScale
 
       const visibleActiveLayers = this.activeLayers.filter(layer => !!layer.visible)
-      if (!visibleActiveLayers.length) return // TODO notify
+      if (!visibleActiveLayers.length) return // TODO notify the user
 
       // Reverse the order of WMS layers only
       let reversedWmsGroups = visibleActiveLayers.reduce((grouped, layer) => {
@@ -131,6 +131,7 @@ export default {
       // Flatten the two level structure
       reversedWmsGroups = [].concat.apply([], reversedWmsGroups)
 
+      // Layers
       printRequest.layers = reversedWmsGroups.map(layer => {
         if (!layer.visible) return null
         switch (layer.type) {
@@ -156,7 +157,81 @@ export default {
         }
       }).filter(l => !!l)
 
-      const geoserverUrl = 'http://localhost:8081/geoserver/pdf/print.pdf' // DEBUG
+      // Legends - add all layer legends - not inline context ones
+      // Build something like this:
+        // "legends": [
+        //   {
+        //     "classes": [
+        //       {
+        //         "icons": [
+        //           "http://www.rdc-snsf.org/portal/static/loc/en/images/ucl_2010.png"
+        //         ],
+        //         "name": ""
+        //       }
+        //     ],
+        //     "name": "a class name"
+        //   }
+        // ]
+
+      const legends = []
+      printRequest.legends = this.activeContexts.forEach(context => {
+        const contextLabel = context.labels.find(l => l.language === Vue.i18n.locale()).label // TODO check nulls
+        if (context.inlineLegendUrl) {
+          // Return the inline context legend
+          legends.push({
+            classes: [{
+              icons: [context.inlineLegendUrl],
+              name: ''
+            }],
+            name: contextLabel
+          })
+        } else if (context.hasLegends) {
+          const legend = {
+            classes: [],
+            name: contextLabel
+          }
+          context.layers.forEach(l => {
+            if (!l.legend) return
+
+            // TODO - duplicate of ContextLegend.vue
+            switch (l.legend.type) {
+              case 'url':
+                legend.classes.push({
+                  // TODO - hard coded icons url
+                  icons: [`http://localhost/static/configuration/loc/${Vue.i18n.locale()}/images/${l.legend.url}`],
+                  name: ''
+                })
+                break
+              case 'wms':
+                // TODO add base url to legend url in case it's not there
+                let legendUrl = null
+                if (l.legend) {
+                  // Custom legend if defined
+                  const wmsLegendStyle = l.legend.style.replace('$(_lang)', Vue.i18n.locale())
+                  legendUrl = `${l.serverUrls[0]}?LEGEND_OPTIONS=fontColor:000000;fontAntiAliasing:true&LAYER=${l.name}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`
+                } else if (l.styles) {
+                  // Get legend URL from the (localized) style
+                  // TODO fallback legend
+                  const style = l.styles.find(l => l.language === Vue.i18n.locale())
+                  const wmsLegendStyle = style ? style.label : null
+                  legendUrl = `${l.serverUrls[0]}?LEGEND_OPTIONS=fontColor:000000;fontAntiAliasing:true&LAYER=${l.name}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`
+                }
+                legend.classes.push({
+                  icons: [legendUrl],
+                  name: ''
+                })
+                break
+              default:
+                return
+            }
+          })
+          legends.push(legend)
+        }
+      })
+
+      printRequest.legends = legends.filter(l => !!l)
+
+      const geoserverUrl = '/geoserver/pdf/print.pdf' // DEBUG
       const request = new XMLHttpRequest()
       request.open('POST', geoserverUrl, true)
       request.setRequestHeader('Content-Type', 'application/json')
@@ -168,7 +243,7 @@ export default {
           // Try to find out the filename from the content disposition `filename` value
           const disposition = request.getResponseHeader('content-disposition')
           const matches = /"([^"]*)"/.exec(disposition)
-          const filename = (matches != null && matches[1] ? matches[1] : 'file.pdf')
+          const filename = (matches != null && matches[1] ? matches[1] : 'map.pdf')
 
           // The actual download
           const blob = new Blob([request.response], { type: 'application/pdf' })
@@ -188,7 +263,8 @@ export default {
     }
   },
   computed: mapGetters([
-    'activeLayers'
+    'activeLayers',
+    'activeContexts'
   ])
 }
 </script>

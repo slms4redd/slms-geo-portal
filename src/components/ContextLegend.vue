@@ -24,7 +24,8 @@ export default {
             legendUrl = `${layer.serverUrls[0]}?LEGEND_OPTIONS=fontColor:ffffff;fontAntiAliasing:true
   &LAYER=${layer.name}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`
           } else {
-            legendUrl = `/static/configuration/loc/${Vue.i18n.locale()}/images/${layer.legend.url}`
+            legendUrl = layer.legend.url
+            // legendUrl = `/static/configuration/loc/${Vue.i18n.locale()}/images/${layer.legend.url}`
           }
         } else if (layer.styles) {
           // Get legend URL from the (localized) style

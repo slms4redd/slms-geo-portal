@@ -1,20 +1,22 @@
-/* global ol */
-
-import Vue from 'vue' // Used to get the locale - TODO pass it as a parameter to createOlLayer
+import OSM from 'ol/source/OSM'
+import BingMaps from 'ol/source/BingMaps'
+import TileWMS from 'ol/source/TileWMS'
+import Tile from 'ol/layer/Tile'
+import Attribution from 'ol/control/Attribution'
 import { map as mapConfig } from 'config'
 
 const attributions = []
 
 class OlLayerFactory {
-  static createOlLayer(layerConfig) {
+  static createOlLayer(layerConfig, locale) {
     let source
 
     switch (layerConfig.type) {
       case 'osm':
-        source = new ol.source.OSM()
+        source = new OSM()
         break
       case 'bing-aerial':
-        source = new ol.source.BingMaps({
+        source = new BingMaps({
           key: mapConfig.bingMapsKey,
           imagerySet: 'Aerial'
           // use maxZoom 19 to see stretched tiles instead of the BingMaps
@@ -31,11 +33,11 @@ class OlLayerFactory {
           let attribution = attributions[sourceLabel || sourceLink]
           if (!attribution) {
             if (sourceLink) {
-              attribution = new ol.Attribution({
+              attribution = new Attribution({
                 html: `<a target="_blank" href="${layerConfig.sourceLink}">${sourceLabel || sourceLink}</a>`
               })
             } else {
-              attribution = new ol.Attribution({
+              attribution = new Attribution({
                 html: sourceLabel
               })
             }
@@ -43,8 +45,8 @@ class OlLayerFactory {
           attributions[sourceLabel || sourceLink] = attribution
           olAttributions.push(attribution)
         }
-        const style = layerConfig.styles && layerConfig.styles.find(s => s.language === Vue.i18n.locale()).label // TODO 'label' should be renamed to 'value'
-        source = new ol.source.TileWMS(({
+        const style = layerConfig.styles && layerConfig.styles.find(s => s.language === locale).label // TODO 'label' should be renamed to 'value'
+        source = new TileWMS(({
           urls: layerConfig.serverUrls,
           params: {
             'LAYERS': layerConfig.name,
@@ -63,7 +65,7 @@ class OlLayerFactory {
         }))
     }
     if (source) {
-      return new ol.layer.Tile({
+      return new Tile({
         visible: false, // will be set by the activeLayers watch in MapPane
         source: source
       })

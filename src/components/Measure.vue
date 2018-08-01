@@ -8,8 +8,20 @@
 </template>
 
 <script>
-/* global ol */
 
+import Collection from 'ol/Collection'
+import Vector from 'ol/source/Vector'
+import Style from 'ol/style/Style'
+import Fill from 'ol/style/Fill'
+import Stroke from 'ol/style/Stroke'
+import Circle from 'ol/style/Circle'
+import Overlay from 'ol/Overlay'
+import Polygon from 'ol/geom/Polygon'
+import LineString from 'ol/geom/LineString'
+import Observable from 'ol/Observable'
+import { getLength, getArea } from 'ol/sphere'
+import Draw from 'ol/interaction/Draw'
+import KML from 'ol/format/KML'
 import { mapState } from 'vuex'
 import map from '../map'
 
@@ -17,23 +29,23 @@ const drawLayer = null
 let drawInteraction = null
 let typeSelect
 
-const ovrlyList = new ol.Collection()
+const ovrlyList = new Collection()
 
-const source = new ol.source.Vector()
+const source = new Vector()
 
-const vector = new ol.layer.Vector({
+const vector = new Vector({
   source: source,
-  style: new ol.style.Style({
-    fill: new ol.style.Fill({
+  style: new Style({
+    fill: new Fill({
       color: 'rgba(255, 255, 255, 0.2)'
     }),
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: '#ffcc33',
       width: 2
     }),
-    image: new ol.style.Circle({
+    image: new Circle({
       radius: 7,
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color: '#ffcc33'
       })
     })
@@ -42,7 +54,7 @@ const vector = new ol.layer.Vector({
 
 /**
  * Currently drawn feature.
- * @type {ol.Feature}
+ * @type {Feature}
  */
 let sketch
 
@@ -54,7 +66,7 @@ let helpTooltipElement
 
 /**
  * Overlay to show the help messages.
- * @type {ol.Overlay}
+ * @type {Overlay}
  */
 let helpTooltip
 
@@ -66,7 +78,7 @@ let measureTooltipElement
 
 /**
  * Overlay to show the measurement.
- * @type {ol.Overlay}
+ * @type {Overlay}
  */
 let measureTooltip
 
@@ -84,7 +96,7 @@ const continueLineMsg = 'Click to continue drawing the line'
 
 /**
  * Handle pointer move.
- * @param {ol.MapBrowserEvent} evt The event.
+ * @param {MapBrowserEvent} evt The event.
  */
 const pointerMoveHandler = function(evt) {
   if (evt.dragging) {
@@ -95,9 +107,9 @@ const pointerMoveHandler = function(evt) {
 
   if (sketch) {
     const geom = (sketch.getGeometry())
-    if (geom instanceof ol.geom.Polygon) {
+    if (geom instanceof Polygon) {
       helpMsg = continuePolygonMsg
-    } else if (geom instanceof ol.geom.LineString) {
+    } else if (geom instanceof LineString) {
       helpMsg = continueLineMsg
     }
   }
@@ -112,11 +124,11 @@ const pointerMoveHandler = function(evt) {
 
 /**
  * Format length output.
- * @param {ol.geom.LineString} line The line.
+ * @param {LineString} line The line.
  * @return {string} The formatted length.
  */
 const formatLength = function(line) {
-  const length = ol.Sphere.getLength(line)
+  const length = getLength(line)
   let output
   if (length > 100) {
     output = (Math.round(length / 1000 * 100) / 100) +
@@ -130,11 +142,11 @@ const formatLength = function(line) {
 
 /**
  * Format area output.
- * @param {ol.geom.Polygon} polygon The polygon.
+ * @param {Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
 const formatArea = function(polygon) {
-  const area = ol.Sphere.getArea(polygon)
+  const area = getArea(polygon)
   let output
   if (area > 10000) {
     output = (Math.round(area / 1000000 * 100) / 100) +
@@ -153,16 +165,16 @@ function drawStartlistener(evt) {
   // set sketch
   sketch = evt.feature
 
-  /** @type {ol.Coordinate|undefined} */
+  /** @type {Coordinate|undefined} */
   let tooltipCoord = evt.coordinate
 
   listener = sketch.getGeometry().on('change', function(evt) {
     const geom = evt.target
     let output
-    if (geom instanceof ol.geom.Polygon) {
+    if (geom instanceof Polygon) {
       output = formatArea(geom)
       tooltipCoord = geom.getInteriorPoint().getCoordinates()
-    } else if (geom instanceof ol.geom.LineString) {
+    } else if (geom instanceof LineString) {
       output = formatLength(geom)
       tooltipCoord = geom.getLastCoordinate()
     }
@@ -180,31 +192,31 @@ function drawEndListener() {
   // unset tooltip so that a new one can be created
   measureTooltipElement = null
   createMeasureTooltip()
-  ol.Observable.unByKey(listener)
+  Observable.unByKey(listener)
 }
 
 function addInteraction() {
   typeSelect = document.getElementById('measureToolType')
   // console.log('Got type ' + typeSelect.value)
   const type = (typeSelect.value === 'area' ? 'Polygon' : 'LineString')
-  draw = new ol.interaction.Draw({
+  draw = new Draw({
     source: source,
     type: type,
-    style: new ol.style.Style({
-      fill: new ol.style.Fill({
+    style: new Style({
+      fill: new Fill({
         color: 'rgba(255, 255, 255, 0.2)'
       }),
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'rgba(255,69,0, 0.5)',
         lineDash: [10, 10],
         width: 2
       }),
-      image: new ol.style.Circle({
+      image: new Circle({
         radius: 5,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(0, 0, 0, 0.7)'
         }),
-        fill: new ol.style.Fill({
+        fill: new Fill({
           color: 'rgba(255, 255, 255, 0.2)'
         })
       })
@@ -227,7 +239,7 @@ function createHelpTooltip() {
   }
   helpTooltipElement = document.createElement('div')
   helpTooltipElement.className = 'tooltip hidden'
-  helpTooltip = new ol.Overlay({
+  helpTooltip = new Overlay({
     element: helpTooltipElement,
     offset: [15, 0],
     positioning: 'center-left'
@@ -245,7 +257,7 @@ function createMeasureTooltip() {
   }
   measureTooltipElement = document.createElement('div')
   measureTooltipElement.className = 'tooltip tooltip-measure'
-  measureTooltip = new ol.Overlay({
+  measureTooltip = new Overlay({
     element: measureTooltipElement,
     offset: [0, -15],
     positioning: 'bottom-center'
@@ -320,7 +332,7 @@ export default {
       if (!this.draw) return
 
       if (drawInteraction) map.removeInteraction(drawInteraction)
-      drawInteraction = new ol.interaction.Draw({
+      drawInteraction = new Draw({
         source: this.drawSource,
         type: this.draw
       })
@@ -333,7 +345,7 @@ export default {
     },
     sendFeedback() {
       const allFeatures = drawLayer.getSource().getFeatures(),
-            format = new ol.format.KML(),
+            format = new KML(),
             kml = format.writeFeatures(allFeatures, { featureProjection: 'EPSG:3857' }),
             xhr = new XMLHttpRequest(),
             _this = this

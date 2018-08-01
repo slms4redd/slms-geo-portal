@@ -23,8 +23,10 @@
 </template>
 
 <script>
-/* global ol */
 
+import Vector from 'ol/source/Vector'
+import Draw from 'ol/interaction/Draw'
+import KML from 'ol/format/KML'
 import { mapState } from 'vuex'
 import map from '../map'
 import { feedbackApi } from 'config'
@@ -45,9 +47,9 @@ export default {
   watch: {
     enableFeedback(enable) {
       if (enable) {
-        this.drawSource = new ol.source.Vector({ wrapX: false })
+        this.drawSource = new Vector({ wrapX: false })
 
-        drawLayer = new ol.layer.Vector({
+        drawLayer = new Vector({
           source: this.drawSource,
           map: map
         })
@@ -66,7 +68,7 @@ export default {
       if (!this.draw) return
 
       if (drawInteraction) map.removeInteraction(drawInteraction)
-      drawInteraction = new ol.interaction.Draw({
+      drawInteraction = new Draw({
         source: this.drawSource,
         type: this.draw
       })
@@ -79,7 +81,7 @@ export default {
     },
     sendFeedback() {
       const allFeatures = drawLayer.getSource().getFeatures(),
-            format = new ol.format.KML(),
+            format = new KML(),
             kml = format.writeFeatures(allFeatures, { featureProjection: 'EPSG:3857' }),
             xhr = new XMLHttpRequest(),
             _this = this

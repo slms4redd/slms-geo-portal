@@ -8,8 +8,12 @@
 </template>
 
 <script>
-/* global ol */
-
+import Vector from 'ol/source/Vector'
+import Style from 'ol/style/Style'
+import Fill from 'ol/style/Fill'
+import Stroke from 'ol/style/Stroke'
+import Circle from 'ol/style/Circle'
+import KML from 'ol/format/KML'
 import { mapState } from 'vuex'
 import map from '../map'
 
@@ -23,41 +27,41 @@ export default {
     kmlOverlay(kml) {
       map.removeLayer(vectorLayer)
       if (kml) {
-        const vectorSource = new ol.source.Vector({
-          features: (new ol.format.KML({ extractStyles: false })).readFeatures(kml, { featureProjection: 'EPSG:3857' })
+        const vectorSource = new Vector({
+          features: (new KML({ extractStyles: false })).readFeatures(kml, { featureProjection: 'EPSG:3857' })
         })
 
-        const stroke = new ol.style.Stroke({
+        const stroke = new Stroke({
           color: '#319FD3',
           width: 1
         })
-        const fill = new ol.style.Fill({
+        const fill = new Fill({
           color: 'rgba(255, 255, 255, 0.3)'
         })
-        const circle = new ol.style.Circle({
+        const circle = new Circle({
           fill: fill,
           stroke: stroke,
           radius: 5
         })
 
         const defaultStyle = {
-          'Point': new ol.style.Style({
+          'Point': new Style({
             image: circle
           }),
-          'LineString': new ol.style.Style({
+          'LineString': new Style({
             stroke: stroke
           }),
-          'Polygon': new ol.style.Style({
+          'Polygon': new Style({
             fill: fill,
             stroke: stroke
           }),
-          'MultiPoint': new ol.style.Style({
+          'MultiPoint': new Style({
             image: circle
           }),
-          'MultiLineString': new ol.style.Style({
+          'MultiLineString': new Style({
             stroke: stroke
           }),
-          'MultiPolygon': new ol.style.Style({
+          'MultiPolygon': new Style({
             fill: fill,
             stroke: stroke
           })
@@ -71,7 +75,7 @@ export default {
           return defaultStyle[feature.getGeometry().getType()]
         }
 
-        vectorLayer = new ol.layer.Vector({
+        vectorLayer = new Vector({
           source: vectorSource,
           style: styleFunction
         })

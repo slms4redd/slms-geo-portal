@@ -25,8 +25,10 @@
 </template>
 
 <script>
-/* global ol */
 
+import Vector from 'ol/source/Vector'
+import Overlay from 'ol/Overlay'
+import GeoJSON from 'ol/format/GeoJSON'
 import { mapGetters, mapState } from 'vuex'
 import map from '../map'
 import httpRequest from '../httpRequest'
@@ -35,9 +37,9 @@ import Vue from 'vue'
 import { map as mapConfig } from 'config'
 
 // Add a vector layer to show the highlighted features
-const highlightOverlay = new ol.layer.Vector({
+const highlightOverlay = new Vector({
   // style: (customize your highlight style here),
-  source: new ol.source.Vector(),
+  source: new Vector(),
   map: map
 })
 
@@ -83,7 +85,7 @@ export default {
       return false
     }
 
-    overlay = new ol.Overlay({
+    overlay = new Overlay({
       element: container,
       autoPan: true,
       autoPanAnimation: {
@@ -96,7 +98,7 @@ export default {
     layers: {
       immediate: true,
       handler: function() {
-        const parser = new ol.format.GeoJSON()
+        const parser = new GeoJSON()
 
         const baseURL = mapConfig.defaultGeoServerURLs[0]
 

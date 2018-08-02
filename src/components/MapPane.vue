@@ -4,6 +4,7 @@
 
 <script>
 import OlLayerFactory from '../olLayerFactory'
+import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import map from '../map'
 
@@ -21,7 +22,7 @@ export default {
 
       layers.forEach(layerConfig => {
         try {
-          const olLayer = OlLayerFactory.createOlLayer(layerConfig)
+          const olLayer = OlLayerFactory.createOlLayer(layerConfig, Vue.i18n.locale())
           if (olLayer) {
             olLayers[layerConfig.id] = olLayer
             map.addLayer(olLayer)

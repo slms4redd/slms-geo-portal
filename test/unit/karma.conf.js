@@ -3,7 +3,7 @@
 // we are also using it with karma-webpack
 //   https://github.com/webpack/karma-webpack
 
-var webpackConfig = require('../../build/webpack.test.conf')
+const webpackConfig = require('../../build/webpack.test.conf')
 
 module.exports = function(config) {
   config.set({
@@ -16,8 +16,6 @@ module.exports = function(config) {
     reporters: ['spec', 'coverage'],
     files: [
       '../../node_modules/babel-polyfill/dist/polyfill.js',
-      '../../static/configuration/config.js/',
-      '../../static/ol-custom.js',
       '../../static/configuration/config.js/',
       './index.js'
     ],

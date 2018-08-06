@@ -27,7 +27,7 @@
 <script>
 
 import VectorLayer from 'ol/layer/Vector'
-import { Vector as VectorSource } from 'ol/source'
+import VectorSource from 'ol/source/Vector'
 import Overlay from 'ol/Overlay'
 import GeoJSON from 'ol/format/GeoJSON'
 import { mapGetters, mapState } from 'vuex'

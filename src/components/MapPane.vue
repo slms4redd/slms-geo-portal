@@ -89,9 +89,7 @@ export default {
   left: auto;
   left: initial;
 }
-/*.ol-control button.ol-zoom-in, .ol-control button {
-  outline: none;
-}*/
+
 .ol-dragzoom {
   border-color: #999;
   border-width: 2px;

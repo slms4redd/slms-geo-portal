@@ -1,7 +1,7 @@
 import Map from 'ol/Map'
 import View from 'ol/View'
 import MousePosition from 'ol/control/MousePosition'
-import { defaults as defaultControls } from 'ol/control'
+import { defaults as defaultControls, Attribution } from 'ol/control'
 import { createStringXY } from 'ol/coordinate'
 import { fromLonLat } from 'ol/proj'
 import { map as mapConfig } from 'config'
@@ -14,8 +14,13 @@ const mousePositionControl = new MousePosition({
 
 export default new Map({
   controls: defaultControls({
-    attributionOptions: ({ collapsible: false })
-  }).extend([mousePositionControl]),
+    attribution: false,
+    zoom: true
+  })
+  .extend([mousePositionControl])
+  .extend([new Attribution({
+    collapsible: false
+  })]),
   view: new View({
     center: fromLonLat(mapConfig.mapCenterLonLat || [0, 0]),
     zoom: mapConfig.mapZoom || 4

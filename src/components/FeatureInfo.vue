@@ -26,7 +26,8 @@
 
 <script>
 
-import Vector from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
+import { Vector as VectorSource } from 'ol/source'
 import Overlay from 'ol/Overlay'
 import GeoJSON from 'ol/format/GeoJSON'
 import { mapGetters, mapState } from 'vuex'
@@ -37,9 +38,9 @@ import Vue from 'vue'
 import { map as mapConfig } from 'config'
 
 // Add a vector layer to show the highlighted features
-const highlightOverlay = new Vector({
+const highlightOverlay = new VectorLayer({
   // style: (customize your highlight style here),
-  source: new Vector(),
+  source: new VectorSource(),
   map: map
 })
 

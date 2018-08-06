@@ -103,7 +103,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   text-shadow: #000 0px 0px 2px, #000 0px 0px 2px, #000 0px 0px 2px;
   top: auto;
-  bottom: 26px;
+  bottom: 20px;
+  right: 20px;
   font-size: 13px;
   font-weight: bold;
 }

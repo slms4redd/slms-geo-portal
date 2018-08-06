@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getLayers, Group, Context, getLocalizedLabels, restoreVersion } from '../layersConfig'
+import { getLayers, restoreVersion } from '../layersConfig'
+import { getLocalizedLabels } from '../layersConfig/util'
+import Context from '../layersConfig/context'
+import Group from '../layersConfig/group'
 
 Vue.use(Vuex)
 

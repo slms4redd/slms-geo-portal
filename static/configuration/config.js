@@ -25,6 +25,9 @@ window.globalConf = {
       'Information Dissemination (RTI)'
     ]
   },
+  printApi: {
+    url: 'http://localhost:8080/geoserver/pdf/print.pdf'
+  },
   logos: {
     ul: 'flag.gif',
     ll: [

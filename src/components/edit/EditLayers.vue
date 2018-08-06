@@ -143,10 +143,10 @@
 <script>
 import Modal from '../Modal'
 import LocalizedTextInput from './LocalizedTextInput'
-// import LocalizedSelect from './LocalizedSelect'
 import { mapState } from 'vuex'
 
-import { Layer, getLocalizedLabels } from '../../layersConfig'
+import Layer from '../../layersConfig/layer'
+import { getLocalizedLabels } from '../../layersConfig/util'
 import httpRequest from '../../httpRequest'
 
 import Icon from 'vue-awesome/components/Icon'

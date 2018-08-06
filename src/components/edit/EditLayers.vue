@@ -143,10 +143,10 @@
 <script>
 import Modal from '../Modal'
 import LocalizedTextInput from './LocalizedTextInput'
-// import LocalizedSelect from './LocalizedSelect'
 import { mapState } from 'vuex'
 
-import { Layer, getLocalizedLabels } from '../../layersConfig'
+import Layer from '../../layersConfig/layer'
+import { getLocalizedLabels } from '../../layersConfig/util'
 import httpRequest from '../../httpRequest'
 
 import Icon from 'vue-awesome/components/Icon'
@@ -179,7 +179,13 @@ export default {
   methods: {
     fetchWmsLayers() {
       if (this.layer && this.layer.type === 'wms') {
-        const url = `${this.layer.serverUrls[0]}?service=wms&version=1.1.1&request=GetCapabilities`
+        const baseUrl = this.layer.serverUrls[0]
+        const lastChar = baseUrl.slice(-1)
+        let sep
+        if (lastChar === '?' || lastChar === '$') sep = ''
+        else sep = baseUrl.indexOf('?') === -1 ? '?' : '&'
+
+        const url = `${baseUrl}${sep}service=wms&version=1.1.1&request=GetCapabilities`
         httpRequest('GET', url).then(xml => {
           xml2js.parseString(xml, (err, result) => {
             if (err) throw err

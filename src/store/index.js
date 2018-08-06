@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getLayers, Group, Context, getLocalizedLabels, restoreVersion } from '../layersConfig'
+import { getLayers, restoreVersion } from '../layersConfig'
+import { getLocalizedLabels } from '../layersConfig/util'
+import Context from '../layersConfig/context'
+import Group from '../layersConfig/group'
 
 Vue.use(Vuex)
 
@@ -170,18 +173,19 @@ const actions = {
 
 // getters are functions
 const getters = {
-  activeLayers: state => {
+  activeContexts: state => {
+    return state.contexts.filter(c => state.activeContextsIds.indexOf(c.id) !== -1)
+  },
+  activeLayers: (state, getters) => {
     const activeLayers = []
-    state.contexts.filter(context => state.activeContextsIds.indexOf(context.id) !== -1)
-                  .forEach(context => context.layers.forEach(layer => activeLayers.push(layer)))
+    getters.activeContexts.forEach(context => context.layers.forEach(layer => activeLayers.push(layer)))
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos)
   },
   queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics)
 }
 
-// A Vuex instance is created by combining the state, mutations, actions,
-// and getters.
+// A Vuex instance is created by combining the state, mutations, actions, and getters.
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state,

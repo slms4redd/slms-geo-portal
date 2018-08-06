@@ -27,6 +27,9 @@
       <li>
         <a href="#" @click.stop="toggleMeasure">{{$t("banner.measure")}}</a>
       </li>
+      <li>
+        <a href="#" @click.stop="printMap">PDF</a>
+      </li>
     </ul>
     <file-drop :show=showUpload @disable="disableUpload"></file-drop>
     <login-modal :show=showLogin @disable="showLoginDialog(false)"></login-modal>
@@ -34,11 +37,14 @@
 </template>
 
 <script>
-import { languages } from 'config'
+import { languages, printApi } from 'config'
 import Vue from 'vue'
 import FileDrop from './FileDrop'
 import LoginModal from './LoginModal'
 import auth from '../auth'
+import { getPrintRequest } from '../layersConfig'
+
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -81,8 +87,48 @@ export default {
     toggleMeasure(e) {
       e.preventDefault()
       this.$store.commit('toggle_measure', { enable: true })
+    },
+    printMap(e) {
+      // see https://nehalist.io/downloading-files-from-post-requests/
+      e.preventDefault()
+
+      const printRequest = getPrintRequest(this.activeLayers, this.activeContexts, Vue.i18n.locale())
+
+      const geoserverUrl = printApi.url
+      const request = new XMLHttpRequest()
+      request.open('POST', geoserverUrl, true)
+      request.setRequestHeader('Content-Type', 'application/json')
+      request.responseType = 'blob'
+
+      request.onload = function() {
+        // Only handle status code 200
+        if (request.status === 200) {
+          // Try to find out the filename from the content disposition `filename` value
+          const disposition = request.getResponseHeader('content-disposition')
+          const matches = /"([^"]*)"/.exec(disposition)
+          const filename = (matches != null && matches[1] ? matches[1] : 'map.pdf')
+
+          // The actual download
+          const blob = new Blob([request.response], { type: 'application/pdf' })
+          const link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = filename
+
+          document.body.appendChild(link)
+
+          link.click()
+
+          document.body.removeChild(link)
+        }
+        // TODO error handling
+      }
+      request.send(JSON.stringify(printRequest))
     }
-  }
+  },
+  computed: mapGetters([
+    'activeLayers',
+    'activeContexts'
+  ])
 }
 </script>
 

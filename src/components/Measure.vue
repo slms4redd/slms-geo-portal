@@ -420,7 +420,6 @@ export default {
     z-index: 1000;
   }
 
-
 .tooltip {
   position: relative;
   background: rgba(255,69,0 , 0.5);

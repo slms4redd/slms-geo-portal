@@ -247,8 +247,6 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
               name: ''
             })
             break
-          default:
-            return
         }
       })
       legends.push(legend)

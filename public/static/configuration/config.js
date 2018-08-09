@@ -10,7 +10,7 @@ window.globalConf = {
     ]
   },
   layersConfigApi: {
-    baseUrl: '/api/',
+    baseUrl: 'http://localhost:3001/api/',
     loginUrl: 'sessions/create',
     getLayersConfigUrl: 'layers.json',
     saveLayersConfigUrl: 'protected/layers_conf/save/',

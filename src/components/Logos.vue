@@ -3,11 +3,11 @@
     <ul>
       <li v-for="logo in logosList" :key="logo.url">
         <a v-if="logo.link" :href="logo.link" target="_blank">
-          <img v-if="logo.imgUrl" :src="logo.imgUrl" :width="logo.size.width" :height="logo.size.height"></img>
+          <img v-if="logo.imgUrl" :src="logo.imgUrl" :width="logo.size.width" :height="logo.size.height" />
           <span v-if="logo.text">{{logo.text}}</span>
         </a>
         <template v-else>
-          <img v-if="logo.imgUrl" :src="logo.imgUrl" :width="logo.size.width" :height="logo.size.height"></img>
+          <img v-if="logo.imgUrl" :src="logo.imgUrl" :width="logo.size.width" :height="logo.size.height" />
           <span v-if="logo.text">{{logo.text}}</span>
         </template>
       </li>

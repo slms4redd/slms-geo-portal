@@ -20,7 +20,7 @@ export default class Context extends Item {
   get hasLegends() {
     // The context has a legend if any of his layers has one
     // i.e. if any of is layers has a legend attribute or a styles attribute with a not null label
-    return this.layers.some(layer => layer.legend || layer.styles && layer.styles.some(s => s.label))
+    return this.layers.some(layer => layer.legend || (layer.styles && layer.styles.some(s => s.label)))
   }
 
   legend(locale) {

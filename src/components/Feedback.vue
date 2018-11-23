@@ -24,7 +24,8 @@
 
 <script>
 
-import Vector from 'ol/source/Vector'
+import { Vector as VectorSource } from 'ol/source'
+import { Vector as VectorLayer } from 'ol/layer'
 import Draw from 'ol/interaction/Draw'
 import KML from 'ol/format/KML'
 import { mapState } from 'vuex'
@@ -47,9 +48,9 @@ export default {
   watch: {
     enableFeedback(enable) {
       if (enable) {
-        this.drawSource = new Vector({ wrapX: false })
+        this.drawSource = new VectorSource({ wrapX: false })
 
-        drawLayer = new Vector({
+        drawLayer = new VectorLayer({
           source: this.drawSource,
           map: map
         })

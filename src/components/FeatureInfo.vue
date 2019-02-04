@@ -157,7 +157,11 @@ export default {
                     overlay.setPosition(undefined)
                   }
                 })
-                .catch(error => alert(error.statusText || error))
+                .catch(error => {
+                  if (!(error instanceof SyntaxError)) {
+                    alert(error.statusText || error)
+                  }
+                })
             }
           }.bind(this)
         }

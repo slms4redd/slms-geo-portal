@@ -27,7 +27,7 @@
       <li>
         <a href="#" @click.stop="toggleMeasure">{{$t("banner.measure")}}</a>
       </li>
-      <li>
+      <li v-if="printURL">
         <a href="#" @click.stop="printMap">PDF</a>
       </li>
     </ul>
@@ -57,7 +57,8 @@ export default {
       selectedLanguage: Vue.i18n.locale(),
       showUpload: false,
       showLogin: false,
-      user: auth.user
+      user: auth.user,
+      printURL: printApi && printApi.url || null
     }
   },
   methods: {

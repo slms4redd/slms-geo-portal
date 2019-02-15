@@ -10,7 +10,8 @@
 <script>
 
 import Collection from 'ol/Collection'
-import Vector from 'ol/source/Vector'
+import { Vector as VectorSource } from 'ol/source'
+import { Vector as VectorLayer } from 'ol/layer'
 import Style from 'ol/style/Style'
 import Fill from 'ol/style/Fill'
 import Stroke from 'ol/style/Stroke'
@@ -18,7 +19,7 @@ import Circle from 'ol/style/Circle'
 import Overlay from 'ol/Overlay'
 import Polygon from 'ol/geom/Polygon'
 import LineString from 'ol/geom/LineString'
-import Observable from 'ol/Observable'
+import { unByKey } from 'ol/Observable'
 import { getLength, getArea } from 'ol/sphere'
 import Draw from 'ol/interaction/Draw'
 import KML from 'ol/format/KML'
@@ -31,9 +32,9 @@ let typeSelect
 
 const ovrlyList = new Collection()
 
-const source = new Vector()
+const source = new VectorSource()
 
-const vector = new Vector({
+const vector = new VectorLayer({
   source: source,
   style: new Style({
     fill: new Fill({
@@ -192,7 +193,7 @@ function drawEndListener() {
   // unset tooltip so that a new one can be created
   measureTooltipElement = null
   createMeasureTooltip()
-  Observable.unByKey(listener)
+  unByKey(listener)
 }
 
 function addInteraction() {

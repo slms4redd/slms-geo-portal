@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import Vector from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
+import VectorSource from 'ol/source/Vector'
 import Style from 'ol/style/Style'
 import Fill from 'ol/style/Fill'
 import Stroke from 'ol/style/Stroke'
@@ -27,7 +28,7 @@ export default {
     kmlOverlay(kml) {
       map.removeLayer(vectorLayer)
       if (kml) {
-        const vectorSource = new Vector({
+        const vectorSource = new VectorSource({
           features: (new KML({ extractStyles: false })).readFeatures(kml, { featureProjection: 'EPSG:3857' })
         })
 
@@ -75,7 +76,7 @@ export default {
           return defaultStyle[feature.getGeometry().getType()]
         }
 
-        vectorLayer = new Vector({
+        vectorLayer = new VectorLayer({
           source: vectorSource,
           style: styleFunction
         })

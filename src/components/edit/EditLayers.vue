@@ -14,13 +14,16 @@
         <br>
         <br>
         <draggable element="ul" :options="{ group: 'items', animation: 150, handle: '.handle' }" v-model='layersClone'>
-          <li v-for="l in layersClone" class="layer-link" :class="{ highlighted: layer && l.id === layer.id }" @click="editLayer(l)">
+          <li v-for="l in layersClone" class="layer-link" :class="{ highlighted: layer && l.id === layer.id }" @click="editLayer(l)" :key="l.id">
             <span class="handle"><icon name="sort"></icon></span>
             <span v-if="l.type === 'wms'">{{l.name}}</span>
             <span v-else-if="l.type === 'bing-aerial'">Bing aerial</span>
             <span v-else-if="l.type === 'osm'">Open street map</span>
             <span v-if="l.statistics && l.statistics.length">
               <icon name="bar-chart"></icon>
+            </span>
+            <span v-if="l.downloadLink && l.downloadLink.length">
+              <icon name="download"></icon>
             </span>
             <span v-if="l.legend">
               <icon name="th-list"></icon>
@@ -48,7 +51,7 @@
           <label class="mandatory">WMS name:
             <input type="text" v-model.lazy="layer.name" list="wms_servers">
             <datalist id="wms_servers" v-if="wmsLayers && !getCapabilitiesError">
-              <option v-for="option in wmsLayers.map(l => l.Name[0])" :value="option">
+              <option v-for="(option, index) in wmsLayers.map(l => l.Name[0])" :value="option" :key="`opt-${index}`">
                 {{option}}
               </option>
             </datalist>
@@ -103,7 +106,7 @@
           Add statistics - type:
           <a href="#" class="button default" @click.prevent="addUrlStatistics">URL</a>
           <a href="#" class="button default" @click.prevent="addAttributesStatistics">Attributes</a>
-          <div v-for="statistics in layer.statistics" class="section-edit">
+          <div v-for="(statistics, index) in layer.statistics" class="section-edit" :key="`statistic-${index}`">
             Statistics - type: {{statistics.type}}
             <a href="#" class="button default" @click.prevent="deleteStatistics(statistics)">Delete statistics</a>
 
@@ -117,7 +120,7 @@
               <br>
               <a href="#" class="button default" @click.prevent="addAttribute(statistics)">Add attribute</a>
               <br>
-              <div v-for="attribute in statistics.attributes" class="section-edit">
+              <div v-for="(attribute, index) in statistics.attributes" class="section-edit" :key="`attrib-${index}`">
                 <label class="short-input mandatory">Name: <input class="short-input" type="text" v-model="attribute.attribute"></label>
 
                 <localized-text-input v-model="attribute.labels" label="Labels:"></localized-text-input>
@@ -127,6 +130,20 @@
               </div>
             </template>
           </div>
+          <br/>
+          <br/>
+          <b>Download Links</b>
+          <br/>
+          <a href="#" class="button default" @click.prevent="addDownloadLink">Add download link</a>
+          <div v-for="(downloadLink, index) in layer.downloadLinks" class="section-edit" :key="`dwnlink-${index}`">
+            <a href="#" class="button default right" @click.prevent="deleteDownloadLink(downloadLink)">Remove Link</a>
+            <template>
+              <label class="mandatory">URL: <input type="text" v-model="downloadLink.url"></label>
+            </template>
+            <localized-text-input v-model="downloadLink.labels" label="Link Labels"></localized-text-input>
+
+          </div>
+
         </template>
       </div>
       <div id="detail" v-else>
@@ -157,6 +174,7 @@ import vuedraggable from 'vuedraggable'
 import 'vue-awesome/icons/sort'
 import 'vue-awesome/icons/bar-chart'
 import 'vue-awesome/icons/th-list'
+import 'vue-awesome/icons/download'
 
 export default {
   data() {
@@ -248,6 +266,16 @@ export default {
         if (index > -1) this.layer.statistics.splice(index, 1)
       }
     },
+    deleteDownloadLink(downloadLink) {
+      if (this.layer.downloadLinks) {
+        if (confirm('Are you sure you want to delete this link?')) {
+          const index = this.layer.downloadLinks.indexOf(downloadLink)
+          if (index > -1) {
+            this.layer.downloadLinks.splice(index, 1)
+          }
+        }
+      }
+    },
     addUrlStatistics() {
       if (!this.layer.statistics) this.$set(this.layer, 'statistics', [])
       this.layer.statistics.push({
@@ -260,6 +288,15 @@ export default {
       if (!this.layer.statistics) this.$set(this.layer, 'statistics', [])
       this.layer.statistics.push({
         type: 'attributes',
+        labels: getLocalizedLabels()
+      })
+    },
+    addDownloadLink() {
+      if (!this.layer.downloadLinks) {
+        this.$set(this.layer, 'downloadLinks', [])
+      }
+      this.layer.downloadLinks.push({
+        url: '',
         labels: getLocalizedLabels()
       })
     },
@@ -433,4 +470,7 @@ label.short-input {
   color: #f00;
   font-weight: bold;
 }
+.right {
+  float: right;
+};
 </style>

@@ -41,6 +41,9 @@
       <span :title="$t('item.statisticsAvailable')" v-if="hasStatistics" class="icon statistics">
         <icon name="bar-chart"></icon>
       </span>
+      <span :title="$t('item.downloadAvailable')" v-if="hasDataDownload" class="icon datadownload info-link" @click="showDownloads">
+        <icon name="download"></icon>
+      </span>
       <time-select v-if="showTimeMenu" @setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></time-select>
       <template v-if="conf.hasLegends && active && showLegend">
         <context-legend :conf="conf"></context-legend>
@@ -85,6 +88,15 @@ import 'vue-awesome/icons/circle'
 import 'vue-awesome/icons/dot-circle-o'
 import 'vue-awesome/icons/pencil-square-o'
 import 'vue-awesome/icons/trash-o'
+import 'vue-awesome/icons/download'
+
+const processTemplate = function(template, feature) {
+  const regex = /\$\((\w+)\)/g
+  return template.replace(regex, (match, p) => {
+    const attributeName = match.substring(2, match.length - 1)
+    return feature.getProperties()[attributeName]
+  })
+}
 
 export default {
   name: 'item',
@@ -127,6 +139,9 @@ export default {
     },
     hasStatistics() {
       return !!this.conf.layers && this.conf.layers.some(l => l.statistics)
+    },
+    hasDataDownload() {
+      return !!this.conf.layers && this.conf.layers.some(l => l.downloadLinks)
     },
     selectedTime() {
       return this.contextsTimes[this.conf.id]
@@ -211,6 +226,25 @@ export default {
     },
     showInfo() {
       this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile })
+    },
+    showDownloads() {
+      let downloadLinksHTML = '<div>'
+      !!this.conf.layers &&
+        this.conf.layers
+        .forEach(
+          l => l.downloadLinks.forEach(
+            (d, downloadIndex) => {
+              const template = d.labels.find(l => l.language === Vue.i18n.locale()).label
+              downloadLinksHTML += '<a href="' +
+               d.url + '" target=_blank>' +
+               (template
+                ? processTemplate(template, l)
+                : (l.name || 'Unnamed Layer') + ' Download #' + (downloadIndex + 1)) + '</a><br/>'
+            }
+          )
+        )
+      downloadLinksHTML += '</div>'
+      this.$store.commit('show_layer_info', { label: 'Downloads', custom_content: downloadLinksHTML })
     },
     toggleTimeMenu() {
       this.showTimeMenu = !this.showTimeMenu

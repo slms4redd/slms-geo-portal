@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-for="legendUrl in legendUrls">
-      <img :src="legendUrl"></img>
+    <div v-for="(legendUrl, index) in legendUrls" :key="`legendUrl-${index}`">
+      <img :src="legendUrl"/>
     </div>
   </div>
 </template>

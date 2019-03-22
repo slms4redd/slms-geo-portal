@@ -120,8 +120,8 @@ const mutations = {
       else state.activeContextsIds.splice(idx, 1)
     }
   },
-  show_layer_info(state, { fileName, label }) {
-    state.layerInfo = { fileName: fileName, label: label }
+  show_layer_info(state, { fileName, label, custom_content }) {
+    state.layerInfo = { fileName: fileName, label: label, custom_content: custom_content }
   },
   set_context_time(state, { contextId, time }) {
     state.contextsTimes.splice(contextId, 1, time)

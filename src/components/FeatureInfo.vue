@@ -1,24 +1,29 @@
 <template>
   <span>
-    <modal v-if="statisticsUrl" @close="hideStatistics()">
-      <iframe width="840" height="600" slot="body" :src="statisticsUrl"></iframe>
+    <modal name="stats-modal" :draggable="true" :resizable=true :minWidth=250 :minHeight=220>
+      <div class="modal-container">
+        <h1 class="modal-header">{{$t("featureInfo.info")}}</h1>
+        <iframe width=100% height=100% :src="statisticsUrl"/>
+      </div>
     </modal>
-    <modal v-if="popupAttributes" @close="hideStatistics()">
-      <h1 slot="header">{{$t("featureInfo.attributes")}}</h1>
-      <div slot="body">
+    <modal name="props-modal" :draggable="true" :resizable=true :minWidth=250 :minHeight=220>
+      <div class="modal-container">
+        <h1 class="modal-header">{{$t("featureInfo.attributes")}}</h1>
+        <div class="modal-body">
         <table>
-          <tr v-for="attr in popupAttributes">
+            <tr v-for="attr in popupAttributes" :key="attr.id">
             <th>{{attr.label}}</th>
             <td>{{attr.value}}</td>
           </tr>
         </table>
+      </div>
       </div>
     </modal>
     <div id="popup" class="ol-popup">
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <ul id="popup-content">
         <p class="caption">{{$t("featureInfo.moreData")}}</p>
-        <li class="statsLink" v-for="(stat, i) in statisticsConfs" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
+        <li class="statsLink" v-for="(stat, i) in statisticsConfs" :key="i" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
       </ul>
     </div>
   </span>
@@ -33,7 +38,6 @@ import GeoJSON from 'ol/format/GeoJSON'
 import { mapGetters, mapState } from 'vuex'
 import map from '../map'
 import httpRequest from '../httpRequest'
-import Modal from './Modal'
 import Vue from 'vue'
 import { map as mapConfig } from 'config'
 
@@ -70,9 +74,6 @@ export default {
       statisticsUrl: null,
       popupAttributes: null
     }
-  },
-  components: {
-    Modal
   },
   mounted() {
     container = document.getElementById('popup')
@@ -184,6 +185,7 @@ export default {
         case 'url':
           const url = statsConf.url
           this.statisticsUrl = processUrlTemplate(url, feature)
+          this.$modal.show('stats-modal')
           break
         case 'attributes':
           const attributes = statsConf.attributes
@@ -202,6 +204,7 @@ export default {
             }
             this.popupAttributes = t
           }
+          this.$modal.show('props-modal')
           break
         default:
           break
@@ -298,5 +301,25 @@ th {
 }
 .statsLink:hover {
   color: $highlight-color;
+}
+.modal-header {
+  text-align: center;
+  width: 100%;
+}
+.modal-container iframe{
+  max-height: 90%;
+  border: none;
+}
+.modal-body {
+  margin: 20px 0;
+  max-height: 80%;
+}
+.modal-container {
+  margin: auto;
+  background-color: #fff;
+  transition: opacity .2s ease;
+  height: 100%;
+  font-size: 14px;
+  padding: 0px 20px 6px 20px;
 }
 </style>

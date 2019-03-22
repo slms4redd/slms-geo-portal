@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
     <ul class="dropdown-content">
-      <li v-for="time in times">
+      <li v-for="time in times" :key="time.id">
         <span @click="set(time)" :class="{ selected: time === selectedTime }">{{time.humanReadable}}</span>
         <br>
       </li>

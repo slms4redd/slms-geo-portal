@@ -7,6 +7,7 @@
     "measure": "Measure"
   },
   "featureInfo": {
+    "info": "Info",
     "attributes": "Attributs",
     "moreData": "Sélectionnez un élément dans la liste ci-dessous pour obtenir plus de données"
   },
@@ -17,7 +18,8 @@
     "dropKml": "Déposez<br>votre fichier<br>KML ici"
   },
   "item": {
-    "statisticsAvailable": "Statistiques disponibles"
+    "statisticsAvailable": "Statistiques disponibles",
+    "downloadAvailable": "Données disponibles au téléchargement"
   },
   "kmlOverlay": {
     "clear": "Supprimer"

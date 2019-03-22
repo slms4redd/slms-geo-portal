@@ -9,7 +9,7 @@
       Inline legend URL: <input type="text" v-model="inlineLegendUrl">
       <label>Layers:</label>
       <select v-model="selectedLayers" multiple id="layer-select">
-        <option v-for="layer in layers" :value="layer.id">
+        <option v-for="layer in layers" :value="layer.id" :key="layer.id">
           {{layer.label}}
         </option>
       </select>

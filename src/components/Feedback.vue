@@ -1,15 +1,24 @@
 <template>
   <div id="feedback" v-if="enableFeedback">
-    <div id="feedback-category">
+    <div v-if="categories.length" id="feedback-category">
       <select v-model="selectedCategory">
         <option value="" disabled>{{$t("feedback.selectCategory")}}</option>
-        <option v-for="cat in categories">{{cat}}</option>
+        <option v-for="cat in categories" :key="cat.id">{{cat}}</option>
       </select>
     </div>
     <div id="tools">
       Draw:
-      <button type="button" class="small" :class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
-      <button type="button" class="small" :class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
+      <button v-if="drawOptions.includes('Point')" type="button" class="small" :class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
+      <button v-if="drawOptions.includes('Polygon')" type="button" class="small" :class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
+    </div>
+    <div id="sender" v-if="senderEmailIsRequired">
+      <input
+      id="message-sender"
+      v-model="senderEmail"
+      type="email"
+      name="email"
+      placeholder="Write your email"
+      >
     </div>
     <div id="message">
       <textarea v-model="message" id="message-text" rows="6" placeholder="Write your message"></textarea>
@@ -39,10 +48,14 @@ export default {
   data() {
     return {
       drawSource: null,
+      senderEmailIsRequired: feedbackApi.askForEmail || false,
+      senderEmail: '',
       message: '',
       draw: null,
-      categories: feedbackApi.feedbackCategories,
-      selectedCategory: ''
+      categories: feedbackApi.feedbackCategories || [],
+      selectedCategory: '',
+      drawOptions: feedbackApi.drawOptions || ['Point', 'Polygon'],
+      drawDefault: feedbackApi.drawDefault || 'Polygon'
     }
   },
   watch: {
@@ -54,8 +67,11 @@ export default {
           source: this.drawSource,
           map: map
         })
-
-        this.draw = 'Polygon'
+        if (this.drawOptions.includes(this.drawDefault || 'Polygon')) {
+          this.draw = this.drawDefault || 'Polygon'
+        } else {
+          this.draw = this.drawOptions[0]
+        }
       } else {
         this.message = ''
         this.selectedCategory = ''
@@ -96,7 +112,11 @@ export default {
         }
       }
 
-      const params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`
+      let params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`
+
+      if (feedbackApi.askForEmail) {
+        params += `&sender=${this.senderEmail}`
+      }
 
       xhr.open('POST', feedbackApi.feedbackUrl, true)
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -107,7 +127,12 @@ export default {
       this.$store.commit('enable_feedback', { enable: false })
     },
     clear() {
-      drawLayer.getSource().clear()
+      drawLayer && drawLayer.getSource().clear()
+    },
+    validEmail(email) {
+      /* eslint no-useless-escape: "off" */
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(email)
     }
   },
   computed: {
@@ -115,7 +140,14 @@ export default {
       return !!(this.drawSource && this.drawSource.getFeatures().length)
     },
     disableSend: function() {
-      return !(this.drew && this.message !== '' && this.selectedCategory !== '')
+      // A valid Email is required
+      if (this.senderEmailIsRequired && !this.validEmail(this.senderEmail)) {
+        return true
+      }
+      // If categories are configured, a category is required
+      // A message is required
+      // A drawing is required
+      return !(this.drew && this.message !== '' && !(this.categories.length !== 0 && this.selectedCategory === ''))
     },
     ...mapState([
       'enableFeedback'
@@ -139,18 +171,19 @@ export default {
     margin: 0;
     z-index: 1000;
   }
+  #feedback > * {
+    margin-bottom: 10px;
+  }
   #message-text {
     font-size: 12px;
     resize: none;
     box-sizing: border-box;
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
   }
   #tools button:not(.active) {
     background-color: rgba(255, 255, 255, 0.7);
   }
-  #feedback-category {
-    margin-bottom: 10px;
+  #buttons {
+    margin-bottom: 0;
   }
 </style>

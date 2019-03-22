@@ -1,12 +1,13 @@
 <template>
-  <modal v-if="showModal" @close="$store.commit('show_layer_info', { fileName: null, label: null })">
-    <h1 slot="header">{{label}}</h1>
-    <div slot="body" v-html="content"></div>
+  <modal name="context-info-modal" :draggable=true :resizable=true>
+    <div class="context-info-modal">
+      <button class="btn" @click="closeByName">X</button>
+      <div class="content" v-html="content" />
+    </div>
   </modal>
 </template>
 
 <script>
-import Modal from './Modal'
 import { mapState } from 'vuex'
 import httpRequest from '../httpRequest'
 import Vue from 'vue'
@@ -18,15 +19,19 @@ const processUrlTemplate = function(urlTemplate) {
 export default {
   data() {
     return {
-      showModal: false
+      showModal: false,
+      custom_content: null,
+      content: null
     }
   },
-  components: {
-    Modal
+  methods: {
+    closeByName() {
+      this.$modal.hide('context-info-modal')
+    }
   },
   watch: {
     layerInfo: function(val) {
-      if (!val.fileName) {
+      if (!val.fileName && !val.custom_content) {
         this.showModal = false
       } else {
         this.label = val.label
@@ -34,10 +39,16 @@ export default {
         const showContent = content => {
           this.content = content
           this.showModal = true
+          this.$modal.show('context-info-modal')
         }
-        httpRequest('GET', processUrlTemplate(val.fileName))
-          .then(responseText => showContent(responseText))
-          .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`))
+
+        if (!val.custom_content) {
+          httpRequest('GET', processUrlTemplate(val.fileName))
+            .then(responseText => showContent(responseText))
+            .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`))
+        } else {
+          showContent(val.custom_content)
+        }
       }
     }
   },
@@ -50,5 +61,8 @@ export default {
 <style scoped>
 h1 {
   font-size: 16px;
+}
+.context-info-modal .btn {
+  float: right
 }
 </style>

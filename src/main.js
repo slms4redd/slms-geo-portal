@@ -1,6 +1,7 @@
 import App from './App'
 import store from './store'
 import Vue from 'vue'
+import vmodal from 'vue-js-modal'
 import auth from './auth'
 import I18n from './I18n'
 import { languages } from 'config'
@@ -24,6 +25,12 @@ const httpGetParams = (function() {
   })
   return queryString
 })()
+
+Vue.use(vmodal, {
+  dialog: true,
+  dynamic: true,
+  injectModalsContainer: true
+})
 
 // Initialize the internationalization plugin on the vue instance.
 Vue.use(I18n.plugin, store)

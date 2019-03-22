@@ -269,11 +269,6 @@ function createMeasureTooltip() {
 }
 
 export default {
-  data() {
-    return {
-      test: 'sssssssstring'
-    }
-  },
   mounted: function() {
     this.$nextTick(function() {
       createMeasureTooltip()
@@ -413,7 +408,7 @@ export default {
     font-size: 14px;
     position: absolute;
     top: 100px;
-    right: 60px;
+    right: 280px;
     color: white;
     padding: 10px;
     border-radius: 5px;

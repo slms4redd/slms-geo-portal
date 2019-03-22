@@ -1,5 +1,9 @@
 window.globalConf = {
-  languages: [{ id: 'en', 'label': 'English' }, { id: 'fr', 'label': 'Français' }],
+  _welcomePage: 'static/configuration/loc/en/html/howto.html',
+  languages: [
+    { id: 'en', 'label': 'English' },
+    { id: 'fr', 'label': 'Français' }
+  ],
   map: {
     bingMapsKey: 'ArXO9BbbCsJXDlX8dLLxcI5BhFPTPrKBdg9o-BNWvC8kJFTetsc96izVu0415SDy',
     mapCenterLonLat: [21.7587, -4.0383],
@@ -18,6 +22,7 @@ window.globalConf = {
     restoreVersionUrl: 'protected/layers_conf/restore_version'
   },
   feedbackApi: {
+    askForEmail: false,
     feedbackUrl: 'http://localhost:3001/feedback',
     feedbackCategories: [
       'Thematic mapping and Monitoring',

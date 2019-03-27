@@ -228,22 +228,22 @@ export default {
       this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile })
     },
     showDownloads() {
-      let downloadLinksHTML = '<div>'
+      let downloadLinksHTML = '<div style="padding: 20px;"><div><b>' + this.label + ' Downloads</b></div><br/><table>'
       !!this.conf.layers &&
         this.conf.layers
         .forEach(
           l => l.downloadLinks.forEach(
             (d, downloadIndex) => {
               const template = d.labels.find(l => l.language === Vue.i18n.locale()).label
-              downloadLinksHTML += '<a href="' +
+              downloadLinksHTML += '<tr><td><a href="' +
                d.url + '" target=_blank>' +
                (template
                 ? processTemplate(template, l)
-                : (l.name || 'Unnamed Layer') + ' Download #' + (downloadIndex + 1)) + '</a><br/>'
+                : (l.name || 'Unnamed Layer') + ' Download #' + (downloadIndex + 1)) + '</a></td></tr>'
             }
           )
         )
-      downloadLinksHTML += '</div>'
+      downloadLinksHTML += '</table></div>'
       this.$store.commit('show_layer_info', { label: 'Downloads', custom_content: downloadLinksHTML })
     },
     toggleTimeMenu() {

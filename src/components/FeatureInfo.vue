@@ -126,7 +126,7 @@ export default {
                     url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1` +
                           `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
                           `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
-                          `&X=${evtx}&Y=${evty}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`
+                          `&X=${Math.round(evtx)}&Y=${Math.round(evty)}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`
               httpRequest('GET', url)
                 .then(responseText => {
                   const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' })

@@ -107,7 +107,9 @@ export default {
         // Store the click callback as a property as we will need to unlisten the click handler
         if (!this.clickCallback) {
           this.clickCallback = function(event) {
-            if (this.enableFeedback) return
+            if (this.enableFeedback || this.measureActive) {
+              return
+            }
 
             if (!this.queryableLayers.length) {
               highlightOverlay.getSource().clear()
@@ -218,6 +220,7 @@ export default {
   computed: {
     ...mapState([
       'enableFeedback',
+      'measureActive',
       'layers'
     ]),
     ...mapGetters([

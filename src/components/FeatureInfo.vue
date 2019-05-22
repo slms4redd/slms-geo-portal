@@ -39,7 +39,6 @@ import { mapGetters, mapState } from 'vuex'
 import map from '../map'
 import httpRequest from '../httpRequest'
 import Vue from 'vue'
-import { map as mapConfig } from 'config'
 
 // Add a vector layer to show the highlighted features
 const highlightOverlay = new VectorLayer({
@@ -59,6 +58,8 @@ const processTemplate = function(template, feature) {
 const processUrlTemplate = function(urlTemplate, feature) {
   return processTemplate(urlTemplate.replace('$(_lang)', Vue.i18n.locale()), feature)
 }
+
+const parser = new GeoJSON()
 
 let container,
     closer,
@@ -100,10 +101,6 @@ export default {
     layers: {
       immediate: true,
       handler: function() {
-        const parser = new GeoJSON()
-
-        const baseURL = mapConfig.defaultGeoServerURLs[0]
-
         // Store the click callback as a property as we will need to unlisten the click handler
         if (!this.clickCallback) {
           this.clickCallback = function(event) {
@@ -125,6 +122,10 @@ export default {
                     [evtx, evty] = event.pixel,
                     extent = map.getView().calculateExtent(mapSize),
                     layersStr = this.queryableLayers.map(layer => layer.name).join(','),
+                    baseURL = (this.queryableLayers[0].serverUrls &&
+                                this.queryableLayers[0].serverUrls.length &&
+                                this.queryableLayers[0].serverUrls[0]
+                              ),
                     url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1` +
                           `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
                           `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +

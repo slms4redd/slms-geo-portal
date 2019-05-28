@@ -1,5 +1,5 @@
 <template>
-  <div id='search' v-if="wfsSearchConfig.layersToQuery">
+  <div id='search' v-if="wfsSearchConfig">
     <form v-on:submit.prevent='noop'>
       <input type='text' v-model='searchText' v-on:keyup='goSearching' />
       <br /><br />
@@ -28,7 +28,8 @@ export default {
   data: function() {
     return {
       searchText: '',
-      results: []
+      results: [],
+      wfsSearchConfig
     }
   },
   mounted: function() {

@@ -45,7 +45,7 @@ export default class Layer {
       })
     }
 
-    this.visible = !!layerConfig.visible !== false
+    this.visible = !!layerConfig.visible
     this.sourceLink = layerConfig.sourceLink || null
     this.sourceLabel = layerConfig.sourceLabel || null
   }

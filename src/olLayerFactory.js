@@ -2,7 +2,6 @@ import OSM from 'ol/source/OSM'
 import BingMaps from 'ol/source/BingMaps'
 import TileWMS from 'ol/source/TileWMS'
 import Tile from 'ol/layer/Tile'
-import Attribution from 'ol/control/Attribution'
 import { map as mapConfig } from 'config'
 
 const attributions = []
@@ -25,26 +24,24 @@ class OlLayerFactory {
         })
         break
       default:
-        const olAttributions = [],
+        const layerAttributions = [],
               sourceLabel = layerConfig.sourceLabel,
-              sourceLink = layerConfig.sourceLink
+              sourceLink = layerConfig.sourceLink,
+              attributionKey = sourceLabel || sourceLink
 
-        if (sourceLabel || sourceLink) {
-          let attribution = attributions[sourceLabel || sourceLink]
+        if (attributionKey) {
+          let attribution = attributions[attributionKey]
           if (!attribution) {
             if (sourceLink) {
-              attribution = new Attribution({
-                html: `<a target="_blank" href="${layerConfig.sourceLink}">${sourceLabel || sourceLink}</a>`
-              })
+              attribution = `<a target="_blank" href="${sourceLink}">${attributionKey}</a>`
             } else {
-              attribution = new Attribution({
-                html: sourceLabel
-              })
+              attribution = sourceLabel
             }
           }
-          attributions[sourceLabel || sourceLink] = attribution
-          olAttributions.push(attribution)
+          attributions[attributionKey] = attribution
+          layerAttributions.push(attribution)
         }
+
         const style = layerConfig.styles && layerConfig.styles.find(s => s.language === locale).label // TODO 'label' should be renamed to 'value'
         source = new TileWMS(({
           urls: layerConfig.serverUrls,
@@ -61,7 +58,7 @@ class OlLayerFactory {
             'tilesorigin': '-20037508.34,-20037508.34'
           },
           serverType: 'geoserver',
-          attributions: olAttributions
+          attributions: layerAttributions
         }))
     }
     if (source) {

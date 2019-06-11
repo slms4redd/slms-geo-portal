@@ -1,5 +1,5 @@
 <template>
-  <modal name="context-info-modal" :draggable=true :resizable=true>
+  <modal name="context-info-modal" :draggable=true :resizable=true :minWidth=250 :minHeight=220>
     <div class="context-info-modal">
       <button class="btn" @click="closeByName">X</button>
       <div class="content" v-html="content" />

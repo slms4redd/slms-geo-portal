@@ -1,5 +1,5 @@
 <template>
-  <div id='search' v-if="wfsSearchConfig">
+  <div id='search' v-if="wfsSearchConfig && wfsSearchConfig.layersToQuery">
     <form v-on:submit.prevent='noop'>
       <input type='text' v-model='searchText' v-on:keyup='goSearching' />
       <br /><br />

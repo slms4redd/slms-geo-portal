@@ -61,9 +61,77 @@ const processUrlTemplate = function(urlTemplate, feature) {
 
 const parser = new GeoJSON()
 
+const reflect = p => p.then(v => ({ v, layer: p.layer, status: 'fulfilled' }),
+                             e => ({ e, layer: p.layer, status: 'rejected' }))
+
 let container,
     closer,
-    overlay
+    popup
+
+const displayResults = (statisticsConfs, statisticsLabels, statisticsFeatures, event, accumulator, result) => {
+  const features = parser.readFeatures(result.v, { featureProjection: 'EPSG:3857' })
+
+  if (features.length) {
+    // Highlight the features on the map
+    highlightOverlay.getSource().addFeatures(features)
+
+    features.forEach(feature => {
+      if (result.layer) {
+        const statistics = result.layer.statistics
+        statistics.forEach(stat => {
+          statisticsConfs.push(stat)
+          const template = stat.labels.find(l => l.language === Vue.i18n.locale()).label
+          statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId())
+          statisticsFeatures.push(feature)
+        })
+      }
+    })
+  }
+  return accumulator + features.length
+}
+
+const clickHandler = function(event) {
+  if (this.enableFeedback || this.measureActive) {
+    return
+  }
+  popup.setPosition(undefined)
+  highlightOverlay.getSource().clear()
+
+  if (this.queryableLayers.length) {
+    this.statisticsConfs = []
+    this.statisticsLabels = []
+    this.statisticsFeatures = []
+
+    // Build the GetFeatureInfo request
+    const mapSize = map.getSize(),
+          [width, height] = mapSize,
+          [evtx, evty] = event.pixel,
+          extent = map.getView().calculateExtent(mapSize)
+
+    const infoRequests = []
+    this.queryableLayers.forEach(l => {
+      const getinfourl = `${l.serverUrls && l.serverUrls.length && l.serverUrls[0]}` +
+                `?LAYERS=${l.name}&QUERY_LAYERS=${l.name}&STYLES=&SERVICE=WMS&VERSION=1.1.1` +
+                `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
+                `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
+                `&X=${Math.round(evtx)}&Y=${Math.round(evty)}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`
+      const getInfoRequest = httpRequest('GET', getinfourl)
+      getInfoRequest.layer = l
+      infoRequests.push(getInfoRequest)
+    })
+    // When all the requests completed, filter the successful ones
+    Promise.all(infoRequests.map(reflect)).then(function(results) {
+      const fulfilled = results.filter(x => x.status === 'fulfilled')
+
+      if (fulfilled.reduce(displayResults.bind(null, this.statisticsConfs, this.statisticsLabels, this.statisticsFeatures, event), 0) > 0) {
+        popup.setPosition(event.coordinate)
+      } else {
+        popup.setPosition(undefined)
+      }
+    }.bind(this)
+    )
+  }
+}
 
 export default {
   data() {
@@ -81,21 +149,21 @@ export default {
     closer = document.getElementById('popup-closer')
 
     closer.onclick = function() {
-      overlay.setPosition(undefined)
+      popup.setPosition(undefined)
       closer.blur()
       highlightOverlay.getSource().clear()
 
       return false
     }
 
-    overlay = new Overlay({
+    popup = new Overlay({
       element: container,
       autoPan: true,
       autoPanAnimation: {
         duration: 250
       }
     })
-    map.addOverlay(overlay)
+    map.addOverlay(popup)
   },
   watch: {
     layers: {
@@ -103,71 +171,7 @@ export default {
       handler: function() {
         // Store the click callback as a property as we will need to unlisten the click handler
         if (!this.clickCallback) {
-          this.clickCallback = function(event) {
-            if (this.enableFeedback || this.measureActive) {
-              return
-            }
-
-            if (!this.queryableLayers.length) {
-              highlightOverlay.getSource().clear()
-              overlay.setPosition(undefined)
-            } else {
-              this.statisticsConfs = []
-              this.statisticsLabels = []
-              this.statisticsFeatures = []
-
-              // Build the GetFeatureInfo request
-              const mapSize = map.getSize(),
-                    [width, height] = mapSize,
-                    [evtx, evty] = event.pixel,
-                    extent = map.getView().calculateExtent(mapSize),
-                    layersStr = this.queryableLayers.map(layer => layer.name).join(','),
-                    baseURL = (this.queryableLayers[0].serverUrls &&
-                                this.queryableLayers[0].serverUrls.length &&
-                                this.queryableLayers[0].serverUrls[0]
-                              ),
-                    url = `${baseURL}?LAYERS=${layersStr}&QUERY_LAYERS=${layersStr}&STYLES=&SERVICE=WMS&VERSION=1.1.1` +
-                          `&REQUEST=GetFeatureInfo&SRS=EPSG%3A900913&BBOX=${extent.join('%2C')}&FEATURE_COUNT=5` +
-                          `&FORMAT=image%2Fpng&INFO_FORMAT=application%2Fjson&HEIGHT=${height}&WIDTH=${width}` +
-                          `&X=${Math.round(evtx)}&Y=${Math.round(evty)}&EXCEPTIONS=application%2Fvnd.ogc.se_xml`
-              httpRequest('GET', url)
-                .then(responseText => {
-                  const features = parser.readFeatures(responseText, { featureProjection: 'EPSG:3857' })
-
-                  highlightOverlay.getSource().clear()
-                  if (features.length) {
-                    // Highlight the features on the map
-                    highlightOverlay.getSource().addFeatures(features)
-
-                    // Look for the related layer config objects (f.getId is of the form "provinces_simp.1")
-                    const selectedFeaturesLayers = features.map(f =>
-                      this.queryableLayers.find(l => {
-                        // Remove the workspace, reasonabily assuming that it's safe
-                        const pos = l.name.lastIndexOf(':')
-                        const name = (pos > -1) ? l.name.substring(pos + 1) : l.name
-                        return name === f.getId().substring(0, f.getId().lastIndexOf('.'))
-                      }))
-                    features.forEach((feature, i) => {
-                      const statistics = selectedFeaturesLayers[i].statistics
-                      statistics.forEach(stat => {
-                        this.statisticsConfs.push(stat)
-                        const template = stat.labels.find(l => l.language === Vue.i18n.locale()).label
-                        this.statisticsLabels.push(template ? processTemplate(template, feature) : feature.getId())
-                        this.statisticsFeatures.push(feature)
-                      })
-                    })
-                    overlay.setPosition(event.coordinate)
-                  } else {
-                    overlay.setPosition(undefined)
-                  }
-                })
-                .catch(error => {
-                  if (!(error instanceof SyntaxError)) {
-                    alert(error.statusText || error)
-                  }
-                })
-            }
-          }.bind(this)
+          this.clickCallback = clickHandler.bind(this)
         }
 
         // Delete previous click handler (needed when editing and changing the layers array)
@@ -212,10 +216,6 @@ export default {
         default:
           break
       }
-    },
-    hideStatistics() {
-      this.statisticsUrl = null
-      this.popupAttributes = null
     }
   },
   computed: {

@@ -43,6 +43,7 @@ export default class Layer {
 
         return ret
       })
+      this.downloadLinks = layerConfig.downloadLinks
     }
 
     this.visible = !!layerConfig.visible

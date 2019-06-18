@@ -15,6 +15,7 @@ export default class Layer {
       this.styles = getLocalizedLabels(layerConfig.styles)
       this.imageFormat = layerConfig.imageFormat || 'image/png8'
       this.legend = layerConfig.legend || null // TODO check structure
+      this.opacity = layerConfig.opacity || 1
 
       const tTimes = layerConfig.times || []
       this.times = tTimes.map(time => ({

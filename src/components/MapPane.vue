@@ -7,6 +7,7 @@ import OlLayerFactory from '../olLayerFactory'
 import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import map from '../map'
+import OLProperty from 'ol/layer/Property'
 
 const olLayers = {}
 
@@ -56,6 +57,16 @@ export default {
             olLayers[l.id].getSource().updateParams({ 'TIME': contextsTimes[contextId].iso8601 }))
         }
       }
+    },
+    // If anyone of the OLProperties are found in context, apply to the layers
+    contexts(contexts) {
+      this.contexts.forEach(context => {
+        Object.values(OLProperty)
+        .filter(p => context.hasOwnProperty(p))
+        .forEach(p => {
+          context.layers.forEach(l => olLayers[l.id].set(p, context[p]))
+        })
+      })
     }
   },
 

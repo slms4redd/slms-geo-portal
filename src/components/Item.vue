@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div v-if="conf.isGroup" :class="{dimmed: !nContexts}" class="group" @click="toggleGroup">
+    <div v-if="conf.isGroup" :class="{dimmed: !nContexts}" class="group" @click="toggleContent">
       <span class="line group-label icon">
         <icon class="open-button" :name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
         <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : label}}</span>
@@ -17,6 +17,10 @@
       </span>
     </div>
     <div v-else>
+      <span class="icon" @click="toggleContent">
+        <icon v-if="open" class="activate-button" name="caret-down"/>
+        <icon v-else class="activate-button" name="caret-right"/>
+      </span>
       <span @click="toggleActive" class="icon" v-if="hasLayers">
         <template v-if="conf.parent.exclusive">
           <icon v-if="active" class="activate-button" :class="{highlighted, active}" name="dot-circle-o"></icon>
@@ -45,6 +49,11 @@
         <icon name="download"></icon>
       </span>
       <time-select v-if="showTimeMenu" @setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></time-select>
+      <template v-if="open">
+        <div>
+          <input v-model="opacity" type="range" min="0" max="1" step="0.01" @change="updateOpacity">
+        </div>
+      </template>
       <template v-if="conf.hasLegends && active && showLegend">
         <context-legend :conf="conf"></context-legend>
       </template>
@@ -89,6 +98,8 @@ import 'vue-awesome/icons/dot-circle-o'
 import 'vue-awesome/icons/pencil-square-o'
 import 'vue-awesome/icons/trash-o'
 import 'vue-awesome/icons/download'
+import 'vue-awesome/icons/caret-right'
+import 'vue-awesome/icons/caret-down'
 
 const processTemplate = function(template, feature) {
   const regex = /\$\((\w+)\)/g
@@ -115,7 +126,8 @@ export default {
       open: !this.conf.parent,
       showLegend: false,
       showTimeMenu: false,
-      highlighted: false
+      highlighted: false,
+      opacity: 1
     }
   },
   computed: {
@@ -203,7 +215,7 @@ export default {
     highlightContext(highlight) {
       this.highlighted = highlight
     },
-    toggleGroup() {
+    toggleContent() {
       this.open = !this.open
     },
     toggleActive() {
@@ -219,6 +231,15 @@ export default {
             }
           })
         }
+      }
+    },
+    updateOpacity(event) {
+      if (this.conf.layers.length) {
+        this.$store.commit('update_context', {
+          contextId: this.conf.id,
+          property: 'opacity',
+          value: event.target.value
+        })
       }
     },
     toggleLegend() {

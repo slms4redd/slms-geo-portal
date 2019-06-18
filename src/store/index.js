@@ -4,6 +4,7 @@ import { getLayers, restoreVersion } from '../layersConfig'
 import { getLocalizedLabels } from '../layersConfig/util'
 import Context from '../layersConfig/context'
 import Group from '../layersConfig/group'
+import OLProperty from 'ol/layer/Property'
 
 Vue.use(Vuex)
 
@@ -111,6 +112,18 @@ const mutations = {
     setContextsTimes(state)
 
     state.activeContextsIds = state.contexts.reduce((a, c) => c.active ? a.concat(c.id) : a, [])
+  },
+  update_context(state, { contextId, property, value }) {
+    const context = state.contexts.find(c => c.id === contextId)
+    if (context) {
+      context[property] = value
+      if (Object.values(OLProperty).find(p => p === property)) {
+        // console.log('Found: ' + property)
+        context.layers.forEach(layer => (layer[property] = value))
+      }
+      // the state must be changed explicitly, Vuex does not react to deep changes
+      state.contexts.splice(contextId, 1, context)
+    }
   },
   toggle_context(state, { contextId }) {
     const context = state.contexts.find(c => c.id === contextId)

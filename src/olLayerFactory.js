@@ -64,7 +64,8 @@ class OlLayerFactory {
     if (source) {
       return new Tile({
         visible: false, // will be set by the activeLayers watch in MapPane
-        source: source
+        source: source,
+        opacity: layerConfig.opacity || 1
       })
     }
   }

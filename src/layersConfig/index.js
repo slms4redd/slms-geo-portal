@@ -27,7 +27,7 @@ class _Config {
   }
 }
 
-export function getLayers(lang, cb) {
+export function getLayers() {
   return new Promise((resolve, reject) => {
     const url = api.baseUrl + api.getLayersConfigUrl
     httpRequest('GET', url)
@@ -178,6 +178,7 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
   // Layers
   printRequest.layers = reversedWmsGroups.map(layer => {
     if (!layer.visible) return null
+
     switch (layer.type) {
       case 'wms':
         return {

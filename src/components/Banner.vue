@@ -98,7 +98,7 @@ export default {
       const geoserverUrl = printApi.url
       const request = new XMLHttpRequest()
       request.open('POST', geoserverUrl, true)
-      request.setRequestHeader('Content-Type', 'application/json')
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
       request.responseType = 'blob'
 
       request.onload = function() {
@@ -123,7 +123,7 @@ export default {
         }
         // TODO error handling
       }
-      request.send(JSON.stringify(printRequest))
+      request.send('spec=' + encodeURI(JSON.stringify(printRequest)))
     }
   },
   computed: mapGetters([

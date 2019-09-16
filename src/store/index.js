@@ -160,7 +160,7 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   fetchLayersConfig({ commit }) {
-    getLayers(Vue.i18n.locale())
+    getLayers()
       .then(layersConf => commit('receive_layers', { layersConf }))
       .catch(error => alert(error))
   },

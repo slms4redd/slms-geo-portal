@@ -357,7 +357,6 @@ export default {
 
       const params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`
 
-      // xhr.open('POST', feedbackApi.feedbackUrl, true)
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 
       xhr.send(params)

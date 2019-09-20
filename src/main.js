@@ -56,7 +56,7 @@ const app = new Vue({
   render: h => h(App)
 })
 
-Vue.i18n.load(lang, `../static/configuration/locale/${lang}.json`)
+Vue.i18n.load(lang, `static/configuration/locale/${lang}.json`)
   .then(() => { app.loaded = true })
   .catch(e => alert('Error loading language file: ' + e))
 

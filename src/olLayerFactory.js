@@ -1,7 +1,8 @@
 import OSM from 'ol/source/OSM'
 import BingMaps from 'ol/source/BingMaps'
+import XYZ from 'ol/source/XYZ'
 import TileWMS from 'ol/source/TileWMS'
-import Tile from 'ol/layer/Tile'
+import TileLayer from 'ol/layer/Tile'
 import { map as mapConfig } from 'config'
 
 const attributions = []
@@ -21,6 +22,12 @@ class OlLayerFactory {
           // use maxZoom 19 to see stretched tiles instead of the BingMaps
           // "no photos at this zoom level" tiles
           // maxZoom: 19
+        })
+        break
+      case 'esri':
+        source = new XYZ({
+          attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
+          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
         })
         break
       default:
@@ -62,7 +69,7 @@ class OlLayerFactory {
         }))
     }
     if (source) {
-      return new Tile({
+      return new TileLayer({
         visible: false, // will be set by the activeLayers watch in MapPane
         source: source,
         opacity: layerConfig.opacity || 1

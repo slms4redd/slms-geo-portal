@@ -10,6 +10,7 @@ Vue.use(Vuex)
 
 const setContextsTimes = function(state) {
   const contextsTimes = []
+
   state.contexts.forEach(c => {
     const times = c.layers.filter(l => l.type === 'wms' && l.times.length)
                           .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
@@ -51,23 +52,29 @@ const mutations = {
   enable_edit(state, { editing }) {
     state.editing = editing
   },
+
   add_group(state) {
     const newGroup = new Group({
       labels: getLocalizedLabels(null, 'New group')
     }, [], state.groups)
+
     state.groups.items.push(newGroup)
   },
+
   add_context(state) {
     const newContext = new Context({
       labels: getLocalizedLabels(null, 'New context')
     })
+
     newContext.parent = state.groups
     newContext.times = []
     state.groups.items.push(newContext)
     state.contexts.push(newContext)
   },
+
   edit_item(state, { id }) {
     const item = state.groups.findById(id)
+
     if (item) {
       if (item.isGroup) state.editGroup = item
       else state.editContext = item
@@ -75,26 +82,33 @@ const mutations = {
       state.editContext = state.editGroup = null
     }
   },
+
   delete_item(state, { id }) {
     const item = state.groups.findById(id)
     const index = item.parent.items.findIndex(i => i.id === id)
+
     if (index > -1) item.parent.items.splice(index, 1)
 
     // No need to delete contexts and layers here. They will be deleted on save
   },
+
   edit_layers(state, { edit }) {
     state.editLayers = edit
   },
+
   save_group(state, { id, labels, exclusive, allowDisableAll, infoFile }) {
     const group = state.groups.findById(id)
+
     // group.label = label
     group.labels = labels
     group.exclusive = exclusive
     group.allowDisableAll = allowDisableAll
     group.infoFile = infoFile
   },
+
   save_context(state, { id, label, labels, infoFile, active, inlineLegendUrl, layerIds }) {
     const context = state.groups.findById(id)
+
     context.label = label
     context.labels = labels
     context.infoFile = infoFile
@@ -104,6 +118,7 @@ const mutations = {
 
     setContextsTimes(state)
   },
+
   receive_layers(state, { layersConf }) {
     state.layers = layersConf.layers
     state.contexts = layersConf.contexts
@@ -113,49 +128,61 @@ const mutations = {
 
     state.activeContextsIds = state.contexts.reduce((a, c) => c.active ? a.concat(c.id) : a, [])
   },
+
   update_context(state, { contextId, property, value }) {
     const context = state.contexts.find(c => c.id === contextId)
+
     if (context) {
       context[property] = value
-      if (Object.values(OLProperty).find(p => p === property)) {
-        // console.log('Found: ' + property)
+      if (Object.values(OLProperty).some(p => p === property)) {
         context.layers.forEach(layer => (layer[property] = value))
       }
       // the state must be changed explicitly, Vuex does not react to deep changes
       state.contexts.splice(contextId, 1, context)
     }
   },
+
   toggle_context(state, { contextId }) {
     const context = state.contexts.find(c => c.id === contextId)
+
     if (context) {
       const idx = state.activeContextsIds.indexOf(contextId)
+
       if (idx === -1) state.activeContextsIds.push(contextId)
       else state.activeContextsIds.splice(idx, 1)
     }
   },
+
   show_layer_info(state, { fileName, label, custom_content }) {
     state.layerInfo = { fileName: fileName, label: label, custom_content: custom_content }
   },
+
   set_context_time(state, { contextId, time }) {
     state.contextsTimes.splice(contextId, 1, time)
   },
+
   overlay_kml(state, { kml }) {
     state.kmlOverlay = kml
   },
+
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable
   },
+
   toggle_measure(state, { enable }) {
     state.measureActive = !state.measureActive
   },
+
   update_group(state, { groupId, value }) {
     // Called when dragging an item from one group to another, for both old and new group
     const group = state.groups.findById(groupId)
+
     if (group) group.items = value
 
     // Update all items' partents
     group.items.forEach(item => { item.parent = group })
   },
+
   update_layers(state, { value }) {
     state.layers = value
 
@@ -177,9 +204,10 @@ const actions = {
       .then(layersConf => commit('receive_layers', { layersConf }))
       .catch(error => alert(error))
   },
+
   restoreBackup({ dispatch, commit }, { version }) {
     restoreVersion(version)
-      .then((x) => dispatch('fetchLayersConfig'))
+      .then(() => dispatch('fetchLayersConfig'))
       .catch(error => alert('Server error:\n' + error.statusText))
   }
 }
@@ -191,6 +219,7 @@ const getters = {
   },
   activeLayers: (state, getters) => {
     const activeLayers = []
+
     getters.activeContexts.forEach(context => context.layers.forEach(layer => activeLayers.push(layer)))
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos)

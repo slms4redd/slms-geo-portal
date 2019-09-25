@@ -9,6 +9,8 @@
         <br>
         <a href="#" class="button default" @click.prevent="addLayer('bing')">Add a Bing Aerial layer</a>
         <br>
+        <a href="#" class="button default" @click.prevent="addLayer('esri')">Add an ESRI layer</a>
+        <br>
         <br>
         <b>Drag to change the order</b>
         <br>
@@ -19,6 +21,7 @@
             <span v-if="l.type === 'wms'">{{l.name}}</span>
             <span v-else-if="l.type === 'bing-aerial'">Bing aerial</span>
             <span v-else-if="l.type === 'osm'">Open street map</span>
+            <span v-else-if="l.type === 'esri'">ESRI</span>
             <span v-if="l.statistics && l.statistics.length">
               <icon name="bar-chart"></icon>
             </span>
@@ -242,6 +245,12 @@ export default {
         case 'bing':
           layer = new Layer({
             type: 'bing-aerial',
+            id: Layer.nextId++
+          })
+          break
+        case 'esri':
+          layer = new Layer({
+            type: 'esri',
             id: Layer.nextId++
           })
           break

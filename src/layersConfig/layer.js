@@ -6,6 +6,7 @@ export default class Layer {
     this.id = Layer.nextId++
     this.originalId = layerConfig.id
     this.type = layerConfig.type || 'wms'
+
     if (this.type === 'wms') {
       // Backwards compatibility - all layers will have the serverUrls attribute
       this.serverUrls = layerConfig.serverUrls || mapConfig.defaultGeoServerURLs
@@ -47,7 +48,7 @@ export default class Layer {
       this.downloadLinks = layerConfig.downloadLinks
     }
 
-    this.visible = !!layerConfig.visible
+    this.visible = layerConfig.visible !== false
     this.sourceLink = layerConfig.sourceLink || null
     this.sourceLabel = layerConfig.sourceLabel || null
   }

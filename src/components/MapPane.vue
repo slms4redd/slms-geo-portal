@@ -6,6 +6,7 @@
 import OlLayerFactory from '../olLayerFactory'
 import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
+
 import map from '../map'
 import OLProperty from 'ol/layer/Property'
 
@@ -33,6 +34,7 @@ export default {
         }
       })
     },
+
     locale(locale, prev) {
       // Don't refresh layers if the page has just been loaded
       if (prev !== null) {
@@ -45,10 +47,13 @@ export default {
         })
       }
     },
+
     activeLayers(activeLayers) {
       this.layers.forEach(l =>
-        olLayers[l.id].setVisible(l.visible && activeLayers.find(a => a.id === l.id)))
+        olLayers[l.id].setVisible(l.visible && activeLayers.some(a => a.id === l.id))
+      )
     },
+
     contextsTimes(contextsTimes) {
       for (const contextId in contextsTimes) {
         if (contextsTimes[contextId]) {
@@ -58,6 +63,7 @@ export default {
         }
       }
     },
+
     // If anyone of the OLProperties are found in context, apply to the layers
     contexts(contexts) {
       this.contexts.forEach(context => {

@@ -79,6 +79,7 @@ export default {
         this.layers = this.allLayers.map(l => {
           const ret = { id: l.id }
           if (l.type === 'wms') ret.label = l.name
+          else if (l.type === 'esri') ret.label = 'ESRI'
           else if (l.type === 'bing-aerial') ret.label = 'Bing Aerial'
           else if (l.type === 'osm') ret.label = 'OpenStreetMap'
           else ret.label = '???'

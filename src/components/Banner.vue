@@ -122,7 +122,7 @@ export default {
         }
         // TODO error handling
       }
-      request.send('spec=' + encodeURI(JSON.stringify(printRequest)))
+      request.send(`spec=${encodeURIComponent(JSON.stringify(printRequest))}`)
     }
   },
   computed: mapGetters([

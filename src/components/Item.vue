@@ -1,26 +1,40 @@
 <template>
   <li>
     <div v-if="conf.isGroup" :class="{dimmed: !nContexts}" class="group" @click="toggleContent">
-      <span class="line group-label icon">
+      <!-- This item is a group -->
+      <!-- Open/close group button -->
+      <span class="line icon">
         <icon class="open-button" :name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
         <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : label}}</span>
       </span>
+
+      <!-- Group info button -->
       <span class="info-link icon" v-if="conf.infoFile" @click.stop="showInfo">
         <icon name="info-circle"></icon>
       </span>
+      
       <span class="counter">{{nActive ? '&lrm;[' + locNActive + '&lrm;]' : null}}</span>
-      <span v-if="editing && !isRoot" class="icon" @click.stop="editItem">
-        <icon class="icon edit" name="pencil-square-o"></icon>
-      </span>
-      <span v-if="editing && !isRoot" class="icon" @click.stop="deleteItem">
-        <icon class="icon edit" name="trash-o"></icon>
-      </span>
+
+      <!-- Edit and delete group button -->
+      <template v-if="editing && !isRoot">
+        <span class="icon" @click.stop="editItem">
+          <icon class="icon edit" name="pencil-square-o"></icon>
+        </span>
+        <span class="icon" @click.stop="deleteItem">
+          <icon class="icon edit" name="trash-o"></icon>
+        </span>
+      </template>
     </div>
+
     <div v-else>
-      <span class="icon" @click="toggleContent">
-        <icon v-if="open" class="activate-button" name="caret-down"/>
-        <icon v-else class="activate-button" name="caret-right"/>
+      <!-- This item is a context -->
+      <!-- Toggle context button -->
+      <span class="icon" @click="toggleContent" v-if="hasLayers">
+        <icon v-if="open" class="open-button" name="caret-down"/>
+        <icon v-else class="open-button" name="caret-right"/>
       </span>
+
+      <!-- Layer toggle button -->
       <span @click="toggleActive" class="icon" v-if="hasLayers">
         <template v-if="conf.parent.exclusive">
           <icon v-if="active" class="activate-button" :class="{highlighted, active}" name="dot-circle-o"></icon>
@@ -31,41 +45,70 @@
           <icon v-else class="activate-button" :class="{highlighted, active}" name="square"></icon>
         </template>
       </span>
+
+      <!-- Legend toggle button -->
       <span @click="toggleLegend" style="padding-left:2px;padding-right:2px" class="icon" v-if="conf.hasLegends" >
         <icon class="legend-link" :class="{active}" name="th-list"></icon>
       </span>
+
       <img v-if="conf.inlineLegendUrl" class="inline-legend" :src="conf.inlineLegendUrl">
+
       <span :class="{dimmed: !hasLayers, handle: editing}" @mouseover="highlightContext(true)" @mouseout="highlightContext(false)" @click="toggleActive">{{label}}</span>
+
+      <!-- Context info button -->
       <span class="info-link icon" v-if="conf.infoFile" @click="showInfo">
         <icon name="info-circle"></icon>
       </span>
+
+
       <span class="times-button icon" v-if="this.conf.times && !!this.conf.times.length" @click="toggleTimeMenu" :class="{active: showTimeMenu}">
         <icon name="clock-o"></icon> {{selectedTime.humanReadable}}
       </span>
+
+      <!-- Statistics button -->
       <span :title="$t('item.statisticsAvailable')" v-if="hasStatistics" class="icon statistics">
         <icon name="bar-chart"></icon>
       </span>
+
+      <!-- Data download button -->
       <span :title="$t('item.downloadAvailable')" v-if="hasDataDownload" class="icon datadownload info-link" @click="showDownloads">
         <icon name="download"></icon>
       </span>
+
+      <!-- Time select menu -->
       <time-select v-if="showTimeMenu" @setTime="setTime" :times="conf.times" :selectedTime="selectedTime"></time-select>
-      <template v-if="open">
-        <div>
-          <input v-model="opacity" type="range" min="0" max="1" step="0.01" @change="updateOpacity">
-        </div>
+
+      <!-- Edit and delete context button -->
+      <template v-if="editing">
+        <span class="icon" @click.stop="editItem">
+          <icon class="icon edit" name="pencil-square-o"></icon>
+        </span>
+        <span class="icon" @click.stop="deleteItem">
+          <icon class="icon edit" name="trash-o"></icon>
+        </span>
       </template>
+
+      <!-- Opacity slider -->
+      <div v-if="open" style="padding-left:21px">
+        <icon name="adjust"></icon>
+        <input v-model="opacity" class="slider" type="range" min="0" max="1" step="0.01" @input="updateOpacity">
+      </div>
+
+      <!-- Context legend -->
       <template v-if="conf.hasLegends && active && showLegend">
         <context-legend :conf="conf"></context-legend>
       </template>
-      <span v-if="editing" class="icon" @click.stop="editItem">
-        <icon class="icon edit" name="pencil-square-o"></icon>
-      </span>
-      <span v-if="editing" class="icon" @click.stop="deleteItem">
-        <icon class="icon edit" name="trash-o"></icon>
-      </span>
+
     </div>
+
+    <!-- Inner items (context and groups) -->
     <template v-if="editing">
-      <draggable element="ul" v-if="conf.isGroup" v-show="open" style="min-height:10px" :options="{ group: 'items', draggable: '.item', animation: 150, handle: '.handle' }" v-model='list'>
+      <draggable element="ul"
+                 v-if="conf.isGroup"
+                 v-show="open"
+                 style="min-height:10px"
+                 :options="{ group: 'items', draggable: '.item', animation: 150, handle: '.handle' }"
+                 v-model='list'>
         <item class="item unselectable" v-for="conf in list" :key="conf.id" :conf="conf"></item>
       </draggable>
     </template>
@@ -100,6 +143,7 @@ import 'vue-awesome/icons/trash-o'
 import 'vue-awesome/icons/download'
 import 'vue-awesome/icons/caret-right'
 import 'vue-awesome/icons/caret-down'
+import 'vue-awesome/icons/adjust'
 
 const processTemplate = function(template, feature) {
   const regex = /\$\((\w+)\)/g
@@ -111,6 +155,7 @@ const processTemplate = function(template, feature) {
 
 export default {
   name: 'item',
+
   components: {
     ContextLegend,
     TimeSelect,
@@ -118,9 +163,11 @@ export default {
     // load vuedraggable dynamically as it's only needed for editing
     'draggable': resolve => require.ensure(['vuedraggable'], require => resolve(require('vuedraggable')), 'editing-chunk')
   },
+
   props: {
     conf: Object
   },
+
   data() {
     return {
       open: !this.conf.parent,
@@ -130,37 +177,35 @@ export default {
       opacity: 1
     }
   },
+
   computed: {
     list: {
       get() {
         return this.conf.items
       },
+
       set(value) {
-        this.$store.commit('update_group', { groupId: this.conf.id, value: value })
+        this.$store.commit('update_group', { groupId: this.conf.id, value })
       }
     },
+
     label() {
       const loc = this.conf.labels.find(l => l.language === Vue.i18n.locale())
       return loc ? loc.label : null
     },
-    isRoot() {
-      return !this.conf.parent
-    },
-    hasLayers() {
-      return !!this.conf.layers && !!this.conf.layers.length
-    },
-    hasStatistics() {
-      return !!this.conf.layers && this.conf.layers.some(l => l.statistics)
-    },
-    hasDataDownload() {
-      return !!this.conf.layers && this.conf.layers.some(l => l.downloadLinks)
-    },
-    selectedTime() {
-      return this.contextsTimes[this.conf.id]
-    },
-    active() {
-      return this.activeContextsIds.indexOf(this.conf.id) !== -1
-    },
+
+    isRoot() { return !this.conf.parent },
+
+    hasLayers() { return !!this.conf.layers && !!this.conf.layers.length },
+
+    hasStatistics() { return !!this.conf.layers && this.conf.layers.some(l => l.statistics) },
+
+    hasDataDownload() { return !!this.conf.layers && this.conf.layers.some(l => l.downloadLinks) },
+
+    selectedTime() { return this.contextsTimes[this.conf.id] },
+
+    active() { return this.activeContextsIds.indexOf(this.conf.id) !== -1 },
+
     nContexts() {
       return (function count(conf) {
         if (conf.isGroup) {
@@ -169,6 +214,7 @@ export default {
         return conf.layers.length ? 1 : 0
       })(this.conf)
     },
+
     nActive() {
       const activeContextsIds = this.activeContextsIds
       return (function count(conf) {
@@ -178,6 +224,7 @@ export default {
         return activeContextsIds.indexOf(conf.id) !== -1 ? 1 : 0
       })(this.conf)
     },
+
     locNActive() {
       let locale = Vue.i18n.locale()
       const lang = languages.find(l => l.id === locale)
@@ -189,35 +236,33 @@ export default {
         return this.nActive
       }
     },
+
     ...mapState([
       'contextsTimes',
       'activeContextsIds',
       'editing'
     ])
   },
+
   watch: {
-    active() {
-      this.showLegend = !this.active && false
-    }
+    active() { this.showLegend = false }
   },
+
   methods: {
-    startEditing() {
-      this.$store.commit('enable_edit', { editing: true })
-    },
-    editItem() {
-      this.$store.commit('edit_item', { id: this.conf.id })
-    },
+    startEditing() { this.$store.commit('enable_edit', { editing: true }) },
+
+    editItem() { this.$store.commit('edit_item', { id: this.conf.id }) },
+
     deleteItem() {
       if (confirm('Are you sure that you want to delete this item?')) {
         this.$store.commit('delete_item', { id: this.conf.id })
       }
     },
-    highlightContext(highlight) {
-      this.highlighted = highlight
-    },
-    toggleContent() {
-      this.open = !this.open
-    },
+
+    highlightContext(highlight) { this.highlighted = highlight },
+
+    toggleContent() { this.open = !this.open },
+
     toggleActive() {
       if (this.conf.layers.length) {
         if (!this.conf.parent.exclusive) {
@@ -233,6 +278,7 @@ export default {
         }
       }
     },
+
     updateOpacity(event) {
       if (this.conf.layers.length) {
         this.$store.commit('update_context', {
@@ -242,14 +288,13 @@ export default {
         })
       }
     },
-    toggleLegend() {
-      if (this.active) this.showLegend = !this.showLegend
-    },
-    showInfo() {
-      this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile })
-    },
+
+    toggleLegend() { if (this.active) this.showLegend = !this.showLegend },
+
+    showInfo() { this.$store.commit('show_layer_info', { label: this.conf.label, fileName: this.conf.infoFile }) },
+
     showDownloads() {
-      let downloadLinksHTML = '<div style="padding: 20px;"><div><b>' + this.label + ' Downloads</b></div><br/><table>'
+      let downloadLinksHTML = `<div style="padding: 20px;"><div><b>${this.label} Downloads</b></div><br/><table>`
       !!this.conf.layers &&
         this.conf.layers
         .forEach(
@@ -267,12 +312,10 @@ export default {
       downloadLinksHTML += '</table></div>'
       this.$store.commit('show_layer_info', { label: 'Downloads', custom_content: downloadLinksHTML })
     },
-    toggleTimeMenu() {
-      this.showTimeMenu = !this.showTimeMenu
-    },
-    setTime(time) {
-      this.$store.commit('set_context_time', { contextId: this.conf.id, time: time })
-    }
+
+    toggleTimeMenu() { this.showTimeMenu = !this.showTimeMenu },
+
+    setTime(time) { this.$store.commit('set_context_time', { contextId: this.conf.id, time }) }
   }
 }
 </script>
@@ -283,78 +326,104 @@ export default {
 .line {
   white-space: nowrap;
 }
+
 .item {
   cursor: default;
 }
+
 .group {
   font-weight: bold;
 }
+
 .dimmed {
   color: #aaa;
   font-style: italic;
 }
+
 ul {
   padding-left: 1em;
   line-height: 1.5em;
   list-style-type: none;
 }
+
 .toggle {
   font-family: "Courier New", Courier, monospace;
 }
+
 .inline-legend {
   width: 20px;
   height: 20px;
   position: relative;
   top: 4px;
 }
+
 .info-link:hover, .times-button:hover {
   color: $highlight-color;
 }
+
 .legend-link {
   color: #666;
+
+  &.active {
+    color: #fff;
+
+    &:hover {
+      color: $highlight-color;
+    }
+  }
 }
-.legend-link.active {
-  color: #fff;
-}
-.legend-link.active:hover {
-  color: $highlight-color;
-}
+
 .open-button {
   color: #fff;
 }
-.group-label:hover .open-button {
+
+.icon:hover .open-button {
   color: $highlight-color;
 }
-.activate-button {
-  color: #666;
-}
-.activate-button.active {
-  color: #fff;
-}
-.activate-button.highlighted {
-  color: $highlight-color;
-}
-.activate-button:hover {
-  color: $highlight-color;
-}
+
 .counter {
   color: $highlight-color;
 }
 
-.icon svg.activate-button {
-  top: 2px;
+.icon {
+  .activate-button {
+    // top: 2px;
+    color: #666;
+
+    &.active {
+      color: #fff;
+    }
+
+    &.highlighted {
+      color: $highlight-color;
+    }
+    
+    &:hover {
+      color: $highlight-color;
+    }
+  }
+
+  svg {
+    width: 16px;
+    position: relative;
+    top: 3px;
+  }
+
+  &.edit {
+    color: #ffd600;
+  }
+
+ 
+  &.statistics {
+    color: #999;
+  }
 }
-.icon svg {
-  position: relative;
-  top: 3px;
-}
-.icon.statistics svg {
-  color: #999;
-}
+
 .handle {
   cursor: move;
 }
-.icon.edit {
-  color: #ffd600;
+
+.slider {
+  width: 80px;
 }
 </style>

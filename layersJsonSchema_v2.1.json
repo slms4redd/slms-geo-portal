@@ -164,6 +164,27 @@
       "required": ["type", "id"],
       "additionalProperties": false
     },
+    "esri": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "esri"
+          ]
+        },
+        "id": {
+          "type": "number"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "additionalProperties": false
+    },
     "items": {
       "type": "array",
       "items": {

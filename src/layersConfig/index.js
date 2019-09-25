@@ -1,3 +1,5 @@
+/* eslint no-template-curly-in-string: "off" */
+
 import httpRequest from '../httpRequest'
 import auth from '../auth'
 import Layer from './layer'
@@ -19,11 +21,6 @@ class _Config {
 
     // Delete the layers that are not in a context
     this.layers = layers.filter(l => this.contexts.some(c => c.layers.indexOf(l) !== -1))
-
-    // // Mark layers that are not in a context (they will not be instantiated as OL layers)
-    // this.layers.forEach(l => {
-    //   if (this.contexts.some(c => c.layers.indexOf(l) !== -1)) l.hasContext = true
-    // })
   }
 }
 
@@ -157,6 +154,7 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
     switch (layer.type) {
       case 'osm':
       case 'bing-aerial':
+      case 'esri':
         grouped.push([layer])
         return grouped
       case 'wms':
@@ -176,6 +174,13 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
   reversedWmsGroups = [].concat.apply([], reversedWmsGroups)
 
   // Layers
+  const baseConfig = {
+    maxExtent: [-20037508.3392, -20037508.3392, 20037508.3392, 20037508.3392],
+    tileSize: [256, 256],
+    resolutions: [156543.0339, 78271.51695, 39135.758475, 19567.8792375, 9783.93961875, 4891.969809375, 2445.9849046875, 1222.99245234375, 611.496226171875, 305.7481130859375, 152.87405654296876, 76.43702827148438, 38.21851413574219, 19.109257067871095, 9.554628533935547, 4.777314266967774, 2.388657133483887, 1.1943285667419434, 0.5971642833709717],
+    singleTile: false
+  }
+
   printRequest.layers = reversedWmsGroups.map(layer => {
     if (!layer.visible) return null
 
@@ -189,13 +194,18 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
         }
       case 'osm':
         return {
-          baseURL: 'http://a.tile.openstreetmap.org/',
-          singleTile: false,
+          ...baseConfig,
           type: 'OSM',
-          maxExtent: [-20037508.3392, -20037508.3392, 20037508.3392, 20037508.3392],
-          tileSize: [256, 256],
-          extension: 'png',
-          resolutions: [156543.0339, 78271.51695, 39135.758475, 19567.8792375, 9783.93961875, 4891.969809375, 2445.9849046875, 1222.99245234375, 611.496226171875, 305.7481130859375, 152.87405654296876, 76.43702827148438, 38.21851413574219, 19.109257067871095, 9.554628533935547, 4.777314266967774, 2.388657133483887, 1.1943285667419434, 0.5971642833709717]
+          baseURL: 'http://a.tile.openstreetmap.org/',
+          extension: 'png'
+        }
+      case 'esri':
+        return {
+          ...baseConfig,
+          type: 'XYZ',
+          baseURL: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile',
+          extension: 'jpg',
+          path_format: '/${z}/${y}/${x}'
         }
       default:
         return null

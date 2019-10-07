@@ -28,10 +28,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/gs': {
-        target: 'http://rdc-snsf.org/diss_geoserver/',
+      '/geoserver': {
+        target: 'http://178.33.8.123/geoserver/',
         changeOrigin: true,
-        pathRewrite: { '^/gs': '' }
+        pathRewrite: { '^/geoserver': '' }
       },
       '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true },
       '/api': { target: 'http://localhost:3001', changeOrigin: true },

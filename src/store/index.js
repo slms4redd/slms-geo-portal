@@ -12,11 +12,13 @@ const setContextsTimes = function(state) {
   const contextsTimes = []
 
   state.contexts.forEach(c => {
+    /* eslint-disable indent */
     const times = c.layers.filter(l => l.type === 'wms' && l.times.length)
                           .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
                           // Remove duplicates
                           .filter((elem, pos, arr) => arr.findIndex(el => el.iso8601 === elem.iso8601) === pos)
                           .sort((t1, t2) => Date.parse(t1.iso8601) - Date.parse(t2.iso8601))
+    /* eslint-enable indent */
     c.times = times
     if (times && times.length) contextsTimes[c.id] = c.times[c.times.length - 1]
   })
@@ -153,8 +155,8 @@ const mutations = {
     }
   },
 
-  show_layer_info(state, { fileName, label, custom_content }) {
-    state.layerInfo = { fileName: fileName, label: label, custom_content: custom_content }
+  show_layer_info(state, { fileName, label, customContent }) {
+    state.layerInfo = { fileName: fileName, label: label, custom_content: customContent }
   },
 
   set_context_time(state, { contextId, time }) {

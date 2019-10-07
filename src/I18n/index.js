@@ -1,3 +1,4 @@
+// This is a MODIFIED VERSION OF vuex-i18n
 // © vuex-i18n https://github.com/dkfbasel/vuex-i18n
 
 // import the vuex module for localization

@@ -1,14 +1,28 @@
 {
-  "presets": [
-    ["env", { "modules": false }],
-    "stage-2"
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "absoluteRuntime": false,
+        "corejs": 3,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ],
+    "@babel/plugin-proposal-class-properties"
   ],
-  "plugins": ["transform-runtime"],
-  "comments": false,
-  "env": {
-    "test": {
-      "presets": ["env", "stage-2"],
-      "plugins": [ "istanbul" ]
-    }
-  }
+  "presets": [
+    [
+        "@babel/preset-env",
+        {
+            "useBuiltIns": "usage",
+            "corejs": "3.0.0",
+            "targets": {
+                "esmodules": true,
+                "ie": "11"
+            }
+        }
+    ]
+  ]
 }

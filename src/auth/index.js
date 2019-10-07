@@ -10,12 +10,12 @@ export default {
   login(creds, redirect) {
     const loginUrl = api.baseUrl + api.loginUrl
     return httpRequest('POST', loginUrl, JSON.stringify(creds), [['Content-Type', 'application/json']])
-    .then(res => {
-      const data = JSON.parse(res)
-      localStorage.setItem('id_token', data.id_token)
-      this.user.authenticated = true
-      return Promise.resolve(this.user)
-    }).catch(err => Promise.reject(err))
+      .then(res => {
+        const data = JSON.parse(res)
+        localStorage.setItem('id_token', data.id_token)
+        this.user.authenticated = true
+        return Promise.resolve(this.user)
+      }).catch(err => Promise.reject(err))
   },
 
   // To log out, we just need to remove the token

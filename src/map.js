@@ -17,10 +17,10 @@ export default new Map({
     attribution: false,
     zoom: true
   })
-  .extend([mousePositionControl])
-  .extend([new Attribution({
-    collapsible: false
-  })]),
+    .extend([mousePositionControl])
+    .extend([new Attribution({
+      collapsible: false
+    })]),
   view: new View({
     center: fromLonLat(mapConfig.mapCenterLonLat || [0, 0]),
     zoom: mapConfig.mapZoom || 4

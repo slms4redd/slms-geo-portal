@@ -10,9 +10,11 @@ export default class Context extends Item {
     this.active = !!contextConfig.active
 
     const findLayerById = (arr, id) => arr.find(item => item.originalId === id)
+    /* eslint-disable indent */
     const tLayers = contextConfig.layers &&
                     contextConfig.layers.map(id => findLayerById(layers, id))
                                         .filter(layer => !!layer) // Silently remove nulls (unmatched layers)
+    /* eslint-enable indent */
     this.layers = tLayers || []
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null
   }

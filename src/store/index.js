@@ -13,10 +13,10 @@ const setContextsTimes = function(state) {
 
   state.contexts.forEach(c => {
     const times = c.layers.filter(l => l.type === 'wms' && l.times.length)
-                          .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
-                          // Remove duplicates
-                          .filter((elem, pos, arr) => arr.findIndex(el => el.iso8601 === elem.iso8601) === pos)
-                          .sort((t1, t2) => Date.parse(t1.iso8601) - Date.parse(t2.iso8601))
+      .reduce((contextTimes, l) => contextTimes.concat(l.times), [])
+      // Remove duplicates
+      .filter((elem, pos, arr) => arr.findIndex(el => el.iso8601 === elem.iso8601) === pos)
+      .sort((t1, t2) => Date.parse(t1.iso8601) - Date.parse(t2.iso8601))
     c.times = times
     if (times && times.length) contextsTimes[c.id] = c.times[c.times.length - 1]
   })
@@ -179,7 +179,7 @@ const mutations = {
 
     if (group) group.items = value
 
-    // Update all items' partents
+    // Update all items' parents
     group.items.forEach(item => { item.parent = group })
   },
 
@@ -205,7 +205,7 @@ const actions = {
       .catch(error => alert(error))
   },
 
-  restoreBackup({ dispatch, commit }, { version }) {
+  restoreBackup({ dispatch }, { version }) {
     restoreVersion(version)
       .then(() => dispatch('fetchLayersConfig'))
       .catch(error => alert('Server error:\n' + error.statusText))

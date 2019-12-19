@@ -18,7 +18,7 @@ window.globalConf = {
     loginUrl: 'sessions/create',
     getLayersConfigUrl: 'layers.json',
     saveLayersConfigUrl: 'protected/layers_conf/save/',
-    getLayersConfigHisoryUrl: 'protected/layers_conf/versions',
+    getLayersConfigHistoryUrl: 'protected/layers_conf/versions',
     restoreVersionUrl: 'protected/layers_conf/restore_version'
   },
   feedbackApi: {

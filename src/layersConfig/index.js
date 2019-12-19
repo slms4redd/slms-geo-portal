@@ -21,6 +21,11 @@ class _Config {
 
     // Delete the layers that are not in a context
     this.layers = layers.filter(l => this.contexts.some(c => c.layers.indexOf(l) !== -1))
+
+    // Set layers opacity
+    this.contexts.forEach(c => {
+      c.layers.forEach(l => { l.opacity = c.opacity })
+    })
   }
 }
 
@@ -45,6 +50,7 @@ function serializeConfiguration(groupConfig, layersRank) {
     switch (key) {
       case 'originalId': // TODO the originalId attribute will be removed
       case 'urls':
+      case 'opacity': // opacity is a property of the context
         return undefined
       case 'serverUrls':
         return value || undefined
@@ -123,7 +129,7 @@ export function saveConfiguration(conf, layersRank) {
 
 export function getConfigurationHistory() {
   return new Promise((resolve, reject) => {
-    const url = api.baseUrl + api.getLayersConfigHisoryUrl
+    const url = api.baseUrl + api.getLayersConfigHistoryUrl
     httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]])
       .then(responseText => resolve(JSON.parse(responseText)))
       .catch(error => reject(error))

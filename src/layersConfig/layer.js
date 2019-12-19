@@ -6,6 +6,7 @@ export default class Layer {
     this.id = Layer.nextId++
     this.originalId = layerConfig.id
     this.type = layerConfig.type || 'wms'
+    this.opacity = 1 // Will be set after creating contexts
 
     if (this.type === 'wms') {
       // Backwards compatibility - all layers will have the serverUrls attribute
@@ -16,7 +17,6 @@ export default class Layer {
       this.styles = getLocalizedLabels(layerConfig.styles)
       this.imageFormat = layerConfig.imageFormat || 'image/png8'
       this.legend = layerConfig.legend || null // TODO check structure
-      this.opacity = layerConfig.opacity || 1
 
       const tTimes = layerConfig.times || []
       this.times = tTimes.map(time => ({

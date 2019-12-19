@@ -174,7 +174,7 @@ export default {
       showLegend: false,
       showTimeMenu: false,
       highlighted: false,
-      opacity: 1
+      opacity: this.conf.opacity
     }
   },
 
@@ -284,7 +284,7 @@ export default {
         this.$store.commit('update_context', {
           contextId: this.conf.id,
           property: 'opacity',
-          value: event.target.value
+          value: +event.target.value
         })
       }
     },

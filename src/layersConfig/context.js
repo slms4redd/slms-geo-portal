@@ -15,6 +15,7 @@ export default class Context extends Item {
                                         .filter(layer => !!layer) // Silently remove nulls (unmatched layers)
     this.layers = tLayers || []
     this.inlineLegendUrl = contextConfig.inlineLegendUrl || null
+    this.opacity = contextConfig.opacity || 1
   }
 
   get hasLegends() {

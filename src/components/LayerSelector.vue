@@ -31,21 +31,27 @@ export default {
   background: rgb(0, 0, 0);
   background: rgba(0, 0, 0, 0.66);
   font-size: 14px;
-  /* position: absolute;
-  top: $banner-height + 8px;
-  left: 8px;*/
   float: left;
   min-width: 50px;
   color: white;
-  padding: 10px;
   overflow: auto;
   border-radius: 5px;
   backdrop-filter: blur(5px);
   margin: 0;
+  position: relative;
+  max-height: 100%;
+  pointer-events: auto;
+  overflow: auto;
 }
 ul {
   padding-left: 1em;
   line-height: 1.5em;
   list-style-type: none;
+}
+.item {
+  position: relative;
+  padding: 10px;
+  padding-left: 0;
+  margin-right: 10px;
 }
 </style>

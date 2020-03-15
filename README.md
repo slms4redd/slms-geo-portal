@@ -43,7 +43,7 @@ Install **nvm** running:
 
 and cross your fingers. for any problem check [this page](https://github.com/creationix/nvm/blob/master/README.markdown#installation)
 
-Then in order to upload the node version run:
+Then in order to download the node version run:
 
 `$# nvm install 6.9.1`
 

@@ -144,6 +144,9 @@ body {
   position: absolute;
   top: $banner-height + 8px;
   left: 8px;
+  overflow: hidden;
+  bottom: 65px;
+  pointer-events: none;
 }
 #ll_logos {
   position: absolute;

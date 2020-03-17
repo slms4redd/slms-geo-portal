@@ -101,5 +101,6 @@ export default {
   clear: left;
   position:relative;
   top: 8px;
+  pointer-events: auto;
 }
 </style>

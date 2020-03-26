@@ -248,11 +248,17 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
 
         switch (l.legend.type) {
           case 'url':
-            if (!l.legend.url.startsWith('http://')) return // can't guess the server
-            legend.classes.push({
-              icons: [l.legend.url],
-              name: ''
-            })
+            if (!l.legend.url.startsWith('http://') && !l.legend.url.startsWith('https://')) {
+              legend.classes.push({
+                icons: [window.location.origin + window.location.pathname + l.legend.url],
+                name: ''
+              })
+            } else {
+              legend.classes.push({
+                icons: [l.legend.url],
+                name: ''
+              })
+            }
             break
           case 'wms':
             let wmsLegendStyle

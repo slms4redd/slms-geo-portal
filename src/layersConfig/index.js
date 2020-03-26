@@ -5,7 +5,7 @@ import auth from '../auth'
 import Layer from './layer'
 import Context from './context'
 import Group from './group'
-import { layersConfigApi as api } from 'config'
+import { layersConfigApi as api, map as mapConfig } from 'config'
 import printRequest from '../assets/print.json'
 import map from '../map'
 
@@ -187,6 +187,14 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
     singleTile: false
   }
 
+  const patchRelativeBaseUrl = (url) => {
+    if (url && url.startsWith('/')) {
+      return mapConfig.defaultGeoServerURLs[0]
+    } else {
+      return url
+    }
+  }
+
   printRequest.layers = reversedWmsGroups.map(layer => {
     if (!layer.visible) return null
 
@@ -195,7 +203,7 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
         return {
           type: 'wms',
           layers: [layer.name],
-          baseURL: layer.serverUrls[0],
+          baseURL: patchRelativeBaseUrl(layer.serverUrls[0]),
           format: layer.imageFormat
         }
       case 'osm':
@@ -257,7 +265,7 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
               const style = l.styles.find(l => l.language === locale)
               wmsLegendStyle = style ? style.label : null
             }
-            const legendUrl = `${l.serverUrls[0]}?LEGEND_OPTIONS=fontColor:000000;fontAntiAliasing:true&LAYER=${l.name}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`
+            const legendUrl = `${patchRelativeBaseUrl(l.serverUrls[0])}?LEGEND_OPTIONS=fontColor:000000;fontAntiAliasing:true&LAYER=${l.name}&STYLE=${wmsLegendStyle}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=18&HEIGHT=18&TRANSPARENT=true`
 
             legend.classes.push({
               icons: [legendUrl],

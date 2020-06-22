@@ -81,6 +81,7 @@ export default {
           if (l.type === 'wms') ret.label = l.name
           else if (l.type === 'esri') ret.label = 'ESRI'
           else if (l.type === 'bing-aerial') ret.label = 'Bing Aerial'
+          else if (l.type === 'google') ret.label = 'Google'
           else if (l.type === 'osm') ret.label = 'OpenStreetMap'
           else ret.label = '???'
           return ret

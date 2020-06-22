@@ -160,6 +160,7 @@ export function getPrintRequest(activeLayers, activeContexts, locale) {
     switch (layer.type) {
       case 'osm':
       case 'bing-aerial':
+      case 'google':
       case 'esri':
         grouped.push([layer])
         return grouped

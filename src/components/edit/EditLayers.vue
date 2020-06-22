@@ -11,6 +11,7 @@
         <br>
         <a href="#" class="button default" @click.prevent="addLayer('esri')">Add an ESRI layer</a>
         <br>
+        <a href="#" class="button default" @click.prevent="addLayer('google')">Add a Google layer</a>
         <br>
         <b>Drag to change the order</b>
         <br>
@@ -20,6 +21,7 @@
             <span class="handle"><icon name="sort"></icon></span>
             <span v-if="l.type === 'wms'">{{l.name}}</span>
             <span v-else-if="l.type === 'bing-aerial'">Bing aerial</span>
+            <span v-else-if="l.type === 'google'">Google</span>
             <span v-else-if="l.type === 'osm'">Open street map</span>
             <span v-else-if="l.type === 'esri'">ESRI</span>
             <span v-if="l.statistics && l.statistics.length">
@@ -245,6 +247,12 @@ export default {
         case 'bing':
           layer = new Layer({
             type: 'bing-aerial',
+            id: Layer.nextId++
+          })
+          break
+        case 'google':
+          layer = new Layer({
+            type: 'google',
             id: Layer.nextId++
           })
           break

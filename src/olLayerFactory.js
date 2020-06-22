@@ -5,6 +5,8 @@ import TileWMS from 'ol/source/TileWMS'
 import TileLayer from 'ol/layer/Tile'
 import { map as mapConfig } from 'config'
 
+import GoogleLayer from 'olgm/layer/Google'
+
 const attributions = []
 
 class OlLayerFactory {
@@ -30,6 +32,10 @@ class OlLayerFactory {
           url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
         })
         break
+      case 'google':
+        return new GoogleLayer({
+          mapTypeId: 'satellite'
+        })
       default:
         const layerAttributions = [],
               sourceLabel = layerConfig.sourceLabel,

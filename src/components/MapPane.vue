@@ -9,13 +9,21 @@ import { mapGetters, mapState } from 'vuex'
 
 import map from '../map'
 import OLProperty from 'ol/layer/Property'
+import OLGoogleMaps from 'olgm/OLGoogleMaps'
 
 const olLayers = {}
 
 export default {
   name: 'mapPane',
+  data: () => ({
+    gmap: null
+  }),
   mounted() {
     map.setTarget('map')
+    this.gmap = new OLGoogleMaps({
+      map
+    })
+    this.gmap.activate()
   },
   watch: {
     layers(layers) {
@@ -49,9 +57,21 @@ export default {
     },
 
     activeLayers(activeLayers) {
-      this.layers.forEach(l =>
-        olLayers[l.id].setVisible(l.visible && activeLayers.some(a => a.id === l.id))
-      )
+      const setVisibleFunc = (l) => {
+        const visible = l.visible && activeLayers.some(a => a.id === l.id)
+        olLayers[l.id].setVisible(visible)
+      }
+
+      // there are problems with layer order if a layer is disabled and then enabled again
+      // the reenabled layer will appear on top even if it was at the bottom
+      // as a workaround we disable google layers before changing visibility
+      const googleLayers = this.layers.filter(l => l.type === 'google')
+      googleLayers.forEach(l => olLayers[l.id].setVisible(false))
+
+      this.layers.filter(l => l.type !== 'google').forEach(setVisibleFunc)
+
+      // reenable google layers after all other layers have been processed
+      googleLayers.forEach(setVisibleFunc)
     },
 
     contextsTimes(contextsTimes) {
@@ -70,7 +90,8 @@ export default {
         Object.values(OLProperty)
         .filter(p => context.hasOwnProperty(p))
         .forEach(p => {
-          context.layers.forEach(l => olLayers[l.id].set(p, context[p]))
+          context.layers.filter(l => l.type !== 'google')
+                    .forEach(l => olLayers[l.id].set(p, context[p]))
         })
       })
     }

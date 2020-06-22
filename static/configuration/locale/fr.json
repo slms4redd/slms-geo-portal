@@ -26,5 +26,18 @@
   },
   "layerSelector": {
     "layers": "Couches"
+  },
+  "contextInfoModal": {
+    "emailTitle": "Veuillez saisir votre email",
+    "submitDataLabel": "Continuer",
+    "changeEmailLabel": "Changer l'e-mail"
+  },
+  "annotations": {
+    "title": "Annotations",
+    "geomTypes": {
+      "circle": "Cercle",
+      "triangle": "Triangle",
+      "rectangle": "Rectangle"
+    }
   }
 }

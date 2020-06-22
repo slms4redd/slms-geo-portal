@@ -33,6 +33,7 @@ export default {
   font-size: 14px;
   float: left;
   min-width: 50px;
+  min-height: 45px;
   color: white;
   overflow: auto;
   border-radius: 5px;

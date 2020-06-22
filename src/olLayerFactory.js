@@ -1,15 +1,15 @@
-import OSM from 'ol/source/OSM'
-import BingMaps from 'ol/source/BingMaps'
-import XYZ from 'ol/source/XYZ'
-import TileWMS from 'ol/source/TileWMS'
-import TileLayer from 'ol/layer/Tile'
+import { OSM, BingMaps, XYZ, TileWMS, ImageWMS } from 'ol/source'
+import { Tile as TileLayer, Image as ImageLayer } from 'ol/layer'
 import { map as mapConfig } from 'config'
+
+import GoogleLayer from 'olgm/layer/Google'
 
 const attributions = []
 
 class OlLayerFactory {
   static createOlLayer(layerConfig, locale) {
     let source
+    let sourceType
 
     switch (layerConfig.type) {
       case 'osm':
@@ -30,11 +30,16 @@ class OlLayerFactory {
           url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
         })
         break
+      case 'google':
+        return new GoogleLayer({
+          mapTypeId: 'satellite'
+        })
       default:
         const layerAttributions = [],
               sourceLabel = layerConfig.sourceLabel,
               sourceLink = layerConfig.sourceLink,
-              attributionKey = sourceLabel || sourceLink
+              attributionKey = sourceLabel || sourceLink,
+              wmsType = layerConfig.wmsType || 'tiled'
 
         if (attributionKey) {
           let attribution = attributions[attributionKey]
@@ -50,7 +55,7 @@ class OlLayerFactory {
         }
 
         const style = layerConfig.styles && layerConfig.styles.find(s => s.language === locale).label // TODO 'label' should be renamed to 'value'
-        source = new TileWMS(({
+        const sourceConfig = {
           urls: layerConfig.serverUrls,
           params: {
             'LAYERS': layerConfig.name,
@@ -59,21 +64,41 @@ class OlLayerFactory {
             'FORMAT': layerConfig.imageFormat,
             'WIDTH': 256,
             'HEIGHT': 256,
-            'CRS': 'EPSG:3857',
-            'TILED': true,
-            // TODO not sure if these are the correct values for tilesorigin
-            'tilesorigin': '-20037508.34,-20037508.34'
+            'CRS': 'EPSG:3857'
           },
           serverType: 'geoserver',
           attributions: layerAttributions
-        }))
+        }
+
+        if (wmsType === 'single') {
+          // Single Image WMS
+          source = new ImageWMS(({
+            ...sourceConfig,
+            url: layerConfig.serverUrls[0],
+            ratio: 1
+          }))
+          sourceType = wmsType
+        } else {
+          // Tiled WMS
+          source = new TileWMS(({
+            ...sourceConfig,
+            params: {
+              ...sourceConfig.params,
+              'TILED': true,
+              // TODO not sure if these are the correct values for tilesorigin
+              'tilesorigin': '-20037508.34,-20037508.34'
+            }
+          }))
+        }
     }
     if (source) {
-      return new TileLayer({
+      const config = {
         visible: false, // will be set by the activeLayers watch in MapPane
         source: source,
         opacity: layerConfig.opacity || 1
-      })
+      }
+      if (sourceType) return new ImageLayer(config)
+      return new TileLayer(config)
     }
   }
 }

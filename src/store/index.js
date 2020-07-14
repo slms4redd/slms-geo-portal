@@ -30,6 +30,9 @@ const state = {
   layers: [],
   contexts: [],
   groups: null,
+  annotations: {
+    visible: false
+  },
   layerInfo: null, // a modal with the file content is shown when not null
   contextsTimes: [],
   kmlOverlay: null,
@@ -193,6 +196,47 @@ const mutations = {
     })
 
     setContextsTimes(state)
+  },
+
+  set_annotations_geojson(state, { layer: geoJson }) {
+    if (state.annotations.geoJson) {
+      // Add multiple features to geoJSON
+      state.annotations = { ...state.annotations,
+        geoJson: { ...state.annotations.geoJson,
+          features: [...state.annotations.geoJson.features, ...geoJson.features]
+        }
+      }
+    } else {
+      state.annotations = { ...state.annotations, geoJson }
+    }
+    // Annotation style for feature to display on export
+    const annotationStyle = {
+      'vector_style': {
+        'strokeColor': '#ffcc33',
+        'strokeOpacity': 1,
+        'strokeWidth': 2,
+        'fillColor': '#ffffff',
+        'fillOpacity': 0.2,
+        'strokeDashstyle': 'solid'
+      }
+    }
+    // Update feature properties with style
+    state.annotations = { ...state.annotations,
+      geoJson: { ...state.annotations.geoJson,
+        features: [...state.annotations.geoJson.features.map(f => {
+          f.properties = annotationStyle
+          return f
+        })]
+      }
+    }
+  },
+
+  set_annotations_visible(state, { visible }) {
+    state.annotations = { ...state.annotations, visible }
+  },
+
+  clear_annotations(state) {
+    state.annotations = { visible: false }
   }
 }
 
@@ -224,7 +268,9 @@ const getters = {
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos)
   },
-  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics)
+  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
+  // Fetch annotation layers only when it is visible
+  annotationLayers: (state) => state.annotations.visible && state.annotations.geoJson
 }
 
 // A Vuex instance is created by combining the state, mutations, actions, and getters.

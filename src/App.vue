@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <mapPane></mapPane>
-    <div class="layers">
-      <layerSelector></layerSelector>
-      <editor-console v-if="showConsole"></editor-console>
+      <div id="left-container">
+        <div class="layers">
+          <layerSelector></layerSelector>
+          <editor-console v-if="showConsole"></editor-console>
+        </div>
+        <annotations v-show="this.$parent.loaded"></annotations>
     </div>
     <!-- Hide until language is first loaded, to avoid showing i18n placeholders -->
     <!-- Using v-show instead of v-if to optimize image loading -->
@@ -17,7 +20,7 @@
     <measure></measure>
 
     <v-dialog />
-    
+
     <search></search>
   </div>
 </template>
@@ -35,7 +38,7 @@ import KMLOverlay from './components/KMLOverlay'
 import Logos from './components/Logos'
 import Measure from './components/Measure'
 import Search from './components/Search'
-
+import Annotations from './components/Annotations'
 import { logos, welcomePage } from 'config'
 
 import auth from './auth'
@@ -52,7 +55,8 @@ export default {
     KMLOverlay,
     Measure,
     Logos,
-    Search
+    Search,
+    Annotations
     // EditorConsole
   },
   data() {
@@ -140,13 +144,19 @@ body {
   overflow: hidden;
   background: url(assets/page-background.jpg) repeat 0 0;
 }
-.layers {
+#left-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   position: absolute;
-  top: $banner-height + 8px;
   left: 8px;
-  overflow: hidden;
   bottom: 65px;
+  top: $banner-height + 8px;
+}
+.layers {
+  overflow: hidden;
   pointer-events: none;
+  align-self: stretch;
 }
 #ll_logos {
   position: absolute;

@@ -26,5 +26,13 @@
   },
   "layerSelector": {
     "layers": "Layers"
+  },
+  "annotations": {
+    "title": "Annotations",
+    "geomTypes": {
+      "circle": "Circle",
+      "triangle": "Triangle",
+      "rectangle": "Rectangle"
+    }
   }
 }

@@ -26,5 +26,13 @@
   },
   "layerSelector": {
     "layers": "Couches"
+  },
+  "annotations": {
+    "title": "Annotations",
+    "geomTypes": {
+      "circle": "Cercle",
+      "triangle": "Triangle",
+      "rectangle": "Rectangle"
+    }
   }
 }

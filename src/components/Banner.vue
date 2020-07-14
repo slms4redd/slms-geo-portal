@@ -92,7 +92,7 @@ export default {
       // see https://nehalist.io/downloading-files-from-post-requests/
       e.preventDefault()
 
-      const printRequest = getPrintRequest(this.activeLayers, this.activeContexts, Vue.i18n.locale())
+      const printRequest = getPrintRequest(this.activeLayers, this.activeContexts, Vue.i18n.locale(), this.annotationLayers)
 
       const geoserverUrl = printApi.url
       const request = new XMLHttpRequest()
@@ -127,7 +127,8 @@ export default {
   },
   computed: mapGetters([
     'activeLayers',
-    'activeContexts'
+    'activeContexts',
+    'annotationLayers'
   ])
 }
 </script>

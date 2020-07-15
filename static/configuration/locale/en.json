@@ -26,5 +26,10 @@
   },
   "layerSelector": {
     "layers": "Layers"
+  },
+  "contextInfoModal": {
+    "emailTitle": "Please enter your email",
+    "submitDataLabel": "Continue",
+    "changeEmailLabel": "Change Email"
   }
 }

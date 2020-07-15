@@ -153,8 +153,8 @@ const mutations = {
     }
   },
 
-  show_layer_info(state, { fileName, label, custom_content }) {
-    state.layerInfo = { fileName: fileName, label: label, custom_content: custom_content }
+  show_layer_info(state, { fileName, label, showDownload, downloadLinks }) {
+    state.layerInfo = { fileName, label, showDownload, downloadLinks }
   },
 
   set_context_time(state, { contextId, time }) {

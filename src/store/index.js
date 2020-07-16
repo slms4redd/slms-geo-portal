@@ -24,6 +24,24 @@ const setContextsTimes = function(state) {
   state.contextsTimes = contextsTimes
 }
 
+// Annotation style for feature to display on export
+const annotationStyle = {
+  'vector_style': {
+    'label': '',
+    'fontColor': '#fff',
+    'fontFamily': 'sans-serif',
+    'fontSize': '12px',
+    'fontStyle': 'normal',
+    'fontWeight': 'bold',
+    'strokeColor': '#ffcc33',
+    'strokeOpacity': 1,
+    'strokeWidth': 2,
+    'fillColor': '#ffffff',
+    'fillOpacity': 0.2,
+    'strokeDashstyle': 'solid'
+  }
+}
+
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
@@ -198,35 +216,26 @@ const mutations = {
     setContextsTimes(state)
   },
 
-  set_annotations_geojson(state, { layer: geoJson }) {
+  set_annotations_geojson(state, { layer: geoJson, label = '' }) {
+    const updatedFeature = geoJson.features.map(f => {
+      f.properties = { ...f.properties,
+        vector_style: { ...annotationStyle.vector_style, label }
+      }
+      return f
+    })
     if (state.annotations.geoJson) {
-      // Add multiple features to geoJSON
-      state.annotations = { ...state.annotations,
-        geoJson: { ...state.annotations.geoJson,
-          features: [...state.annotations.geoJson.features, ...geoJson.features]
-        }
+      const [incomingFeature] = geoJson.features
+      const index = state.annotations.geoJson.features.findIndex(({ properties }) => properties.id === incomingFeature.properties.id)
+      if (index === -1) {
+        state.annotations.geoJson.features.push(incomingFeature)
+      } else {
+        state.annotations.geoJson.features[index] = incomingFeature
       }
     } else {
-      state.annotations = { ...state.annotations, geoJson }
-    }
-    // Annotation style for feature to display on export
-    const annotationStyle = {
-      'vector_style': {
-        'strokeColor': '#ffcc33',
-        'strokeOpacity': 1,
-        'strokeWidth': 2,
-        'fillColor': '#ffffff',
-        'fillOpacity': 0.2,
-        'strokeDashstyle': 'solid'
-      }
-    }
-    // Update feature properties with style
-    state.annotations = { ...state.annotations,
-      geoJson: { ...state.annotations.geoJson,
-        features: [...state.annotations.geoJson.features.map(f => {
-          f.properties = annotationStyle
-          return f
-        })]
+      state.annotations = { ...state.annotations,
+        geoJson: { ...geoJson,
+          features: updatedFeature
+        }
       }
     }
   },

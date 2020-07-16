@@ -27,26 +27,37 @@
       <div class="feature-list">
       </div>
     </div>
+    <div id="popup" class="ol-popup">
+      <span class="ol-popup-closer" @click="closePopup"></span>
+      <div id="popup-content">
+        <input v-model="featureText" placeholder="Add label" type="text"/><button class="f-label" @click="setFeatureStyle">Add</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Icon from 'vue-awesome/components/Icon'
-import map from '../map'
+
 import 'vue-awesome/icons/angle-down'
 import 'vue-awesome/icons/angle-up'
 import 'vue-awesome/icons/eye'
 import 'vue-awesome/icons/eye-slash'
 import 'vue-awesome/icons/trash'
-import { Style, Fill, Stroke } from 'ol/style'
+import 'ol/ol.css'
+import { Style, Fill, Stroke, Text } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
 import VectorSource from 'ol/source/Vector'
 import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw'
 import { GeoJSON } from 'ol/format'
+import Overlay from 'ol/Overlay'
+import { v4 } from 'uuid'
+import map from '../map'
 
 let source
 let layer
 let interaction
+let popup
 
 export default {
   components: {
@@ -62,7 +73,10 @@ export default {
       curGeomType: geometryTypes[0],
       open: false,
       visible: false,
-      geometryTypes
+      geometryTypes,
+      featureText: '',
+      id: '',
+      currentFeature: {}
     }
   },
   mounted() {
@@ -74,7 +88,7 @@ export default {
       map,
       style: new Style({
         fill: new Fill({
-          color: 'transparent'
+          color: 'rgba(255,255,255,0.4)'
         }),
         stroke: new Stroke({
           color: '#ffcc33',
@@ -82,6 +96,14 @@ export default {
         })
       })
     })
+    popup = new Overlay({
+      element: document.getElementById('popup'),
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250
+      }
+    })
+    map.on('click', (e) => this.onFeatureClick(e))
   },
   watch: {
     curGeomType(curGeomType) {
@@ -96,6 +118,29 @@ export default {
     }
   },
   methods: {
+    onFeatureClick(e) {
+      // Get selected feature to modify label
+      map.forEachFeatureAtPixel(e.pixel,
+        (feature, layer) => {
+          if (feature && feature.getStyle()) {
+            this.currentFeature = feature
+            this.featureText = feature.getStyle().getText().getText() || ''
+            this.id = feature.getProperties().id
+
+            // Get first coordinate position to display popup
+            const [coordinate] = feature.getGeometry().getCoordinates()[0]
+            map.addOverlay(popup)
+            popup.setPosition(coordinate)
+            document.getElementById('popup').style.display = 'block'
+          }
+        }
+      )
+    },
+
+    closePopup() {
+      document.getElementById('popup').style.display = 'none'
+    },
+
     togglePanel() {
       const open = !this.open
       this.open = open
@@ -127,6 +172,39 @@ export default {
       if (interaction) {
         map.removeInteraction(interaction)
       }
+    },
+
+    setFeatureStyle() {
+      const currentFeature = this.currentFeature
+      const text = this.featureText
+      // Feature style
+      const featureStyle = new Style({
+        fill: new Fill({
+          color: 'rgba(255,255,255,0.4)'
+        }),
+        stroke: new Stroke({
+          color: '#ffcc33',
+          width: 2
+        }),
+        text: new Text({
+          textAlign: 'center',
+          textBaseline: 'middle',
+          font: 'bold 16px sans-serif',
+          text,
+          fill: new Fill({
+            color: '#fff'
+          }),
+          placement: 'point',
+          overflow: true
+        })
+      })
+      currentFeature.setStyle(featureStyle)
+      currentFeature.setProperties({ id: this.id })
+      // Update current selected feature with style and custom property
+      const geoJSON = JSON.parse(new GeoJSON().writeFeatures([currentFeature]))
+      this.$store.commit('set_annotations_geojson', { layer: geoJSON, label: text })
+      this.featureText = ''
+      document.getElementById('popup').style.display = 'none'
     },
 
     createInteraction(geomType) {
@@ -165,11 +243,26 @@ export default {
         })
         map.addInteraction(interaction)
         interaction.on('drawend', e => {
-          // Pass the feature as an array to generate geoJSON object
-          const geoJSON = JSON.parse(new GeoJSON().writeFeatures([e.feature]))
-          this.$store.commit('set_annotations_geojson', { layer: geoJSON })
+          // Unique id for feature
+          const id = v4()
+          e.feature.setProperties({ id })
+          this.currentFeature = e.feature
+
+          // Convert to GEOJSON
+          const geoJson = new GeoJSON()
+          const features = geoJson.writeFeatures([e.feature])
+          this.id = id
+          this.$store.commit('set_annotations_geojson', { layer: JSON.parse(features) })
           this.$store.commit('set_annotations_visible', { visible: true })
           this.showLayer()
+
+          // Clear text on load popup
+          this.featureText = ''
+          // Get first coordinate position to display popup
+          const [coordinate] = geoJson.readFeatures(features)[0].getGeometry().getCoordinates()[0]
+          map.addOverlay(popup)
+          popup.setPosition(coordinate)
+          document.getElementById('popup').style.display = 'block'
         })
       }
     }
@@ -197,7 +290,7 @@ export default {
 .annotations-title {
   flex-grow: 1;
   justify-content: center;
-  padding: 0 10px;
+  padding: 0px 10px 0px 10px;
   line-height: 45px;
   text-align: center;
 }
@@ -205,7 +298,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 10px;
+  padding: 0px 10px 0px 10px;
   border-left: 1px solid white;
   background-color: transparent;
   font-size: 30px;
@@ -242,5 +335,51 @@ export default {
 }
 .selector-button.last {
   margin: 0;
+}
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+  min-width: 280px;
+}
+.ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  color: #6e7173
+}
+.ol-popup-closer:after {
+  content: "✖";
+}
+.f-label {
+  padding: 4px 12px;
+  margin-left: 4px;
 }
 </style>

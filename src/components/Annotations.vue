@@ -28,7 +28,7 @@
       </div>
     </div>
     <div id="popup" class="ol-popup">
-      <span class="ol-popup-closer" @click="closePopup"></span>
+      <span class="ol-popup-closer" @click="displayPopup(false)"></span>
       <div id="popup-content">
         <input v-model="featureText" placeholder="Add label" type="text"/><button class="f-label" @click="setFeatureStyle">Add</button>
       </div>
@@ -62,9 +62,6 @@ let popup
 export default {
   components: {
     Icon
-  },
-  props: {
-    map: Object
   },
   data: () => {
     const geometryTypes = ['circle', 'triangle', 'rectangle']
@@ -121,24 +118,24 @@ export default {
     onFeatureClick(e) {
       // Get selected feature to modify label
       map.forEachFeatureAtPixel(e.pixel,
-        (feature, layer) => {
-          if (feature && feature.getStyle()) {
-            this.currentFeature = feature
-            this.featureText = feature.getStyle().getText().getText() || ''
-            this.id = feature.getProperties().id
+        (feature) => {
+          // Fetch label if present
+          if (feature && feature.getStyle()) this.featureText = feature.getStyle().getText().getText() || ''
+          this.currentFeature = feature
+          this.id = feature.getProperties().id
 
-            // Get first coordinate position to display popup
-            const [coordinate] = feature.getGeometry().getCoordinates()[0]
-            map.addOverlay(popup)
-            popup.setPosition(coordinate)
-            document.getElementById('popup').style.display = 'block'
-          }
+          // Get first coordinate position to display popup
+          const [coordinate] = feature.getGeometry().getCoordinates()[0]
+          map.addOverlay(popup)
+          popup.setPosition(coordinate)
+          this.displayPopup(true)
         }
       )
     },
 
-    closePopup() {
-      document.getElementById('popup').style.display = 'none'
+    displayPopup(show) {
+      if (show) document.getElementById('popup').style.display = 'block'
+      else document.getElementById('popup').style.display = 'none'
     },
 
     togglePanel() {
@@ -204,7 +201,7 @@ export default {
       const geoJSON = JSON.parse(new GeoJSON().writeFeatures([currentFeature]))
       this.$store.commit('set_annotations_geojson', { layer: geoJSON, label: text })
       this.featureText = ''
-      document.getElementById('popup').style.display = 'none'
+      this.displayPopup(false)
     },
 
     createInteraction(geomType) {
@@ -262,7 +259,7 @@ export default {
           const [coordinate] = geoJson.readFeatures(features)[0].getGeometry().getCoordinates()[0]
           map.addOverlay(popup)
           popup.setPosition(coordinate)
-          document.getElementById('popup').style.display = 'block'
+          this.displayPopup(true)
         })
       }
     }

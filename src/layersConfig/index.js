@@ -141,7 +141,7 @@ export function restoreVersion(version) {
   return httpRequest('GET', url, null, [['Authorization', auth.getAuthToken()]])
 }
 
-export function getPrintRequest(activeLayers, activeContexts, locale, annotationLayers) {
+export function getPrintRequest(activeLayers, activeContexts, locale, annotationLayer) {
   // get the map scale
   // const scale = INCHES_PER_UNIT[units] * DOTS_PER_INCH * resolution;
   const scales = [1128, 2256, 4513, 9027, 18055, 36111, 72223, 144447, 288895, 577790, 1155581,
@@ -227,14 +227,14 @@ export function getPrintRequest(activeLayers, activeContexts, locale, annotation
   }).filter(l => !!l)
 
   // Include vector/annotation layer in the print request when present
-  if (annotationLayers) {
+  if (annotationLayer) {
     printRequest.layers = [...printRequest.layers, {
       type: 'Vector',
       name: 'Annotations',
       opacity: 1,
       styleProperty: 'vector_style',
       styles: {},
-      geoJson: annotationLayers
+      geoJson: annotationLayer
     }]
   }
 

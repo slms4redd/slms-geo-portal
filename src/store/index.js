@@ -217,7 +217,7 @@ const mutations = {
   },
 
   set_annotations_geojson(state, { layer: geoJson, label = '' }) {
-    const updatedFeature = geoJson.features.map(f => {
+    const updatedFeatures = geoJson.features.map(f => {
       f.properties = { ...f.properties,
         vector_style: { ...annotationStyle.vector_style, label }
       }
@@ -234,7 +234,7 @@ const mutations = {
     } else {
       state.annotations = { ...state.annotations,
         geoJson: { ...geoJson,
-          features: updatedFeature
+          features: updatedFeatures
         }
       }
     }
@@ -279,7 +279,7 @@ const getters = {
   },
   queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
   // Fetch annotation layers only when it is visible
-  annotationLayers: (state) => state.annotations.visible && state.annotations.geoJson
+  annotationLayer: (state) => state.annotations.visible && state.annotations.geoJson
 }
 
 // A Vuex instance is created by combining the state, mutations, actions, and getters.

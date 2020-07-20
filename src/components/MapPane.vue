@@ -23,7 +23,6 @@ export default {
     this.gmap = new OLGoogleMaps({
       map
     })
-    this.gmap.activate()
   },
   watch: {
     layers(layers) {
@@ -72,6 +71,13 @@ export default {
 
       // reenable google layers after all other layers have been processed
       googleLayers.forEach(setVisibleFunc)
+
+      // deactivate gmaps if no visible google layers, activate otherwise
+      if (googleLayers.reduce((result, l) => result || olLayers[l.id].getVisible(), false)) {
+        this.gmap.activate()
+      } else {
+        this.gmap.deactivate()
+      }
     },
 
     contextsTimes(contextsTimes) {
@@ -91,7 +97,9 @@ export default {
         .filter(p => context.hasOwnProperty(p))
         .forEach(p => {
           context.layers.filter(l => l.type !== 'google')
-                    .forEach(l => olLayers[l.id].set(p, context[p]))
+            .forEach(l => {
+              olLayers[l.id].set(p, context[p])
+            })
         })
       })
     }

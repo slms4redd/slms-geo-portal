@@ -9,7 +9,7 @@ import { mapGetters, mapState } from 'vuex'
 
 import map from '../map'
 import OLProperty from 'ol/layer/Property'
-import OLGoogleMaps from 'olgm/OLGoogleMaps'
+import OLGoogleMaps from '@geosolutions/olgm/OLGoogleMaps'
 
 const olLayers = {}
 

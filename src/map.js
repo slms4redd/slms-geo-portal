@@ -5,7 +5,7 @@ import { defaults as defaultControls, Attribution } from 'ol/control'
 import { createStringXY } from 'ol/coordinate'
 import { fromLonLat } from 'ol/proj'
 import { map as mapConfig } from 'config'
-import { defaults } from 'olgm/interaction'
+import { defaults } from '@geosolutions/olgm/interaction'
 
 const mousePositionControl = new MousePosition({
   coordinateFormat: createStringXY(4),

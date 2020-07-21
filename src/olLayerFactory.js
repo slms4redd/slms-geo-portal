@@ -2,7 +2,7 @@ import { OSM, BingMaps, XYZ, TileWMS, ImageWMS } from 'ol/source'
 import { Tile as TileLayer, Image as ImageLayer } from 'ol/layer'
 import { map as mapConfig } from 'config'
 
-import GoogleLayer from 'olgm/layer/Google'
+import GoogleLayer from '@geosolutions/olgm/layer/Google'
 
 const attributions = []
 

@@ -5,6 +5,7 @@ import { defaults as defaultControls, Attribution } from 'ol/control'
 import { createStringXY } from 'ol/coordinate'
 import { fromLonLat } from 'ol/proj'
 import { map as mapConfig } from 'config'
+import { defaults } from 'olgm/interaction'
 
 const mousePositionControl = new MousePosition({
   coordinateFormat: createStringXY(4),
@@ -13,6 +14,8 @@ const mousePositionControl = new MousePosition({
 })
 
 export default new Map({
+  // use OL3-Google-Maps recommended default interactions
+  interactions: defaults(),
   controls: defaultControls({
     attribution: false,
     zoom: true

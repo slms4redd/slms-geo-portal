@@ -4,7 +4,8 @@
     "subtitle": "Optional subtitle",
     "feedback": "Feedback",
     "uploadKml": "Upload KML",
-    "measure": "Measure"
+    "measure": "Measure",
+    "languages": "Languages"
   },
   "featureInfo": {
     "info": "Info",

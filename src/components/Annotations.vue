@@ -1,6 +1,6 @@
 <template>
-  <div class="annotations">
-    <div  class="annotations-button-panel">
+  <div class="annotations transparent-panel">
+    <div v-if="annotationsActive" class="annotations-button-panel">
       <div class="annotations-title">{{$t("annotations.title")}}</div>
       <div class="button actions" v-show="!open" @click="clearVector">
         <icon name="trash"/>
@@ -27,9 +27,9 @@
       <div class="feature-list">
       </div>
     </div>
-    <div id="popup" class="ol-popup">
+    <div id="popup-annotations" class="ol-popup">
       <span class="ol-popup-closer" @click="displayPopup(false)"></span>
-      <div id="popup-content">
+      <div id="popup-content-annotations">
         <input v-model="featureText" placeholder="Add label" type="text"/><button class="f-label" @click="setFeatureStyle">Add</button>
       </div>
     </div>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Icon from 'vue-awesome/components/Icon'
 
 import 'vue-awesome/icons/angle-down'
@@ -94,18 +95,23 @@ export default {
       })
     })
     popup = new Overlay({
-      element: document.getElementById('popup'),
+      element: document.getElementById('popup-annotations'),
       autoPan: true,
       autoPanAnimation: {
         duration: 250
       }
     })
-    map.on('click', (e) => this.onFeatureClick(e))
+    map.on('click', this.onFeatureClick)
   },
   watch: {
     curGeomType(curGeomType) {
       if (this.open) {
         this.createInteraction(curGeomType)
+      }
+    },
+    annotationsActive(annotationsActive) {
+      if (this.open) {
+        this.togglePanel()
       }
     },
     open(open) {
@@ -122,23 +128,25 @@ export default {
           return feature || {}
         }
       )
-      // Get feature coordinates
-      const coordinates = feature.getGeometry().getCoordinates()[0]
-      if (coordinates.length) {
-        // Fetch label if present
-        if (feature && feature.getStyle()) this.featureText = feature.getStyle().getText().getText() || ''
-        this.currentFeature = feature
-        this.id = feature.getProperties().id
-        // Display label popup
-        map.addOverlay(popup)
-        popup.setPosition(coordinates[0])
-        this.displayPopup(true)
+      if (feature) {
+        // Get feature coordinates
+        const coordinates = feature.getGeometry().getCoordinates()[0]
+        if (coordinates.length) {
+          // Fetch label if present
+          if (feature && feature.getStyle()) this.featureText = feature.getStyle().getText().getText() || ''
+          this.currentFeature = feature
+          this.id = feature.getProperties().id
+          // Display label popup
+          map.addOverlay(popup)
+          popup.setPosition(coordinates[0])
+          this.displayPopup(true)
+        }
       }
     },
 
     displayPopup(show) {
-      if (show) document.getElementById('popup').style.display = 'block'
-      else document.getElementById('popup').style.display = 'none'
+      if (show) document.getElementById('popup-annotations').style.display = 'block'
+      else document.getElementById('popup-annotations').style.display = 'none'
     },
 
     togglePanel() {
@@ -266,6 +274,11 @@ export default {
         })
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'annotationsActive'
+    ])
   }
 }
 </script>
@@ -274,10 +287,9 @@ export default {
 @import "../assets/global.scss";
 
 .annotations {
-  margin-left: 10px;
-  background: $transparent-panel-background;
-  border-radius: 5px;
-  backdrop-filter: blur(5px);
+  position: absolute;
+  top: $banner-height + 16px;
+  left: 54px;
 }
 .annotations-button-panel {
   display: flex;
@@ -382,7 +394,15 @@ export default {
   padding: 4px 12px;
   margin-left: 4px;
 }
-#popup-content input {
+#popup-content-annotations input {
   font-size: 16px;
+}
+@media screen and (min-width: 769px) {
+  .annotations {
+    position: static;
+    top: auto;
+    left: auto;
+    margin-left: 10px;
+  }
 }
 </style>

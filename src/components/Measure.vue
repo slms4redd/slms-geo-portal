@@ -23,7 +23,7 @@ import { unByKey } from 'ol/Observable'
 import { getLength, getArea } from 'ol/sphere'
 import Draw from 'ol/interaction/Draw'
 import KML from 'ol/format/KML'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import map from '../map'
 
 const drawLayer = null
@@ -388,7 +388,7 @@ export default {
         addInteraction()
       }
     },
-    ...mapState([
+    ...mapGetters([
       'measureActive'
     ])
   }
@@ -447,5 +447,12 @@ export default {
 }
 .tooltip-static:before {
   border-top-color: #ffcc33;
+}
+@media screen and (max-width: 768px) {
+  #measureOptions {
+    top: 108px;
+    right: auto;
+    left: 54px;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <modal v-if=show @close="hideUploadPopup()">
+  <modal v-if="show" @close="hideUploadPopup()">
     <div slot="body">
       <div id="dropTarget"><span id="dropText" v-html="$t('fileDrop.dropKml')"></span></div>
     </div>
@@ -13,7 +13,9 @@ export default {
   components: {
     Modal
   },
-  props: ['show'],
+  props: {
+    show: Boolean
+  },
   methods: {
     hideUploadPopup() {
       this.$emit('disable')

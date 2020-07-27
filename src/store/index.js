@@ -57,11 +57,20 @@ const state = {
   enableFeedback: false,
   measureActive: false,
   activeContextsIds: [],
+  activeTool: null,
+  appMode: 'desktop',
 
   editing: false,
   editGroup: null,
   editContext: null,
-  editLayers: false
+  editLayers: false,
+
+  showFileDropModal: false,
+  showLoginModal: false,
+  showUserPanel: false,
+
+  enablePrint: false,
+  printingInProgress: false
 }
 
 // mutations are operations that actually mutates the state.
@@ -188,9 +197,11 @@ const mutations = {
 
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable
+    state.activeTool = enable ? 'feedback' : null
   },
 
   toggle_measure(state, { enable }) {
+    state.activeTool = state.measureActive ? null : 'measure'
     state.measureActive = !state.measureActive
   },
 
@@ -246,6 +257,44 @@ const mutations = {
 
   clear_annotations(state) {
     state.annotations = { visible: false }
+  },
+
+  set_application_mode(state, { mode = 'desktop' }) {
+    state.appMode = mode
+  },
+
+  show_login_modal(state, { show = false }) {
+    state.showLoginModal = show
+  },
+
+  set_enable_print(state, { enable = false }) {
+    state.enablePrint = enable
+  },
+
+  set_printing_in_progress(state, { inProgress = false }) {
+    state.printingInProgress = inProgress
+  },
+
+  show_file_drop_modal(state, { show = false }) {
+    state.showFileDropModal = show
+    state.activeTool = show ? 'kmlUpload' : null
+  },
+
+  show_user_panel(state, { show = false }) {
+    state.showUserPanel = show
+  },
+
+  set_selected_language(state, { lang }) {
+    state.selectedLanguage = lang
+  },
+
+  show_layer_selector(state, { show = false }) {
+    state.showLayerSelector = show
+    state.activeTool = show ? 'layerSelector' : null
+  },
+
+  set_active_tool(state, { tool }) {
+    state.activeTool = tool || null
   }
 }
 
@@ -279,7 +328,12 @@ const getters = {
   },
   queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
   // Fetch annotation layers only when it is visible
-  annotationLayer: (state) => state.annotations.visible && state.annotations.geoJson
+  annotationLayer: (state) => state.annotations.visible && state.annotations.geoJson,
+  enableFeedback: (state) => state.appMode === 'mobile' ? state.activeTool === 'feedback' : state.enableFeedback,
+  showFileDropModal: (state) => state.appMode === 'mobile' ? state.activeTool === 'kmlUpload' : state.showFileDropModal,
+  measureActive: (state) => state.appMode === 'mobile' ? state.activeTool === 'measure' : state.measureActive,
+  annotationsActive: (state) => state.appMode !== 'mobile' || state.activeTool === 'annotations',
+  layerSelectorActive: (state) => state.groups && (state.appMode !== 'mobile' || state.activeTool === 'layerSelector')
 }
 
 // A Vuex instance is created by combining the state, mutations, actions, and getters.

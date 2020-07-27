@@ -1,12 +1,12 @@
 <template>
-  <ul v-if="groups" id="layer-selector">
+  <ul v-if="layerSelectorActive" id="layer-selector">
     <item class="item" :conf="groups"></item>
   </ul>
 </template>
 
 <script>
 import Item from './Item'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import auth from '../auth'
 
 export default {
@@ -20,9 +20,14 @@ export default {
     }
   },
 
-  computed: mapState([
-    'groups'
-  ])
+  computed: {
+    ...mapState({
+      groups: state => state.groups
+    }),
+    ...mapGetters([
+      'layerSelectorActive'
+    ])
+  }
 }
 </script>
 
@@ -34,6 +39,7 @@ export default {
   float: left;
   min-width: 50px;
   min-height: 45px;
+  max-width: 78vw;
   color: white;
   overflow: auto;
   border-radius: 5px;

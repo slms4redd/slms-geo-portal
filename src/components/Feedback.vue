@@ -37,7 +37,7 @@ import { Vector as VectorSource } from 'ol/source'
 import { Vector as VectorLayer } from 'ol/layer'
 import Draw from 'ol/interaction/Draw'
 import KML from 'ol/format/KML'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import map from '../map'
 import { feedbackApi } from 'config'
 
@@ -149,7 +149,7 @@ export default {
       // A drawing is required
       return !(this.drew && this.message !== '' && !(this.categories.length !== 0 && this.selectedCategory === ''))
     },
-    ...mapState([
+    ...mapGetters([
       'enableFeedback'
     ])
   }

@@ -11,6 +11,7 @@
         <br>
         <a href="#" class="button default" @click.prevent="addLayer('esri')">Add an ESRI layer</a>
         <br>
+        <a href="#" class="button default" @click.prevent="addLayer('google')">Add a Google layer</a>
         <br>
         <b>Drag to change the order</b>
         <br>
@@ -20,6 +21,7 @@
             <span class="handle"><icon name="sort"></icon></span>
             <span v-if="l.type === 'wms'">{{l.name}}</span>
             <span v-else-if="l.type === 'bing-aerial'">Bing aerial</span>
+            <span v-else-if="l.type === 'google'">Google</span>
             <span v-else-if="l.type === 'osm'">Open street map</span>
             <span v-else-if="l.type === 'esri'">ESRI</span>
             <span v-if="l.statistics && l.statistics.length">
@@ -63,6 +65,18 @@
           <span v-if="getCapabilitiesError" style="color:red">Error getting wms layers</span>
 
           <localized-text-input v-model="layer.styles" label="Styles (leave empty for default style):" :options="wmsStyleNames"></localized-text-input>
+
+          <br>
+          <label class="layer-type"> Layer type:
+          <span>
+            <input type="radio" id="tiled" value="tiled" v-model="layer.wmsType">
+            <label for="tiled">Tiled</label>
+          </span>
+          <span class="layer-type">
+            <input type="radio" id="single" value="single" v-model="layer.wmsType">
+            <label for="single">Single</label>
+          </span>
+          </label>
 
           <br>
           <label>Image format:
@@ -233,7 +247,8 @@ export default {
             name: '',
             id: Layer.nextId++,
             imageFormat: 'image/png8',
-            visible: true
+            visible: true,
+            wmsType: 'tiled'
           })
           break
         case 'osm':
@@ -245,6 +260,12 @@ export default {
         case 'bing':
           layer = new Layer({
             type: 'bing-aerial',
+            id: Layer.nextId++
+          })
+          break
+        case 'google':
+          layer = new Layer({
+            type: 'google',
             id: Layer.nextId++
           })
           break
@@ -481,5 +502,15 @@ label.short-input {
 }
 .right {
   float: right;
-};
+}
+.layer-type {
+  display: flex;
+}
+.layer-type span {
+  display: flex;
+  margin-left: 10px;
+}
+.layer-type label {
+  margin-left: 4px;
+}
 </style>

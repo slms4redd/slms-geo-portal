@@ -17,6 +17,8 @@ export default class Layer {
       this.styles = getLocalizedLabels(layerConfig.styles)
       this.imageFormat = layerConfig.imageFormat || 'image/png8'
       this.legend = layerConfig.legend || null // TODO check structure
+      // Type of WMS - 'single' (Single ImageWMS) or 'tiled' (TiledWMS)
+      this.wmsType = layerConfig.wmsType || 'tiled'
 
       const tTimes = layerConfig.times || []
       this.times = tTimes.map(time => ({

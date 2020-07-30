@@ -1,5 +1,5 @@
 <template>
-  <div id='search' v-if="wfsSearchConfig && wfsSearchConfig.layersToQuery">
+  <div id='search' v-if="(!isMobile || !measure) && wfsSearchConfig && wfsSearchConfig.layersToQuery">
     <form v-on:submit.prevent='noop'>
       <input type='text' v-model='searchText' v-on:keyup='goSearching' />
       <br /><br />
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 import httpRequest from '../httpRequest'
 import SearchResult from './SearchResult'
@@ -100,6 +101,12 @@ export default {
         alert('Error WFS\n' + err)
       })
     }
+  },
+  computed: {
+    ...mapState({
+      isMobile: state => state.appMode === 'mobile',
+      measure: state => state.activeTool === 'measure'
+    })
   },
   components: {
     'search-results': SearchResult

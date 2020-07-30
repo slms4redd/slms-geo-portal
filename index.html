@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <title>SLMS Geoportal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" type="text/css">
     <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" type="text/css">
@@ -9,6 +10,11 @@
     <script src="/static/configuration/config.js"></script>
     <!-- IE9 compatibility for OL4 (requestAnimationFrame, Element.prototype.classList) and vuex (Promise) -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Promise"></script>
+    <script
+      type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?v=3&key=XXXXXXXXX_GMAPS_API_KEY__XXXXXXXXX"
+      >
+    </script>
   </head>
   <body>
     <div id="app"></div>

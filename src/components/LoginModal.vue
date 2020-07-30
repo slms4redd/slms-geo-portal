@@ -1,5 +1,5 @@
 <template>
-  <modal v-if=show>
+  <modal v-if="show">
     <h1 slot="header">{{error ? 'Error' : 'Login'}}</h1>
     <div slot="body" class="body">
       <div v-if="error">
@@ -48,7 +48,9 @@ export default {
   components: {
     Modal
   },
-  props: ['show'],
+  props: {
+    show: Boolean
+  },
   methods: {
     submit(user, password) {
       const credentials = {

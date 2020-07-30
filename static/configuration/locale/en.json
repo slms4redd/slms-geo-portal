@@ -4,7 +4,8 @@
     "subtitle": "Optional subtitle",
     "feedback": "Feedback",
     "uploadKml": "Upload KML",
-    "measure": "Measure"
+    "measure": "Measure",
+    "languages": "Languages"
   },
   "featureInfo": {
     "info": "Info",
@@ -26,5 +27,18 @@
   },
   "layerSelector": {
     "layers": "Layers"
+  },
+  "contextInfoModal": {
+    "emailTitle": "Please enter your email",
+    "submitDataLabel": "Continue",
+    "changeEmailLabel": "Change Email"
+  },
+  "annotations": {
+    "title": "Annotations",
+    "geomTypes": {
+      "circle": "Circle",
+      "triangle": "Triangle",
+      "rectangle": "Rectangle"
+    }
   }
 }

@@ -2,9 +2,40 @@ import App from './App'
 import store from './store'
 import Vue from 'vue'
 import vmodal from 'vue-js-modal'
+import Icon from 'vue-awesome/components/Icon'
 import auth from './auth'
 import I18n from './I18n'
 import { languages } from 'config'
+
+import kmlIcon from './assets/kml-file-format-variant.svg'
+import pdfIcon from './assets/pdf-file-format-symbol.svg'
+import layersIcon from './assets/layers.svg'
+import feedbackIcon from './assets/feedback.svg'
+import rulerIcon from './assets/ruler.svg'
+import userIcon from './assets/user.svg'
+import loginIcon from './assets/login.svg'
+import logoutIcon from './assets/logout.svg'
+
+// custom icons regisration
+const customIcons = [
+  ['kml', kmlIcon],
+  ['pdf', pdfIcon],
+  ['layers', layersIcon],
+  ['feedback', feedbackIcon],
+  ['ruler', rulerIcon],
+  ['user', userIcon],
+  ['login', loginIcon],
+  ['logout', logoutIcon]
+]
+
+Icon.register(customIcons.reduce((result, [name, icon]) => ({
+  ...result,
+  [`slms-${name}`]: {
+    width: 512,
+    height: 512,
+    raw: icon
+  }
+}), {}))
 
 // © http://stackoverflow.com/a/979995
 const httpGetParams = (function() {

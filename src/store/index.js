@@ -24,23 +24,53 @@ const setContextsTimes = function(state) {
   state.contextsTimes = contextsTimes
 }
 
+// Annotation style for feature to display on export
+const annotationStyle = {
+  'vector_style': {
+    'label': '',
+    'fontColor': '#fff',
+    'fontFamily': 'sans-serif',
+    'fontSize': '12px',
+    'fontStyle': 'normal',
+    'fontWeight': 'bold',
+    'strokeColor': '#ffcc33',
+    'strokeOpacity': 1,
+    'strokeWidth': 2,
+    'fillColor': '#ffffff',
+    'fillOpacity': 0.2,
+    'strokeDashstyle': 'solid'
+  }
+}
+
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
   layers: [],
   contexts: [],
   groups: null,
+  annotations: {
+    visible: false
+  },
   layerInfo: null, // a modal with the file content is shown when not null
   contextsTimes: [],
   kmlOverlay: null,
   enableFeedback: false,
   measureActive: false,
   activeContextsIds: [],
+  activeTool: null,
+  appMode: 'desktop',
 
   editing: false,
   editGroup: null,
   editContext: null,
-  editLayers: false
+  editLayers: false,
+
+  showFileDropModal: false,
+  showLoginModal: false,
+  showUserPanel: false,
+
+  enablePrint: false,
+  printingInProgress: false
 }
 
 // mutations are operations that actually mutates the state.
@@ -153,8 +183,8 @@ const mutations = {
     }
   },
 
-  show_layer_info(state, { fileName, label, custom_content }) {
-    state.layerInfo = { fileName: fileName, label: label, custom_content: custom_content }
+  show_layer_info(state, { fileName, label, showDownload, downloadLinks }) {
+    state.layerInfo = { fileName, label, showDownload, downloadLinks }
   },
 
   set_context_time(state, { contextId, time }) {
@@ -167,9 +197,11 @@ const mutations = {
 
   enable_feedback(state, { enable }) {
     state.enableFeedback = enable
+    state.activeTool = enable ? 'feedback' : null
   },
 
   toggle_measure(state, { enable }) {
+    state.activeTool = state.measureActive ? null : 'measure'
     state.measureActive = !state.measureActive
   },
 
@@ -193,6 +225,76 @@ const mutations = {
     })
 
     setContextsTimes(state)
+  },
+
+  set_annotations_geojson(state, { layer: geoJson, label = '' }) {
+    const updatedFeatures = geoJson.features.map(f => {
+      f.properties = { ...f.properties,
+        vector_style: { ...annotationStyle.vector_style, label }
+      }
+      return f
+    })
+    if (state.annotations.geoJson) {
+      const [incomingFeature] = geoJson.features
+      const index = state.annotations.geoJson.features.findIndex(({ properties }) => properties.id === incomingFeature.properties.id)
+      if (index === -1) {
+        state.annotations.geoJson.features.push(incomingFeature)
+      } else {
+        state.annotations.geoJson.features[index] = incomingFeature
+      }
+    } else {
+      state.annotations = { ...state.annotations,
+        geoJson: { ...geoJson,
+          features: updatedFeatures
+        }
+      }
+    }
+  },
+
+  set_annotations_visible(state, { visible }) {
+    state.annotations = { ...state.annotations, visible }
+  },
+
+  clear_annotations(state) {
+    state.annotations = { visible: false }
+  },
+
+  set_application_mode(state, { mode = 'desktop' }) {
+    state.appMode = mode
+  },
+
+  show_login_modal(state, { show = false }) {
+    state.showLoginModal = show
+  },
+
+  set_enable_print(state, { enable = false }) {
+    state.enablePrint = enable
+  },
+
+  set_printing_in_progress(state, { inProgress = false }) {
+    state.printingInProgress = inProgress
+  },
+
+  show_file_drop_modal(state, { show = false }) {
+    state.showFileDropModal = show
+    state.activeTool = show ? 'kmlUpload' : null
+  },
+
+  show_user_panel(state, { show = false }) {
+    state.showUserPanel = show
+  },
+
+  set_selected_language(state, { lang }) {
+    state.selectedLanguage = lang
+  },
+
+  show_layer_selector(state, { show = false }) {
+    state.showLayerSelector = show
+    state.activeTool = show ? 'layerSelector' : null
+  },
+
+  set_active_tool(state, { tool }) {
+    state.activeTool = tool || null
   }
 }
 
@@ -224,7 +326,14 @@ const getters = {
     // Delete duplicates, in case a layer belongs to many contexts
     return activeLayers.filter((elem, pos, arr) => arr.indexOf(elem) === pos)
   },
-  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics)
+  queryableLayers: (state, getters) => getters.activeLayers.filter(layer => layer.statistics),
+  // Fetch annotation layers only when it is visible
+  annotationLayer: (state) => state.annotations.visible && state.annotations.geoJson,
+  enableFeedback: (state) => state.appMode === 'mobile' ? state.activeTool === 'feedback' : state.enableFeedback,
+  showFileDropModal: (state) => state.appMode === 'mobile' ? state.activeTool === 'kmlUpload' : state.showFileDropModal,
+  measureActive: (state) => state.appMode === 'mobile' ? state.activeTool === 'measure' : state.measureActive,
+  annotationsActive: (state) => state.appMode !== 'mobile' || state.activeTool === 'annotations',
+  layerSelectorActive: (state) => state.groups && (state.appMode !== 'mobile' || state.activeTool === 'layerSelector')
 }
 
 // A Vuex instance is created by combining the state, mutations, actions, and getters.

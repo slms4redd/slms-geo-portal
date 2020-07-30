@@ -1,29 +1,40 @@
 <template>
   <div id="app">
     <mapPane></mapPane>
-    <div class="layers">
-      <layerSelector></layerSelector>
-      <editor-console v-if="showConsole"></editor-console>
+    <search></search>
+    <mobileToolsBar></mobileToolsBar>
+    <div v-if="!isMobile" id="left-container">
+      <div class="layers">
+        <layerSelector></layerSelector>
+        <editor-console v-if="showConsole"></editor-console>
+      </div>
+      <annotations v-show="this.$parent.loaded"></annotations>
     </div>
+    <div v-if="isMobile" class="mobile-layers">
+      <layerSelector></layerSelector>
+      <editor-console v-if="layerSelectorActive && showConsole"></editor-console>
+    </div>
+    <annotations v-if="isMobile" v-show="this.$parent.loaded"></annotations>
     <!-- Hide until language is first loaded, to avoid showing i18n placeholders -->
     <!-- Using v-show instead of v-if to optimize image loading -->
     <banner v-show="this.$parent.loaded"></banner>
-
     <contextInfoModal></contextInfoModal>
     <featureInfo></featureInfo>
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
     <Logos v-if="llLogos" id="ll_logos" :logosList="llLogos"></Logos>
     <measure></measure>
+    <file-drop :show="showFileDropModal" @disable="hideFileDropModal"></file-drop>
+    <login-modal :show="showLoginModal" @disable="hideLoginModal"></login-modal>
 
     <v-dialog />
-    
-    <search></search>
+
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import { mapState, mapGetters } from 'vuex'
 
 import Banner from './components/Banner'
 import MapPane from './components/MapPane'
@@ -35,8 +46,11 @@ import KMLOverlay from './components/KMLOverlay'
 import Logos from './components/Logos'
 import Measure from './components/Measure'
 import Search from './components/Search'
-
-import { logos, welcomePage } from 'config'
+import Annotations from './components/Annotations'
+import MobileToolsBar from './components/MobileToolsBar'
+import FileDrop from './components/FileDrop'
+import LoginModal from './components/LoginModal'
+import { logos, welcomePage, printApi } from 'config'
 
 import auth from './auth'
 
@@ -52,7 +66,11 @@ export default {
     KMLOverlay,
     Measure,
     Logos,
-    Search
+    Search,
+    Annotations,
+    MobileToolsBar,
+    FileDrop,
+    LoginModal
     // EditorConsole
   },
   data() {
@@ -68,6 +86,13 @@ export default {
   created() {
     this.$store.dispatch('fetchLayersConfig')
     if (this.user.authenticated) this.loadEditor()
+
+    this.$store.commit('set_application_mode', { mode: window.screen.width > 768 ? 'desktop' : 'mobile' })
+    window.addEventListener('resize', this.resizeHandler)
+    this.$store.commit('set_enable_print', { enable: printApi && !!printApi.url })
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeHandler)
   },
   watch: {
     'user.authenticated'() {
@@ -80,7 +105,20 @@ export default {
       this.showWelcomePage(true, true, true)
     }
   },
+  computed: {
+    ...mapState({
+      isMobile: state => state.appMode === 'mobile',
+      showLoginModal: state => state.showLoginModal
+    }),
+    ...mapGetters([
+      'showFileDropModal',
+      'layerSelectorActive'
+    ])
+  },
   methods: {
+    resizeHandler() {
+      this.$store.commit('set_application_mode', { mode: window.screen.width > 768 ? 'desktop' : 'mobile' })
+    },
     loadEditor() {
       require.ensure(['./components/edit/EditorConsole'], require => {
         Vue.component('EditorConsole', require('./components/edit/EditorConsole'))
@@ -112,10 +150,20 @@ export default {
           draggable: draggable,
           adaptive: adaptive,
           resizable: resizable,
-          width: 710,
-          height: 850
+          width: 0.9 * document.body.clientWidth,
+          height: 0.7 * document.body.clientHeight,
+          maxWidth: 710,
+          maxHeight: 850
         })
       })
+    },
+
+    hideFileDropModal() {
+      this.$store.commit('show_file_drop_modal', { show: false })
+    },
+
+    hideLoginModal() {
+      this.$store.commit('show_login_modal', { show: false })
     }
   }
 }
@@ -141,12 +189,14 @@ body {
   background: url(assets/page-background.jpg) repeat 0 0;
 }
 .layers {
-  position: absolute;
-  top: $banner-height + 8px;
-  left: 8px;
   overflow: hidden;
-  bottom: 65px;
   pointer-events: none;
+  align-self: stretch;
+}
+.mobile-layers {
+  position: absolute;
+  top: $banner-height + 16px;
+  left: 54px;
 }
 #ll_logos {
   position: absolute;
@@ -155,5 +205,16 @@ body {
 }
 .iframe-modal-content{
   height: 100%;
+}
+@media screen and (min-width: 769px) {
+  #left-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    position: absolute;
+    left: 8px;
+    bottom: 65px;
+    top: $banner-height + 8px;
+  }
 }
 </style>

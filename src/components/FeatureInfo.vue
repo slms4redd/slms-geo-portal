@@ -220,12 +220,12 @@ export default {
   },
   computed: {
     ...mapState([
-      'enableFeedback',
-      'measureActive',
       'layers'
     ]),
     ...mapGetters([
-      'queryableLayers'
+      'queryableLayers',
+      'measureActive',
+      'enableFeedback'
     ])
   }
 }

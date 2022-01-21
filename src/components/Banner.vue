@@ -1,6 +1,6 @@
 <template>
   <div id="header" :class="{ danger: user.authenticated }">
-    <img id="header-img" src="/static/configuration/logos.png"/>
+    <img id="header-img" src="/static/configuration/logos.gif"/>
     <div id="title">
       <h1 v-if="!isMobile" :class="{ hasSubtitle: $te('banner.subtitle') }">{{$t("banner.title")}}</h1>
       <h2 v-if="!isMobile && $te('banner.subtitle')">{{$t("banner.subtitle")}}</h2>

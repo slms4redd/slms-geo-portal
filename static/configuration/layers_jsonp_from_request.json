@@ -1,0 +1,789 @@
+{
+  "layers": [
+    {
+      "id": "background",
+      "label": "Achtergrond",
+      "wmsName": "unredd:blue_marble",
+      "baseUrl": "http://rdc-snsf.org/diss_geoserver/wms",
+      "imageFormat": "image/jpeg",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "vegetation",
+      "label": "Bosbedekkingskaart 2010",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:suriname-vegetationmap-2010",
+      "imageFormat": "image/png",
+      "visible": true,
+      "legend":"yes",
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "basemap2000",
+      "label": "Bosbedekkingskaart 2000",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Basemap2000",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "stats",
+      "label": "Vegetatie Statistieken",
+      "wmsName": "unredd:District_Boundaries",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "queryable": true
+    },{
+      "id": "countryBoundaries",
+      "label": "Suriname LMS",
+      "wmsName": "unredd:AOI_2015",
+      "imageFormat": "image/png8",
+      "visible": true
+    },{
+      "id": "mangrove",
+      "label": "Mangrove",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:MangrovesUSGS2011_Suriname_repr",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "bbleg_sep",
+      "label": "BosbouwLegger (Sep 2017)",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:bbleg_sep",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "bosbouwlegger_Gem",
+      "label": "Gemeenschapsbossen en HKV's (Sep 2017)",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:bosbouwlegger_Gem",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Certified_concessions2016",
+      "label": "Gecertificeerde Concessies 2016",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Certified_concessions2016",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Protected_Areas",
+      "label": "Beschermde gebieden",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Protected_Areas",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "legend": "yes",
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Hydro_Atlantische_Oceaan_Merge_DIS",
+      "label": "Hydrografie",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Hydro_Atlantische_Oceaan_Merge_DIS",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "LULC",
+      "label": "Landgebruik/bedekking na ontbossing 2000-2015",
+	  "legend":"yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:LULC_09_13_15_Merge",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "deforestation00_15_repr",
+      "label": "Ontbossingskaart",
+	  "legend":"yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Deforestation00_15_repr",
+      "wmsTime": "2009-11-30T03:00:00.00Z,2013-11-30T03:00:00.00Z,2014-11-30T03:00:00.00Z,2015-11-30T03:00:00.00Z",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Deformap15_16",
+      "label": "${Deformap15_16}",
+	  "legend":"yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Deformap15_16",
+      "wmsTime": "2009-11-30T03:00:00.00Z,2013-11-30T03:00:00.00Z,2014-11-30T03:00:00.00Z,2015-11-30T03:00:00.00Z",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Deforestation00_15_totaal",
+      "label": "Ontbossing 2000 - 2015",
+	  "legend":"yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Deforestation00_15_totaal",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "lulc00_09",
+      "label": "Landgebruik/bedekking na ontbossing 2000-2015",
+	  "legend":"yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+	  "wmsTime": "2009-01-01T02:00:00.000Z,2013-01-01T03:00:00.000Z,2015-01-01T03:00:00.000Z",
+      "wmsName": "gonini:LULC_09_13_15_Merge",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "goldmining",
+      "label": "Goud Mijnbouw 2014",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Gold_Mining_2014_repr",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }},{
+      "id": "Ressort_repr_glis",
+      "label": "Ressorten",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Ressort_repr_glis",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Aanvragen_sep",
+      "label": "Aanvragen houtkaprechten",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Aanvragen_sep",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Infra_May_2017",
+      "label": "Infrastructuur",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Infra_May_2017",
+      "imageFormat": "image/png8",
+      "visible": true,
+	  "legend": "yes",
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "districts",
+      "label": "Districten",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Distr_repr_glis",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "SBB_post_repr",
+      "label": "SBB Posten",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:SBB_post_repr",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "WLA_stations",
+      "label": "WLA stationnen",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:WLA_stations",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "InventoryPlots_repr",
+      "label": "Inventarisatie Plots",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:InventoryPlots_repr",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Settlement_ReddP",
+      "label": "Dorpen REDD+ Consultaties",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Settlement_ReddP",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "RAC_Dorpen",
+      "label": "Dorpen van de RAC",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:RAC_Dorpen",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "District_capitals",
+      "label": "Hoofdplaatsen",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:District_capitals",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "LBB_Reserves",
+      "label": "LBB Beheersgebieden",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:LBB_Reserves",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "GMS_2014_2015",
+      "label": "Goud Mijnbouw 2015",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:GMS_2014_2015",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Landcover_new",
+      "label": "Landgebruik Brownsweg",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Landcover_new",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Infra_Brownsweg",
+      "label": "Wagi pasi/Autoweg/Roadway",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Infra_Brownsweg",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Futu_Passie",
+      "label": "Futu pasi/Voetpad/Walking trail",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Futu_Passie",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "railroad_New",
+      "label": "Talan pasi/Spoorbaan/Railroad (old)",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:railroad_New",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Creeks",
+      "label": "Kiiki/Kreek/Creek",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Creeks",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Falls",
+      "label": "Dan/Waterval/Fall",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Falls",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Sunken_Suriname_river",
+      "label": "Awoo Saanan lio/Oude loop Suriname Rivier/Original Course Suriname River",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Sunken_Suriname_river",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "POI",
+      "label": "Belangrijke Punten/Important Points ",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:POI",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "GMS_2001_08_14_15_merge_diss",
+      "label": "Goudmijnbouw (2001, 2008, 2014, 2015)",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:GMS_2001_08_14_15_merge_diss",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    },{
+      "id": "Settlements_Camps_Other_20170831",
+      "label": "${Settlements_Camps_Other_20170831}",
+	  "legend": "yes",
+      "baseUrl": "http://186.179.192.25/geoserver/wms",
+      "wmsName": "gonini:Settlements_Camps_Other_20170831",
+      "imageFormat": "image/png8",
+      "visible": true,
+      "wmsParameters": {
+          "tiled": "true",
+          "tilesorigin": "-180,90"
+      }
+    }
+    
+  ],
+  
+  "contexts": [
+    {
+      "id": "background",
+      "active": true,
+      "infoFile": "blue_marble.html",
+      "label": "Achtergrond",
+      "layers": ["background"]
+    },{
+      "id": "countryBoundaries",
+      "active": true,
+      "label": "Suriname LMS",
+      "layers": ["countryBoundaries"]
+    },{
+      "id": "districts",
+      "active": true,
+      "label": "Districten",
+      "infoFile":"districts.html",
+      "layers": ["districts"]
+    },{
+      "id": "vegetation",
+      "active": false,
+      "label": "Bosbedekkingskaart 2010",
+      "infoFile": "vegetation.html",
+      "layers": ["vegetation"]
+    },{
+      "id": "Hydro_Atlantische_Oceaan_Merge_DIS",
+      "active": false,
+      "label": "Hydrografie",
+	  "infoFile": "hydrography.html",
+      "layers": ["Hydro_Atlantische_Oceaan_Merge_DIS"]
+    },{
+      "id": "Infra_May_2017",
+      "active": true,
+      "label": "Infrastructuur",
+      "infoFile": "infrastructure.html",
+      "layers": ["Infra_May_2017"]
+    },{
+      "id": "bbleg_sep",
+      "active": false,
+      "label": "BosbouwLegger (Sep 2017)",
+      "infoFile":"forestry-licenses.html",
+      "layers": ["bbleg_sep"]
+    },{
+      "id": "bosbouwlegger_Gem",
+      "active": false,
+      "label": "Gemeenschapsbossen en HKV's (Sep 2017)",
+      "infoFile":"forestry-licenses.html",
+      "layers": ["bosbouwlegger_Gem"]
+    },{
+      "id": "LULC",
+      "active": false,
+      "label": "Landgebruik/bedekking na ontbossing 2000-2015",
+      "infoFile": "deforestation_map.html",
+      "layers": ["LULC"]
+    },{
+      "id": "Protected_Areas",
+      "active": false,
+      "label": "Beschermde gebieden",
+      "infoFile": "protected-areas.html",
+      "layers": ["Protected_Areas"]
+    },{
+      "id": "deforestation00_15_repr",
+      "active": false,
+      "label": "Ontbossingskaart",
+      "infoFile": "deforestation_map.html",
+      "layers": ["deforestation00_15_repr"]
+    },{
+      "id": "Deformap15_16",
+      "active": false,
+      "label": "${Deformap15_16}",
+      "infoFile": "deforestation_map.html",
+      "layers": ["Deformap15_16"]
+    },{
+      "id": "Deforestation00_15_totaal",
+      "active": false,
+      "label": "Ontbossing 2000 - 2015",
+      "infoFile": "deforestation_map.html",
+      "layers": ["Deforestation00_15_totaal"]
+    },{
+      "id": "basemap2000",
+      "active": true,
+      "label": "Bosbedekkingskaart 2000",
+      "infoFile": "basemap2000.html",
+      "layers": ["basemap2000"]
+    },{
+      "id": "lulc00_09",
+      "active": false,
+      "label": "Landgebruik/bedekking na ontbossing 2000-2015",
+      "infoFile": "LULC2000-2015.html",
+      "layers": ["lulc00_09"]
+    },{
+      "id": "goldmining",
+      "active": false,
+      "label": "Goud Mijnbouw 2014",
+      "infoFile": "gold-mining.html",
+      "layers": ["goldmining"]
+    },{
+      "id": "mangrove",
+      "active": false,
+      "label": "Mangrove",
+      "infoFile": "mangrove.html",
+      "layers": ["mangrove"]
+    },{
+      "id": "stats",
+      "active": false,
+      "label": "Vegetatie Statistieken",
+      "layers": ["stats"]
+    },{
+      "id": "Ressort_repr_glis",
+      "active": false,
+      "label": "Ressorten",
+      "infoFile": "ressorts.html",
+      "layers": ["Ressort_repr_glis"]
+    },{
+      "id": "Certified_concessions2016",
+      "active": false,
+      "label": "Gecertificeerde Concessies 2016",
+      "infoFile": "concession.html",
+      "layers": ["Certified_concessions2016"]
+    },{
+      "id": "InventoryPlots_repr",
+      "active": false,
+      "label": "Inventarisatie Plots",
+      "infoFile": "inventory-plots.html",
+      "layers": ["InventoryPlots_repr"]
+    },{
+      "id": "SBB_post_repr",
+      "active": false,
+      "label": "SBB Posten",
+      "infoFile": "sbb-checkpoints.html",
+      "layers": ["SBB_post_repr"]
+    },{
+      "id": "WLA_stations",
+      "active": false,
+      "label": "WLA stationnen",
+      "infoFile": "stations.html",
+      "layers": ["WLA_stations"]
+    },{
+      "id": "Aanvragen_sep",
+      "active": false,
+      "label": "Aanvragen houtkaprechten",
+      "infoFile": "Aanvragen.html",
+      "layers": ["Aanvragen_sep"]
+    },{
+      "id": "District_capitals",
+      "active": false,
+      "label": "Hoofdplaatsen",
+      "layers": ["District_capitals"]
+    },{
+      "id": "Settlement_ReddP",
+      "active": false,
+      "label": "Dorpen REDD+ consultaties",
+	  "infoFile": "ReddPlusConsultatie.html",
+      "layers": ["Settlement_ReddP"]
+    },{
+      "id": "RAC_Dorpen",
+      "active": false,
+      "label": "Dorpen RAC",
+	  "infoFile": "RAC.html",
+      "layers": ["RAC_Dorpen"]
+    },{
+      "id": "LBB_Reserves",
+      "active": false,
+      "label": "LBB Beheersgebieden",
+      "layers": ["LBB_Reserves"]
+    },{
+      "id": "GMS_2014_2015",
+      "active": false,
+      "label": "Goud Mijnbouw 2015",
+	  "infoFile": "gold-mining2015",
+      "layers": ["GMS_2014_2015"]
+    },{
+      "id": "Landcover_new",
+      "active": false,
+      "label": "Landgebruik Brownsweg",
+	  "infoFile": "P3DM.html",
+      "layers": ["Landcover_new"]
+    },{
+      "id": "Infra_Brownsweg",
+      "active": false,
+      "label": "Wagi pasi/Autoweg/Roadway",
+	  "infoFile": "P3DM.html",
+      "layers": ["Infra_Brownsweg"]
+    },{
+      "id": "Futu_Passie",
+      "active": false,
+      "label": "Futu pasi/Voetpad/Walking trail",
+	  "infoFile": "P3DM.html",
+      "layers": ["Futu_Passie"]
+    },{
+      "id": "railroad_New",
+      "active": false,
+      "label": "Talan pasi/Spoorbaan/Railroad (old)",
+	  "infoFile": "P3DM.html",
+      "layers": ["railroad_New"]
+    },{
+      "id": "Creeks",
+      "active": false,
+      "label": "Kiiki/Kreek/Creek",
+	  "infoFile": "P3DM.html",
+      "layers": ["Creeks"]
+    },{
+      "id": "Falls",
+      "active": false,
+      "label": "Dan/Waterval/Fall",
+	  "infoFile": "P3DM.html",
+      "layers": ["Falls"]
+    },{
+      "id": "Sunken_Suriname_river",
+      "active": false,
+      "label": "Awoo Saanan lio/Oude loop Suriname Rivier/Original Course Suriname River",
+	  "infoFile": "P3DM.html",
+      "layers": ["Sunken_Suriname_river"]
+    },{
+      "id": "POI",
+      "active": false,
+      "label": "Belangrijke Punten/Important Points ",
+	  "infoFile": "P3DM.html",
+      "layers": ["POI"]
+    },{
+      "id": "GMS_2001_08_14_15_merge_diss",
+      "active": false,
+      "label": "Goudmijnbouw (2001, 2008, 2014, 2015)",
+	        "infoFile": "gold-mining.html",
+      "layers": ["GMS_2001_08_14_15_merge_diss"]
+    },{
+      "id": "Settlements_Camps_Other_20170831",
+      "active": false,
+      "label": "${Settlements_Camps_Other_20170831}",
+	  	        "infoFile": "DorpenSu.html",
+      "layers": ["Settlements_Camps_Other_20170831"]
+    }
+  ],
+  
+  "contextGroups": 
+  {
+    "items": [
+      {
+        "group": {
+          "label": "Basis Lagen",
+          "items": [
+            { "context": "background" },
+			{ "context": "countryBoundaries" },
+            { "context": "districts" },
+			{ "context": "Hydro_Atlantische_Oceaan_Merge_DIS" },
+			{ "context": "District_capitals" },
+            { "context": "Ressort_repr_glis" },
+			{ "context": "Infra_May_2017" }
+			
+          ]
+        }
+      },
+      {
+        "group": {
+          "label": "Landgebruiks- en landbedekkingskaarten",
+          "items": [
+            { "context": "basemap2000"},
+			{ "context": "Deforestation00_15_totaal"},	
+			{ "context": "lulc00_09" },
+            { "context": "vegetation" },
+            { "context": "GMS_2001_08_14_15_merge_diss"}
+
+
+          ]
+        }
+      },
+      	  {
+        "group": {
+          "label": "Bosbouw Lagen",
+          "items": [
+		    { "context": "SBB_post_repr"},
+			{ "context": "bbleg_sep"},
+			{ "context": "Aanvragen_sep"},
+			{ "context": "bosbouwlegger_Gem"},
+			{ "context": "Certified_concessions2016" }			
+          ]
+        }
+      },
+	  {
+        "group": {
+          "label": "Mangrove",
+          "items": [
+            { "context": "mangrove"}
+          ]
+        }
+      },
+      {
+        "group": {
+          "label": "Andere Lagen",
+          "items": [
+			{ "context": "Protected_Areas"},
+			{ "context": "LBB_Reserves"},
+			{ "context": "InventoryPlots_repr" },            
+            { "context": "WLA_stations"},
+            { "context": "stats" }
+          ]
+        }
+      },
+	  {
+        "group": {
+          "label": "Monitoring met Lokale Gemeenschappen",
+          "items": [
+		   { "context": "POI"},
+			{ "context": "Infra_Brownsweg"},
+			{ "context": "Futu_Passie" },            
+            { "context": "Falls"},
+            { "context": "Creeks" },
+			{ "context": "Sunken_Suriname_river" },            
+            { "context": "railroad_New"},
+            { "context": "Landcover_new" }
+          ]
+        }
+      },
+	  {
+        "group": {
+          "label": "REDD+",
+          "items": [
+		  { "context": "RAC_Dorpen" },
+		  { "context": "Settlement_ReddP" }
+          ]
+        }
+      }
+    ]
+  }
+}

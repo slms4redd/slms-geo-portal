@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" xml:space="preserve" viewBox="35.395 164.242 495.192 383.894" version="1.1" x="0px" y="0px" enable-background="new 35.395 164.242 495.192 383.894">
+<g id="layer3">
+		<g id="g2248" transform="matrix(1.5484 0 0 1.5484 -1774.1 102.62)">
+			<linearGradient id="path1332_1_" x1="2296.2" gradientUnits="userSpaceOnUse" y1="253.54" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2296.2" y2="179.43">
+			<stop stop-color="#F5866C" offset="0"/>
+			<stop stop-color="#A33C22" offset="1"/>
+		</linearGradient>
+		<path id="path1332" fill="url(#path1332_1_)" d="m1269.6 199.35c0.342 0.684-0.684 14.024 0.684 17.103 1.369 3.078 0 7.184 6.499 12.657 1.026 2.737 9.92 27.707 9.235 31.811-0.684 4.105-10.946 20.524-12.998 25.313 0 4.104 16.375-13.649 24.584-7.834 3.078 2.052 10.648 6.808 14.068 5.44 0.855-0.342-10.918-13.471-12.425-15.459s27.586 2.134 25.064-0.603 2.331 0.457 0.139-2.13c-2.191-2.587-30.923-0.262-32.275-7.462 0-1.71-9.92-29.075-10.262-33.179 1.369-2.395 3.079-12.998-3.078-18.129-2.052-2.395-1.71-6.499-3.421-8.551-1.7-2.06-6.8-3.77-5.8 1.02z"/>
+			<linearGradient id="path1334_1_" x1="2310.6" gradientUnits="userSpaceOnUse" y1="244.89" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2314.5" y2="182.04">
+			<stop stop-color="#F5866C" offset="0"/>
+			<stop stop-color="#A33C22" offset="1"/>
+		</linearGradient>
+		<path id="path1334" fill="url(#path1334_1_)" d="m1312 195.93c-0.342 2.052-2.737 4.789-4.105 8.21-1.368 3.42-5.131 10.604-0.684 18.129 1.368 3.078 11.972 27.707 10.262 31.469-1.026 2.737-4.789 9.235-11.63 8.209-3.079 0-6.157 1.71-4.789 4.789s2.395 5.131 4.447 4.447-2.052-5.131 1.71-5.815c3.763-0.684 12.314-2.737 14.708-1.369 2.395 1.369 12.012 14.236 14.775 15.757 3.707 2.041 6.433 2.372 5.407-0.365s-3.31-13.837-11.552-18.802c-3.942-2.375 8.761 7.911 14.576 9.279 5.816 1.369 9.357 0.209 14.775-1.213 2.585-0.679 2.726-7.735-4.116-4.657-5.131 1.027-20.865-2.052-24.628-7.525-2.052-4.105-14.366-27.023-13.34-33.522 1.026-3.421 2.394-10.946-0.342-14.709 0-5.473 1.026-16.077 5.815-18.813 0.6-4.11-10.4 6.83-11.4 6.49z"/>
+		<path id="path1318" d="m1199.1 161.04c-0.684 1.369-23.944 29.075-30.443 33.863-1.026 2.395 13.34 4.789 17.445 1.025 4.104-3.763 3.421-7.525 5.131-4.446 1.71 3.078-0.684 4.104 2.052 4.104s19.839 0.342 19.839 0.342-3.42 3.763-0.684 3.078c2.736-0.684 26.681-14.708 26.681-14.708s3.079-2.052 4.447-1.71c1.368 0.342 8.893 0.342 6.841-3.078s13.682-19.155-3.421-22.918c-17-3.74-47.4 3.44-47.8 4.47z"/>
+			<linearGradient id="path1322_1_" x1="2300.4" gradientUnits="userSpaceOnUse" y1="202.49" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2308.8" y2="227.69">
+			<stop stop-color="#fff" offset="0"/>
+			<stop stop-color="#C8C8C5" offset="1"/>
+		</linearGradient>
+		<path id="path1322" fill="url(#path1322_1_)" d="m1242.6 183.27c2.052 0.684 15.735 10.604 23.602 12.314 3.763 2.052 2.736 2.737 4.104 3.42 1.369 0.684 3.421 0.684 4.789 0.684s1.71 0 1.71 0l1.368-3.078s11.63 5.815 33.864-1.026c-1.026 0 60.544-19.839 58.834-62.597 1.71-3.421-1.368-14.366-1.368-14.366s-78.331-29.759-90.303-26.681c-11.972 3.079-28.049 4.105-31.812 11.288-1.7 11.65-4.1 79.72-4.8 80.06z"/>
+			<linearGradient id="path1326_1_" x1="2348.9" gradientUnits="userSpaceOnUse" y1="175.2" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2347.3" y2="164.23">
+			<stop stop-color="#743010" offset="0"/>
+			<stop offset="1"/>
+		</linearGradient>
+		<path id="path1326" fill="url(#path1326_1_)" d="m1412.9 86.814s1.71 22.918 44.467 74.568c-1.026-0.342-55.413-68.07-55.413-68.07s-3.763-6.841 0-9.919c3.763-3.079 11.288-4.789 11.63-1.368 0.3 3.423-0.7 5.475-0.7 4.791z"/>
+			<linearGradient id="path2070_1_" x1="2272.6" gradientUnits="userSpaceOnUse" y1="198.62" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2243.4" y2="230.64">
+			<stop stop-color="#fff" offset="0"/>
+			<stop stop-color="#C8C8C5" offset="1"/>
+		</linearGradient>
+		<path id="path2070" fill="url(#path2070_1_)" d="m1202.8 160.92c-2.372 1.779-27.572 26.386-22.235 26.386s10.08-6.819 9.783-4.447c-0.296 2.371 3.854 4.151 9.191 1.779 5.337-2.371-2.965 2.371 0.889 2.965 3.854 0.593 13.934-1.779 16.01-2.372 2.075-0.593 17.195 0.89 14.527-3.558-2.668-4.446-11.562-11.562-20.456-11.859-8.9-0.29-7.1-8.3-7.7-8.89z"/>
+			<linearGradient id="path1320_1_" x1="2272.2" gradientUnits="userSpaceOnUse" y1="209.99" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2278.5" y2="212.73">
+			<stop stop-color="#fff" offset="0"/>
+			<stop stop-color="#C8C8C5" offset="1"/>
+		</linearGradient>
+		<path id="path1320" fill="url(#path1320_1_)" d="m1204.6 155.91s-17.011 21.87-4.606 11.972c8.552 1.369 7 5.131 10.421 4.789s5.131 4.105 7.183 6.499 4.789 6.157 4.789 6.157l0.342-5.815s1.026 3.421 3.079 3.421c2.052 0 3.762 1.025 7.183 0 3.421-1.027 8.21-0.342 8.21-1.71 0-1.369 6.841-11.288 6.841-11.288l5.131-5.473s-1.026-6.499-5.473-8.209-14.708-5.473-19.497-4.789-9.578 1.71-11.972 2.737c-2.3 1.02-11.2 2.38-11.5 1.7z"/>
+			<linearGradient id="path1309_1_" x1="2299.5" gradientUnits="userSpaceOnUse" y1="181.15" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2266.7" y2="114.15">
+			<stop offset="0"/>
+			<stop stop-color="#ff0" offset="1"/>
+		</linearGradient>
+		<path id="path1309" fill="url(#path1309_1_)" d="m1358 165.68c-1.05-0.318 13.735-8.017 13.125-32.439-0.61 0.611-23.812 17.706-37.854 2.442-1.221 3.662-14.042 3.662-20.148-7.327-1.832-0.611-5.495-1.832-5.495-1.832s3.053 13.432 10.379 14.043c-1.832 0-10.379-3.664-18.317-26.254 0.611-0.611-4.274-5.495-4.274-5.495s0-5.495-4.274-7.937c-4.274-2.442-1.221-6.106-4.274-4.274s-10.99 6.716-10.99 6.716-7.937 0.611-13.432-1.221c-5.495-1.832-9.159-3.663-9.159-3.663s-5.495 8.548 0.61 8.548c6.106 0 41.518-14.043 36.023 14.653-1.832 7.327-13.432 41.518-39.075 49.455-0.611-1.832-1.221-7.327-1.221-7.327l-8.548 2.442-3.663 3.663v-7.937l-4.884 3.053-1.221 4.274-1.221-9.158-4.274 4.885-3.053-1.832-6.105-0.611-7.938-0.611-5.495-2.442s-6.716 7.327-1.832-1.221 13.432-31.138 24.422-41.518c10.38-9.769 39.686-32.97 68.382-34.802 6.106-4.274 23.201-14.043 40.297-14.653 5.495-2.442-0.244-3.053-0.244-3.053s5.257-8.861 25.276-16.605c19.86-7.683 60.906-21.766 57.853 28.3-2.442 1.832-9.009 4.18-12.061 6.622-3.053 2.442-4.274 3.053-4.274 5.495s-1.831 9.158-1.831 9.158-0.828-1.397 2.835 0.435c3.664 1.832 5.645 8.031 5.645 8.031s-14.585-2.972-17.638-0.529c-3.053 2.442-5.495 5.495-5.495 5.495l-4.274 1.832c0 0.04 6.4 45.47-22.2 53.23z"/>
+			<linearGradient id="path1324_1_" x1="2354.8" gradientUnits="userSpaceOnUse" y1="187.14" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2392.3" y2="144.58">
+			<stop stop-color="#EF6E06" offset="0"/>
+			<stop stop-color="#fff" offset="1"/>
+		</linearGradient>
+		<path id="path1324" fill="url(#path1324_1_)" d="m1398.2 98.444s7.525 0.342 58.492 69.78c-0.684-0.342 7.183 4.104-1.026-8.893-1.026-1.71-52.334-66.359-50.625-72.174 1.026-1.368 1.369-3.078 4.789-2.736 3.421 0.342 73.201 48.914 74.911 49.941 1.71 1.026 7.183 1.026 0.342-4.447-1.368-0.342-66.359-50.282-67.728-55.755-1.026-0.684-5.131 4.105-8.893 6.499-3.763 2.394-6.841 1.71-7.183 4.447-0.4 2.742-2.4 13.685-3.1 13.343z"/>
+		<path id="path1328" fill="#EF6E06" d="m1398 68.075c-0.74 1.651-15.995 4.33-14.506-9.652 2.4-4.01 16.8-3.638 14.5 9.652z"/>
+		<path id="path2064" d="m1395.2 65.976c-0.453 1.008-9.765 2.643-8.855-5.892 1.5-2.448 10.3-2.221 8.9 5.892z"/>
+		<path id="path2066" fill="#fff" d="m1391.3 61.619c-0.108 0.366-3.224 1.347-3.298-1.616 0.4-0.905 3.4-1.225 3.3 1.616z"/>
+		<path id="path2068" opacity=".788" enable-background="new    " fill="#743010" d="m1415.9 82.65s5.336-0.296 8.894 6.522c-1.2 0.297-7.1-2.668-8.9-6.522z"/>
+			<linearGradient id="path2240_1_" x1="2291" gradientUnits="userSpaceOnUse" y1="247.79" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2286.3" y2="266.17">
+			<stop stop-color="#F5866C" offset="0"/>
+			<stop stop-color="#544941" offset="1"/>
+		</linearGradient>
+		<path id="path2240" fill="url(#path2240_1_)" d="m1272.4 287.72s14.752-23.658 17.195-26.892c3.911 6.115-9.356 22.299-9.356 22.299l-7.8 4.59z"/>
+			<linearGradient id="path2122_1_" x1="2317.3" gradientUnits="userSpaceOnUse" y1="184.45" gradientTransform="matrix(-1.2403 -2.0518 2.0518 -1.2403 3830.9 5259.1)" x2="2325.3" y2="211.06">
+			<stop stop-color="#F5866C" offset="0"/>
+			<stop stop-color="#544941" offset="1"/>
+		</linearGradient>
+		<path id="path2122" fill="url(#path2122_1_)" d="m1347.9 270.43c-2.41-6.815-16.948-9.364-9.563-2.567 7.4 1.8 11.6 4.65 9.6 2.57z"/>
+			<linearGradient id="path2120_1_" x1="2281.7" gradientUnits="userSpaceOnUse" y1="215.16" gradientTransform="matrix(1.2225 -2.0625 2.0625 1.2225 -1906.3 4701.6)" x2="2276.9" y2="233.54">
+			<stop stop-color="#F5866C" offset="0"/>
+			<stop stop-color="#544941" offset="1"/>
+		</linearGradient>
+		<path id="path2120" fill="url(#path2120_1_)" d="m1341.4 281.71s-4.234-19.512-14.365-28.504c7.255-0.246 14.411 19.418 14.411 19.418v9.08z"/>
+			<linearGradient id="path2244_1_" x1="2301.6" gradientUnits="userSpaceOnUse" y1="242.26" gradientTransform="matrix(2.3976 0 0 2.3976 -4208.1 -330.72)" x2="2309.6" y2="268.88">
+			<stop stop-color="#F5866C" offset="0"/>
+			<stop stop-color="#544941" offset="1"/>
+		</linearGradient>
+		<path id="path2244" fill="url(#path2244_1_)" d="m1308.5 262.46c10.092 3.773 9.966-3.246 8.875-8.505-3.6 8.04-11.8 9.17-8.9 8.5z"/>
+	</g>
+</g>
+<metadata><rdf:RDF><cc:Work><dc:format>image/svg+xml</dc:format><dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/><cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/><dc:publisher><cc:Agent rdf:about="http://openclipart.org/"><dc:title>Openclipart</dc:title></cc:Agent></dc:publisher><dc:title>oyster catcher</dc:title><dc:date>2006-11-22T06:42:41</dc:date><dc:description>just the bird without background or text</dc:description><dc:source>http://openclipart.org/detail/1578/oyster-catcher-by-johnny_automatic</dc:source><dc:creator><cc:Agent><dc:title>johnny_automatic</dc:title></cc:Agent></dc:creator><dc:subject><rdf:Bag><rdf:li>animal</rdf:li><rdf:li>ave</rdf:li><rdf:li>bird</rdf:li><rdf:li>cartoon</rdf:li><rdf:li>clip art</rdf:li><rdf:li>clipart</rdf:li><rdf:li>haematopus ostralegus</rdf:li><rdf:li>nature</rdf:li><rdf:li>ostrero</rdf:li><rdf:li>oystercatcher</rdf:li><rdf:li>pajaro</rdf:li><rdf:li>remix</rdf:li></rdf:Bag></dc:subject></cc:Work><cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/"><cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/><cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/><cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/></cc:License></rdf:RDF></metadata></svg>

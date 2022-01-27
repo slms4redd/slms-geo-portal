@@ -126,37 +126,37 @@ export default {
       }, 'editing-chunk')
     },
 
-    showWelcomePage(resizable, adaptive, draggable) {
-      this.resizable = resizable
-      this.adaptive = adaptive
-      this.draggable = draggable
-      /*
-        $nextTick is required because the data model with new
-        "resizable, adaptive, draggable" values is not updated yet.. eh
-      */
-      this.$nextTick(() => {
-        this.$modal.show({
-          template: `
-            <div class="iframe-modal-content">
-              <div>Welcome</div>
-              <iframe v-bind:src="iframesrc" width=100% height=100%><b>Welcome to Gonini.org!</b></iframe>
-            </div>
-          `,
-          props: ['iframesrc']
-        }, {
-          iframesrc: welcomePage
-        }, {
-          transition: 'nice-modal-fade',
-          draggable: draggable,
-          adaptive: adaptive,
-          resizable: resizable,
-          width: 0.9 * document.body.clientWidth,
-          height: 0.7 * document.body.clientHeight,
-          maxWidth: 710,
-          maxHeight: 850
-        })
-      })
-    },
+    // showWelcomePage(resizable, adaptive, draggable) {
+      // this.resizable = resizable
+      // this.adaptive = adaptive
+      // this.draggable = draggable
+      // /*
+        // $nextTick is required because the data model with new
+        // "resizable, adaptive, draggable" values is not updated yet.. eh
+      // */
+      // this.$nextTick(() => {
+        // this.$modal.show({
+          // template: `
+            // <div class="iframe-modal-content">
+              // <div>Welcome</div>
+              // <iframe v-bind:src="iframesrc" width=100% height=100%><b>Welcome to Gonini.org!</b></iframe>
+            // </div>
+          // `,
+          // props: ['iframesrc']
+        // }, {
+          // iframesrc: welcomePage
+        // }, {
+          // transition: 'nice-modal-fade',
+          // draggable: draggable,
+          // adaptive: adaptive,
+          // resizable: resizable,
+          // width: 0.9 * document.body.clientWidth,
+          // height: 0.7 * document.body.clientHeight,
+          // maxWidth: 710,
+          // maxHeight: 850
+        // })
+      // })
+    // },
 
     hideFileDropModal() {
       this.$store.commit('show_file_drop_modal', { show: false })

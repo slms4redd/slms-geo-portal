@@ -43,10 +43,23 @@ window.globalConf = {
         size: { height: 35 }
       },
       {
-        text: 'send us your feedback: gonini.suriname@gmail.com',
+        imgUrl: 'static/configuration/logos/facebookLogo.png',
         link: 'https://www.facebook.com/Goninigeoportaal/',
         size: { height: 35 }
+      },
+      {
+        imgUrl: 'static/configuration/logos/emailLogo.png',
+		text: 'gonini.suriname@gmail.com',
+		link: '#',
+        size: { height: 35 }
+      },
+	  	  
+      {
+        text: 'KOPI',
+        link: 'https://www.gonini.org/SBB/index.php/',
+        size: { height: 35 }
       }
+	  
     ]
   },
   wfsSearchConfig: {

@@ -50,7 +50,7 @@ import Annotations from './components/Annotations'
 import MobileToolsBar from './components/MobileToolsBar'
 import FileDrop from './components/FileDrop'
 import LoginModal from './components/LoginModal'
-import { logos, welcomePage, printApi } from 'config'
+import { logos, printApi } from 'config'
 
 import auth from './auth'
 
@@ -100,11 +100,11 @@ export default {
       else this.showConsole = false
     }
   },
-  mounted() {
-    if (welcomePage) {
-      this.showWelcomePage(true, true, true)
-    }
-  },
+  // mounted() {
+    // if (welcomePage) {
+      // this.showWelcomePage(true, true, true)
+    // }
+  // },
   computed: {
     ...mapState({
       isMobile: state => state.appMode === 'mobile',

@@ -1,5 +1,5 @@
 <template>
-  <modal name="context-info-modal" :draggable=true :resizable=true :minWidth=250 :minHeight=220 @closed="resetState">
+  <modal name="context-info-modal" :draggable=true :resizable=true :minWidth=250 :minHeight=220 :scrollable="true" height="auto" @closed="resetState">
     <div class="context-info-modal">
       <button class="btn" @click="closeByName">X</button>
       <div class="content" v-html="content" />
@@ -69,7 +69,7 @@ export default {
 
       const showContent = content => {
         this.content = content
-        this.$modal.show('context-info-modal')
+        this.$modal.show('context-info-modal', { resizable: false })
       }
 
       httpRequest('GET', processUrlTemplate(val.fileName))
